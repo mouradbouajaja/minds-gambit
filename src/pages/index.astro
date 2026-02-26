@@ -1,0 +1,376 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout>
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#home" class="nav-logo">M<span>.</span>B</a>
+    <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#book">The Book</a></li>
+      <li><a href="#blog">Blog</a></li>
+      <li><a href="#dedication">Dedication</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <h1>Mourad <span>Bouajaja</span></h1>
+      <span class="book-tag">Author &middot; Child Protection &middot; Mental Health</span>
+      <p class="subtitle">Where other writers approach chess through the lens of competition, I read the board the way a social worker reads a case file: attentive to the structures that shape outcomes, and to the human cost of systems that were never designed with the most vulnerable in mind.</p>
+      <a href="#blog" class="hero-cta">Read the Articles &darr;</a>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-graphic">
+        <div class="hero-chess">&#9818;</div>
+        <div class="hero-book-title">The Mind's Gambit</div>
+        <div class="hero-book-sub">Coming 2026</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="section-label">About</div>
+    <h2 class="section-title">Who I Am</h2>
+    <div class="section-divider"></div>
+    <div class="about-content">
+      <div class="about-text">
+        <p>I bring a distinctive perspective to the world of chess&mdash;one shaped not by grandmaster ambitions but by a career spent in the most consequential arenas of human struggle. A graduate of Illinois State University with a degree in Sociology, I have devoted my professional life to child protection and mental health&mdash;fields that have given me a profound understanding of how individuals navigate systemic pressure, institutional failure, and the quiet crises that unfold far from public view.</p>
+        <p>My encounter with chess began during graduate studies in International Affairs at The New School in Manhattan, where afternoons spent at the stone chess tables of Stuyvesant Town became an unexpected counterweight to the global complexities of the classroom. What started as a neighborhood pastime grew into a lifelong fascination with the game's social dimensions&mdash;its hierarchies, its rituals, its capacity to both heal and harm.</p>
+        <p>I later deepened my engagement with the chess community through the Pittsburgh Chess League and the University of Pittsburgh Chess Club&mdash;experiences that sharpened the questions at the heart of my work: Who benefits from chess, and who is left behind? What happens to the mind under sustained competitive pressure? And what obligations do the institutions of chess owe to the people who entrust their development to the game?</p>
+        <p>I am currently writing <em>The Mind's Gambit: Chess, Madness, and the Battle for the Mind</em>. This blog is where I develop those ideas in public, one chapter at a time, and I welcome your feedback along the way.</p>
+      </div>
+      <div class="about-sidebar">
+        <div class="about-photo">
+          <img src="/images/Me.JPG" alt="Mourad Bouajaja">
+        </div>
+        <div class="stat-card">
+          <div class="label">Background</div>
+          <div class="value">Child Protection &amp; Mental Health</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Education</div>
+          <div class="value">Illinois State (Sociology) &middot; The New School (Int'l Affairs)</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Chess Community</div>
+          <div class="value">Pittsburgh Chess League &middot; University of Pittsburgh Chess Club</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Current Project</div>
+          <div class="value"><em>The Mind's Gambit</em> &mdash; A Book in Ten Chapters</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOK -->
+<section id="book">
+  <div class="section-inner">
+    <div class="section-label">The Book</div>
+    <h2 class="section-title">The Mind's Gambit</h2>
+    <p class="section-subtitle">Chess, Madness, and the Battle for the Mind &mdash; a book in ten chapters exploring the intersection of chess and mental health, from history to science to lived experience.</p>
+    <div class="section-divider"></div>
+
+    <div class="book-banner">
+      <div class="book-cover">
+        <div class="chess-icon">&#9818;</div>
+        <div class="cover-title">The Mind's Gambit</div>
+        <div class="cover-author">Mourad Bouajaja</div>
+      </div>
+      <div class="book-details">
+        <h3>A Book Built in Public</h3>
+        <p class="book-sub">Chess, Madness, and the Battle for the Mind</p>
+        <p>Each chapter of this book begins its life as an article on this blog. I publish drafts, gather feedback from readers and the chess community, then refine the material back into its final form. This process keeps the work honest, the arguments sharp, and the door open to perspectives I might otherwise miss.</p>
+        <p>The book is written for general readers. No chess knowledge is required. The 64 squares are simply a lens through which we can see, with unusual clarity, how the human mind works under pressure, in community, and in solitude.</p>
+        <span class="book-status">In Progress &middot; 2026</span>
+      </div>
+    </div>
+
+    <div class="chapters-grid">
+      <div class="chapter-card">
+        <div class="chapter-num">1</div>
+        <div class="chapter-info">
+          <h4>The Number</h4>
+          <p>How the Elo rating became the most powerful psychological force in chess</p>
+        </div>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-num">2</div>
+        <div class="chapter-info">
+          <h4>The Myth of the Mad Genius</h4>
+          <p>Paul Morphy, Wilhelm Steinitz, and the origins of a dangerous narrative</p>
+        </div>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-num">3</div>
+        <div class="chapter-info">
+          <h4>Two Endgames: From Fischer to Naroditsky</h4>
+          <p>Genius without support, decades apart</p>
+        </div>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-num">4</div>
+        <div class="chapter-info">
+          <h4>The Body at the Board</h4>
+          <p>The science of competitive stress in chess</p>
+        </div>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-num">5</div>
+        <div class="chapter-info">
+          <h4>One More Game</h4>
+          <p>Digital chess, compulsive play, and the architecture of addiction</p>
+        </div>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-num">6</div>
+        <div class="chapter-info">
+          <h4>The Pattern Seekers</h4>
+          <p>Chess and neurodivergence &mdash; a game built for different minds</p>
+        </div>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-num">7</div>
+        <div class="chapter-info">
+          <h4>Medicine on 64 Squares</h4>
+          <p>From ninth-century Baghdad to modern prisons: chess as therapy</p>
+        </div>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-num">8</div>
+        <div class="chapter-info">
+          <h4>The Queen's Burden</h4>
+          <p>Women, hostility, and the mental health cost of playing in a man's world</p>
+        </div>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-num">9</div>
+        <div class="chapter-info">
+          <h4>The Youngest Pawns</h4>
+          <p>Ratings, parents, burnout, and the question of childhood in chess</p>
+        </div>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-num">10</div>
+        <div class="chapter-info">
+          <h4>The Ghost in the Machine</h4>
+          <p>Chess in the age of artificial intelligence</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG -->
+<section id="blog">
+  <div class="section-inner">
+    <div class="section-label">Blog</div>
+    <h2 class="section-title">Chapters in Progress</h2>
+    <p class="blog-intro">Each article below is a draft chapter from <em>The Mind's Gambit</em>, published here to invite conversation before the book goes to print. Read them, challenge them, and help me make the arguments stronger. Your feedback shapes the final work.</p>
+    <div class="section-divider"></div>
+    <div class="blog-featured">
+      <span class="tag">Latest &middot; Personal Essay</span>
+      <h3>The Constant Board: From Mégrine to Manhattan</h3>
+      <p>A personal journey through the coffee houses of Tunisia and across the Atlantic&mdash;how a vinyl board, a humbling defeat, and a father's quiet faith in his son shaped a lifelong relationship with chess.</p>
+      <div class="blog-meta">
+        <span>February 2026</span>
+        <span>12 min read</span>
+        <span>Personal Essay</span>
+      </div>
+      <div class="article-body">
+        <p>My journey began in the vibrant pulse of Tunisia, where I was raised amidst the evolving landscape of the capital. In 1978, as the world's eyes were fixed on the World Cup, my family relocated to M&eacute;grine, a southern suburb that would become the backdrop of my early social education. In M&eacute;grine, life centered around the local coffee house&mdash;a quintessential sociological microcosm. At &ldquo;Uncle Mohamed's,&rdquo; the air was thick with tobacco smoke and the clatter of dominoes; it was a sanctuary where the employed, the academic, and the jobless sat as equals. While elders engaged in heated political discourse, I found myself drawn to the quiet intensity of the chess tables. My father had taught me the fundamental moves during the long, expectant afternoons of Ramadan, but our matches ended the day I finally overcame him, and he gracefully retired from our private board.</p>
+        <p>The true test of my resolve, however, occurred at the hands of &ldquo;Uncle Arbi,&rdquo; a man of aristocratic bearing whose presence in the coffee house commanded silent respect. When I boldly asked to play him, he dismantled my game five times in a row, his victories punctuated by the stifled giggles of his peers. I left that day feeling the sting of public ridicule, shamed by his dismissal: &ldquo;Come back in six months, young man.&rdquo; It was my father who recognized my despair and bridged the gap between my humiliation and my potential. Through his connection to Slim Bouaziz&mdash;the only Tunisian International Master at the time, famed for drawing against the legendary Korchnoi&mdash;I was granted an audience at the Tunisian Chess Federation. Gifted with a vinyl board and a library of theory, I spent the following year immersed in the mechanics of openings and the logic of endgames. When I finally returned to the coffee house, the &ldquo;systems&rdquo; I had studied allowed me to dismantle the very circle that had once laughed at my efforts.</p>
+        <p>Chess, for me, has always been personal. When I immigrated to the United States in the spring of 1991, I stopped playing almost entirely. Just like that, the board folded shut. I moved to Chicago, then to Illinois State University, where I earned my degree in Sociology. Chess wasn&rsquo;t part of the plan anymore.</p>
+        <p>That changed in 2007, when I moved to New York City to pursue a Master&rsquo;s in International Affairs at The New School. I was living in Stuyvesant Town, and one afternoon I wandered into the inner park and saw the stone chess tables. Something pulled me back. Just like that, the board opened again.</p>
+        <p>The park had its own hierarchy. Regulars claimed certain tables. You had to earn your place. But for someone who had arrived in a new city with no friends, no family, and no community, the tables offered something that nothing else in New York had: a place to sit across from another person and belong, even briefly. Chess became my only way to break through the loneliness of being a stranger in a city that doesn&rsquo;t wait for you to catch up.</p>
+        <p>It was at one of those tables that I met William Lombardy&mdash;Bill, as everyone called him. He was already a legend: the youngest player to win the World Junior Championship with a perfect score, Bobby Fischer&rsquo;s second during the 1972 World Championship in Reykjav&iacute;k. But in the park, he was just Bill&mdash;a heavyset man in a worn jacket who played fast, talked freely, and didn&rsquo;t care if you knew his résumé.</p>
+        <p>Over coffee at a nearby diner, Bill told me stories about Bobby Fischer that I had never heard&mdash;stories about a boy who was already showing signs of the isolation that would later consume him, and about a chess world that looked the other way because the boy could play. Those conversations planted the seed for everything I would later write about chess and the mind.</p>
+        <p>Across all these places and people, the chessboard has remained the one constant&mdash;a portable republic with its own laws, immune to borders, language, or circumstance. From my father&rsquo;s Ramadan lessons to Uncle Arbi&rsquo;s coffee-house gauntlet, from the stone tables of Stuyvesant Town to late-night conversations with Bill Lombardy, the board has been more than a game. It has been a way to enter rooms I had no right to enter, to break through isolation, and to find, in the company of strangers, a conversation and connection that transcends borders and circumstance.</p>
+      </div>
+    </div>
+
+    <div class="blog-featured">
+      <span class="tag">Chapter 1 &middot; Academic Essay</span>
+      <h3>The Number: Elo Ratings, Identity and the Sociology of Competitive Chess</h3>
+      <p>In competitive chess, your identity is a number. Your Elo rating follows you everywhere&mdash;it signals, to anyone who cares to look, exactly where you stand. This article examines how a statistical tool designed for neutral measurement became one of the most powerful psychological forces in the game, and what that tells us about the systems we build to measure human worth.</p>
+      <div class="blog-meta">
+        <span>February 2026</span>
+        <span>18 min read</span>
+        <span>Chapter 1 of 10</span>
+      </div>
+      <button class="article-toggle" onclick="toggleArticle(this)">Read Full Article <span class="arrow">&darr;</span></button>
+      <div class="article-body collapsible">
+        <p style="font-style: italic; color: var(--accent); text-align: center; margin-bottom: 2rem;">&ldquo;Chess is the School of Life. A Man Learns Much There of Himself and of Others.&rdquo; &mdash; Vasily Smyslov</p>
+
+        <h4 style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--accent-light); margin: 2rem 0 1rem;">The Quantitative Mirror</h4>
+        <p>When I think of competitive chess today&mdash;whether I&rsquo;m in a tournament hall or sitting alone in the dimly lit blue glow of my living room&mdash;I see a quantification-based institution. That same 1500-year-old game I played with men in Megrine has evolved into a rigid, quantifiable &ldquo;technology of the self&rdquo; that transforms us all as we interact with it.</p>
+        <p>This chapter represents a critical examination of the Elo rating system&mdash;which is more than just a mathematical equation&mdash;as a &ldquo;classification system&rdquo; that changes the social reality of anyone who interacts with it. Utilizing the method of autoethnography, I will demonstrate that the four-digit number next to your name is more than a measurement. It is a technology of identity.</p>
+
+        <h4 style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--accent-light); margin: 2rem 0 1rem;">The Cultural Shift: Megrine vs. Manhattan</h4>
+        <p>My understanding of this &ldquo;technology&rdquo; emerged from a huge cultural shift. In the late 1970&rsquo;s, my socialization occurred at &ldquo;Uncle Mohamed&rsquo;s&rdquo; coffee shop in Megrine, Tunisia. In &ldquo;Uncle Mohamed&rsquo;s&rdquo;, respect was not a measurable, tangible quality; it was a visceral, experiential quality. Respect was earned through your physical presence, the weight of your words, and your age. When the elder men debated politics while placing dominoes, their social status reflected their history within the community. You were a person first, and a player second.</p>
+        <p>In contrast, when I arrived in New York City, I assumed a similar social contract existed. I went to the community of Stuyvesant Town in Manhattan, and after some time, I found my way to the stone tables along First Avenue. Before I could even say hello or sit down, I was greeted with a question that felt like a border crossing:</p>
+        <p style="font-style: italic; text-align: center; color: var(--text-primary); font-size: 1.05rem; margin: 1.5rem 0;">&ldquo;What is your rating?&rdquo;</p>
+        <p>At the time, I was not affiliated with the United States Chess Federation, therefore I did not have a rating. Therefore, to the Manhattan players, not having a rating indicated that I was an unknown quantity. I was invisible to their social hierarchy. While I sat at the tables, I noticed the air was thick with no political debates, but with &ldquo;weird comparisons of Elo,&rdquo; that seemed ridiculous to my sociological ears. The players were sharing their ratings like they were deeds to property and were competing in a tallying of worth that was both unfamiliar to me and frightening. Without a rating, I felt exposed. The Number didn&rsquo;t indicate how skilled of a player I was; it indicated the cost of entry to the community.</p>
+
+        <h4 style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--accent-light); margin: 2rem 0 1rem;">The Wall and the Verdict: Pittsburgh</h4>
+        <p>Whereas Manhattan illustrated to me the social significance of the rating, my initial visit to the Pittsburgh Chess Club demonstrated to me the institutional significance of the rating. I specifically recall paying a $35 registration fee&mdash;literally the price of admission to the quantified social hierarchy.</p>
+        <p>Approximately thirty minutes later, the Tournament Director came to the wall and published the pairing sheet. The &ldquo;wall&rdquo; is the ultimate sociological site in chess. This is the location where the institution delivers its final decision. I walked up to the wall, and I saw my name: I was to play black versus a player rated 2200&mdash;a master.</p>
+        <p>My response was immediate and physiological. I felt a wave of fear and anxiety unlike anything I had experienced in Megrine. In the coffeehouse, I was simply playing another man; in the chess club, I was playing &ldquo;2200&rdquo;. The Number predated the individual and startled me. By the time I sat at the board, I had already lost. I was so debilitated by anxiety generated by my rating that I &ldquo;gave up&rdquo;&mdash;I dropped out quickly, not due to a lack of ability, but due to all the available cognitive resources I had to utilize to contend with the anxiety generated by my rating.</p>
+        <p>I did not complete the tournament. I drove back home in a deep sense of disappointment&mdash;a classic manifestation of &ldquo;learned helplessness&rdquo; (Seligman &amp; Maier, 1967). I told myself, &ldquo;I will never play chess again.&rdquo; The institutional verdict, rendered via the wall, determined that effort would be futile against the Number.</p>
+
+        <h4 style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--accent-light); margin: 2rem 0 1rem;">The Digital Obsession: The Domestic Trap</h4>
+        <p>However, the Number does not relinquish its hold easily. The &ldquo;never again&rdquo; of that ride home from Pittsburgh ultimately transformed into a new type of fixation&mdash;one shaped by the digital age.</p>
+        <p>For numerous nights, I engage in a similar pattern of behavior. At 2:00 AM, in total darkness, I sit at a computer screen staring at it. My wife is asleep upstairs, and her presence serves as a quiet reminder of the &ldquo;social isolation&rdquo; I established for myself. I informed her hours prior that I would &ldquo;play just one or two games.&rdquo; At that point, I was truthful; however, as the night continued, remorse for that deception began to develop.</p>
+        <p>Remorse did not lead to sleep; it led to panic. In the heavy silence of the house, I felt pressured to win the subsequent game to validate the hours I stole from my life and from her. If I won, I could convince myself that the hours spent playing were valuable. If I lost, I would find myself trapped in a vicious cycle of &ldquo;learned helplessness,&rdquo; believing that I had to rapidly improve since losing was no longer an option.</p>
+        <p>The desire to rectify the Number caused me to obsessively consume: YouTube spirals, a large collection of unread books, expensive software like Chess Base, and a high-end digital board. I also hired a Ukrainian Woman Grandmaster to virtually analyze my failures with me every Saturday morning. I improved, but at the expense of the intellectual essence of the game I once cherished in Megrine.</p>
+        <p>I look at the &ldquo;theory library&rdquo; Slim Bouaziz once gave me&mdash;the books intended to serve as tools for liberation and mastery of the game&mdash;and I feel the Number has sucked the soul right out of them. They are no longer vessels of strategic wisdom or beauty; they are simply optimization manuals for a four-digit number. I greatly miss those days in Megrine when a game was a conversation, and respect that was a shared human experience long before everything became quantitatively defined into a cold, unforgiving metric.</p>
+
+        <h4 style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--accent-light); margin: 2rem 0 1rem;">The Sociologist&rsquo;s Double Identity</h4>
+        <p>As an independent scholar, I frequently occupy dual identity during these experiences. I am the player experiencing the &ldquo;tilt&rdquo;&mdash;the cognitive dysregulation resulting from a losing streak&mdash;and I am the observer studying the experience.</p>
+        <p>During a particularly grueling late-night downward spiral, I suddenly ceased playing. I was losing terribly, my rating was dropping precipitously, and I was panicking. During that moment, a sociological &ldquo;aha!&rdquo; flashed through my mind: I was then a living embodiment of the Matthew Effect. I was witnessing the erosion of my carefully constructed competitive capital in real-time, and the institution was making it increasingly difficult for me to recover.</p>
+        <p>At other times, I observe Goffman&rsquo;s &ldquo;performance of the self&rdquo; in operation. I realize that I am not merely playing chess; I am frantically attempting to maintain the illusion of intellectual competence that the Number is actively destroying. This awareness does not alleviate the discomfort of losing; however, it aids in identifying the source of the distress: the distress is not in the game; it is in the classification.</p>
+
+        <h4 style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--accent-light); margin: 2rem 0 1rem;">The Performance of the Self: The Million Excuses</h4>
+        <p>This tenuous identity exists in every chess community. As Goffman (1959) noted, we perform for an audience. I remember a specific instance at the Manhattan tables in which a highly rated player lost to a young boy. Immediately following the loss, the man began to provide a multitude of &ldquo;absurd&rdquo; excuses&mdash;the sun, his tiredness, his lack of focus. He was not defending his performance; he was protecting his &ldquo;face.&rdquo; The other players ridiculed the obviousness of his desperation. His rating had ensured him a status that the board had recently revoked, and he was left with nothing but his explanations.</p>
+
+        <h4 style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--accent-light); margin: 2rem 0 1rem;">Title to Fetishism: A Brief History of the Bell Curve</h4>
+        <p>Before the 1960&rsquo;s, chess status was based upon titles&mdash;Master, Candidate Master, Expert. In 1961, Arpad Elo attempted to eliminate the subjectivity of chess status through the use of the &ldquo;normal distribution&rdquo;&mdash;the bell curve (Elo 1978).</p>
+        <p>Arpad Elo warned against &ldquo;rating fetishism&rdquo;&mdash;the false assumption that a rating could quantify a player&rsquo;s inherent worth. The chess community ignored him. The simplicity of the rating system was too appealing. It provided a definitive answer to the question: How good am I?</p>
+
+        <h4 style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--accent-light); margin: 2rem 0 1rem;">Metrics of Self: A Theoretical Framework</h4>
+        <p>To understand how a number becomes a person, we study how metrics affect the world they measure. Wendy Nelson Espeland and Michael Sauder (2007) demonstrate that when we rank institutions, they cease to concern themselves with their purpose and instead become concerned with the ranking. This is what has occurred with the chess player.</p>
+        <p>The Elo rating system incorporates value statements: that strength can be quantified and that higher ratings translate to greater social standing. These create &ldquo;cultural capital&rdquo; (Bourdieu, 1984). The rating has developed into a credential, one that is often considered more significant than the intellectual richness of the game itself.</p>
+
+        <h4 style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--accent-light); margin: 2rem 0 1rem;">Conclusion: Reclaiming a More Human Chess</h4>
+        <p>The Elo rating system is not &ldquo;bad&rdquo; mathematics; it has developed into a bad social institution. To reclaim the intellectual beauty of chess, we must consider how we view these numbers.</p>
+        <p>As a scholar, I firmly believe that chess organizations have a moral obligation to protect the mental health of their members. We must establish communities&mdash;as I remember from Megrine&mdash;that emphasize community and presence over the constant, oppressive display of the hierarchy.</p>
+        <p>Chess should be an activity that demonstrates strategic beauty and resilience. It is our responsibility to ensure &ldquo;The Number&rdquo; does not damage the minds it was designed to evaluate.</p>
+
+        <p style="margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-size: 0.85rem; color: var(--text-muted);"><strong style="color: var(--text-secondary);">References:</strong> Bourdieu (1984), <em>Distinction</em> &middot; Elo (1978), <em>The Rating of Chessplayers</em> &middot; Espeland &amp; Sauder (2007), <em>Rankings and Reactivity</em> &middot; Goffman (1959), <em>The Presentation of Self in Everyday Life</em> &middot; Seligman &amp; Maier (1967), <em>Failure to Escape Traumatic Shock</em> &middot; Simon &amp; Chase (1973), <em>Skill in Chess</em></p>
+      </div>
+    </div>
+    <div class="blog-grid">
+      <div class="blog-card">
+        <div class="chapter-ref">Chapter 2</div>
+        <div class="date">Coming March 2026</div>
+        <h4>The Myth of the Mad Genius</h4>
+        <p>Why the story chess tells about itself&mdash;that the game drives people mad&mdash;is a cultural construction that flatters players while excusing institutions.</p>
+      </div>
+      <div class="blog-card">
+        <div class="chapter-ref">Chapter 3</div>
+        <div class="date">Coming April 2026</div>
+        <h4>Two Endgames: From Fischer to Naroditsky</h4>
+        <p>Separated by half a century, undone by the same institutional indifference. Two endgames with no one left to play for them.</p>
+      </div>
+      <div class="blog-card">
+        <div class="chapter-ref">Chapter 5</div>
+        <div class="date">Coming June 2026</div>
+        <h4>One More Game</h4>
+        <p>The architecture of online blitz and bullet chess is, from a behavioral psychology standpoint, nearly perfectly designed to produce addictive behavior.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEDICATION -->
+<section id="dedication">
+  <div class="section-inner">
+    <div class="dedication-content">
+      <div class="section-label">Dedication</div>
+      <h2 class="section-title">In Memory of My Father</h2>
+      <div class="section-divider" style="margin-left:auto;margin-right:auto;"></div>
+      <div class="dedication-photo">
+        <img src="/images/papa2.1.jpg" alt="In loving memory">
+        <span class="placeholder" style="display:none;">Photo coming soon</span>
+      </div>
+      <p class="dedication-text">To my beloved father and mentor, who departed from our world on September 29, 2025. With your passing, the world lost a great man who gave his life to the noblest of missions: the education of generations. From the playing fields of schoolyards to university lecture halls, you built minds as you built bodies, holding fast to the belief that physical discipline is the foundation upon which the discipline of thought is raised.</p>
+      <p class="dedication-text">Your journey&mdash;from devoted teacher to leader in the highest ranks of public service&mdash;was a living testament to your integrity, your foresight, and your unshakeable faith in what education can do. Even after retirement, your heart remained with children. You wrote stories for them that ignited their imaginations and opened the doors of dreaming.</p>
+      <p class="dedication-name">Teacher. Leader. Traveler. Storyteller.</p>
+      <p class="dedication-dates">d. September 29, 2025</p>
+      <p class="dedication-note">This book is but a humble attempt to continue the circle of learning that he began.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="section-label">Contact</div>
+    <h2 class="section-title">Join the Conversation</h2>
+    <div class="section-divider"></div>
+    <div class="contact-layout">
+      <div class="contact-info">
+        <p>This book is being written in dialogue with its readers. If you're a chess player, a researcher, a mental health professional, a parent of a young player, or simply someone who cares about how institutions treat the people they're meant to serve&mdash;I want to hear from you. Your perspective might change a chapter.</p>
+        <div class="contact-links">
+          <a href="mailto:mourad.bouajaja.Author@outlook.com" class="contact-link">
+            <span class="icon">&#9993;</span>
+            <span>mourad.bouajaja.Author@outlook.com</span>
+          </a>
+        </div>
+      </div>
+      <form class="contact-form" name="contact" method="POST" data-netlify="true">
+        <input type="hidden" name="form-name" value="contact">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <input type="text" name="chapter" placeholder="Which chapter are you responding to?">
+        <textarea name="message" placeholder="Your thoughts, feedback, or questions..." required></textarea>
+        <button type="submit">Send Feedback</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-quote">"Chess is a mirror. That is its therapeutic promise and its psychological risk."</p>
+  <p class="footer-copy">&copy; 2026 Mourad Bouajaja. All rights reserved.</p>
+</footer>
+
+<!-- JS -->
+<script>
+  function toggleArticle(btn) {
+    const body = btn.nextElementSibling;
+    const isExpanded = body.classList.toggle('expanded');
+    btn.classList.toggle('expanded', isExpanded);
+    btn.innerHTML = isExpanded
+      ? 'Collapse Article <span class="arrow">&uarr;</span>'
+      : 'Read Full Article <span class="arrow">&darr;</span>';
+  }
+
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      document.querySelector('.nav-links').classList.remove('open');
+    });
+  });
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.style.opacity = 1; e.target.style.transform = 'translateY(0)'; }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.chapter-card, .blog-card, .blog-featured, .stat-card, .book-banner').forEach(el => {
+    el.style.opacity = 0; el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+</script>
+</BaseLayout>

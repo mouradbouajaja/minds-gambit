@@ -580,7 +580,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     '\u265A', '\u265B', '\u265C', '\u265D', '\u265E', '\u265F'
   ];
   
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 30; i++) {
     const particle = document.createElement('span');
     particle.className = 'particle';
     particle.textContent = chessPieces[Math.floor(Math.random() * chessPieces.length)];
@@ -588,8 +588,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     particle.style.top = Math.random() * 100 + '%';
     particle.style.animationDuration = (15 + Math.random() * 25) + 's';
     particle.style.animationDelay = (-Math.random() * 20) + 's';
-    particle.style.fontSize = (0.8 + Math.random() * 1.2) + 'rem';
-    particle.style.opacity = 0.03 + Math.random() * 0.06;
+    particle.style.fontSize = (1.5 + Math.random() * 2.5) + 'rem';
+    particle.style.opacity = 0.12 + Math.random() * 0.16;
     particlesContainer.appendChild(particle);
   }
   

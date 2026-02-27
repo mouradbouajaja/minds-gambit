@@ -633,10 +633,39 @@ a.chapter-published:hover {
   border: 1px solid rgba(255,255,255,0.1);
 }
 .social-btn:hover {
-  background: var(--accent);
-  color: var(--bg-primary);
   transform: translateY(-3px);
-  box-shadow: 0 4px 15px rgba(200, 164, 94, 0.4);
+  color: #fff;
+}
+
+/* Branded hover colors */
+.social-x:hover {
+  background: #000;
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+}
+
+.social-instagram:hover {
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(225, 48, 108, 0.5);
+}
+
+.social-linkedin:hover {
+  background: #0A66C2;
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(10, 102, 194, 0.5);
+}
+
+.social-facebook:hover {
+  background: #1877F2;
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(24, 119, 242, 0.5);
+}
+
+.social-youtube:hover {
+  background: #FF0000;
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(255, 0, 0, 0.5);
 }
 
 /* FOOTER LEGAL */

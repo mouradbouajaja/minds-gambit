@@ -614,6 +614,16 @@ a.chapter-published:hover {
 
 
 /* SOCIAL BUTTONS */
+.footer-social {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+
 .social-btn {
   display: flex; align-items: center; justify-content: center;
   width: 48px; height: 48px; border-radius: 50%;

@@ -993,3 +993,11 @@ html {
   border-color: #FF6719;
   box-shadow: 0 4px 15px rgba(255, 103, 25, 0.4);
 }
+
+/* Episode chapter title */
+.episode-chapter-title {
+  font-size: 1.4rem;
+  color: var(--accent);
+  margin: 0.25rem 0 0.5rem 0;
+  font-family: var(--font-heading);
+}

@@ -598,13 +598,86 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </a>
       </div>
       <div class="footer-legal">
-        <a href="#" class="footer-legal-link">Terms</a>
+        <a href="#" class="footer-legal-link" onclick="document.getElementById('termsModal').classList.add('active');return false;">Terms</a>
         <span class="footer-legal-sep">|</span>
-        <a href="#" class="footer-legal-link">Privacy</a>
+        <a href="#" class="footer-legal-link" onclick="document.getElementById('privacyModal').classList.add('active');return false;">Privacy</a>
       </div>
       <p class="footer-copy">&copy; 2026 Mourad Bouajaja. All rights reserved.</p>
     </div>
-  </footer>
+  
+    <!-- Terms Modal -->
+    <div id="termsModal" class="legal-modal">
+      <div class="legal-modal-content">
+        <button class="legal-modal-close" onclick="this.closest('.legal-modal').classList.remove('active')">&times;</button>
+        <h2>Terms of Service</h2>
+        <p class="legal-updated">Last updated: February 27, 2026</p>
+        
+        <h3>1. Acceptance of Terms</h3>
+        <p>By accessing and using this website (minds-gambit.vercel.app), you agree to be bound by these Terms of Service. If you do not agree, please do not use this site.</p>
+        
+        <h3>2. Intellectual Property</h3>
+        <p>All content on this website — including text, articles, book excerpts, podcast episodes, images, and design elements — is the intellectual property of Mourad Bouajaja unless otherwise stated. You may not reproduce, distribute, or republish any content without prior written permission.</p>
+        
+        <h3>3. Use of Content</h3>
+        <p>You are welcome to share links to articles and episodes. Brief quotations for review, commentary, or academic purposes are permitted with proper attribution. Unauthorized commercial use of any content is strictly prohibited.</p>
+        
+        <h3>4. User Conduct</h3>
+        <p>When interacting with this site (comments, contact forms, or community features), you agree not to submit content that is defamatory, abusive, hateful, or violates any law. We reserve the right to remove any content that violates these terms.</p>
+        
+        <h3>5. External Links</h3>
+        <p>This site may contain links to third-party platforms (YouTube, Substack, social media). We are not responsible for the content, privacy practices, or terms of these external sites.</p>
+        
+        <h3>6. Disclaimer</h3>
+        <p>Content on this site is provided for informational and educational purposes. The views expressed in articles and podcast episodes represent the author’s perspective and do not constitute professional advice. The Mind’s Gambit explores sensitive topics including mental health and child welfare — if you or someone you know needs support, please contact a qualified professional.</p>
+        
+        <h3>7. Modifications</h3>
+        <p>We reserve the right to update these terms at any time. Continued use of the site after changes constitutes acceptance of the revised terms.</p>
+        
+        <h3>8. Contact</h3>
+        <p>For questions about these terms, contact: <a href="mailto:Mourad@bouajaja.com">Mourad@bouajaja.com</a></p>
+      </div>
+    </div>
+
+    <!-- Privacy Policy Modal -->
+    <div id="privacyModal" class="legal-modal">
+      <div class="legal-modal-content">
+        <button class="legal-modal-close" onclick="this.closest('.legal-modal').classList.remove('active')">&times;</button>
+        <h2>Privacy Policy</h2>
+        <p class="legal-updated">Last updated: February 27, 2026</p>
+        
+        <h3>1. Information We Collect</h3>
+        <p>We may collect limited information when you interact with this site:</p>
+        <p>• <strong>Contact Form:</strong> Name, email address, and message content when you voluntarily submit the contact form.</p>
+        <p>• <strong>Analytics:</strong> Anonymous usage data such as pages visited, time on site, and general geographic region through standard web analytics.</p>
+        <p>• <strong>Cookies:</strong> Essential cookies for site functionality. No advertising or tracking cookies are used.</p>
+        
+        <h3>2. How We Use Your Information</h3>
+        <p>Any information collected is used solely to respond to your inquiries, improve the website experience, and communicate updates about The Mind’s Gambit (only if you opt in). We will never sell, rent, or share your personal information with third parties.</p>
+        
+        <h3>3. Third-Party Services</h3>
+        <p>This site integrates with third-party services that have their own privacy policies:</p>
+        <p>• <strong>YouTube</strong> (embedded video player) — Google Privacy Policy applies</p>
+        <p>• <strong>Substack</strong> (newsletter and articles) — Substack Privacy Policy applies</p>
+        <p>• <strong>Vercel</strong> (hosting) — Vercel Privacy Policy applies</p>
+        
+        <h3>4. Data Security</h3>
+        <p>We take reasonable measures to protect any personal data collected. However, no method of electronic transmission or storage is 100% secure.</p>
+        
+        <h3>5. Your Rights</h3>
+        <p>You have the right to request access to, correction of, or deletion of any personal data we hold about you. To exercise these rights, contact us at the email below.</p>
+        
+        <h3>6. Children’s Privacy</h3>
+        <p>This site does not knowingly collect personal information from children under 13. If you believe we have inadvertently collected such data, please contact us immediately.</p>
+        
+        <h3>7. Changes to This Policy</h3>
+        <p>We may update this Privacy Policy from time to time. Changes will be posted on this page with an updated date.</p>
+        
+        <h3>8. Contact</h3>
+        <p>For privacy-related questions: <a href="mailto:Mourad@bouajaja.com">Mourad@bouajaja.com</a></p>
+      </div>
+    </div>
+
+</footer>
 
 <!-- JS -->
 <script>

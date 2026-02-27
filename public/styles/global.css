@@ -637,6 +637,7 @@ a.chapter-published:hover {
 .social-linkedin:hover { background: #0A66C2; color: #fff; box-shadow: 0 6px 20px rgba(10,102,194,0.5); }
 .social-facebook:hover { background: #1877F2; color: #fff; box-shadow: 0 6px 20px rgba(24,119,242,0.5); }
 .social-youtube:hover { background: #FF0000; color: #fff; box-shadow: 0 6px 20px rgba(255,0,0,0.5); }
+.social-substack:hover { background: #FF6719; color: #fff; box-shadow: 0 6px 20px rgba(255,103,25,0.5); }
 
 /* FOOTER LEGAL */
 .footer-inner {

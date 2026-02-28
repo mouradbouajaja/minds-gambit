@@ -1,3 +1,13 @@
+/* Remove content gate - make site publicly accessible */
+#content-gate,
+.content-gate,
+.gate-overlay {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
 /* Navbar offset for anchor scrolling */
 html {
   scroll-padding-top: 100px;

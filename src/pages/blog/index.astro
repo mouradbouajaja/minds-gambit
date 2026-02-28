@@ -33,7 +33,15 @@ const posts = (await getCollection('blog'))
               <time datetime={post.data.date}>
                 {new Date(post.data.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
               </time>
-              <h2>{post.data.title}</h2>
+              <div class="title-row">
+                <h2>{post.data.title}</h2>
+                <span class="lock-badge" title="Register to read">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                  </svg>
+                </span>
+              </div>
               {post.data.description && <p>{post.data.description}</p>}
               <div class="blog-tags">
                 {post.data.tags.map(tag => (
@@ -52,79 +60,21 @@ const posts = (await getCollection('blog'))
   </main>
 
   <style>
-    .blog-listing {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 120px 20px 60px;
-    }
-    .blog-header {
-      text-align: center;
-      margin-bottom: 3rem;
-    }
-    .blog-header h1 {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 3rem;
-      color: #c9a84c;
-      margin-bottom: 0.5rem;
-    }
-    .blog-header p {
-      color: #aaa;
-      font-size: 1.1rem;
-    }
-    .blog-grid {
-      display: grid;
-      gap: 2rem;
-    }
-    .blog-card {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(201,168,76,0.15);
-      border-radius: 12px;
-      overflow: hidden;
-      transition: border-color 0.3s, transform 0.3s;
-    }
-    .blog-card:hover {
-      border-color: rgba(201,168,76,0.4);
-      transform: translateY(-2px);
-    }
-    .blog-card a {
-      text-decoration: none;
-      color: inherit;
-      display: block;
-      padding: 2rem;
-    }
-    .blog-card time {
-      font-size: 0.85rem;
-      color: #c9a84c;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    .blog-card h2 {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.5rem;
-      color: #f0e6d2;
-      margin: 0.5rem 0;
-    }
-    .blog-card p {
-      color: #aaa;
-      line-height: 1.6;
-    }
-    .blog-tags {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      margin-top: 1rem;
-    }
-    .tag {
-      background: rgba(201,168,76,0.1);
-      color: #c9a84c;
-      padding: 0.25rem 0.75rem;
-      border-radius: 20px;
-      font-size: 0.8rem;
-    }
-    .no-posts {
-      text-align: center;
-      color: #aaa;
-      font-size: 1.1rem;
-    }
+    .blog-listing { max-width: 900px; margin: 0 auto; padding: 120px 20px 60px; }
+    .blog-header { text-align: center; margin-bottom: 3rem; }
+    .blog-header h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 3rem; color: #c9a84c; margin-bottom: 0.5rem; }
+    .blog-header p { color: #aaa; font-size: 1.1rem; }
+    .blog-grid { display: grid; gap: 2rem; }
+    .blog-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(201,168,76,0.15); border-radius: 12px; overflow: hidden; transition: border-color 0.3s, transform 0.3s; }
+    .blog-card:hover { border-color: rgba(201,168,76,0.4); transform: translateY(-2px); }
+    .blog-card a { text-decoration: none; color: inherit; display: block; padding: 2rem; }
+    .blog-card time { font-size: 0.85rem; color: #c9a84c; text-transform: uppercase; letter-spacing: 1px; }
+    .title-row { display: flex; align-items: center; gap: 0.5rem; margin: 0.5rem 0; }
+    .blog-card h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.5rem; color: #f0e6d2; margin: 0; }
+    .lock-badge { display: inline-flex; align-items: center; justify-content: center; color: #c9a84c; background: rgba(201,168,76,0.1); border-radius: 50%; width: 28px; height: 28px; flex-shrink: 0; }
+    .blog-card p { color: #aaa; line-height: 1.6; }
+    .blog-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; }
+    .tag { background: rgba(201,168,76,0.1); color: #c9a84c; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem; }
+    .no-posts { text-align: center; color: #aaa; font-size: 1.1rem; }
   </style>
 </BaseLayout>

@@ -1,0 +1,130 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog'))
+  .filter(post => !post.data.draft)
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+---
+
+<BaseLayout title="Blog — The Mind's Gambit">
+  <nav id="navbar">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">M.<span>B</span></a>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="/podcasts">Podcasts</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="blog-listing">
+    <section class="blog-header">
+      <h1>Blog</h1>
+      <p>Thoughts on chess, psychology, and the battle for the mind.</p>
+    </section>
+
+    <section class="blog-grid">
+      {posts.map(post => (
+        <article class="blog-card">
+          <a href={`/blog/${post.id}`}>
+            <div class="blog-card-content">
+              <time datetime={post.data.date}>
+                {new Date(post.data.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+              </time>
+              <h2>{post.data.title}</h2>
+              {post.data.description && <p>{post.data.description}</p>}
+              <div class="blog-tags">
+                {post.data.tags.map(tag => (
+                  <span class="tag">{tag}</span>
+                ))}
+              </div>
+            </div>
+          </a>
+        </article>
+      ))}
+    </section>
+
+    {posts.length === 0 && (
+      <p class="no-posts">No blog posts yet. Check back soon!</p>
+    )}
+  </main>
+
+  <style>
+    .blog-listing {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 120px 20px 60px;
+    }
+    .blog-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .blog-header h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 3rem;
+      color: #c9a84c;
+      margin-bottom: 0.5rem;
+    }
+    .blog-header p {
+      color: #aaa;
+      font-size: 1.1rem;
+    }
+    .blog-grid {
+      display: grid;
+      gap: 2rem;
+    }
+    .blog-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(201,168,76,0.15);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .blog-card:hover {
+      border-color: rgba(201,168,76,0.4);
+      transform: translateY(-2px);
+    }
+    .blog-card a {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      padding: 2rem;
+    }
+    .blog-card time {
+      font-size: 0.85rem;
+      color: #c9a84c;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .blog-card h2 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.5rem;
+      color: #f0e6d2;
+      margin: 0.5rem 0;
+    }
+    .blog-card p {
+      color: #aaa;
+      line-height: 1.6;
+    }
+    .blog-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+    .tag {
+      background: rgba(201,168,76,0.1);
+      color: #c9a84c;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+    }
+    .no-posts {
+      text-align: center;
+      color: #aaa;
+      font-size: 1.1rem;
+    }
+  </style>
+</BaseLayout>

@@ -1,4 +1,3 @@
-
 /* Navbar offset for anchor scrolling */
 html {
   scroll-padding-top: 100px;
@@ -1084,4 +1083,131 @@ html {
 .legal-modal-content::-webkit-scrollbar-thumb {
   background: rgba(200, 164, 94, 0.3);
   border-radius: 3px;
+}
+
+
+/* ========================================
+   CLERK AUTH - CONTENT GATE
+   ======================================== */
+
+/* Nav Sign In Button */
+.nav-auth {
+  list-style: none;
+}
+.nav-sign-in {
+  background: linear-gradient(135deg, #c8a45e, #a07830);
+  color: #0a0a0a;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+}
+.nav-sign-in:hover {
+  background: linear-gradient(135deg, #d4b46e, #b08840);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(200, 164, 94, 0.3);
+}
+
+/* Content Gate Overlay */
+.content-gate {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+}
+.gate-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 10, 10, 0.92);
+  backdrop-filter: blur(8px);
+}
+.gate-message {
+  position: relative;
+  z-index: 10000;
+  text-align: center;
+  max-width: 480px;
+  padding: 3rem 2.5rem;
+  background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+  border: 1px solid rgba(200, 164, 94, 0.3);
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(200, 164, 94, 0.1);
+}
+.gate-icon {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  filter: drop-shadow(0 0 10px rgba(200, 164, 94, 0.5));
+}
+.gate-message h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  color: #c8a45e;
+  margin-bottom: 0.75rem;
+}
+.gate-message p {
+  color: #aaa;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+.gate-btn {
+  display: inline-block;
+  padding: 12px 32px;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  margin: 0 8px;
+}
+.gate-btn-primary {
+  background: linear-gradient(135deg, #c8a45e, #a07830);
+  color: #0a0a0a;
+}
+.gate-btn-primary:hover {
+  background: linear-gradient(135deg, #d4b46e, #b08840);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(200, 164, 94, 0.4);
+}
+.gate-btn-secondary {
+  background: transparent;
+  color: #c8a45e;
+  border: 1px solid rgba(200, 164, 94, 0.4);
+}
+.gate-btn-secondary:hover {
+  background: rgba(200, 164, 94, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Lock body scroll when gate is active */
+body.content-locked {
+  overflow: hidden;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .gate-message {
+    margin: 1rem;
+    padding: 2rem 1.5rem;
+  }
+  .gate-message h2 {
+    font-size: 1.4rem;
+  }
+  .gate-btn {
+    display: block;
+    width: 100%;
+    margin: 8px 0;
+  }
 }

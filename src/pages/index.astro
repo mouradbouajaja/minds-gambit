@@ -31,7 +31,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   </div>
 </nav>
 
-<script>document.querySelectorAll('.nav-links a').forEach(function(a){a.addEventListener('click',function(){document.body.classList.remove('content-locked');var g=document.getElementById('content-gate');if(g)g.style.display='none';var t=a.getAttribute('href');if(t){var el=document.querySelector(t);if(el)setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'start'});},300);}});});</script><style>section[data-reveal]{transition:transform 0.3s ease;overflow:hidden;}section[data-reveal]:hover{transform:scale(1.02);}#about,#book,#blog,#podcast{padding-top:10px !important;scroll-margin-top:80px;}</style><!-- CONTENT GATE -->
+<script>document.querySelectorAll('.nav-links a').forEach(function(a){a.addEventListener('click',function(){document.body.classList.remove('content-locked');var g=document.getElementById('content-gate');if(g)g.style.display='none';var t=a.getAttribute('href');if(t){var el=document.querySelector(t);if(el)setTimeout(function(){el.scrollIntoView({behavior:'instant',block:'start'});},300);}});});</script><style>section[data-reveal]{transition:transform 0.3s ease;overflow:hidden;}section[data-reveal]:hover{transform:scale(1.02);}#about,#book,#blog,#podcast{padding-top:10px !important;scroll-margin-top:80px;}</style><!-- CONTENT GATE -->
 <div id="content-gate" class="content-gate">
   <div class="gate-overlay"></div>
   <div class="gate-message">

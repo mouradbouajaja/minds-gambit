@@ -7,14 +7,15 @@ const { title = "Mourad Bouajaja — The Mind's Gambit", description = "Chess, M
 ---
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content={description}>
-  <title>{title}</title>
-  <link rel="stylesheet" href="/styles/global.css">
-</head>
-<body>
-  <slot />
-</body>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content={description}>
+    <title>{title}</title>
+    <link rel="stylesheet" href="/styles/global.css">
+    <script async crossorigin="anonymous" data-clerk-publishable-key="pk_test_cHJvcGVyLXRhcnBvbi0yMS5jbGVyay5hY2NvdW50cy5kZXYk" src="https://proper-tarpon-21.clerk.accounts.dev/npm/@clerk/clerk-js@latest/dist/clerk.browser.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <slot />
+  </body>
 </html>

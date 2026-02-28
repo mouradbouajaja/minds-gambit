@@ -45,21 +45,101 @@ const { Content } = await render(post);
         </div>
       </header>
 
-      <div class="article-content">
-        <Content />
+      <!-- Content Lock Overlay -->
+      <div class="content-lock-overlay" id="contentLockOverlay">
+        <div class="lock-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </div>
+        <h2 class="lock-title">Register to Unlock This Chapter</h2>
+        <p class="lock-subtitle">Create a free account to read the full article</p>
+        <div class="lock-buttons">
+          <button class="btn-primary" id="signupBtn">Sign Up</button>
+          <button class="btn-secondary" id="signinBtn">Sign In</button>
+        </div>
       </div>
 
-      <footer class="article-footer">
-        <a href="/blog" class="back-link">&larr; Back to all articles</a>
-      </footer>
+      <!-- Locked Content -->
+      <div class="locked-content" id="lockedContent">
+        <div class="article-content">
+          <Content />
+        </div>
+        <footer class="article-footer">
+          <a href="/blog" class="back-link">&larr; Back to all articles</a>
+        </footer>
+      </div>
     </article>
   </main>
+
+  <script>
+    function initContentGate() {
+      const overlay = document.getElementById('contentLockOverlay');
+      const content = document.getElementById('lockedContent');
+      const signupBtn = document.getElementById('signupBtn');
+      const signinBtn = document.getElementById('signinBtn');
+
+      function unlockContent() {
+        if (overlay) overlay.style.display = 'none';
+        if (content) content.classList.add('unlocked');
+      }
+
+      function checkAuth() {
+        if (window.Clerk && window.Clerk.user) {
+          unlockContent();
+          return true;
+        }
+        return false;
+      }
+
+      if (window.Clerk) {
+        window.Clerk.load().then(() => {
+          if (!checkAuth()) {
+            window.Clerk.addListener(({ user }) => {
+              if (user) unlockContent();
+            });
+          }
+        });
+      } else {
+        const interval = setInterval(() => {
+          if (window.Clerk) {
+            clearInterval(interval);
+            window.Clerk.load().then(() => {
+              if (!checkAuth()) {
+                window.Clerk.addListener(({ user }) => {
+                  if (user) unlockContent();
+                });
+              }
+            });
+          }
+        }, 500);
+      }
+
+      if (signupBtn) {
+        signupBtn.addEventListener('click', () => {
+          if (window.Clerk) window.Clerk.openSignUp();
+        });
+      }
+      if (signinBtn) {
+        signinBtn.addEventListener('click', () => {
+          if (window.Clerk) window.Clerk.openSignIn();
+        });
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initContentGate);
+    } else {
+      initContentGate();
+    }
+  </script>
 
   <style>
     .article { max-width: 750px; margin: 0 auto; padding: 120px 20px 60px; }
     .back-link { color: #c9a84c; text-decoration: none; font-size: 0.9rem; display: inline-block; margin-bottom: 1.5rem; }
     .back-link:hover { text-decoration: underline; }
-    .article-header { margin-bottom: 3rem; border-bottom: 1px solid rgba(201,168,76,0.2); padding-bottom: 2rem; }
+    .article-header { margin-bottom: 2rem; border-bottom: 1px solid rgba(201,168,76,0.2); padding-bottom: 2rem; }
     .article-header time { font-size: 0.85rem; color: #c9a84c; text-transform: uppercase; letter-spacing: 1px; }
     .article-header h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 2.5rem; color: #f0e6d2; margin: 0.5rem 0; line-height: 1.2; }
     .subtitle { color: #aaa; font-size: 1.2rem; margin-top: 0.5rem; }
@@ -67,6 +147,17 @@ const { Content } = await render(post);
     .author { color: #888; font-size: 0.9rem; }
     .tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
     .tag { background: rgba(201,168,76,0.1); color: #c9a84c; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.75rem; }
+    .content-lock-overlay { text-align: center; padding: 4rem 2rem; margin: 2rem 0; border: 1px solid rgba(201,168,76,0.2); border-radius: 12px; background: rgba(201,168,76,0.03); }
+    .lock-icon { margin-bottom: 1.5rem; }
+    .lock-title { font-family: 'Playfair Display', Georgia, serif; color: #f0e6d2; font-size: 1.8rem; margin-bottom: 0.5rem; }
+    .lock-subtitle { color: #888; font-size: 1rem; margin-bottom: 2rem; }
+    .lock-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-primary { background: #c9a84c; color: #0f1117; border: none; padding: 0.75rem 2rem; border-radius: 8px; font-size: 1rem; cursor: pointer; font-weight: 600; transition: background 0.2s; }
+    .btn-primary:hover { background: #d4b85c; }
+    .btn-secondary { background: transparent; color: #c9a84c; border: 1px solid #c9a84c; padding: 0.75rem 2rem; border-radius: 8px; font-size: 1rem; cursor: pointer; transition: background 0.2s; }
+    .btn-secondary:hover { background: rgba(201,168,76,0.1); }
+    .locked-content { display: none; }
+    .locked-content.unlocked { display: block; }
     .article-content { color: #ccc; line-height: 1.8; font-size: 1.05rem; }
     .article-content :global(h2) { font-family: 'Playfair Display', Georgia, serif; color: #f0e6d2; font-size: 1.6rem; margin-top: 2.5rem; margin-bottom: 1rem; }
     .article-content :global(h3) { color: #c9a84c; font-size: 1.2rem; margin-top: 2rem; }

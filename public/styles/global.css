@@ -8,6 +8,17 @@
     pointer-events: none !important;
 }
 
+/* Publish Chapter 1 - expand article content and hide toggle */
+.article-body.collapsible {
+      max-height: none !important;
+      overflow: visible !important;
+      opacity: 1 !important;
+      margin-top: 1.5rem !important;
+}
+.article-toggle {
+      display: none !important;
+}
+
 /* Navbar offset for anchor scrolling */
 html {
   scroll-padding-top: 100px;

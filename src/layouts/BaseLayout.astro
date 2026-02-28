@@ -12,6 +12,28 @@ const { title = "Mourad Bouajaja — The Mind's Gambit", description = "Chess, M
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content={description}>
     <title>{title}</title>
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content={title}>
+    <meta property="og:description" content={description}>
+    <meta property="og:image" content="/images/og-share.jpg">
+    <meta property="og:url" content="https://mindsgambit.com">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="The Mind's Gambit">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content={title}>
+    <meta name="twitter:description" content={description}>
+    <meta name="twitter:image" content="/images/og-share.jpg">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://mindsgambit.com">
+
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <link rel="stylesheet" href="/styles/global.css">
     <script async crossorigin="anonymous" data-clerk-publishable-key="pk_live_Y2xlcmsubWluZHNnYW1iaXQuY29tJA" src="https://clerk.mindsgambit.com/npm/@clerk/clerk-js@latest/dist/clerk.browser.js" type="text/javascript"></script>
   </head>

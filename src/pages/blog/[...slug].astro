@@ -1,0 +1,79 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map(post => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BaseLayout title={post.data.title + " — The Mind's Gambit"}>
+  <nav id="navbar">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">M.<span>B</span></a>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="/podcasts">Podcasts</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="article">
+    <article>
+      <header class="article-header">
+        <a href="/blog" class="back-link">&larr; Back to Blog</a>
+        <time datetime={post.data.date}>
+          {new Date(post.data.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+        </time>
+        <h1>{post.data.title}</h1>
+        {post.data.description && <p class="subtitle">{post.data.description}</p>}
+        <div class="article-meta">
+          <span class="author">By {post.data.author}</span>
+          <div class="tags">
+            {post.data.tags.map(tag => (
+              <span class="tag">{tag}</span>
+            ))}
+          </div>
+        </div>
+      </header>
+
+      <div class="article-content">
+        <Content />
+      </div>
+
+      <footer class="article-footer">
+        <a href="/blog" class="back-link">&larr; Back to all articles</a>
+      </footer>
+    </article>
+  </main>
+
+  <style>
+    .article { max-width: 750px; margin: 0 auto; padding: 120px 20px 60px; }
+    .back-link { color: #c9a84c; text-decoration: none; font-size: 0.9rem; display: inline-block; margin-bottom: 1.5rem; }
+    .back-link:hover { text-decoration: underline; }
+    .article-header { margin-bottom: 3rem; border-bottom: 1px solid rgba(201,168,76,0.2); padding-bottom: 2rem; }
+    .article-header time { font-size: 0.85rem; color: #c9a84c; text-transform: uppercase; letter-spacing: 1px; }
+    .article-header h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 2.5rem; color: #f0e6d2; margin: 0.5rem 0; line-height: 1.2; }
+    .subtitle { color: #aaa; font-size: 1.2rem; margin-top: 0.5rem; }
+    .article-meta { display: flex; align-items: center; gap: 1rem; margin-top: 1rem; flex-wrap: wrap; }
+    .author { color: #888; font-size: 0.9rem; }
+    .tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .tag { background: rgba(201,168,76,0.1); color: #c9a84c; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.75rem; }
+    .article-content { color: #ccc; line-height: 1.8; font-size: 1.05rem; }
+    .article-content :global(h2) { font-family: 'Playfair Display', Georgia, serif; color: #f0e6d2; font-size: 1.6rem; margin-top: 2.5rem; margin-bottom: 1rem; }
+    .article-content :global(h3) { color: #c9a84c; font-size: 1.2rem; margin-top: 2rem; }
+    .article-content :global(p) { margin-bottom: 1.2rem; }
+    .article-content :global(blockquote) { border-left: 3px solid #c9a84c; padding-left: 1.5rem; margin: 1.5rem 0; color: #aaa; font-style: italic; }
+    .article-content :global(a) { color: #c9a84c; }
+    .article-content :global(code) { background: rgba(255,255,255,0.05); padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
+    .article-footer { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(201,168,76,0.2); }
+  </style>
+</BaseLayout>

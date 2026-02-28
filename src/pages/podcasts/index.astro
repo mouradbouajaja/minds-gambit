@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const episodes = (await getCollection('podcasts'))
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+---
+
+<BaseLayout title="Podcasts — The Mind's Gambit">
+  <nav id="navbar">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">M.<span>B</span></a>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="/podcasts">Podcasts</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="podcast-listing">
+    <section class="podcast-header">
+      <h1>Podcasts</h1>
+      <p>Watch and listen to episodes exploring chess, psychology, and the mind.</p>
+    </section>
+
+    <section class="podcast-grid">
+      {episodes.map(ep => (
+        <article class="podcast-card">
+          <a href={`/podcasts/${ep.id}`}>
+            <div class="podcast-thumb">
+              {ep.data.thumbnail ? (
+                <img src={ep.data.thumbnail} alt={ep.data.title} />
+              ) : (
+                <div class="thumb-placeholder">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                </div>
+              )}
+            </div>
+            <div class="podcast-info">
+              <time datetime={ep.data.date}>
+                {new Date(ep.data.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+              </time>
+              <h2>{ep.data.title}</h2>
+              {ep.data.description && <p>{ep.data.description}</p>}
+            </div>
+          </a>
+        </article>
+      ))}
+    </section>
+
+    {episodes.length === 0 && (
+      <p class="no-episodes">No podcast episodes yet. Check back soon!</p>
+    )}
+  </main>
+
+  <style>
+    .podcast-listing { max-width: 900px; margin: 0 auto; padding: 120px 20px 60px; }
+    .podcast-header { text-align: center; margin-bottom: 3rem; }
+    .podcast-header h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 3rem; color: #c9a84c; margin-bottom: 0.5rem; }
+    .podcast-header p { color: #aaa; font-size: 1.1rem; }
+    .podcast-grid { display: grid; gap: 2rem; }
+    .podcast-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(201,168,76,0.15); border-radius: 12px; overflow: hidden; transition: border-color 0.3s, transform 0.3s; }
+    .podcast-card:hover { border-color: rgba(201,168,76,0.4); transform: translateY(-2px); }
+    .podcast-card a { text-decoration: none; color: inherit; display: grid; grid-template-columns: 200px 1fr; }
+    .podcast-thumb { aspect-ratio: 16/9; overflow: hidden; background: rgba(201,168,76,0.05); display: flex; align-items: center; justify-content: center; }
+    .podcast-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .thumb-placeholder { color: #c9a84c; width: 48px; height: 48px; }
+    .podcast-info { padding: 1.5rem; }
+    .podcast-info time { font-size: 0.8rem; color: #c9a84c; text-transform: uppercase; letter-spacing: 1px; }
+    .podcast-info h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.3rem; color: #f0e6d2; margin: 0.3rem 0; }
+    .podcast-info p { color: #aaa; font-size: 0.9rem; line-height: 1.5; }
+    .no-episodes { text-align: center; color: #aaa; font-size: 1.1rem; }
+    @media (max-width: 600px) { .podcast-card a { grid-template-columns: 1fr; } }
+  </style>
+</BaseLayout>

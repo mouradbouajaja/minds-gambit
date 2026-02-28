@@ -11,6 +11,7 @@ const { title = "Mourad Bouajaja — The Mind's Gambit", description = "Chess, M
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content={description}>
+    <meta name="author" content="Mourad Bouajaja">
     <title>{title}</title>
     <!-- PWA -->
     <link rel="manifest" href="/manifest.json">
@@ -20,7 +21,7 @@ const { title = "Mourad Bouajaja — The Mind's Gambit", description = "Chess, M
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content={title}>
     <meta property="og:description" content={description}>
-    <meta property="og:image" content="/images/og-share.jpg">
+    <meta property="og:image" content="https://mindsgambit.com/images/og-share.jpg">
     <meta property="og:url" content="https://mindsgambit.com">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="The Mind's Gambit">
@@ -29,10 +30,34 @@ const { title = "Mourad Bouajaja — The Mind's Gambit", description = "Chess, M
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content={title}>
     <meta name="twitter:description" content={description}>
-    <meta name="twitter:image" content="/images/og-share.jpg">
+    <meta name="twitter:image" content="https://mindsgambit.com/images/og-share.jpg">
 
     <!-- Canonical URL -->
     <link rel="canonical" href="https://mindsgambit.com">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Book",
+      "name": "The Mind's Gambit",
+      "alternateName": "Chess, Madness, and the Battle for the Mind",
+      "author": {
+        "@type": "Person",
+        "name": "Mourad Bouajaja"
+      },
+      "description": "Chess, Madness, and the Battle for the Mind",
+      "url": "https://mindsgambit.com",
+      "image": "https://mindsgambit.com/images/og-share.jpg",
+      "genre": ["Psychology", "Chess", "Philosophy"],
+      "inLanguage": "en",
+      "publisher": {
+        "@type": "Organization",
+        "name": "The Mind's Gambit",
+        "url": "https://mindsgambit.com"
+      }
+    }
+    </script>
 
     <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -44,11 +69,11 @@ const { title = "Mourad Bouajaja — The Mind's Gambit", description = "Chess, M
   <body>
     <slot />
     <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js');
-      });
-    }
-  </script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js');
+        });
+      }
+    </script>
   </body>
 </html>

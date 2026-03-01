@@ -1,13 +1,3 @@
-/* Remove content gate - make site publicly accessible */
-#content-gate,
-.content-gate,
-.gate-overlay {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-}
-
 /* Publish Chapter 1 - expand article content and hide toggle */
 .article-body.collapsible {
       max-height: none !important;

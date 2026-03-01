@@ -39,7 +39,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <h2>Create a free account or log in</h2>
     <p>Gain access to articles, podcast episodes, and exclusive content.</p>
     <button id="gate-signup-btn" class="gate-btn gate-btn-primary" onclick="openClerkSignUp()">Create a Free Account</button>
-    <button id="gate-signin-btn" class="gate-btn gate-btn-secondary" onclick="openClerkSignIn()">Log In</button><p class="gate-terms">By continuing, you agree to our <a href="/terms">Terms</a> and <a href="/privacy">Privacy Policy</a></p>
+    <button id="gate-signin-btn" class="gate-btn gate-btn-secondary" onclick="openClerkSignIn()">Log In</button><p class="gate-terms">By continuing, you agree to our <a href="#" onclick="document.getElementById('termsModal').classList.add('active');return false;">Terms</a> and <a href="#" onclick="document.getElementById('privacyModal').classList.add('active');return false;">Privacy Policy</a></p>
   </div>
 </div>
 

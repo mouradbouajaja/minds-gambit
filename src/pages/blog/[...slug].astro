@@ -71,6 +71,17 @@ const { Content } = await render(post);
         </footer>
       </div>
     </article>
+
+  <!-- Discussion Section -->
+  <section class="discussion-section" id="discussion">
+    <div class="discussion-inner">
+      <h2 class="discussion-heading">Join the Discussion</h2>
+      <p class="discussion-intro">What resonated with you? What did I get wrong? Every chapter is a draft&mdash;your feedback shapes the final book.</p>
+      <div class="comment-form-wrapper">
+        <p style="color:#a0a0a0;text-align:center;padding:2rem 0;">Comments coming soon!</p>
+      </div>
+    </div>
+  </section>
   </main>
 
   <script>
@@ -166,5 +177,11 @@ const { Content } = await render(post);
     .article-content :global(a) { color: #c9a84c; }
     .article-content :global(code) { background: rgba(255,255,255,0.05); padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
     .article-footer { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(201,168,76,0.2); }
-  </style>
+  
+    .discussion-section { max-width:800px; margin:0 auto; padding:0 2rem 5rem; }
+    .discussion-inner { padding-top:2rem; }
+    .discussion-heading { font-family:"Playfair Display",Georgia,serif; font-size:1.6rem; color:#c9a84c; margin-bottom:0.75rem; }
+    .discussion-intro { color:#a0a0a0; font-size:0.95rem; line-height:1.7; margin-bottom:2rem; }
+    .comment-form-wrapper { background:rgba(30,33,48,0.7); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:1.5rem; }
+</style>
 </BaseLayout>

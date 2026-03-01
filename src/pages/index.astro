@@ -856,7 +856,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         signInBtn.onclick = function() { window.Clerk.signOut(); };
       }
     } else {
-      window.__gateNeeded = true;
+      var _sf=function(){if(window.scrollY>80){var ov=document.getElementById("nyt-override");if(ov)ov.remove();var ov=document.getElementById("nyt-override");if(ov)ov.remove();if(gate){gate.style.display="flex";}document.body.classList.add("content-locked");document.body.style.overflow="hidden";window.removeEventListener("scroll",_sf);}};if(window.scrollY>80){_sf();}else{window.addEventListener("scroll",_sf);}
       // body lock handled by scroll trigger
       if (signInBtn) {
         signInBtn.textContent = 'Sign In';

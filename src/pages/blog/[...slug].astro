@@ -97,166 +97,691 @@ const formattedDate = new Date(entry.data.date).toLocaleDateString('en-US', { ye
   </section>
 
   <script is:inline>
+    // ============================================
+    // COMMENT SYSTEM - Supabase + Clerk
+    // ============================================
     (function() {
       var SUPABASE_URL = '';
       var SUPABASE_ANON_KEY = '';
       var supabaseReady = false;
+      var clerkReady = false;
       var db = null;
       var currentUser = null;
       var articleSlug = window.location.pathname.replace('/blog/', '').replace(/\/$/, '');
 
+      // ---- Clerk Auth Integration ----
       function waitForClerk() {
-        if (window.Clerk && window.Clerk.user !== undefined) { onClerkReady(); return; }
-        document.addEventListener('clerk:loaded', onClerkReady);
-        var a = 0, p = setInterval(function() { a++; if (window.Clerk && window.Clerk.user !== undefined) { clearInterval(p); onClerkReady(); } if (a > 50) clearInterval(p); }, 200);
+        if (window.Clerk && window.Clerk.user !== undefined) {
+          clerkReady = true;
+          currentUser = window.Clerk.user;
+          updateAuthUI();
+          setupContentLock();
+          return;
+        }
+        // Also listen for Clerk loaded event
+        document.addEventListener('clerk:loaded', function() {
+          clerkReady = true;
+          currentUser = window.Clerk.user;
+          updateAuthUI();
+          setupContentLock();
+        });
+        // Poll as fallback
+        var attempts = 0;
+        var poll = setInterval(function() {
+          attempts++;
+          if (window.Clerk && window.Clerk.user !== undefined) {
+            clearInterval(poll);
+            clerkReady = true;
+            currentUser = window.Clerk.user;
+            updateAuthUI();
+            setupContentLock();
+          }
+          if (attempts > 50) clearInterval(poll);
+        }, 200);
       }
 
-      function onClerkReady() {
-        currentUser = window.Clerk.user;
-        updateAuthUI();
+      function setupContentLock() {
         var lock = document.getElementById('content-lock');
         var content = document.getElementById('locked-content');
-        if (currentUser) { if (lock) lock.style.display = 'none'; if (content) { content.style.filter = 'none'; content.style.pointerEvents = 'auto'; content.style.userSelect = 'auto'; } }
-        else { if (lock) lock.style.display = ''; if (content) { content.style.filter = 'blur(5px)'; content.style.pointerEvents = 'none'; content.style.userSelect = 'none'; } }
+        if (currentUser) {
+          if (lock) lock.style.display = 'none';
+          if (content) {
+            content.style.filter = 'none';
+            content.style.pointerEvents = 'auto';
+            content.style.userSelect = 'auto';
+          }
+        } else {
+          if (lock) lock.style.display = '';
+          if (content) {
+            content.style.filter = 'blur(5px)';
+            content.style.pointerEvents = 'none';
+            content.style.userSelect = 'none';
+          }
+        }
       }
 
       function updateAuthUI() {
-        var lp = document.getElementById('login-prompt');
-        var cf = document.getElementById('comment-form');
-        var av = document.getElementById('user-avatar');
-        var nm = document.getElementById('user-name');
-        if (currentUser) { if (lp) lp.style.display = 'none'; if (cf) cf.style.display = 'block'; if (av) av.src = currentUser.imageUrl || ''; if (nm) nm.textContent = currentUser.fullName || currentUser.firstName || 'User'; }
-        else { if (lp) lp.style.display = ''; if (cf) cf.style.display = 'none'; }
+        var loginPrompt = document.getElementById('login-prompt');
+        var commentForm = document.getElementById('comment-form');
+        var avatarEl = document.getElementById('user-avatar');
+        var nameEl = document.getElementById('user-name');
+
+        if (currentUser) {
+          if (loginPrompt) loginPrompt.style.display = 'none';
+          if (commentForm) commentForm.style.display = 'block';
+          if (avatarEl) avatarEl.src = currentUser.imageUrl || '';
+          if (nameEl) nameEl.textContent = currentUser.fullName || currentUser.firstName || 'User';
+        } else {
+          if (loginPrompt) loginPrompt.style.display = '';
+          if (commentForm) commentForm.style.display = 'none';
+        }
       }
 
+      // ---- Supabase Integration ----
       function initSupabase() {
-        if (!SUPABASE_URL || !SUPABASE_ANON_KEY) { document.getElementById('comments-loading').textContent = 'Comments coming soon!'; return; }
-        var s = document.createElement('script'); s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
-        s.onload = function() { db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); supabaseReady = true; loadComments(); };
-        document.head.appendChild(s);
+        if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+          document.getElementById('comments-loading').textContent = 'Comments coming soon!';
+          return;
+        }
+        var script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
+        script.onload = function() {
+          db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+          supabaseReady = true;
+          loadComments();
+        };
+        document.head.appendChild(script);
       }
 
       function loadComments() {
         if (!supabaseReady) return;
-        db.from('comments').select('*').eq('article_slug', articleSlug).order('created_at', { ascending: true }).then(function(r) {
-          if (r.error) { document.getElementById('comments-loading').textContent = 'Could not load comments.'; return; }
-          renderComments(r.data || []);
-        });
+        db.from('comments')
+          .select('*')
+          .eq('article_slug', articleSlug)
+          .order('created_at', { ascending: true })
+          .then(function(result) {
+            if (result.error) {
+              document.getElementById('comments-loading').textContent = 'Could not load comments.';
+              return;
+            }
+            renderComments(result.data || []);
+          });
       }
 
       function renderComments(comments) {
-        var c = document.getElementById('comments-list'); var nc = document.getElementById('no-comments'); var ld = document.getElementById('comments-loading');
-        if (ld) ld.style.display = 'none';
-        if (comments.length === 0) { c.innerHTML = ''; if (nc) nc.style.display = 'block'; return; }
-        if (nc) nc.style.display = 'none';
-        var top = [], reps = {};
-        comments.forEach(function(x) { if (!x.parent_id) top.push(x); else { if (!reps[x.parent_id]) reps[x.parent_id] = []; reps[x.parent_id].push(x); } });
-        c.innerHTML = '';
-        top.forEach(function(x) { c.appendChild(buildComment(x, reps, 0)); });
+        var container = document.getElementById('comments-list');
+        var noComments = document.getElementById('no-comments');
+        var loading = document.getElementById('comments-loading');
+        if (loading) loading.style.display = 'none';
+
+        if (comments.length === 0) {
+          container.innerHTML = '';
+          if (noComments) noComments.style.display = 'block';
+          return;
+        }
+        if (noComments) noComments.style.display = 'none';
+
+        // Build threaded structure
+        var topLevel = [];
+        var replies = {};
+        comments.forEach(function(c) {
+          if (!c.parent_id) {
+            topLevel.push(c);
+          } else {
+            if (!replies[c.parent_id]) replies[c.parent_id] = [];
+            replies[c.parent_id].push(c);
+          }
+        });
+
+        container.innerHTML = '';
+        topLevel.forEach(function(c) {
+          container.appendChild(buildCommentEl(c, replies, 0));
+        });
       }
 
-      function buildComment(cm, reps, depth) {
-        var d = document.createElement('div'); d.className = 'comment' + (depth > 0 ? ' comment-reply' : '');
-        var ta = timeAgo(new Date(cm.created_at));
-        d.innerHTML = '<div class="comment-header"><img class="comment-avatar" src="' + (cm.user_avatar || '') + '" alt="" /><div class="comment-meta"><span class="comment-author">' + esc(cm.user_name) + '</span><span class="comment-time">' + ta + '</span></div></div><div class="comment-body">' + esc(cm.content) + '</div><div class="comment-actions">' + (currentUser ? '<button class="reply-btn" data-id="' + cm.id + '" data-name="' + esc(cm.user_name) + '">Reply</button>' : '') + '</div>';
-        if (reps[cm.id]) { var rd = document.createElement('div'); rd.className = 'comment-replies'; reps[cm.id].forEach(function(r) { rd.appendChild(buildComment(r, reps, depth + 1)); }); d.appendChild(rd); }
-        return d;
+      function buildCommentEl(comment, replies, depth) {
+        var div = document.createElement('div');
+        div.className = 'comment' + (depth > 0 ? ' comment-reply' : '');
+        div.setAttribute('data-id', comment.id);
+
+        var timeAgo = getTimeAgo(new Date(comment.created_at));
+
+        div.innerHTML =
+          '<div class="comment-header">' +
+            '<img class="comment-avatar" src="' + (comment.user_avatar || '') + '" alt="" />' +
+            '<div class="comment-meta">' +
+              '<span class="comment-author">' + escapeHtml(comment.user_name) + '</span>' +
+              '<span class="comment-time">' + timeAgo + '</span>' +
+            '</div>' +
+          '</div>' +
+          '<div class="comment-body">' + escapeHtml(comment.content) + '</div>' +
+          '<div class="comment-actions">' +
+            (currentUser ? '<button class="reply-btn" data-id="' + comment.id + '" data-name="' + escapeHtml(comment.user_name) + '">Reply</button>' : '') +
+          '</div>';
+
+        // Add nested replies
+        if (replies[comment.id]) {
+          var repliesDiv = document.createElement('div');
+          repliesDiv.className = 'comment-replies';
+          replies[comment.id].forEach(function(r) {
+            repliesDiv.appendChild(buildCommentEl(r, replies, depth + 1));
+          });
+          div.appendChild(repliesDiv);
+        }
+
+        return div;
       }
 
-      function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
-      function timeAgo(dt) { var s = Math.floor((new Date() - dt) / 1000); if (s < 60) return 'just now'; var m = Math.floor(s/60); if (m < 60) return m + 'm ago'; var h = Math.floor(m/60); if (h < 24) return h + 'h ago'; var dy = Math.floor(h/24); if (dy < 30) return dy + 'd ago'; var mo = Math.floor(dy/30); if (mo < 12) return mo + 'mo ago'; return Math.floor(mo/12) + 'y ago'; }
+      function escapeHtml(str) {
+        var d = document.createElement('div');
+        d.textContent = str;
+        return d.innerHTML;
+      }
 
-      function setupEvents() {
-        var su = document.getElementById('signup-btn'); if (su) su.onclick = function() { if (window.Clerk) window.Clerk.openSignUp(); };
-        var si = document.getElementById('signin-btn'); if (si) si.onclick = function() { if (window.Clerk) window.Clerk.openSignIn(); };
-        var ds = document.getElementById('discussion-signin'); if (ds) ds.onclick = function() { if (window.Clerk) window.Clerk.openSignIn(); };
-        var sb = document.getElementById('submit-comment'); if (sb) sb.onclick = submitComment;
-        var cb = document.getElementById('cancel-reply'); if (cb) cb.onclick = function() { document.getElementById('reply-to').value = ''; cb.style.display = 'none'; document.getElementById('comment-input').placeholder = 'Share your thoughts...'; };
-        document.addEventListener('click', function(e) { if (e.target.classList.contains('reply-btn')) { document.getElementById('reply-to').value = e.target.getAttribute('data-id'); document.getElementById('comment-input').placeholder = 'Replying to ' + e.target.getAttribute('data-name') + '...'; document.getElementById('comment-input').focus(); document.getElementById('cancel-reply').style.display = 'inline-block'; } });
+      function getTimeAgo(date) {
+        var seconds = Math.floor((new Date() - date) / 1000);
+        if (seconds < 60) return 'just now';
+        var minutes = Math.floor(seconds / 60);
+        if (minutes < 60) return minutes + 'm ago';
+        var hours = Math.floor(minutes / 60);
+        if (hours < 24) return hours + 'h ago';
+        var days = Math.floor(hours / 24);
+        if (days < 30) return days + 'd ago';
+        var months = Math.floor(days / 30);
+        if (months < 12) return months + 'mo ago';
+        return Math.floor(months / 12) + 'y ago';
+      }
+
+      // ---- Event Handlers ----
+      function setupEventListeners() {
+        // Sign in buttons
+        var signupBtn = document.getElementById('signup-btn');
+        var signinBtn = document.getElementById('signin-btn');
+        var discussionSignin = document.getElementById('discussion-signin');
+
+        if (signupBtn) signupBtn.addEventListener('click', function() {
+          if (window.Clerk) window.Clerk.openSignUp();
+        });
+        if (signinBtn) signinBtn.addEventListener('click', function() {
+          if (window.Clerk) window.Clerk.openSignIn();
+        });
+        if (discussionSignin) discussionSignin.addEventListener('click', function() {
+          if (window.Clerk) window.Clerk.openSignIn();
+        });
+
+        // Submit comment
+        var submitBtn = document.getElementById('submit-comment');
+        if (submitBtn) submitBtn.addEventListener('click', submitComment);
+
+        // Cancel reply
+        var cancelBtn = document.getElementById('cancel-reply');
+        if (cancelBtn) cancelBtn.addEventListener('click', function() {
+          document.getElementById('reply-to').value = '';
+          cancelBtn.style.display = 'none';
+          document.getElementById('comment-input').placeholder = 'Share your thoughts...';
+        });
+
+        // Reply buttons (delegated)
+        document.addEventListener('click', function(e) {
+          if (e.target.classList.contains('reply-btn')) {
+            var parentId = e.target.getAttribute('data-id');
+            var parentName = e.target.getAttribute('data-name');
+            document.getElementById('reply-to').value = parentId;
+            document.getElementById('comment-input').placeholder = 'Replying to ' + parentName + '...';
+            document.getElementById('comment-input').focus();
+            document.getElementById('cancel-reply').style.display = 'inline-block';
+          }
+        });
       }
 
       function submitComment() {
         if (!supabaseReady || !currentUser) return;
-        var inp = document.getElementById('comment-input'); var txt = inp.value.trim(); if (!txt) return;
-        var pid = document.getElementById('reply-to').value || null;
-        var btn = document.getElementById('submit-comment'); btn.disabled = true; btn.textContent = 'Posting...';
-        db.from('comments').insert({ article_slug: articleSlug, user_id: currentUser.id, user_name: currentUser.fullName || currentUser.firstName || 'User', user_avatar: currentUser.imageUrl || '', parent_id: pid, content: txt }).then(function(r) {
-          btn.disabled = false; btn.textContent = 'Post Comment';
-          if (r.error) { alert('Could not post comment.'); return; }
-          inp.value = ''; document.getElementById('reply-to').value = ''; document.getElementById('cancel-reply').style.display = 'none'; inp.placeholder = 'Share your thoughts...';
+        var input = document.getElementById('comment-input');
+        var content = input.value.trim();
+        if (!content) return;
+
+        var parentId = document.getElementById('reply-to').value || null;
+
+        var submitBtn = document.getElementById('submit-comment');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Posting...';
+
+        db.from('comments').insert({
+          article_slug: articleSlug,
+          user_id: currentUser.id,
+          user_name: currentUser.fullName || currentUser.firstName || 'User',
+          user_avatar: currentUser.imageUrl || '',
+          parent_id: parentId,
+          content: content
+        }).then(function(result) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Post Comment';
+          if (result.error) {
+            alert('Could not post comment. Please try again.');
+            return;
+          }
+          input.value = '';
+          document.getElementById('reply-to').value = '';
+          document.getElementById('cancel-reply').style.display = 'none';
+          input.placeholder = 'Share your thoughts...';
           loadComments();
         });
       }
 
-      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function() { waitForClerk(); initSupabase(); setupEvents(); });
-      else { waitForClerk(); initSupabase(); setupEvents(); }
+      // ---- Initialize ----
+      function init() {
+        waitForClerk();
+        initSupabase();
+        setupEventListeners();
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
     })();
   </script>
 
   <style>
-    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 17, 28, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(201, 168, 76, 0.1); }
-    .nav-inner { max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
-    .nav-logo { font-family: 'Playfair Display', Georgia, serif; font-size: 1.5rem; font-weight: 700; color: #c9a84c; text-decoration: none; }
-    .nav-links { list-style: none; display: flex; gap: 2rem; align-items: center; margin: 0; padding: 0; }
-    .nav-links a { color: #f0ece4; text-decoration: none; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; transition: color 0.3s; }
-    .nav-links a:hover { color: #c9a84c; }
-    .nav-btn { border: 1px solid #c9a84c; padding: 0.5rem 1.25rem; border-radius: 4px; }
-    article { max-width: 800px; margin: 0 auto; padding: 6rem 2rem 2rem; }
-    .article-header { margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid rgba(201, 168, 76, 0.15); }
-    .back-link { color: #c9a84c; text-decoration: none; font-size: 0.85rem; display: inline-block; margin-bottom: 1.5rem; transition: opacity 0.3s; }
-    .back-link:hover { opacity: 0.8; }
-    .date { display: block; color: #c9a84c; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; }
-    article h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 2.5rem; color: #f0ece4; margin-bottom: 1rem; line-height: 1.2; }
-    .subtitle { font-size: 1.1rem; color: #a0a0a0; line-height: 1.6; margin-bottom: 1.5rem; }
-    .article-meta { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
-    .author { color: #f0ece4; font-size: 0.9rem; }
-    .tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-    .tag { font-size: 0.75rem; color: #c9a84c; border: 1px solid rgba(201, 168, 76, 0.3); padding: 0.25rem 0.75rem; border-radius: 20px; }
-    .content-lock-overlay { background: rgba(30, 33, 48, 0.95); border: 1px solid rgba(201, 168, 76, 0.15); border-radius: 12px; padding: 3rem; text-align: center; margin: 2rem 0; }
-    .lock-icon { font-size: 2.5rem; margin-bottom: 1rem; }
-    .lock-title { font-family: 'Playfair Display', Georgia, serif; font-size: 1.5rem; color: #f0ece4; margin-bottom: 0.75rem; }
-    .lock-subtitle { color: #a0a0a0; margin-bottom: 1.5rem; }
-    .lock-buttons { display: flex; gap: 1rem; justify-content: center; }
-    .btn-primary { background: #c9a84c; color: #0f111c; border: none; padding: 0.75rem 2rem; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.9rem; transition: background 0.3s; }
-    .btn-primary:hover { background: #d4b85c; }
-    .btn-secondary { background: transparent; color: #c9a84c; border: 1px solid #c9a84c; padding: 0.75rem 2rem; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.9rem; transition: background 0.3s; }
-    .btn-secondary:hover { background: rgba(201, 168, 76, 0.1); }
-    .btn-sm { padding: 0.5rem 1.25rem; font-size: 0.8rem; }
-    .locked-content { filter: blur(5px); pointer-events: none; user-select: none; }
-    .article-content { color: #d0ccc4; line-height: 1.8; font-size: 1.05rem; }
-    .article-content h2 { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1.6rem; margin-top: 2.5rem; margin-bottom: 1rem; }
-    .article-content h3 { font-family: 'Playfair Display', Georgia, serif; color: #f0ece4; font-size: 1.3rem; margin-top: 2rem; margin-bottom: 0.75rem; }
-    .article-content p { margin-bottom: 1.25rem; }
-    .article-content blockquote { border-left: 3px solid #c9a84c; padding-left: 1.5rem; margin: 1.5rem 0; color: #a0a0a0; font-style: italic; }
-    .article-footer { padding-top: 2rem; margin-top: 3rem; border-top: 1px solid rgba(201, 168, 76, 0.15); }
-    .discussion-section { max-width: 800px; margin: 0 auto; padding: 0 2rem 5rem; }
-    .discussion-inner { padding-top: 2rem; }
-    .discussion-heading { font-family: 'Playfair Display', Georgia, serif; font-size: 1.6rem; color: #c9a84c; margin-bottom: 0.75rem; }
-    .discussion-intro { color: #a0a0a0; font-size: 0.95rem; line-height: 1.7; margin-bottom: 2rem; }
-    .comment-form-wrapper { background: rgba(30, 33, 48, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; }
-    .login-prompt { text-align: center; padding: 1rem 0; }
-    .login-prompt p { color: #a0a0a0; margin-bottom: 1rem; }
-    .comment-form-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
-    .comment-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; background: rgba(201, 168, 76, 0.2); }
-    .comment-username { color: #f0ece4; font-weight: 600; font-size: 0.9rem; }
-    .comment-textarea { width: 100%; background: rgba(15, 17, 28, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #f0ece4; padding: 0.75rem 1rem; font-size: 0.9rem; font-family: inherit; resize: vertical; min-height: 80px; transition: border-color 0.3s; box-sizing: border-box; }
-    .comment-textarea:focus { outline: none; border-color: rgba(201, 168, 76, 0.4); }
-    .comment-textarea::placeholder { color: #666; }
-    .comment-form-actions { display: flex; gap: 0.75rem; margin-top: 0.75rem; justify-content: flex-end; }
-    .comments-list { display: flex; flex-direction: column; gap: 0; }
-    .comments-loading, .no-comments { color: #666; text-align: center; padding: 2rem 0; font-size: 0.9rem; }
-    .comment { padding: 1.25rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
-    .comment:last-child { border-bottom: none; }
-    .comment-reply { margin-left: 2.5rem; padding-left: 1rem; border-left: 2px solid rgba(201, 168, 76, 0.15); }
-    .comment-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
-    .comment-meta { display: flex; align-items: baseline; gap: 0.75rem; }
-    .comment-author { color: #f0ece4; font-weight: 600; font-size: 0.85rem; }
-    .comment-time { color: #555; font-size: 0.75rem; }
-    .comment-body { color: #c0bbb3; font-size: 0.9rem; line-height: 1.6; padding-left: 2.85rem; white-space: pre-wrap; }
-    .comment-actions { padding-left: 2.85rem; margin-top: 0.4rem; }
-    .reply-btn { background: none; border: none; color: #c9a84c; font-size: 0.75rem; cursor: pointer; padding: 0; opacity: 0.7; transition: opacity 0.3s; }
-    .reply-btn:hover { opacity: 1; }
-    .comment-replies { margin-top: 0; }
-    @media (max-width: 768px) { article { padding: 5rem 1rem 2rem; } article h1 { font-size: 1.8rem; } .discussion-section { padding: 0 1rem 3rem; } .comment-reply { margin-left: 1rem; } }
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(15, 17, 28, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(201, 168, 76, 0.1);
+    }
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #c9a84c;
+      text-decoration: none;
+    }
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      margin: 0;
+      padding: 0;
+    }
+    .nav-links a {
+      color: #f0ece4;
+      text-decoration: none;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover {
+      color: #c9a84c;
+    }
+    .nav-btn {
+      border: 1px solid #c9a84c;
+      padding: 0.5rem 1.25rem;
+      border-radius: 4px;
+    }
+
+    /* Article */
+    article {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 6rem 2rem 2rem;
+    }
+    .article-header {
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid rgba(201, 168, 76, 0.15);
+    }
+    .back-link {
+      color: #c9a84c;
+      text-decoration: none;
+      font-size: 0.85rem;
+      display: inline-block;
+      margin-bottom: 1.5rem;
+      transition: opacity 0.3s;
+    }
+    .back-link:hover {
+      opacity: 0.8;
+    }
+    .date {
+      display: block;
+      color: #c9a84c;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+    }
+    article h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 2.5rem;
+      color: #f0ece4;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+    .subtitle {
+      font-size: 1.1rem;
+      color: #a0a0a0;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .author {
+      color: #f0ece4;
+      font-size: 0.9rem;
+    }
+    .tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .tag {
+      font-size: 0.75rem;
+      color: #c9a84c;
+      border: 1px solid rgba(201, 168, 76, 0.3);
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+    }
+
+    /* Content Lock */
+    .content-lock-overlay {
+      background: rgba(30, 33, 48, 0.95);
+      border: 1px solid rgba(201, 168, 76, 0.15);
+      border-radius: 12px;
+      padding: 3rem;
+      text-align: center;
+      margin: 2rem 0;
+    }
+    .lock-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .lock-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.5rem;
+      color: #f0ece4;
+      margin-bottom: 0.75rem;
+    }
+    .lock-subtitle {
+      color: #a0a0a0;
+      margin-bottom: 1.5rem;
+    }
+    .lock-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+    .btn-primary {
+      background: #c9a84c;
+      color: #0f111c;
+      border: none;
+      padding: 0.75rem 2rem;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.3s;
+    }
+    .btn-primary:hover {
+      background: #d4b85c;
+    }
+    .btn-secondary {
+      background: transparent;
+      color: #c9a84c;
+      border: 1px solid #c9a84c;
+      padding: 0.75rem 2rem;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.3s;
+    }
+    .btn-secondary:hover {
+      background: rgba(201, 168, 76, 0.1);
+    }
+    .btn-sm {
+      padding: 0.5rem 1.25rem;
+      font-size: 0.8rem;
+    }
+
+    /* Locked Content */
+    .locked-content {
+      filter: blur(5px);
+      pointer-events: none;
+      user-select: none;
+    }
+    .article-content {
+      color: #d0ccc4;
+      line-height: 1.8;
+      font-size: 1.05rem;
+    }
+    .article-content h2 {
+      font-family: 'Playfair Display', Georgia, serif;
+      color: #c9a84c;
+      font-size: 1.6rem;
+      margin-top: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .article-content h3 {
+      font-family: 'Playfair Display', Georgia, serif;
+      color: #f0ece4;
+      font-size: 1.3rem;
+      margin-top: 2rem;
+      margin-bottom: 0.75rem;
+    }
+    .article-content p {
+      margin-bottom: 1.25rem;
+    }
+    .article-content blockquote {
+      border-left: 3px solid #c9a84c;
+      padding-left: 1.5rem;
+      margin: 1.5rem 0;
+      color: #a0a0a0;
+      font-style: italic;
+    }
+
+    /* Article Footer */
+    .article-footer {
+      padding-top: 2rem;
+      margin-top: 3rem;
+      border-top: 1px solid rgba(201, 168, 76, 0.15);
+    }
+
+    /* ================================ */
+    /* DISCUSSION / COMMENTS SECTION    */
+    /* ================================ */
+    .discussion-section {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 2rem 5rem;
+    }
+    .discussion-inner {
+      padding-top: 2rem;
+    }
+    .discussion-heading {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.6rem;
+      color: #c9a84c;
+      margin-bottom: 0.75rem;
+    }
+    .discussion-intro {
+      color: #a0a0a0;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+
+    /* Comment Form */
+    .comment-form-wrapper {
+      background: rgba(30, 33, 48, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .login-prompt {
+      text-align: center;
+      padding: 1rem 0;
+    }
+    .login-prompt p {
+      color: #a0a0a0;
+      margin-bottom: 1rem;
+    }
+    .comment-form-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .comment-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: rgba(201, 168, 76, 0.2);
+    }
+    .comment-username {
+      color: #f0ece4;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .comment-textarea {
+      width: 100%;
+      background: rgba(15, 17, 28, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: #f0ece4;
+      padding: 0.75rem 1rem;
+      font-size: 0.9rem;
+      font-family: inherit;
+      resize: vertical;
+      min-height: 80px;
+      transition: border-color 0.3s;
+      box-sizing: border-box;
+    }
+    .comment-textarea:focus {
+      outline: none;
+      border-color: rgba(201, 168, 76, 0.4);
+    }
+    .comment-textarea::placeholder {
+      color: #666;
+    }
+    .comment-form-actions {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+      justify-content: flex-end;
+    }
+
+    /* Comments List */
+    .comments-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .comments-loading, .no-comments {
+      color: #666;
+      text-align: center;
+      padding: 2rem 0;
+      font-size: 0.9rem;
+    }
+
+    /* Individual Comment */
+    .comment {
+      padding: 1.25rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .comment:last-child {
+      border-bottom: none;
+    }
+    .comment-reply {
+      margin-left: 2.5rem;
+      padding-left: 1rem;
+      border-left: 2px solid rgba(201, 168, 76, 0.15);
+    }
+    .comment-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+    .comment-meta {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+    }
+    .comment-author {
+      color: #f0ece4;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+    .comment-time {
+      color: #555;
+      font-size: 0.75rem;
+    }
+    .comment-body {
+      color: #c0bbb3;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      padding-left: 2.85rem;
+      white-space: pre-wrap;
+    }
+    .comment-actions {
+      padding-left: 2.85rem;
+      margin-top: 0.4rem;
+    }
+    .reply-btn {
+      background: none;
+      border: none;
+      color: #c9a84c;
+      font-size: 0.75rem;
+      cursor: pointer;
+      padding: 0;
+      opacity: 0.7;
+      transition: opacity 0.3s;
+    }
+    .reply-btn:hover {
+      opacity: 1;
+    }
+    .comment-replies {
+      margin-top: 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      article {
+        padding: 5rem 1rem 2rem;
+      }
+      article h1 {
+        font-size: 1.8rem;
+      }
+      .discussion-section {
+        padding: 0 1rem 3rem;
+      }
+      .comment-reply {
+        margin-left: 1rem;
+      }
+      .comment-body, .comment-actions {
+        padding-left: 2.85rem;
+      }
+    }
   </style>
 </BaseLayout>

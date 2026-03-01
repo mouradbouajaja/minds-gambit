@@ -856,8 +856,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         signInBtn.onclick = function() { window.Clerk.signOut(); };
       }
     } else {
-      if (gate) gate.style.display = 'flex';
-      document.body.classList.add('content-locked');
+      window.__gateNeeded = true;
+      // body lock handled by scroll trigger
       if (signInBtn) {
         signInBtn.textContent = 'Sign In';
         signInBtn.onclick = window.openClerkSignIn;

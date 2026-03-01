@@ -20,7 +20,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <li><a href="#home">Home</a></li>
       <li><a href="#about">About</a></li>
       <li><a href="#book">The Book</a></li>
-      <li><a href="#blog">Blog</a></li>
+      <li><a href="/blog">Blog</a></li>
       <li><a href="#podcast">Podcast</a></li>
       <li><a href="#portfolio">Portfolio</a></li>
       <li><a href="#services">Services</a></li>
@@ -50,7 +50,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <h1>Mourad <span>Bouajaja</span></h1>
       <span class="book-tag">Author &middot; Child Protection &middot; Mental Health</span>
       <p class="subtitle">Where other writers approach chess through the lens of competition, I read the board the way a social worker reads a case file: attentive to the structures that shape outcomes, and to the human cost of systems that were never designed with the most vulnerable in mind.</p>
-      <a href="#blog" class="hero-cta">Read the Articles &darr;</a>
+      <a href="/blog" class="hero-cta">Read the Articles &darr;</a>
     </div>
     <div class="hero-visual">
               <div class="hero-graphic" style="height:450px;">
@@ -121,7 +121,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
 
     <div class="chapters-grid">
-      <a href="#blog" class="chapter-card chapter-published" onclick="document.querySelector('.article-toggle')?.click()">
+      <a href="/blog" class="chapter-card chapter-published" onclick="document.querySelector('.article-toggle')?.click()">
         <div class="chapter-num">1</div>
         <div class="chapter-info">
           <h4>The Number</h4>
@@ -206,119 +206,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </section>
 
 <!-- BLOG -->
-<section id="blog" data-reveal>
-  <div class="section-inner">
-    <div class="section-label">Blog</div>
-    <h2 class="section-title">Chapters in Progress</h2>
-    <p class="blog-intro">Each article below is a draft chapter from <em>The Mind's Gambit</em>, published here to invite conversation before the book goes to print. Read them, challenge them, and help me make the arguments stronger. Your feedback shapes the final work.</p>
-    <div class="section-divider"></div>
-    <div class="blog-featured">
-      <span class="tag">Introduction &middot; Personal Essay</span>
-      <h3>The Constant Board: From MÃ©grine to Manhattan</h3>
-      <p>A personal journey through the coffee houses of Tunisia and across the Atlantic&mdash;how a vinyl board, a humbling defeat, and a father's quiet faith in his son shaped a lifelong relationship with chess.</p>
-      <div class="blog-meta">
-        <span>February 2026</span>
-        <span>12 min read</span>
-        <span>Personal Essay</span>
-      </div>
-      <div class="article-body">
-        <img src="/images/A_cinematic_realistic_scene_in_a_mgrine_____tunisi_delpmaspu.png" alt="A cinematic scene inside a traditional Tunisian coffeehouse in Megrine, with chess and lively conversation" loading="lazy" style="width:100%; border-radius:8px; margin-bottom:1.5rem;">
-        <p>My journey began in the vibrant pulse of Tunisia, where I was raised amidst the evolving landscape of the capital. In 1978, as the world's eyes were fixed on the World Cup, my family relocated to M&eacute;grine, a southern suburb that would become the backdrop of my early social education. In M&eacute;grine, life centered around the local coffee house&mdash;a quintessential sociological microcosm. At &ldquo;Uncle Mohamed's,&rdquo; the air was thick with tobacco smoke and the clatter of dominoes; it was a sanctuary where the employed, the academic, and the jobless sat as equals. While elders engaged in heated political discourse, I found myself drawn to the quiet intensity of the chess tables. My father had taught me the fundamental moves during the long, expectant afternoons of Ramadan, but our matches ended the day I finally overcame him, and he gracefully retired from our private board.</p>
-        <p>The true test of my resolve, however, occurred at the hands of &ldquo;Uncle Arbi,&rdquo; a man of aristocratic bearing whose presence in the coffee house commanded silent respect. When I boldly asked to play him, he dismantled my game five times in a row, his victories punctuated by the stifled giggles of his peers. I left that day feeling the sting of public ridicule, shamed by his dismissal: &ldquo;Come back in six months, young man.&rdquo; It was my father who recognized my despair and bridged the gap between my humiliation and my potential. Through his connection to Slim Bouaziz&mdash;the only Tunisian International Master at the time, famed for drawing against the legendary Korchnoi&mdash;I was granted an audience at the Tunisian Chess Federation. Gifted with a vinyl board and a library of theory, I spent the following year immersed in the mechanics of openings and the logic of endgames. When I finally returned to the coffee house, the &ldquo;systems&rdquo; I had studied allowed me to dismantle the very circle that had once laughed at my efforts.</p>
-        <p>Chess, for me, has always been personal. When I immigrated to the United States in the spring of 1991, I stopped playing almost entirely. Just like that, the board folded shut. I moved to Chicago, then to Illinois State University, where I earned my degree in Sociology. Chess wasn&rsquo;t part of the plan anymore.</p>
-        <p>That changed in 2007, when I moved to New York City to pursue a Master&rsquo;s in International Affairs at The New School. I was living in Stuyvesant Town, and one afternoon I wandered into the inner park and saw the stone chess tables. Something pulled me back. Just like that, the board opened again.</p>
-        <p>The park had its own hierarchy. Regulars claimed certain tables. You had to earn your place. But for someone who had arrived in a new city with no friends, no family, and no community, the tables offered something that nothing else in New York had: a place to sit across from another person and belong, even briefly. Chess became my only way to break through the loneliness of being a stranger in a city that doesn&rsquo;t wait for you to catch up.</p>
-        <p>It was at one of those tables that I met William Lombardy&mdash;Bill, as everyone called him. He was already a legend: the youngest player to win the World Junior Championship with a perfect score, Bobby Fischer&rsquo;s second during the 1972 World Championship in Reykjav&iacute;k. But in the park, he was just Bill&mdash;a heavyset man in a worn jacket who played fast, talked freely, and didn&rsquo;t care if you knew his rÃ©sumÃ©.</p>
-        <p>Over coffee at a nearby diner, Bill told me stories about Bobby Fischer that I had never heard&mdash;stories about a boy who was already showing signs of the isolation that would later consume him, and about a chess world that looked the other way because the boy could play. Those conversations planted the seed for everything I would later write about chess and the mind.</p>
-        <p>Across all these places and people, the chessboard has remained the one constant&mdash;a portable republic with its own laws, immune to borders, language, or circumstance. From my father&rsquo;s Ramadan lessons to Uncle Arbi&rsquo;s coffee-house gauntlet, from the stone tables of Stuyvesant Town to late-night conversations with Bill Lombardy, the board has been more than a game. It has been a way to enter rooms I had no right to enter, to break through isolation, and to find, in the company of strangers, a conversation and connection that transcends borders and circumstance.</p>
+<section id="blog">
+    <div class="section-inner">
+      <div class="section-label">Blog</div>
+      <h2 class="section-title">Chapters in Progress</h2>
+      <p class="blog-intro">Each article below is a draft chapter from <em>The Mind’s Gambit</em>, published here to invite conversation before the book goes to print. Read them, challenge them, and help me make the arguments stronger.</p>
+      <div class="section-divider"></div>
+      <div style="text-align:center; padding: 2rem 0;">
+        <a href="/blog" style="display:inline-block; padding: 1rem 2.5rem; background: transparent; border: 1px solid #c9a84c; color: #c9a84c; text-decoration: none; font-size: 1rem; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 4px; transition: all 0.3s; font-family: 'Playfair Display', Georgia, serif;">Visit the Blog &rarr;</a>
       </div>
     </div>
-
-    <div class="blog-featured">
-      <span class="tag">Latest &middot; Chapter 1 &middot; Academic Essay</span>
-      <h3>The Number: Elo Ratings, Identity and the Sociology of Competitive Chess</h3>
-      <p>In competitive chess, your identity is a number. Your Elo rating follows you everywhere&mdash;it signals, to anyone who cares to look, exactly where you stand. This article examines how a statistical tool designed for neutral measurement became one of the most powerful psychological forces in the game, and what that tells us about the systems we build to measure human worth.</p>
-      <div class="blog-meta">
-        <span>February 2026</span>
-        <span>18 min read</span>
-        <span>Chapter 1 of 10</span>
-      </div>
-      <button class="article-toggle" onclick="toggleArticle(this)">Read Full Article <span class="arrow">&darr;</span></button>
-      <div class="article-body collapsible">
-        <img src="/images/For%20Website%20The%20Number.png" alt="A cinematic representation of The Number â Elo ratings, identity, and the sociology of competitive chess" style="width:100%; border-radius:8px; margin-bottom:1.5rem;">
-        <p style="font-style: italic; color: var(--accent); text-align: center; margin-bottom: 2rem;">&ldquo;Chess is the School of Life. A Man Learns Much There of Himself and of Others.&rdquo; &mdash; Vasily Smyslov</p>
-
-        <h4 style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--accent-light); margin: 2rem 0 1rem;">The Quantitative Mirror</h4>
-        <p>When I think of competitive chess today&mdash;whether I&rsquo;m in a tournament hall or sitting alone in the dimly lit blue glow of my living room&mdash;I see a quantification-based institution. That same 1500-year-old game I played with men in Megrine has evolved into a rigid, quantifiable &ldquo;technology of the self&rdquo; that transforms us all as we interact with it.</p>
-        <p>This chapter represents a critical examination of the Elo rating system&mdash;which is more than just a mathematical equation&mdash;as a &ldquo;classification system&rdquo; that changes the social reality of anyone who interacts with it. Utilizing the method of autoethnography, I will demonstrate that the four-digit number next to your name is more than a measurement. It is a technology of identity.</p>
-
-        <h4 style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--accent-light); margin: 2rem 0 1rem;">The Cultural Shift: Megrine vs. Manhattan</h4>
-        <p>My understanding of this &ldquo;technology&rdquo; emerged from a huge cultural shift. In the late 1970&rsquo;s, my socialization occurred at &ldquo;Uncle Mohamed&rsquo;s&rdquo; coffee shop in Megrine, Tunisia. In &ldquo;Uncle Mohamed&rsquo;s&rdquo;, respect was not a measurable, tangible quality; it was a visceral, experiential quality. Respect was earned through your physical presence, the weight of your words, and your age. When the elder men debated politics while placing dominoes, their social status reflected their history within the community. You were a person first, and a player second.</p>
-        <p>In contrast, when I arrived in New York City, I assumed a similar social contract existed. I went to the community of Stuyvesant Town in Manhattan, and after some time, I found my way to the stone tables along First Avenue. Before I could even say hello or sit down, I was greeted with a question that felt like a border crossing:</p>
-        <p style="font-style: italic; text-align: center; color: var(--text-primary); font-size: 1.05rem; margin: 1.5rem 0;">&ldquo;What is your rating?&rdquo;</p>
-        <p>At the time, I was not affiliated with the United States Chess Federation, therefore I did not have a rating. Therefore, to the Manhattan players, not having a rating indicated that I was an unknown quantity. I was invisible to their social hierarchy. While I sat at the tables, I noticed the air was thick with no political debates, but with &ldquo;weird comparisons of Elo,&rdquo; that seemed ridiculous to my sociological ears. The players were sharing their ratings like they were deeds to property and were competing in a tallying of worth that was both unfamiliar to me and frightening. Without a rating, I felt exposed. The Number didn&rsquo;t indicate how skilled of a player I was; it indicated the cost of entry to the community.</p>
-
-        <h4 style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--accent-light); margin: 2rem 0 1rem;">The Wall and the Verdict: Pittsburgh</h4>
-        <p>Whereas Manhattan illustrated to me the social significance of the rating, my initial visit to the Pittsburgh Chess Club demonstrated to me the institutional significance of the rating. I specifically recall paying a $35 registration fee&mdash;literally the price of admission to the quantified social hierarchy.</p>
-        <p>Approximately thirty minutes later, the Tournament Director came to the wall and published the pairing sheet. The &ldquo;wall&rdquo; is the ultimate sociological site in chess. This is the location where the institution delivers its final decision. I walked up to the wall, and I saw my name: I was to play black versus a player rated 2200&mdash;a master.</p>
-        <p>My response was immediate and physiological. I felt a wave of fear and anxiety unlike anything I had experienced in Megrine. In the coffeehouse, I was simply playing another man; in the chess club, I was playing &ldquo;2200&rdquo;. The Number predated the individual and startled me. By the time I sat at the board, I had already lost. I was so debilitated by anxiety generated by my rating that I &ldquo;gave up&rdquo;&mdash;I dropped out quickly, not due to a lack of ability, but due to all the available cognitive resources I had to utilize to contend with the anxiety generated by my rating.</p>
-        <p>I did not complete the tournament. I drove back home in a deep sense of disappointment&mdash;a classic manifestation of &ldquo;learned helplessness&rdquo; (Seligman &amp; Maier, 1967). I told myself, &ldquo;I will never play chess again.&rdquo; The institutional verdict, rendered via the wall, determined that effort would be futile against the Number.</p>
-
-        <h4 style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--accent-light); margin: 2rem 0 1rem;">The Digital Obsession: The Domestic Trap</h4>
-        <p>However, the Number does not relinquish its hold easily. The &ldquo;never again&rdquo; of that ride home from Pittsburgh ultimately transformed into a new type of fixation&mdash;one shaped by the digital age.</p>
-        <p>For numerous nights, I engage in a similar pattern of behavior. At 2:00 AM, in total darkness, I sit at a computer screen staring at it. My wife is asleep upstairs, and her presence serves as a quiet reminder of the &ldquo;social isolation&rdquo; I established for myself. I informed her hours prior that I would &ldquo;play just one or two games.&rdquo; At that point, I was truthful; however, as the night continued, remorse for that deception began to develop.</p>
-        <p>Remorse did not lead to sleep; it led to panic. In the heavy silence of the house, I felt pressured to win the subsequent game to validate the hours I stole from my life and from her. If I won, I could convince myself that the hours spent playing were valuable. If I lost, I would find myself trapped in a vicious cycle of &ldquo;learned helplessness,&rdquo; believing that I had to rapidly improve since losing was no longer an option.</p>
-        <p>The desire to rectify the Number caused me to obsessively consume: YouTube spirals, a large collection of unread books, expensive software like Chess Base, and a high-end digital board. I also hired a Ukrainian Woman Grandmaster to virtually analyze my failures with me every Saturday morning. I improved, but at the expense of the intellectual essence of the game I once cherished in Megrine.</p>
-        <p>I look at the &ldquo;theory library&rdquo; Slim Bouaziz once gave me&mdash;the books intended to serve as tools for liberation and mastery of the game&mdash;and I feel the Number has sucked the soul right out of them. They are no longer vessels of strategic wisdom or beauty; they are simply optimization manuals for a four-digit number. I greatly miss those days in Megrine when a game was a conversation, and respect that was a shared human experience long before everything became quantitatively defined into a cold, unforgiving metric.</p>
-
-        <h4 style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--accent-light); margin: 2rem 0 1rem;">The Sociologist&rsquo;s Double Identity</h4>
-        <p>As an independent scholar, I frequently occupy dual identity during these experiences. I am the player experiencing the &ldquo;tilt&rdquo;&mdash;the cognitive dysregulation resulting from a losing streak&mdash;and I am the observer studying the experience.</p>
-        <p>During a particularly grueling late-night downward spiral, I suddenly ceased playing. I was losing terribly, my rating was dropping precipitously, and I was panicking. During that moment, a sociological &ldquo;aha!&rdquo; flashed through my mind: I was then a living embodiment of the Matthew Effect. I was witnessing the erosion of my carefully constructed competitive capital in real-time, and the institution was making it increasingly difficult for me to recover.</p>
-        <p>At other times, I observe Goffman&rsquo;s &ldquo;performance of the self&rdquo; in operation. I realize that I am not merely playing chess; I am frantically attempting to maintain the illusion of intellectual competence that the Number is actively destroying. This awareness does not alleviate the discomfort of losing; however, it aids in identifying the source of the distress: the distress is not in the game; it is in the classification.</p>
-
-        <h4 style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--accent-light); margin: 2rem 0 1rem;">The Performance of the Self: The Million Excuses</h4>
-        <p>This tenuous identity exists in every chess community. As Goffman (1959) noted, we perform for an audience. I remember a specific instance at the Manhattan tables in which a highly rated player lost to a young boy. Immediately following the loss, the man began to provide a multitude of &ldquo;absurd&rdquo; excuses&mdash;the sun, his tiredness, his lack of focus. He was not defending his performance; he was protecting his &ldquo;face.&rdquo; The other players ridiculed the obviousness of his desperation. His rating had ensured him a status that the board had recently revoked, and he was left with nothing but his explanations.</p>
-
-        <h4 style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--accent-light); margin: 2rem 0 1rem;">Title to Fetishism: A Brief History of the Bell Curve</h4>
-        <p>Before the 1960&rsquo;s, chess status was based upon titles&mdash;Master, Candidate Master, Expert. In 1961, Arpad Elo attempted to eliminate the subjectivity of chess status through the use of the &ldquo;normal distribution&rdquo;&mdash;the bell curve (Elo 1978).</p>
-        <p>Arpad Elo warned against &ldquo;rating fetishism&rdquo;&mdash;the false assumption that a rating could quantify a player&rsquo;s inherent worth. The chess community ignored him. The simplicity of the rating system was too appealing. It provided a definitive answer to the question: How good am I?</p>
-
-        <h4 style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--accent-light); margin: 2rem 0 1rem;">Metrics of Self: A Theoretical Framework</h4>
-        <p>To understand how a number becomes a person, we study how metrics affect the world they measure. Wendy Nelson Espeland and Michael Sauder (2007) demonstrate that when we rank institutions, they cease to concern themselves with their purpose and instead become concerned with the ranking. This is what has occurred with the chess player.</p>
-        <p>The Elo rating system incorporates value statements: that strength can be quantified and that higher ratings translate to greater social standing. These create &ldquo;cultural capital&rdquo; (Bourdieu, 1984). The rating has developed into a credential, one that is often considered more significant than the intellectual richness of the game itself.</p>
-
-        <h4 style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--accent-light); margin: 2rem 0 1rem;">Conclusion: Reclaiming a More Human Chess</h4>
-        <p>The Elo rating system is not &ldquo;bad&rdquo; mathematics; it has developed into a bad social institution. To reclaim the intellectual beauty of chess, we must consider how we view these numbers.</p>
-        <p>As a scholar, I firmly believe that chess organizations have a moral obligation to protect the mental health of their members. We must establish communities&mdash;as I remember from Megrine&mdash;that emphasize community and presence over the constant, oppressive display of the hierarchy.</p>
-        <p>Chess should be an activity that demonstrates strategic beauty and resilience. It is our responsibility to ensure &ldquo;The Number&rdquo; does not damage the minds it was designed to evaluate.</p>
-
-        <p style="margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-size: 0.85rem; color: var(--text-muted);"><strong style="color: var(--text-secondary);">References:</strong> Bourdieu (1984), <em>Distinction</em> &middot; Elo (1978), <em>The Rating of Chessplayers</em> &middot; Espeland &amp; Sauder (2007), <em>Rankings and Reactivity</em> &middot; Goffman (1959), <em>The Presentation of Self in Everyday Life</em> &middot; Seligman &amp; Maier (1967), <em>Failure to Escape Traumatic Shock</em> &middot; Simon &amp; Chase (1973), <em>Skill in Chess</em></p>
-      </div>
-    </div>
-    <div class="blog-grid">
-      <div class="blog-card">
-        <div class="chapter-ref">Chapter 2</div>
-        <div class="date">Coming March 2026</div>
-        <h4>The Myth of the Mad Genius</h4>
-        <p>Why the story chess tells about itself&mdash;that the game drives people mad&mdash;is a cultural construction that flatters players while excusing institutions.</p>
-      </div>
-      <div class="blog-card">
-        <div class="chapter-ref">Chapter 3</div>
-        <div class="date">Coming April 2026</div>
-        <h4>Two Endgames: From Fischer to Naroditsky</h4>
-        <p>Separated by half a century, undone by the same institutional indifference. Two endgames with no one left to play for them.</p>
-      </div>
-      <div class="blog-card">
-        <div class="chapter-ref">Chapter 5</div>
-        <div class="date">Coming June 2026</div>
-        <h4>One More Game</h4>
-        <p>The architecture of online blitz and bullet chess is, from a behavioral psychology standpoint, nearly perfectly designed to produce addictive behavior.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PODCAST -->
+  </section>
 <section id="podcast" data-reveal>
   <div class="section-inner">
     <h2 class="section-title">Podcast</h2>
@@ -326,7 +224,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <div class="podcast-hero">
       <div class="podcast-info">
         <h3>The Mind's Gambit Podcast</h3>
-        <p>Deep dives into each chapter's themes with expert guests â psychologists, chess grandmasters, child welfare advocates, and survivors. New episodes with each chapter release.</p>
+        <p>Deep dives into each chapter's themes with expert guests Ã¢ÂÂ psychologists, chess grandmasters, child welfare advocates, and survivors. New episodes with each chapter release.</p>
         <div class="podcast-badges">
           <span class="badge">Apple Podcasts</span>
           <span class="badge">Spotify</span>
@@ -364,7 +262,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <div class="episode-card">
             <span class="episode-number">EP 01</span>
             <h4>The Number</h4>
-            <p>How the Elo rating became the most powerful psychological force in chess â and what it does to the children who carry it.</p>
+            <p>How the Elo rating became the most powerful psychological force in chess Ã¢ÂÂ and what it does to the children who carry it.</p>
             <span class="episode-status">Coming Soon</span>
           </div>
 
@@ -393,7 +291,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <div class="portfolio-card featured">
         <div class="portfolio-badge">Upcoming Book</div>
         <h3>The Mind's Gambit</h3>
-        <p>Chess, Madness, and the Battle for the Mind â a book in ten chapters exploring the intersection of competitive chess, child welfare, and mental health. Expected 2026.</p>
+        <p>Chess, Madness, and the Battle for the Mind Ã¢ÂÂ a book in ten chapters exploring the intersection of competitive chess, child welfare, and mental health. Expected 2026.</p>
       </div>
       <div class="portfolio-card">
         <div class="portfolio-badge">Blog Series</div>
@@ -430,13 +328,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <div class="resource-card">
         <div class="resource-icon">&#127908;</div>
         <h3>Podcast Discussion Guides</h3>
-        <p>Companion discussion guides for each podcast episode â perfect for book clubs and study groups.</p>
+        <p>Companion discussion guides for each podcast episode Ã¢ÂÂ perfect for book clubs and study groups.</p>
         <span class="resource-tag">Coming Soon</span>
       </div>
       <div class="resource-card">
         <div class="resource-icon">&#128196;</div>
         <h3>Chapter 1 Preview</h3>
-        <p>Read the complete first chapter of The Mind's Gambit â "The Number: Elo Ratings, Identity, and the Sociology of Competitive Chess."</p>
+        <p>Read the complete first chapter of The Mind's Gambit Ã¢ÂÂ "The Number: Elo Ratings, Identity, and the Sociology of Competitive Chess."</p>
         <span class="resource-tag">Free Preview</span>
       </div>
     </div>
@@ -457,14 +355,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </div>
       </div>
       <div class="testimonial-card">
-        <p class="testimonial-text">"Mourad brings a social worker's eye to the chess world â and what he sees is both fascinating and deeply troubling. This book needed to be written."</p>
+        <p class="testimonial-text">"Mourad brings a social worker's eye to the chess world Ã¢ÂÂ and what he sees is both fascinating and deeply troubling. This book needed to be written."</p>
         <div class="testimonial-author">
           <strong>Early Reader</strong>
           <span>Chess Community Member</span>
         </div>
       </div>
       <div class="testimonial-card">
-        <p class="testimonial-text">"Part investigative journalism, part memoir, part manifesto for change. The Mind's Gambit doesn't just describe the problem â it demands a solution."</p>
+        <p class="testimonial-text">"Part investigative journalism, part memoir, part manifesto for change. The Mind's Gambit doesn't just describe the problem Ã¢ÂÂ it demands a solution."</p>
         <div class="testimonial-author">
           <strong>Early Reader</strong>
           <span>Academic Researcher</span>
@@ -628,7 +526,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <p>By accessing and using this website (minds-gambit.vercel.app), you agree to be bound by these Terms of Service. If you do not agree, please do not use this site.</p>
         
         <h3>2. Intellectual Property</h3>
-        <p>All content on this website â including text, articles, book excerpts, podcast episodes, images, and design elements â is the intellectual property of Mourad Bouajaja unless otherwise stated. You may not reproduce, distribute, or republish any content without prior written permission.</p>
+        <p>All content on this website Ã¢ÂÂ including text, articles, book excerpts, podcast episodes, images, and design elements Ã¢ÂÂ is the intellectual property of Mourad Bouajaja unless otherwise stated. You may not reproduce, distribute, or republish any content without prior written permission.</p>
         
         <h3>3. Use of Content</h3>
         <p>You are welcome to share links to articles and episodes. Brief quotations for review, commentary, or academic purposes are permitted with proper attribution. Unauthorized commercial use of any content is strictly prohibited.</p>
@@ -640,7 +538,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <p>This site may contain links to third-party platforms (YouTube, Substack, social media). We are not responsible for the content, privacy practices, or terms of these external sites.</p>
         
         <h3>6. Disclaimer</h3>
-        <p>Content on this site is provided for informational and educational purposes. The views expressed in articles and podcast episodes represent the authorâs perspective and do not constitute professional advice. The Mindâs Gambit explores sensitive topics including mental health and child welfare â if you or someone you know needs support, please contact a qualified professional.</p>
+        <p>Content on this site is provided for informational and educational purposes. The views expressed in articles and podcast episodes represent the authorÃ¢ÂÂs perspective and do not constitute professional advice. The MindÃ¢ÂÂs Gambit explores sensitive topics including mental health and child welfare Ã¢ÂÂ if you or someone you know needs support, please contact a qualified professional.</p>
         
         <h3>7. Modifications</h3>
         <p>We reserve the right to update these terms at any time. Continued use of the site after changes constitutes acceptance of the revised terms.</p>
@@ -659,18 +557,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         
         <h3>1. Information We Collect</h3>
         <p>We may collect limited information when you interact with this site:</p>
-        <p>â¢ <strong>Contact Form:</strong> Name, email address, and message content when you voluntarily submit the contact form.</p>
-        <p>â¢ <strong>Analytics:</strong> Anonymous usage data such as pages visited, time on site, and general geographic region through standard web analytics.</p>
-        <p>â¢ <strong>Cookies:</strong> Essential cookies for site functionality. No advertising or tracking cookies are used.</p>
+        <p>Ã¢ÂÂ¢ <strong>Contact Form:</strong> Name, email address, and message content when you voluntarily submit the contact form.</p>
+        <p>Ã¢ÂÂ¢ <strong>Analytics:</strong> Anonymous usage data such as pages visited, time on site, and general geographic region through standard web analytics.</p>
+        <p>Ã¢ÂÂ¢ <strong>Cookies:</strong> Essential cookies for site functionality. No advertising or tracking cookies are used.</p>
         
         <h3>2. How We Use Your Information</h3>
-        <p>Any information collected is used solely to respond to your inquiries, improve the website experience, and communicate updates about The Mindâs Gambit (only if you opt in). We will never sell, rent, or share your personal information with third parties.</p>
+        <p>Any information collected is used solely to respond to your inquiries, improve the website experience, and communicate updates about The MindÃ¢ÂÂs Gambit (only if you opt in). We will never sell, rent, or share your personal information with third parties.</p>
         
         <h3>3. Third-Party Services</h3>
         <p>This site integrates with third-party services that have their own privacy policies:</p>
-        <p>â¢ <strong>YouTube</strong> (embedded video player) â Google Privacy Policy applies</p>
-        <p>â¢ <strong>Substack</strong> (newsletter and articles) â Substack Privacy Policy applies</p>
-        <p>â¢ <strong>Vercel</strong> (hosting) â Vercel Privacy Policy applies</p>
+        <p>Ã¢ÂÂ¢ <strong>YouTube</strong> (embedded video player) Ã¢ÂÂ Google Privacy Policy applies</p>
+        <p>Ã¢ÂÂ¢ <strong>Substack</strong> (newsletter and articles) Ã¢ÂÂ Substack Privacy Policy applies</p>
+        <p>Ã¢ÂÂ¢ <strong>Vercel</strong> (hosting) Ã¢ÂÂ Vercel Privacy Policy applies</p>
         
         <h3>4. Data Security</h3>
         <p>We take reasonable measures to protect any personal data collected. However, no method of electronic transmission or storage is 100% secure.</p>
@@ -678,7 +576,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <h3>5. Your Rights</h3>
         <p>You have the right to request access to, correction of, or deletion of any personal data we hold about you. To exercise these rights, contact us at the email below.</p>
         
-        <h3>6. Childrenâs Privacy</h3>
+        <h3>6. ChildrenÃ¢ÂÂs Privacy</h3>
         <p>This site does not knowingly collect personal information from children under 13. If you believe we have inadvertently collected such data, please contact us immediately.</p>
         
         <h3>7. Changes to This Policy</h3>

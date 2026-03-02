@@ -72,7 +72,16 @@ const formattedDate = new Date(entry.data.date).toLocaleDateString('en-US', { ye
 
 <section class="discussion-section" id="discussion">
   <div class="discussion-inner">
-    <h2 class="discussion-heading">Join the Discussion</h2>
+    <details class="code-of-conduct">
+        <summary>Community Code of Conduct</summary>
+        <div class="coc-content">
+          <p>By participating in discussions on Mind's Gambit, you agree to engage respectfully and constructively with fellow readers. Offensive language, harassment, bullying, name-calling, slurs, profanity, and any other inappropriate or harmful language are strictly prohibited.</p>
+          <p>All comments must remain relevant to the topic of the thread. Off-topic posts, spam, and personal attacks will not be tolerated. We expect every member of this community to treat others with dignity and courtesy, fostering a space where thoughtful conversation can thrive.</p>
+          <p>Any violation of this code of conduct will result in the immediate deletion of the offending post, the permanent removal of the registered account, and the loss of access to the blog and the Mind's Gambit website.</p>
+          <p><em>By posting a comment, you acknowledge that you have read, understood, and agreed to abide by these guidelines.</em></p>
+        </div>
+      </details>
+      <h2 class="discussion-heading">Join the Discussion</h2>
     <p class="discussion-intro">What resonated with you? What did I get wrong? Every chapter is a draft&mdash;your feedback shapes the final book.</p>
     <div id="authContainer"></div>
     <div id="commentsList" class="comments-list"></div>
@@ -483,6 +492,67 @@ article{max-width:800px;margin:0 auto;padding:2rem 1.5rem}
 .error-state p{color:#fca5a5;margin-bottom:1rem}
 .btn-retry{background:#dc2626;color:#fff;border:none;padding:.75rem 1.5rem;border-radius:6px;cursor:pointer;font-family:inherit;font-weight:600}
 @media(max-width:640px){.replies-container{padding-left:1rem}.reaction-buttons{gap:.5rem}.reaction-btn{padding:.4rem .8rem;font-size:.85rem}}
-</style>
+
+  .code-of-conduct {
+    margin-bottom: 2rem;
+    border: 1px solid rgba(201, 168, 76, 0.3);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .code-of-conduct summary {
+    padding: 14px 20px;
+    background: rgba(201, 168, 76, 0.08);
+    color: #c9a84c;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .code-of-conduct summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .code-of-conduct summary::before {
+    content: '\25B6';
+    font-size: 0.7rem;
+    transition: transform 0.2s ease;
+  }
+
+  .code-of-conduct[open] summary::before {
+    transform: rotate(90deg);
+  }
+
+  .code-of-conduct summary:hover {
+    background: rgba(201, 168, 76, 0.15);
+  }
+
+  .coc-content {
+    padding: 20px 24px;
+    background: rgba(15, 17, 28, 0.5);
+  }
+
+  .coc-content p {
+    color: #b0b0b0;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    margin: 0 0 12px 0;
+  }
+
+  .coc-content p:last-child {
+    margin-bottom: 0;
+  }
+
+  .coc-content em {
+    color: #999;
+  }
+
+  </style>
 
 </BaseLayout>

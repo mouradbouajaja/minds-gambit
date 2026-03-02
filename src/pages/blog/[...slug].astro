@@ -70,23 +70,6 @@ const formattedDate = new Date(entry.data.date).toLocaleDateString('en-US', { ye
 
   <!-- Discussion Section -->
 
-<!-- Profile Setup Modal -->
-<div id="profile-modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;display:none;align-items:center;justify-content:center;">
-  <div style="background:#1a1d2e;border:1px solid #c9a84c;border-radius:12px;padding:2rem;max-width:420px;width:90%;color:#e0e0e0;position:relative;">
-    <h3 style="color:#c9a84c;margin:0 0 0.5rem;font-size:1.3rem;">Set Up Your Profile</h3>
-    <p style="color:#a0a0a0;font-size:0.85rem;margin:0 0 1.5rem;">Choose a display name for the community. Your real identity stays private.</p>
-    <label style="display:block;margin-bottom:0.5rem;font-size:0.9rem;color:#c9a84c;">Display Name *</label>
-    <input id="profile-display-name" type="text" maxlength="30" placeholder="e.g. ChessKnight42" style="width:100%;padding:0.6rem 0.8rem;background:#0f111c;border:1px solid #333;border-radius:8px;color:#fff;font-size:0.95rem;margin-bottom:1rem;box-sizing:border-box;" />
-    <label style="display:block;margin-bottom:0.5rem;font-size:0.9rem;color:#c9a84c;">Avatar URL (optional)</label>
-    <input id="profile-avatar-url" type="text" placeholder="https://example.com/avatar.png" style="width:100%;padding:0.6rem 0.8rem;background:#0f111c;border:1px solid #333;border-radius:8px;color:#fff;font-size:0.95rem;margin-bottom:0.5rem;box-sizing:border-box;" />
-    <p style="color:#666;font-size:0.75rem;margin:0 0 1.5rem;">Leave blank to use your account avatar</p>
-    <div style="display:flex;gap:0.8rem;">
-      <button id="profile-save-btn" style="flex:1;padding:0.6rem;background:#c9a84c;color:#0f111c;border:none;border-radius:8px;font-weight:600;font-size:0.95rem;cursor:pointer;">Save Profile</button>
-      <button id="profile-skip-btn" style="flex:1;padding:0.6rem;background:transparent;color:#a0a0a0;border:1px solid #333;border-radius:8px;font-size:0.95rem;cursor:pointer;">Use Real Name</button>
-    </div>
-  </div>
-</div>
-
 <section class="discussion-section" id="discussion">
   <div class="discussion-inner">
     <h2 class="discussion-heading">Join the Discussion</h2>
@@ -146,7 +129,25 @@ async function checkAuth() {
   
   function showProfileModal() {
     var overlay = document.getElementById('profile-modal-overlay');
-    if (overlay) { overlay.style.display = 'flex'; }
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'profile-modal-overlay';
+      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;';
+      overlay.innerHTML = '<div style="background:#1a1d2e;border:1px solid #c9a84c;border-radius:12px;padding:2rem;max-width:420px;width:90%;color:#e0e0e0;position:relative;">'
+        + '<h3 style="color:#c9a84c;margin:0 0 0.5rem;font-size:1.3rem;">Set Up Your Profile</h3>'
+        + '<p style="color:#a0a0a0;font-size:0.85rem;margin:0 0 1.5rem;">Choose a display name for the community. Your real identity stays private.</p>'
+        + '<label style="display:block;margin-bottom:0.5rem;font-size:0.9rem;color:#c9a84c;">Display Name *</label>'
+        + '<input id="profile-display-name" type="text" maxlength="30" placeholder="e.g. ChessKnight42" style="width:100%;padding:0.6rem 0.8rem;background:#0f111c;border:1px solid #333;border-radius:8px;color:#fff;font-size:0.95rem;margin-bottom:1rem;box-sizing:border-box;" />'
+        + '<label style="display:block;margin-bottom:0.5rem;font-size:0.9rem;color:#c9a84c;">Avatar URL (optional)</label>'
+        + '<input id="profile-avatar-url" type="text" placeholder="https://example.com/avatar.png" style="width:100%;padding:0.6rem 0.8rem;background:#0f111c;border:1px solid #333;border-radius:8px;color:#fff;font-size:0.95rem;margin-bottom:0.5rem;box-sizing:border-box;" />'
+        + '<p style="color:#666;font-size:0.75rem;margin:0 0 1.5rem;">Leave blank to use your account avatar</p>'
+        + '<div style="display:flex;gap:0.8rem;">'
+        + '<button id="profile-save-btn" style="flex:1;padding:0.6rem;background:#c9a84c;color:#0f111c;border:none;border-radius:8px;font-weight:600;font-size:0.95rem;cursor:pointer;">Save Profile</button>'
+        + '<button id="profile-skip-btn" style="flex:1;padding:0.6rem;background:transparent;color:#a0a0a0;border:1px solid #333;border-radius:8px;font-size:0.95rem;cursor:pointer;">Use Real Name</button>'
+        + '</div></div>';
+      document.body.appendChild(overlay);
+    }
+    overlay.style.display = 'flex';
   }
   
   function hideProfileModal() {

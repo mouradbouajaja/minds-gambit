@@ -57,19 +57,18 @@ const formattedDate = new Date(entry.data.date).toLocaleDateString('en-US', { ye
       </div>
     </div>
 
-    <footer class="article-footer">
+    <!-- Reaction Bar -->
+  <div id="reactionBarContainer" class="reaction-bar-wrapper">
+    <div class="reaction-bar">
+      <div id="reactionButtons" class="reaction-buttons"></div>
+    </div>
+  </div>
+  <footer class="article-footer">
       <a href="/blog" class="back-link">&larr; Back to all articles</a>
     </footer>
   </article>
 
-  <!-- Reaction Bar -->
-<div id="reactionBarContainer" class="reaction-bar-wrapper">
-  <div class="reaction-bar">
-    <div id="reactionButtons" class="reaction-buttons"></div>
-  </div>
-</div>
-
-<!-- Discussion Section -->
+  <!-- Discussion Section -->
 <section class="discussion-section" id="discussion">
   <div class="discussion-inner">
     <h2 class="discussion-heading">Join the Discussion</h2>

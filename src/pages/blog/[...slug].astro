@@ -216,12 +216,24 @@ document.addEventListener("DOMContentLoaded", () => {
   s.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
   s.onload = async () => {
     initSupabase();
-    let ready = false, att = 0;
-    while (!ready && att < 50) { if (window.Clerk && window.Clerk.user !== undefined) ready = true; else { await new Promise(r => setTimeout(r, 100)); att++; } }
-    await checkAuth();
-    renderAuth();
-    await loadReactions();
-    await loadComments();
+    if (window.Clerk) {
+        try { await window.Clerk.load(); } catch(e) { console.error("Clerk load error:", e); }
+      } else {
+        let att = 0;
+        while (!window.Clerk && att < 50) { await new Promise(r => setTimeout(r, 100)); att++; }
+        if (window.Clerk) { try { await window.Clerk.load(); } catch(e) { console.error(e); } }
+      }
+      await checkAuth();
+      renderAuth();
+      await loadReactions();
+      await loadComments();
+      if (window.Clerk) {
+        window.Clerk.addListener(({ user }) => {
+          if (user) { currentUser = { id: user.id, name: user.fullName || user.firstName || "User", avatar: user.imageUrl || null }; }
+          else { currentUser = null; }
+          renderAuth();
+        });
+      }
   };
   document.head.appendChild(s);
 });

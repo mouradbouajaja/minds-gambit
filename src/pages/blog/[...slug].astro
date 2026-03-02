@@ -249,14 +249,14 @@ document.addEventListener("DOMContentLoaded", () => {
         if (window.Clerk) { try { await window.Clerk.load(); } catch(e) { console.error(e); } }
       }
       await checkAuth();
-      renderAuth(); updateContentGating();
+      renderAuth(); window.updateContentGating();
       await loadReactions();
       await loadComments();
       if (window.Clerk) {
         window.Clerk.addListener(({ user }) => {
           if (user) { currentUser = { id: user.id, name: user.fullName || user.firstName || "User", avatar: user.imageUrl || null }; }
           else { currentUser = null; }
-          renderAuth(); updateContentGating();
+          renderAuth(); window.updateContentGating();
         });
       }
   };
@@ -265,7 +265,7 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 <style is:global>
 
-function updateContentGating() {
+window.updateContentGating = function() {
   const lock = document.getElementById('content-lock');
   const content = document.getElementById('locked-content');
   if (!lock || !content) return;

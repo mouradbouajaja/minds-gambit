@@ -103,6 +103,46 @@ async function checkAuth() {
     if (u) { currentUser = { id: u.id, name: u.fullName || u.firstName || "User", avatar: u.imageUrl || null }; return currentUser; }
   }
 
+
+ catch(e) { console.error(e); }
+  return null;
+}
+function renderAuth() {
+  const c = document.getElementById("authContainer");
+  if (!currentUser) {
+    c.innerHTML = '<div class="sign-in-prompt"><p>Sign in to join the conversation</p><button class="btn-sign-in" id="signInBtn">Sign In</button></div>';
+    document.getElementById("signInBtn").addEventListener("click", () => window.Clerk.openSignIn());
+  } else {
+    c.innerHTML = '<form class="comment-form" id="commentForm"><div id="replyIndicator" class="reply-indicator" style="display:none;"><span class="reply-indicator-text" id="replyingToText"></span><button type="button" class="btn-cancel-reply" id="cancelReplyBtn">x</button></div><div class="form-user-info"><img src="' + (currentUser.avatar || '') + '" alt="" class="user-avatar-form" /><span class="form-user-name">' + escapeHtml(currentUser.name) + '</span></div><textarea id="commentInput" class="form-textarea" placeholder="Share your thoughts..." required></textarea><div class="form-actions"><button type="submit" class="btn-submit" id="submitBtn">Post Comment</button></div></form>';
+    document.getElementById("commentForm").addEventListener("submit", handleSubmit);
+    document.getElementById("cancelReplyBtn").addEventListener("click", () => { currentReplyingToId = null; updateReplyUI(); });
+  }
+
+  // Content gating
+  var lock = document.getElementById('content-lock');
+  var contentEl = document.getElementById('locked-content');
+  if (lock && contentEl) {
+    if (currentUser) {
+      lock.classList.remove('is-visible');
+      contentEl.classList.remove('is-locked');
+    } else {
+      lock.classList.add('is-visible');
+      contentEl.classList.add('is-locked');
+    }
+  }
+  // Hide discussion and reactions for non-authenticated users
+  var reactionBar = document.getElementById('reactionBarContainer');
+  var discussionSection = document.getElementById('discussion');
+  if (currentUser) {
+    if (reactionBar) reactionBar.style.display = '';
+    if (discussionSection) discussionSection.style.display = '';
+  } else {
+    if (reactionBar) reactionBar.style.display = 'none';
+    if (discussionSection) discussionSection.style.display = 'none';
+  }
+
+}
+
   // --- User Profile Management ---
   var userProfile = null;
   
@@ -196,44 +236,6 @@ async function checkAuth() {
     return currentUser ? currentUser.avatar : '';
   }
 
- catch(e) { console.error(e); }
-  return null;
-}
-function renderAuth() {
-  const c = document.getElementById("authContainer");
-  if (!currentUser) {
-    c.innerHTML = '<div class="sign-in-prompt"><p>Sign in to join the conversation</p><button class="btn-sign-in" id="signInBtn">Sign In</button></div>';
-    document.getElementById("signInBtn").addEventListener("click", () => window.Clerk.openSignIn());
-  } else {
-    c.innerHTML = '<form class="comment-form" id="commentForm"><div id="replyIndicator" class="reply-indicator" style="display:none;"><span class="reply-indicator-text" id="replyingToText"></span><button type="button" class="btn-cancel-reply" id="cancelReplyBtn">x</button></div><div class="form-user-info"><img src="' + (currentUser.avatar || '') + '" alt="" class="user-avatar-form" /><span class="form-user-name">' + escapeHtml(currentUser.name) + '</span></div><textarea id="commentInput" class="form-textarea" placeholder="Share your thoughts..." required></textarea><div class="form-actions"><button type="submit" class="btn-submit" id="submitBtn">Post Comment</button></div></form>';
-    document.getElementById("commentForm").addEventListener("submit", handleSubmit);
-    document.getElementById("cancelReplyBtn").addEventListener("click", () => { currentReplyingToId = null; updateReplyUI(); });
-  }
-
-  // Content gating
-  var lock = document.getElementById('content-lock');
-  var contentEl = document.getElementById('locked-content');
-  if (lock && contentEl) {
-    if (currentUser) {
-      lock.classList.remove('is-visible');
-      contentEl.classList.remove('is-locked');
-    } else {
-      lock.classList.add('is-visible');
-      contentEl.classList.add('is-locked');
-    }
-  }
-  // Hide discussion and reactions for non-authenticated users
-  var reactionBar = document.getElementById('reactionBarContainer');
-  var discussionSection = document.getElementById('discussion');
-  if (currentUser) {
-    if (reactionBar) reactionBar.style.display = '';
-    if (discussionSection) discussionSection.style.display = '';
-  } else {
-    if (reactionBar) reactionBar.style.display = 'none';
-    if (discussionSection) discussionSection.style.display = 'none';
-  }
-
-}
 function updateReplyUI() {
   const ind = document.getElementById("replyIndicator");
   if (!ind) return;

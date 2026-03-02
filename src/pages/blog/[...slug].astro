@@ -73,7 +73,7 @@ const formattedDate = new Date(entry.data.date).toLocaleDateString('en-US', { ye
 <section class="discussion-section" id="discussion">
   <div class="discussion-inner">
     <h2 class="discussion-heading">Join the Discussion</h2>
-    <p class="discussion-intro">What resonated with you? What did I get wrong? Every chapter is a draft—your feedback shapes the final book.</p>
+    <p class="discussion-intro">What resonated with you? What did I get wrong? Every chapter is a draftâyour feedback shapes the final book.</p>
     <div id="authContainer"></div>
     <div id="commentsList" class="comments-list"></div>
     <div id="loadingState" class="loading-state" style="display:none;"><div class="spinner"></div><p>Loading comments...</p></div>
@@ -226,7 +226,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.head.appendChild(s);
 });
 </script>
-<style>
+<style is:global>
 .reaction-bar-wrapper{margin:2rem auto;padding:1.5rem 0;border-top:1px solid rgba(201,168,76,.2);border-bottom:1px solid rgba(201,168,76,.2);max-width:800px}
 .reaction-buttons{display:flex;gap:.75rem;flex-wrap:wrap}
 .reaction-btn{display:flex;align-items:center;gap:.5rem;padding:.5rem 1rem;background:rgba(30,34,52,.5);border:1px solid rgba(201,168,76,.2);border-radius:20px;color:#e0e0e0;font-size:.9rem;cursor:pointer;transition:all .2s;font-family:inherit}

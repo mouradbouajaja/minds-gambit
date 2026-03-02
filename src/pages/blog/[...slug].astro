@@ -136,6 +136,10 @@ async function handleSubmit(e) {
     document.getElementById("commentInput").value = "";
     currentReplyingToId = null; updateReplyUI();
     await loadComments();
+// Wire lock overlay buttons
+document.getElementById('signup-btn')?.addEventListener('click', () => window.Clerk?.openSignUp());
+document.getElementById('signin-btn')?.addEventListener('click', () => window.Clerk?.openSignIn());
+
   } catch(e) { console.error(e); alert("Failed to post. Try again."); }
   finally { btn.disabled = false; btn.textContent = "Post Comment"; }
 }
@@ -245,14 +249,14 @@ document.addEventListener("DOMContentLoaded", () => {
         if (window.Clerk) { try { await window.Clerk.load(); } catch(e) { console.error(e); } }
       }
       await checkAuth();
-      renderAuth();
+      renderAuth(); updateContentGating();
       await loadReactions();
       await loadComments();
       if (window.Clerk) {
         window.Clerk.addListener(({ user }) => {
           if (user) { currentUser = { id: user.id, name: user.fullName || user.firstName || "User", avatar: user.imageUrl || null }; }
           else { currentUser = null; }
-          renderAuth();
+          renderAuth(); updateContentGating();
         });
       }
   };
@@ -260,6 +264,20 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 <style is:global>
+
+function updateContentGating() {
+  const lock = document.getElementById('content-lock');
+  const content = document.getElementById('locked-content');
+  if (!lock || !content) return;
+  if (currentUser) {
+    lock.classList.remove('is-visible');
+    content.classList.remove('is-locked');
+  } else {
+    lock.classList.add('is-visible');
+    content.classList.add('is-locked');
+  }
+}
+
 
 /* Navigation */
 nav{background:rgba(15,17,28,.95);border-bottom:1px solid rgba(201,168,76,.2);position:sticky;top:0;z-index:100;backdrop-filter:blur(10px)}
@@ -280,8 +298,13 @@ article{max-width:800px;margin:0 auto;padding:2rem 1.5rem}
 .author{color:rgba(232,224,208,.6);font-size:.9rem}
 .tags{display:flex;gap:.5rem;flex-wrap:wrap}
 .tag{background:rgba(201,168,76,.15);color:#c9a84c;padding:.25rem .75rem;border-radius:4px;font-size:.75rem;text-transform:uppercase;letter-spacing:.05em}
+/* Locked state: blur + fade */
+.locked-content.is-locked{position:relative;max-height:300px;overflow:hidden;filter:blur(4px);pointer-events:none;user-select:none}
+.locked-content.is-locked::after{content:'';position:absolute;bottom:0;left:0;right:0;height:200px;background:linear-gradient(transparent,rgba(15,17,28,.97));pointer-events:none}
+.content-lock-overlay{display:none}
+.content-lock-overlay.is-visible{display:block}
 /* Content Lock */
-.content-lock-overlay{text-align:center;padding:2.5rem;margin:0 0 2rem;background:rgba(30,34,52,.6);border:1px solid rgba(201,168,76,.2);border-radius:12px}
+.content-lock-overlay.is-visible{text-align:center;padding:2.5rem;margin:0 0 2rem;background:rgba(30,34,52,.6);border:1px solid rgba(201,168,76,.2);border-radius:12px}
 .lock-icon{font-size:2rem;margin-bottom:1rem}
 .lock-title{font-family:'Playfair Display',Georgia,serif;font-size:1.75rem;color:#e8e0d0;margin:0 0 .5rem}
 .lock-subtitle{color:rgba(232,224,208,.6);margin:0 0 1.5rem;font-size:1rem}

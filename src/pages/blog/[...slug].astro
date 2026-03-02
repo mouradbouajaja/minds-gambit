@@ -95,7 +95,9 @@ function getTimeAgo(date) {
 function escapeHtml(t) { const d = document.createElement("div"); d.textContent = t; return d.innerHTML; }
 function initSupabase() {
   supabase = window.supabase.createClient("https://bhqbawzkqebiscxznexe.supabase.co","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJocWJhd3prcWViaXNjeHpuZXhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MTczMzYsImV4cCI6MjA4Nzk5MzMzNn0.JkDemmYg40X5tCOcNSxO-vU9eSh8AR8kY6IxTyIuNGM");
-}
+
+    return supabase;
+  }
 async function checkAuth() {
   if (!window.Clerk) return null;
   try {
@@ -147,17 +149,17 @@ function renderAuth() {
   var userProfile = null;
 
   async function getUserProfile(clerkUserId) {
-    initSupabase();
-    if (!supabase) return null;
-    var result = await supabase.from('user_profiles').select('*').eq('clerk_user_id', clerkUserId).maybeSingle();
+    var sb = initSupabase();
+    if (!sb) return null;
+    var result = await sb.from('user_profiles').select('*').eq('clerk_user_id', clerkUserId).maybeSingle();
     if (result.error) return null;
     return result.data;
   }
 
   async function saveUserProfile(clerkUserId, displayName, avatarUrl) {
-    initSupabase();
-    if (!supabase) return null;
-    var result = await supabase.from('user_profiles').upsert({
+    var sb = initSupabase();
+    if (!sb) return null;
+    var result = await sb.from('user_profiles').upsert({
       clerk_user_id: clerkUserId,
       display_name: displayName,
       avatar_url: avatarUrl || null,

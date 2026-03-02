@@ -373,6 +373,8 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById('signin-btn')?.addEventListener('click', () => window.Clerk?.openSignIn());
       await loadReactions();
       await checkAndPromptProfile();
+      var formNameEl = document.querySelector(".form-user-name");
+      if (formNameEl) formNameEl.textContent = getDisplayName();
       await loadComments();
       if (window.Clerk) {
         window.Clerk.addListener(({ user }) => {

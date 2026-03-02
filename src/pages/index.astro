@@ -43,7 +43,55 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     margin-top: 12px;
     font-size: 0.9rem;
   }
-</style><!-- CONTENT GATE -->
+
+    /* Chess Player CTA Button */
+    .chess-cta-section {
+      text-align: center;
+      padding: 4rem 2rem 5rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .chess-cta-inner {
+      background: rgba(30, 33, 48, 0.8);
+      border: 1px solid rgba(201, 168, 76, 0.2);
+      border-radius: 20px;
+      padding: 3rem 2rem;
+    }
+    .chess-cta-question {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 2.2rem;
+      color: #c9a84c;
+      margin-bottom: 0.5rem;
+    }
+    .chess-cta-subtitle {
+      font-size: 1rem;
+      color: #a0a0a0;
+      margin-bottom: 2rem;
+    }
+    .chess-cta-btn {
+      display: inline-block;
+      padding: 1.1rem 3rem;
+      background: #c9a84c;
+      color: #0f111c;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 1.2rem;
+      letter-spacing: 0.03em;
+      animation: ctaPulse 2s ease-in-out infinite;
+      transition: transform 0.2s;
+      box-shadow: 0 0 20px rgba(201, 168, 76, 0.3);
+    }
+    .chess-cta-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 35px rgba(201, 168, 76, 0.5);
+    }
+    @keyframes ctaPulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(201, 168, 76, 0.3); }
+      50% { box-shadow: 0 0 40px rgba(201, 168, 76, 0.6), 0 0 60px rgba(201, 168, 76, 0.2); }
+    }
+
+  </style><!-- CONTENT GATE -->
 <div id="content-gate" class="content-gate">
   <div class="gate-overlay"></div>
   <div class="gate-message">
@@ -520,6 +568,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <button type="submit">Send Feedback</button>
       </form>
     </div>
+  </div>
+</section>
+
+
+<!-- ARE YOU A CHESS PLAYER? CTA -->
+<section class="chess-cta-section">
+  <div class="chess-cta-inner">
+    <p class="chess-cta-question">Are You a Chess Player?</p>
+    <p class="chess-cta-subtitle">Click the button below to help shape the future of this book</p>
+    <a href="/chess-player" class="chess-cta-btn">
+      <span class="btn-text">&#9816; Yes, Take Me There!</span>
+    </a>
   </div>
 </section>
 

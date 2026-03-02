@@ -113,6 +113,19 @@ function renderAuth() {
     document.getElementById("commentForm").addEventListener("submit", handleSubmit);
     document.getElementById("cancelReplyBtn").addEventListener("click", () => { currentReplyingToId = null; updateReplyUI(); });
   }
+
+  // Content gating
+  var lock = document.getElementById('content-lock');
+  var contentEl = document.getElementById('locked-content');
+  if (lock && contentEl) {
+    if (currentUser) {
+      lock.classList.remove('is-visible');
+      contentEl.classList.remove('is-locked');
+    } else {
+      lock.classList.add('is-visible');
+      contentEl.classList.add('is-locked');
+    }
+  }
 }
 function updateReplyUI() {
   const ind = document.getElementById("replyIndicator");
@@ -249,14 +262,14 @@ document.addEventListener("DOMContentLoaded", () => {
         if (window.Clerk) { try { await window.Clerk.load(); } catch(e) { console.error(e); } }
       }
       await checkAuth();
-      renderAuth(); window.updateContentGating();
+      renderAuth();
       await loadReactions();
       await loadComments();
       if (window.Clerk) {
         window.Clerk.addListener(({ user }) => {
           if (user) { currentUser = { id: user.id, name: user.fullName || user.firstName || "User", avatar: user.imageUrl || null }; }
           else { currentUser = null; }
-          renderAuth(); window.updateContentGating();
+          renderAuth();
         });
       }
   };
@@ -265,18 +278,6 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 <style is:global>
 
-window.updateContentGating = function() {
-  const lock = document.getElementById('content-lock');
-  const content = document.getElementById('locked-content');
-  if (!lock || !content) return;
-  if (currentUser) {
-    lock.classList.remove('is-visible');
-    content.classList.remove('is-locked');
-  } else {
-    lock.classList.add('is-visible');
-    content.classList.add('is-locked');
-  }
-}
 
 
 /* Navigation */

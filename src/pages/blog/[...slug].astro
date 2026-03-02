@@ -185,7 +185,7 @@ async function toggleCommentHeart(btn) {
   } catch(e) { console.error(e); }
 }
 async function loadReactions() {
-  const types = [{type:"heart",emoji:"\u2764\uFE0F"},{type:"thumbs_up",emoji:"\uD83D\uDC4D"},{type:"fire",emoji:"\uD83D\uDD25"},{type:"mind_blown",emoji:"\uD83E\uDD2F"},{type:"clap",emoji:"\uD83D\uDC4F"}];
+  const types = [{type:"heart",emoji:"\u2764\uFE0F"},{type:"thumbs_up",emoji:"\uD83D\uDC4D"},{type:"thumbs_down",emoji:"\uD83D\uDC4E"},{type:"fire",emoji:"\uD83D\uDD25"},{type:"mind_blown",emoji:"\uD83E\uDD2F"},{type:"clap",emoji:"\uD83D\uDC4F"}];
   const container = document.getElementById("reactionButtons");
   container.innerHTML = "";
   for (const t of types) {

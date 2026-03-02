@@ -152,7 +152,7 @@ async function loadComments() {
     const replies = data.filter(c => c.parent_id);
     top.forEach(c => { list.insertAdjacentHTML("beforeend", renderComment(c, replies.filter(r => r.parent_id === c.id))); });
     attachListeners();
-    await loadCommentHearts();
+    await loadCommentReactions();
   } catch(e) { loading.style.display = "none"; console.error(e); list.innerHTML = '<div class="empty-state"><p>Could not load comments.</p></div>'; }
 }
 function renderComment(c, replies) {

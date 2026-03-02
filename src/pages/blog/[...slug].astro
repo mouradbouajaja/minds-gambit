@@ -262,8 +262,7 @@ async function handleSubmit(e) {
     if (error) throw error;
     document.getElementById("commentInput").value = "";
     currentReplyingToId = null; updateReplyUI();
-    await checkAndPromptProfile();
-      await loadComments();
+    await loadComments();
   } catch(e) { console.error(e); alert("Failed to post. Try again."); }
   finally { btn.disabled = false; btn.textContent = "Post Comment"; }
 }
@@ -378,6 +377,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById('signup-btn')?.addEventListener('click', () => window.Clerk?.openSignUp());
   document.getElementById('signin-btn')?.addEventListener('click', () => window.Clerk?.openSignIn());
       await loadReactions();
+      await checkAndPromptProfile();
       await loadComments();
       if (window.Clerk) {
         window.Clerk.addListener(({ user }) => {

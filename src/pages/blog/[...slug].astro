@@ -150,13 +150,15 @@ function renderAuth() {
     var sb = initSupabase();
     if (!sb) return null;
     var result = await sb.from('user_profiles').select('*').eq('clerk_user_id', clerkUserId).maybeSingle();
-    if (result.error) return null;
+    if (result.error) { console.error("[DBG] upsert error:", JSON.stringify(result.error)); return null; }
+    console.log("[DBG] profile saved:", JSON.stringify(result.data));
     return result.data;
   }
 
   async function saveUserProfile(clerkUserId, displayName, avatarUrl) {
+    console.log("[DBG] saveUserProfile called:", clerkUserId, displayName);
     var sb = initSupabase();
-    if (!sb) return null;
+    if (!sb) { console.log("[DBG] initSupabase returned null"); return null; }
     var result = await sb.from('user_profiles').upsert({
       clerk_user_id: clerkUserId,
       display_name: displayName,
@@ -191,6 +193,7 @@ function renderAuth() {
   }
 
   async function checkAndPromptProfile() {
+    console.log("[DBG] checkAndPromptProfile, currentUser:", currentUser ? currentUser.id : "null");
     if (!currentUser) return;
     var profile = await getUserProfile(currentUser.id);
     if (profile) { userProfile = profile; return; }
@@ -199,6 +202,7 @@ function renderAuth() {
     if (nameInput) nameInput.value = currentUser.name || '';
     return new Promise(function(resolve) {
       document.getElementById('profile-save-btn').onclick = async function() {
+        console.log('[DBG] Save button clicked');
         var dn = document.getElementById('profile-display-name').value.trim();
         if (!dn) { alert('Please enter a display name'); return; }
         var saved = await saveUserProfile(currentUser.id, dn, currentUser.avatar);

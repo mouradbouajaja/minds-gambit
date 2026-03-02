@@ -145,18 +145,16 @@ function renderAuth() {
 
   // --- User Profile Management ---
   var userProfile = null;
-  
+
   async function getUserProfile(clerkUserId) {
-    console.log("[PROFILE] getUserProfile called for:", clerkUserId);
     var sb = initSupabase();
     if (!sb) return null;
     var result = await sb.from('user_profiles').select('*').eq('clerk_user_id', clerkUserId).maybeSingle();
-    if (result.error) { console.error('Profile fetch error:', result.error); return null; }
+    if (result.error) return null;
     return result.data;
   }
-  
+
   async function saveUserProfile(clerkUserId, displayName, avatarUrl) {
-    console.log("[PROFILE] saveUserProfile called:", clerkUserId, displayName);
     var sb = initSupabase();
     if (!sb) return null;
     var result = await sb.from('user_profiles').upsert({
@@ -165,59 +163,45 @@ function renderAuth() {
       avatar_url: avatarUrl || null,
       updated_at: new Date().toISOString()
     }, { onConflict: 'clerk_user_id' }).select().single();
-    if (result.error) { console.error('Profile save error:', result.error); return null; }
+    if (result.error) return null;
     return result.data;
   }
-  
+
   function showProfileModal() {
-    console.log("[PROFILE] showProfileModal called");
-    var overlay = document.getElementById('profile-modal-overlay');
-    if (!overlay) {
-      overlay = document.createElement('div');
-      overlay.id = 'profile-modal-overlay';
-      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;';
-      overlay.innerHTML = '<div style="background:#1a1d2e;border:1px solid #c9a84c;border-radius:12px;padding:2rem;max-width:420px;width:90%;color:#e0e0e0;position:relative;">'
-        + '<h3 style="color:#c9a84c;margin:0 0 0.5rem;font-size:1.3rem;">Set Up Your Profile</h3>'
-        + '<p style="color:#a0a0a0;font-size:0.85rem;margin:0 0 1.5rem;">Choose a display name for the community. Your real identity stays private.</p>'
-        + '<label style="display:block;margin-bottom:0.5rem;font-size:0.9rem;color:#c9a84c;">Display Name *</label>'
-        + '<input id="profile-display-name" type="text" maxlength="30" placeholder="e.g. ChessKnight42" style="width:100%;padding:0.6rem 0.8rem;background:#0f111c;border:1px solid #333;border-radius:8px;color:#fff;font-size:0.95rem;margin-bottom:1rem;box-sizing:border-box;" />'
-        + '<label style="display:block;margin-bottom:0.5rem;font-size:0.9rem;color:#c9a84c;">Avatar URL (optional)</label>'
-        + '<input id="profile-avatar-url" type="text" placeholder="https://example.com/avatar.png" style="width:100%;padding:0.6rem 0.8rem;background:#0f111c;border:1px solid #333;border-radius:8px;color:#fff;font-size:0.95rem;margin-bottom:0.5rem;box-sizing:border-box;" />'
-        + '<p style="color:#666;font-size:0.75rem;margin:0 0 1.5rem;">Leave blank to use your account avatar</p>'
-        + '<div style="display:flex;gap:0.8rem;">'
-        + '<button id="profile-save-btn" style="flex:1;padding:0.6rem;background:#c9a84c;color:#0f111c;border:none;border-radius:8px;font-weight:600;font-size:0.95rem;cursor:pointer;">Save Profile</button>'
-        + '<button id="profile-skip-btn" style="flex:1;padding:0.6rem;background:transparent;color:#a0a0a0;border:1px solid #333;border-radius:8px;font-size:0.95rem;cursor:pointer;">Use Real Name</button>'
-        + '</div></div>';
-      document.body.appendChild(overlay);
-    }
-    overlay.style.display = 'flex';
+    var existing = document.getElementById('profile-modal-overlay');
+    if (existing) { existing.style.display = 'flex'; return; }
+    var overlay = document.createElement('div');
+    overlay.id = 'profile-modal-overlay';
+    overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;z-index:9999;';
+    overlay.innerHTML = '<div style="background:#1a1d2e;border:1px solid #c9a84c;border-radius:12px;padding:32px;max-width:400px;width:90%;color:#e0e0e0;font-family:serif;">' +
+      '<h3 style="color:#c9a84c;margin:0 0 8px 0;">Set Your Display Name</h3>' +
+      '<p style="color:#999;font-size:14px;margin:0 0 16px 0;">Choose a name to show with your comments. This can be anything you like.</p>' +
+      '<label style="display:block;margin-bottom:4px;color:#c9a84c;font-size:14px;">Display Name</label>' +
+      '<input type="text" id="profile-display-name" placeholder="Your display name" style="width:100%;padding:10px;border-radius:8px;border:1px solid #333;background:#0f111c;color:#e0e0e0;font-size:16px;box-sizing:border-box;margin-bottom:16px;" />' +
+      '<div style="display:flex;gap:12px;justify-content:flex-end;">' +
+      '<button id="profile-skip-btn" style="padding:10px 20px;border-radius:8px;border:1px solid #333;background:transparent;color:#999;cursor:pointer;font-size:14px;">Use Real Name</button>' +
+      '<button id="profile-save-btn" style="padding:10px 20px;border-radius:8px;border:none;background:#c9a84c;color:#0f111c;cursor:pointer;font-weight:bold;font-size:14px;">Save</button>' +
+      '</div></div>';
+    document.body.appendChild(overlay);
   }
-  
+
   function hideProfileModal() {
     var overlay = document.getElementById('profile-modal-overlay');
-    if (overlay) { overlay.style.display = 'none'; }
+    if (overlay) overlay.style.display = 'none';
   }
-  
+
   async function checkAndPromptProfile() {
-    console.log("[PROFILE] checkAndPromptProfile called, currentUser:", currentUser ? currentUser.id : "null");
     if (!currentUser) return;
     var profile = await getUserProfile(currentUser.id);
-    console.log("[PROFILE] profile result:", profile);
-    if (profile) {
-      userProfile = profile;
-      return;
-    }
-    // Pre-fill with Clerk name
+    if (profile) { userProfile = profile; return; }
+    showProfileModal();
     var nameInput = document.getElementById('profile-display-name');
     if (nameInput) nameInput.value = currentUser.name || '';
-    showProfileModal();
-    
     return new Promise(function(resolve) {
       document.getElementById('profile-save-btn').onclick = async function() {
         var dn = document.getElementById('profile-display-name').value.trim();
         if (!dn) { alert('Please enter a display name'); return; }
-        var av = document.getElementById('profile-avatar-url').value.trim();
-        var saved = await saveUserProfile(currentUser.id, dn, av || currentUser.avatar);
+        var saved = await saveUserProfile(currentUser.id, dn, currentUser.avatar);
         if (saved) { userProfile = saved; }
         hideProfileModal();
         resolve();
@@ -230,12 +214,12 @@ function renderAuth() {
       };
     });
   }
-  
+
   function getDisplayName() {
     if (userProfile && userProfile.display_name) return userProfile.display_name;
     return currentUser ? currentUser.name : 'Anonymous';
   }
-  
+
   function getDisplayAvatar() {
     if (userProfile && userProfile.avatar_url) return userProfile.avatar_url;
     return currentUser ? currentUser.avatar : '';

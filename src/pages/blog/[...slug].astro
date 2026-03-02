@@ -157,33 +157,55 @@ async function loadComments() {
 }
 function renderComment(c, replies) {
   const replyHtml = replies && replies.length ? '<div class="replies-container">' + replies.map(r => renderComment(r, [])).join("") + '</div>' : '';
-  return '<div class="comment-thread" data-cid="' + c.id + '"><div class="comment-card"><div class="comment-header"><img src="' + (c.user_avatar || '') + '" alt="" class="comment-avatar" /><div class="comment-meta"><div class="comment-author">' + escapeHtml(c.user_name) + '</div><div class="comment-time">' + getTimeAgo(c.created_at) + '</div></div></div><div class="comment-content">' + escapeHtml(c.content) + '</div><div class="comment-actions"><button class="btn-heart" data-cid="' + c.id + '">&#10084; <span class="heart-count">0</span></button>' + (currentUser ? '<button class="btn-reply" data-cid="' + c.id + '">Reply</button>' : '') + '</div>' + replyHtml + '</div></div>';
+  return '<div class="comment-thread" data-cid="' + c.id + '"><div class="comment-card"><div class="comment-header"><img src="' + (c.user_avatar || '') + '" alt="" class="comment-avatar" /><div class="comment-meta"><div class="comment-author">' + escapeHtml(c.user_name) + '</div><div class="comment-time">' + getTimeAgo(c.created_at) + '</div></div></div><div class="comment-content">' + escapeHtml(c.content) + '</div><div class="comment-actions"><div class="comment-reactions" data-cid="' + c.id + '"></div>' + (currentUser ? '<button class="btn-reply" data-cid="' + c.id + '">Reply</button>' : '') + '</div>' + replyHtml + '</div></div>';
 }
 function attachListeners() {
   document.querySelectorAll(".btn-reply").forEach(b => b.addEventListener("click", () => { currentReplyingToId = currentReplyingToId === b.dataset.cid ? null : b.dataset.cid; updateReplyUI(); const inp = document.getElementById("commentInput"); if(inp) inp.focus(); }));
-  document.querySelectorAll(".btn-heart").forEach(b => b.addEventListener("click", () => { if(!currentUser){window.Clerk.openSignIn();return;} toggleCommentHeart(b); }));
+  
 }
-async function loadCommentHearts() {
-  const { data } = await supabase.from("reactions").select("*").eq("article_slug", articleSlug).eq("reaction_type", "heart").not("comment_id", "is", null);
-  if (!data) return;
-  document.querySelectorAll(".btn-heart").forEach(b => {
-    const cid = b.dataset.cid;
-    const hearts = data.filter(r => r.comment_id === cid);
-    b.querySelector(".heart-count").textContent = hearts.length || "";
-    if (currentUser && hearts.some(r => r.user_id === currentUser.id)) b.classList.add("active");
-  });
-}
-async function toggleCommentHeart(btn) {
-  const cid = btn.dataset.cid;
-  try {
-    const { data: ex } = await supabase.from("reactions").select("id").eq("comment_id", cid).eq("user_id", currentUser.id).eq("reaction_type", "heart").maybeSingle();
-    if (ex) { await supabase.from("reactions").delete().eq("id", ex.id); btn.classList.remove("active"); }
-    else { await supabase.from("reactions").insert([{ article_slug: articleSlug, comment_id: cid, user_id: currentUser.id, reaction_type: "heart" }]); btn.classList.add("active"); }
-    const { data: counts } = await supabase.from("reactions").select("id").eq("comment_id", cid).eq("reaction_type", "heart");
-    btn.querySelector(".heart-count").textContent = counts ? counts.length : "";
-  } catch(e) { console.error(e); }
-}
-async function loadReactions() {
+async function loadCommentReactions() {
+    const types = [{type:"heart",emoji:"\u2764\uFE0F"},{type:"thumbs_up",emoji:"\uD83D\uDC4D"},{type:"thumbs_down",emoji:"\uD83D\uDC4E"},{type:"fire",emoji:"\uD83D\uDD25"},{type:"mind_blown",emoji:"\uD83E\uDD2F"},{type:"clap",emoji:"\uD83D\uDC4F"}];
+    document.querySelectorAll(".comment-reactions").forEach(async (container) => {
+      const cid = container.dataset.cid;
+      container.innerHTML = "";
+      for (const t of types) {
+        const { data } = await supabase.from("reactions").select("*").eq("article_slug", articleSlug).eq("comment_id", cid).eq("reaction_type", t.type);
+        const count = data ? data.length : 0;
+        let active = false;
+        if (currentUser && data) active = data.some(r => r.user_id === currentUser.id);
+        const btn = document.createElement("button");
+        btn.className = "reaction-btn reaction-btn-sm" + (active ? " active" : "");
+        btn.dataset.cid = cid;
+        btn.dataset.rt = t.type;
+        btn.innerHTML = '<span class="reaction-emoji">' + t.emoji + '</span>' + (count ? '<span class="reaction-count">' + count + '</span>' : '');
+        btn.addEventListener("click", () => { if (currentUser) toggleCommentReaction(btn); });
+        container.appendChild(btn);
+      }
+    });
+  }
+  async function toggleCommentReaction(btn) {
+    const cid = btn.dataset.cid;
+    const rt = btn.dataset.rt;
+    try {
+      const { data: ex } = await supabase.from("reactions").select("id").eq("comment_id", cid).eq("user_id", currentUser.id).eq("reaction_type", rt).maybeSingle();
+      if (ex) {
+        await supabase.from("reactions").delete().eq("id", ex.id);
+        btn.classList.remove("active");
+      } else {
+        await supabase.from("reactions").insert([{ article_slug: articleSlug, comment_id: cid, user_id: currentUser.id, reaction_type: rt }]);
+        btn.classList.add("active");
+      }
+      const { data: counts } = await supabase.from("reactions").select("id").eq("comment_id", cid).eq("reaction_type", rt);
+      const countEl = btn.querySelector(".reaction-count");
+      if (counts && counts.length) {
+        if (countEl) countEl.textContent = counts.length;
+        else btn.innerHTML = '<span class="reaction-emoji">' + btn.querySelector(".reaction-emoji").textContent + '</span><span class="reaction-count">' + counts.length + '</span>';
+      } else {
+        if (countEl) countEl.remove();
+      }
+    } catch(e) { console.error(e); }
+  }
+  async function loadReactions() {
   const types = [{type:"heart",emoji:"\u2764\uFE0F"},{type:"thumbs_up",emoji:"\uD83D\uDC4D"},{type:"thumbs_down",emoji:"\uD83D\uDC4E"},{type:"fire",emoji:"\uD83D\uDD25"},{type:"mind_blown",emoji:"\uD83E\uDD2F"},{type:"clap",emoji:"\uD83D\uDC4F"}];
   const container = document.getElementById("reactionButtons");
   container.innerHTML = "";
@@ -278,6 +300,13 @@ article{max-width:800px;margin:0 auto;padding:2rem 1.5rem}
 .article-content a{color:#c9a84c;text-decoration:underline;text-underline-offset:3px}
 /* Footer */
 .article-footer{text-align:center;padding:2rem 0;margin-top:2rem}
+
+.comment-reactions{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.5rem}
+.reaction-btn-sm{padding:.25rem .5rem;font-size:.8rem;border-radius:16px}
+.reaction-btn-sm .reaction-emoji{font-size:.9rem}
+.reaction-btn-sm .reaction-count{font-size:.75rem}
+.comment-actions{display:flex;flex-direction:column;gap:.5rem}
+.comment-actions .btn-reply{align-self:flex-start}
 .reaction-bar-wrapper{margin:2rem auto;padding:1.5rem 0;border-top:1px solid rgba(201,168,76,.2);border-bottom:1px solid rgba(201,168,76,.2);max-width:800px}
 .reaction-buttons{display:flex;gap:.75rem;flex-wrap:wrap}
 .reaction-btn{display:flex;align-items:center;gap:.5rem;padding:.5rem 1rem;background:rgba(30,34,52,.5);border:1px solid rgba(201,168,76,.2);border-radius:20px;color:#e0e0e0;font-size:.9rem;cursor:pointer;transition:all .2s;font-family:inherit}

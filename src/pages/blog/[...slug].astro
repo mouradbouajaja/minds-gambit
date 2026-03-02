@@ -160,10 +160,6 @@ async function handleSubmit(e) {
     document.getElementById("commentInput").value = "";
     currentReplyingToId = null; updateReplyUI();
     await loadComments();
-// Wire lock overlay buttons
-document.getElementById('signup-btn')?.addEventListener('click', () => window.Clerk?.openSignUp());
-document.getElementById('signin-btn')?.addEventListener('click', () => window.Clerk?.openSignIn());
-
   } catch(e) { console.error(e); alert("Failed to post. Try again."); }
   finally { btn.disabled = false; btn.textContent = "Post Comment"; }
 }
@@ -274,6 +270,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       await checkAuth();
       renderAuth();
+  // Wire lock overlay buttons to Clerk
+  document.getElementById('signup-btn')?.addEventListener('click', () => window.Clerk?.openSignUp());
+  document.getElementById('signin-btn')?.addEventListener('click', () => window.Clerk?.openSignIn());
       await loadReactions();
       await loadComments();
       if (window.Clerk) {

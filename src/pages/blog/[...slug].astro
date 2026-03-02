@@ -126,6 +126,17 @@ function renderAuth() {
       contentEl.classList.add('is-locked');
     }
   }
+  // Hide discussion and reactions for non-authenticated users
+  var reactionBar = document.getElementById('reactionBarContainer');
+  var discussionSection = document.getElementById('discussion');
+  if (currentUser) {
+    if (reactionBar) reactionBar.style.display = '';
+    if (discussionSection) discussionSection.style.display = '';
+  } else {
+    if (reactionBar) reactionBar.style.display = 'none';
+    if (discussionSection) discussionSection.style.display = 'none';
+  }
+
 }
 function updateReplyUI() {
   const ind = document.getElementById("replyIndicator");

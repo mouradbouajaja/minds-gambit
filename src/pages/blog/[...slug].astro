@@ -147,6 +147,7 @@ function renderAuth() {
   var userProfile = null;
   
   async function getUserProfile(clerkUserId) {
+    console.log("[PROFILE] getUserProfile called for:", clerkUserId);
     var sb = initSupabase();
     if (!sb) return null;
     var result = await sb.from('user_profiles').select('*').eq('clerk_user_id', clerkUserId).maybeSingle();
@@ -155,6 +156,7 @@ function renderAuth() {
   }
   
   async function saveUserProfile(clerkUserId, displayName, avatarUrl) {
+    console.log("[PROFILE] saveUserProfile called:", clerkUserId, displayName);
     var sb = initSupabase();
     if (!sb) return null;
     var result = await sb.from('user_profiles').upsert({
@@ -168,6 +170,7 @@ function renderAuth() {
   }
   
   function showProfileModal() {
+    console.log("[PROFILE] showProfileModal called");
     var overlay = document.getElementById('profile-modal-overlay');
     if (!overlay) {
       overlay = document.createElement('div');
@@ -196,8 +199,10 @@ function renderAuth() {
   }
   
   async function checkAndPromptProfile() {
+    console.log("[PROFILE] checkAndPromptProfile called, currentUser:", currentUser ? currentUser.id : "null");
     if (!currentUser) return;
     var profile = await getUserProfile(currentUser.id);
+    console.log("[PROFILE] profile result:", profile);
     if (profile) {
       userProfile = profile;
       return;

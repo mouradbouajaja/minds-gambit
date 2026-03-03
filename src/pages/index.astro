@@ -1,4 +1,4 @@
----
+h---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
@@ -9,7 +9,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <!-- FLOATING CHESS PARTICLES -->
 <div class="particles-container" id="particles"></div>
 
-<!-- NAV -->
+<!-- NAV -->h
 <nav id="navbar">
   <div class="nav-inner">
     <a href="#home" class="nav-logo"><img src="/images/logo.jpg" alt="Mind's Gambit" style="height:55px;width:55px;border-radius:50%;object-fit:cover;border:2px solid #c8a84e;margin-left:10px;vertical-align:middle;" /></a>
@@ -107,7 +107,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <section class="hero" id="home" data-reveal data-parallax>
   <div class="hero-inner">
     <div class="hero-text">
-      <div style="margin-bottom:18px;"><video src="/hero_video.mp4" autoplay loop muted playsinline style="height:160px;width:160px;border-radius:50%;object-fit:cover;border:3px solid #c8a84e;box-shadow:0 4px 24px rgba(200,168,78,0.25);"></video></div>
+      <div style="margin-bottom:18px;display:flex;justify-content:center;"><video src="/hero_video.mp4" autoplay loop muted playsinline onloadeddata="this.playbackRate=1.5" style="height:280px;width:280px;border-radius:50%;object-fit:cover;border:3px solid #c8a84e;box-shadow:0 4px 24px rgba(200,168,78,0.25);"></video></div>
           <h1>Mourad <span>Bouajaja</span></h1>
       <span class="book-tag">Author &middot; Child Protection &middot; Mental Health</span>
       <p class="subtitle">Where other writers approach chess through the lens of competition, I read the board the way a social worker reads a case file: attentive to the structures that shape outcomes, and to the human cost of systems that were never designed with the most vulnerable in mind.</p>

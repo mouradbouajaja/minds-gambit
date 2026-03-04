@@ -69,7 +69,7 @@ const { title = "Mourad Bouajaja — The Mind's Gambit", description = "Chess, M
   </head>
   <body>
     <slot />
-    <script>
+    <script is:inline>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('/sw.js');

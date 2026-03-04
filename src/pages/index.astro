@@ -13,7 +13,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <nav id="navbar">
   <div class="nav-inner">
     <a href="#home" class="nav-logo"><img src="/images/logo.jpg" alt="Mind's Gambit" style="height:55px;width:55px;border-radius:50%;object-fit:cover;border:2px solid #c8a84e;margin-left:10px;vertical-align:middle;" /></a>
-    <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+    <button class="hamburger" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
     <ul class="nav-links">
@@ -26,7 +26,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <li><a href="#services" data-i18n="nav.services">Services</a></li>
       <li><a href="#donate" data-i18n="nav.donate">Donate</a></li>
       <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
-      <li class="nav-auth"><button id="clerk-sign-in-btn" class="nav-sign-in" onclick="openClerkSignIn()" data-i18n="nav.signin">Sign In</button></li>
+      <li class="nav-auth"><button id="clerk-sign-in-btn" class="nav-sign-in" data-i18n="nav.signin">Sign In</button></li>
     </ul>
       <!-- LANGUAGE SWITCHER -->
       <div id="lang-switcher" class="lang-switcher">
@@ -35,8 +35,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </button>
         <div id="lang-dropdown" class="lang-dropdown">
           <button class="lang-option active" data-lang="en">English</button>
-          <button class="lang-option" data-lang="fr">Français</button>
-          <button class="lang-option" data-lang="ar">العربية</button>
+          <button class="lang-option" data-lang="fr">FranÃ§ais</button>
+          <button class="lang-option" data-lang="ar">Ø§ÙØ¹Ø±Ø¨ÙØ©</button>
         </div>
       </div>
   </div>
@@ -200,8 +200,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     <h2>Create a free account or log in</h2>
     <p>Gain access to articles, podcast episodes, and exclusive content.</p>
-    <button id="gate-signup-btn" class="gate-btn gate-btn-primary" onclick="openClerkSignUp()">Create a Free Account</button>
-    <button id="gate-signin-btn" class="gate-btn gate-btn-secondary" onclick="openClerkSignIn()">Log In</button><p class="gate-terms">By continuing, you agree to our <a href="#" onclick="document.getElementById('termsModal').classList.add('active');return false;">Terms</a> and <a href="#" onclick="document.getElementById('privacyModal').classList.add('active');return false;">Privacy Policy</a></p>
+    <button id="gate-signup-btn" class="gate-btn gate-btn-primary">Create a Free Account</button>
+    <button id="gate-signin-btn" class="gate-btn gate-btn-secondary">Log In</button><p class="gate-terms">By continuing, you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a></p>
   </div>
 </div>
 
@@ -284,7 +284,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
 
     <div class="chapters-grid">
-      <a href="/blog" class="chapter-card chapter-published" onclick="document.querySelector('.article-toggle')?.click()">
+      <a href="/blog" class="chapter-card chapter-published">
         <div class="chapter-num">1</div>
         <div class="chapter-info">
           <h4>The Number</h4>
@@ -715,9 +715,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </a>
       </div>
       <div class="footer-legal">
-        <a href="#" class="footer-legal-link" onclick="document.getElementById('termsModal').classList.add('active');return false;">Terms</a>
+        <a href="#" class="footer-legal-link" data-modal="termsModal">Terms</a>
         <span class="footer-legal-sep">|</span>
-        <a href="#" class="footer-legal-link" onclick="document.getElementById('privacyModal').classList.add('active');return false;">Privacy</a>
+        <a href="#" class="footer-legal-link" data-modal="privacyModal">Privacy</a>
       </div>
       <p class="footer-copy">&copy; 2026 Mourad Bouajaja. All rights reserved.</p>
     </div>
@@ -725,7 +725,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <!-- Terms Modal -->
     <div id="termsModal" class="legal-modal">
       <div class="legal-modal-content">
-        <button class="legal-modal-close" onclick="this.closest('.legal-modal').classList.remove('active')">&times;</button>
+        <button class="legal-modal-close">&times;</button>
         <h2>Terms of Service</h2>
         <p class="legal-updated">Last updated: February 27, 2026</p>
         
@@ -758,7 +758,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <!-- Privacy Policy Modal -->
     <div id="privacyModal" class="legal-modal">
       <div class="legal-modal-content">
-        <button class="legal-modal-close" onclick="this.closest('.legal-modal').classList.remove('active')">&times;</button>
+        <button class="legal-modal-close">&times;</button>
         <h2>Privacy Policy</h2>
         <p class="legal-updated">Last updated: February 27, 2026</p>
         
@@ -983,5 +983,46 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     }
   }
   window.initClerk();
+</script>
+
+<script is:inline>
+// Event listeners replacing inline onclick handlers
+document.addEventListener("DOMContentLoaded", function() {
+  // Hamburger menu toggle
+  var hamburger = document.querySelector(".hamburger");
+  if (hamburger) hamburger.addEventListener("click", function() {
+    document.querySelector(".nav-links").classList.toggle("open");
+  });
+  // Clerk Sign In button (nav)
+  var signInBtn = document.getElementById("clerk-sign-in-btn");
+  if (signInBtn) signInBtn.addEventListener("click", function() { openClerkSignIn(); });
+  // Gate signup button
+  var gateSignup = document.getElementById("gate-signup-btn");
+  if (gateSignup) gateSignup.addEventListener("click", function() { openClerkSignUp(); });
+  // Gate signin button
+  var gateSignin = document.getElementById("gate-signin-btn");
+  if (gateSignin) gateSignin.addEventListener("click", function() { openClerkSignIn(); });
+  // Chapter card article toggle
+  document.querySelectorAll(".chapter-card").forEach(function(card) {
+    card.addEventListener("click", function() {
+      var toggle = document.querySelector(".article-toggle");
+      if (toggle) toggle.click();
+    });
+  });
+  // Footer legal links
+  document.querySelectorAll(".footer-legal-link").forEach(function(link) {
+    link.addEventListener("click", function(e) {
+      e.preventDefault();
+      var modalId = this.getAttribute("data-modal");
+      if (modalId) document.getElementById(modalId).classList.add("active");
+    });
+  });
+  // Legal modal close buttons
+  document.querySelectorAll(".legal-modal-close").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      this.closest(".legal-modal").classList.remove("active");
+    });
+  });
+});
 </script>
 </BaseLayout>

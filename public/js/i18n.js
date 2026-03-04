@@ -77,6 +77,25 @@
     if (dd) dd.classList.remove('open');
   };
 
+  // Bind event listeners for language switcher
+  function bindLangEvents() {
+    var btn = document.querySelector('.lang-btn');
+    if (btn) btn.addEventListener('click', function() { window.toggleLangDropdown(); });
+    var options = document.querySelectorAll('.lang-option');
+    for (var i = 0; i < options.length; i++) {
+      options[i].addEventListener('click', function() {
+        window.switchLang(this.getAttribute('data-lang'));
+      });
+    }
+  }
+
+  // Bind events when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bindLangEvents);
+  } else {
+    bindLangEvents();
+  }
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() {
       var lang = getDefaultLang();

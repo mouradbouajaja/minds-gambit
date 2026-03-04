@@ -3,10 +3,10 @@ interface Props {
   title?: string;
   description?: string;
 }
-const { title = "Mourad Bouajaja — The Mind's Gambit", description = "Chess, Madness, and the Battle for the Mind — a book in ten chapters" } = Astro.props;
+const { title = "Mourad Bouajaja â The Mind's Gambit", description = "Chess, Madness, and the Battle for the Mind â a book in ten chapters" } = Astro.props;
 ---
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -69,13 +69,49 @@ const { title = "Mourad Bouajaja — The Mind's Gambit", description = "Chess, M
   </head>
   <body>
     <slot />
-    <script is:inline>
+    <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('/sw.js');
         });
       }
     </script>
-    <script is:inline src="/js/i18n.js"></script>
-  </body>
+  
+  <!-- Google Translate Widget -->
+  <div id="gt-wrapper" style="position:fixed;top:12px;right:70px;z-index:10000;">
+    <div id="google_translate_element"></div>
+  </div>
+  <style>
+    #gt-wrapper { transition: opacity 0.3s; }
+    #gt-wrapper .goog-te-gadget { font-size: 0 !important; }
+    #gt-wrapper .goog-te-gadget .goog-te-combo {
+      background: rgba(30,30,30,0.85);
+      color: #c8a84e;
+      border: 1px solid #c8a84e;
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 13px;
+      font-family: inherit;
+      cursor: pointer;
+      outline: none;
+    }
+    .goog-te-banner-frame, .skiptranslate { display: none !important; }
+    body { top: 0 !important; }
+    @media (max-width: 768px) {
+      #gt-wrapper { top: 14px; right: 60px; }
+    }
+  </style>
+  <script is:inline type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: "en",
+        includedLanguages: "en,fr,ar",
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false
+      }, "google_translate_element");
+    }
+  </script>
+  <script is:inline src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
 </html>

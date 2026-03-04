@@ -1,4 +1,4 @@
-h---
+---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
@@ -9,7 +9,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <!-- FLOATING CHESS PARTICLES -->
 <div class="particles-container" id="particles"></div>
 
-<!-- NAV -->h
+<!-- NAV -->
 <nav id="navbar">
   <div class="nav-inner">
     <a href="#home" class="nav-logo"><img src="/images/logo.jpg" alt="Mind's Gambit" style="height:55px;width:55px;border-radius:50%;object-fit:cover;border:2px solid #c8a84e;margin-left:10px;vertical-align:middle;" /></a>
@@ -17,17 +17,28 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <span></span><span></span><span></span>
     </button>
     <ul class="nav-links">
-      <li><a href="#home">Home</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#book">The Book</a></li>
-      <li><a href="/blog">Blog</a></li>
-      <li><a href="#podcast">Podcast</a></li>
-      <li><a href="#portfolio">Portfolio</a></li>
-      <li><a href="#services">Services</a></li>
-      <li><a href="#donate">Donate</a></li>
-      <li><a href="#contact">Contact</a></li>
-      <li class="nav-auth"><button id="clerk-sign-in-btn" class="nav-sign-in" onclick="openClerkSignIn()">Sign In</button></li>
+      <li><a href="#home" data-i18n="nav.home">Home</a></li>
+      <li><a href="#about" data-i18n="nav.about">About</a></li>
+      <li><a href="#book" data-i18n="nav.book">The Book</a></li>
+      <li><a href="/blog" data-i18n="nav.blog">Blog</a></li>
+      <li><a href="#podcast" data-i18n="nav.podcast">Podcast</a></li>
+      <li><a href="#portfolio" data-i18n="nav.portfolio">Portfolio</a></li>
+      <li><a href="#services" data-i18n="nav.services">Services</a></li>
+      <li><a href="#donate" data-i18n="nav.donate">Donate</a></li>
+      <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
+      <li class="nav-auth"><button id="clerk-sign-in-btn" class="nav-sign-in" onclick="openClerkSignIn()" data-i18n="nav.signin">Sign In</button></li>
     </ul>
+      <!-- LANGUAGE SWITCHER -->
+      <div id="lang-switcher" class="lang-switcher">
+        <button onclick="toggleLangDropdown()" class="lang-btn" aria-label="Switch language">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </button>
+        <div id="lang-dropdown" class="lang-dropdown">
+          <button class="lang-option active" data-lang="en" onclick="switchLang('en')">English</button>
+          <button class="lang-option" data-lang="fr" onclick="switchLang('fr')">Français</button>
+          <button class="lang-option" data-lang="ar" onclick="switchLang('ar')">العربية</button>
+        </div>
+      </div>
   </div>
 </nav>
 
@@ -95,7 +106,98 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <div id="content-gate" class="content-gate">
   <div class="gate-overlay"></div>
   <div class="gate-message">
-    
+      /* Language Switcher */
+  .lang-switcher {
+    position: relative;
+    margin-left: 12px;
+  }
+  .lang-btn {
+    background: none;
+    border: 1px solid rgba(200,168,78,0.3);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #c8a84e;
+    transition: all 0.3s;
+  }
+  .lang-btn:hover {
+    border-color: #c8a84e;
+    background: rgba(200,168,78,0.1);
+  }
+  .lang-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 8px;
+    background: #1a1a2e;
+    border: 1px solid rgba(200,168,78,0.3);
+    border-radius: 8px;
+    overflow: hidden;
+    z-index: 1000;
+    min-width: 140px;
+  }
+  .lang-dropdown.open {
+    display: block;
+  }
+  .lang-option {
+    display: block;
+    width: 100%;
+    padding: 10px 16px;
+    background: none;
+    border: none;
+    color: #ccc;
+    text-align: left;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+  }
+  .lang-option:hover {
+    background: rgba(200,168,78,0.15);
+    color: #fff;
+  }
+  .lang-option.active {
+    color: #c8a84e;
+    font-weight: 600;
+  }
+  /* RTL Support */
+  body.rtl .nav-inner {
+    flex-direction: row-reverse;
+  }
+  body.rtl .nav-links {
+    text-align: right;
+  }
+  body.rtl .lang-dropdown {
+    right: auto;
+    left: 0;
+  }
+  body.rtl .lang-option {
+    text-align: right;
+  }
+  body.rtl .hero-text {
+    text-align: right;
+  }
+  body.rtl .section-label,
+  body.rtl .section-title,
+  body.rtl h2, body.rtl h3 {
+    text-align: right;
+  }
+  body.rtl p {
+    text-align: right;
+    direction: rtl;
+  }
+  @media (max-width: 768px) {
+    .lang-switcher {
+      position: absolute;
+      top: 12px;
+      right: 60px;
+    }
+  }
+
     <h2>Create a free account or log in</h2>
     <p>Gain access to articles, podcast episodes, and exclusive content.</p>
     <button id="gate-signup-btn" class="gate-btn gate-btn-primary" onclick="openClerkSignUp()">Create a Free Account</button>

@@ -98,7 +98,7 @@ h2 {
   font-weight: 700;
   color: var(--accent);
   text-decoration: none;
-  margin-right: auto;
+  margin-right: 20px;
   flex-shrink: 0;
   letter-spacing: 0.03em;
   transition: all 0.3s ease;

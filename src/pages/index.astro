@@ -30,13 +30,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </ul>
       <!-- LANGUAGE SWITCHER -->
       <div id="lang-switcher" class="lang-switcher">
-        <button onclick="toggleLangDropdown()" class="lang-btn" aria-label="Switch language">
+        <button class="lang-btn" aria-label="Switch language">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
         </button>
         <div id="lang-dropdown" class="lang-dropdown">
-          <button class="lang-option active" data-lang="en" onclick="switchLang('en')">English</button>
-          <button class="lang-option" data-lang="fr" onclick="switchLang('fr')">Français</button>
-          <button class="lang-option" data-lang="ar" onclick="switchLang('ar')">العربية</button>
+          <button class="lang-option active" data-lang="en">English</button>
+          <button class="lang-option" data-lang="fr">Français</button>
+          <button class="lang-option" data-lang="ar">العربية</button>
         </div>
       </div>
   </div>

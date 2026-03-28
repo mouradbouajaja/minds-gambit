@@ -1,0 +1,543 @@
+---
+/*
+  watch.astro — Manifest Media Hub
+  Browse and watch Sports, Documentaries, Podcasts, Songs & Video Clips
+  Pulls content from the same JSON feed as the Roku channel app
+*/
+const feedUrl = '/feed/manifest_feed.json';
+const response = await fetch(new URL(feedUrl, Astro.url));
+const feed = await response.json();
+---
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Watch | Mind's Gambit</title>
+  <meta name="description" content="Stream Sports, Documentaries, Podcasts, Music and Video Clips from Mind's Gambit." />
+  <!-- Open Graph -->
+  <meta property="og:title" content="Watch | Mind's Gambit" />
+  <meta property="og:description" content="Stream original content — Sports, Docs, Podcasts, Music & Video Clips." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://mindsgambit.com/watch" />
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #111118;
+      --bg-card: #16161f;
+      --bg-card-hover: #1e1e2a;
+      --gold: #C8A45E;
+      --gold-light: #d4b876;
+      --gold-dim: #9a7d3e;
+      --text-primary: #f0ece4;
+      --text-secondary: #a0a0a8;
+      --text-muted: #6a6a74;
+      --border: #2a2a35;
+      --font-display: 'Cinzel', serif;
+      --font-body: 'Inter', sans-serif;
+    }
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 10, 15, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+    }
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+    .site-logo {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+    }
+    .site-logo span {
+      color: var(--text-primary);
+      font-weight: 400;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: color 0.2s;
+      letter-spacing: 0.03em;
+    }
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--gold);
+    }
+    .hero {
+      text-align: center;
+      padding: 4rem 2rem 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.8rem;
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--gold);
+    }
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+    .roku-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.5rem 1.2rem;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+    .roku-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #6c2dc7;
+    }
+    .filter-bar {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 1rem 2rem 0;
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      padding: 0.5rem 1.2rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-family: var(--font-body);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover {
+      border-color: var(--gold-dim);
+      color: var(--text-primary);
+    }
+    .filter-btn.active {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--bg-primary);
+      font-weight: 600;
+    }
+    .categories-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .category-section {
+      margin-bottom: 3rem;
+    }
+    .category-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .category-header h2 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .category-count {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      background: var(--bg-card);
+      padding: 0.2rem 0.7rem;
+      border-radius: 999px;
+    }
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    .video-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .video-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--gold-dim);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    }
+    .card-thumbnail {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: var(--bg-secondary);
+      overflow: hidden;
+    }
+    .card-thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+    .video-card:hover .card-thumbnail img {
+      transform: scale(1.05);
+    }
+    .card-thumbnail .play-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(10, 10, 15, 0.5);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .video-card:hover .play-overlay {
+      opacity: 1;
+    }
+    .play-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .play-icon svg {
+      width: 24px;
+      height: 24px;
+      fill: var(--bg-primary);
+      margin-left: 3px;
+    }
+    .duration-badge {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background: rgba(0, 0, 0, 0.8);
+      color: var(--text-primary);
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+    }
+    .content-type-badge {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: var(--gold);
+      color: var(--bg-primary);
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.15rem 0.6rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .card-info {
+      padding: 1rem 1.2rem 1.2rem;
+    }
+    .card-info h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.4rem;
+      line-height: 1.3;
+    }
+    .card-info p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(0, 0, 0, 0.92);
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal-content {
+      width: 100%;
+      max-width: 960px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .modal-video {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+    }
+    .modal-video video {
+      width: 100%;
+      height: 100%;
+    }
+    .modal-info {
+      padding: 1.5rem;
+    }
+    .modal-info h2 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+    .modal-info p {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+    }
+    .modal-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: white;
+      font-size: 1.4rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .modal-close:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    .site-footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+    .site-footer .gold {
+      color: var(--gold);
+    }
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+      .video-grid {
+        grid-template-columns: 1fr;
+      }
+      .nav-links {
+        gap: 1rem;
+      }
+      .header-inner {
+        flex-direction: column;
+        height: auto;
+        padding: 1rem 0;
+        gap: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="site-logo">MIND'S <span>GAMBIT</span></a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/watch" class="active">Watch</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1>The <em>Manifest</em> Channel</h1>
+    <p>Stream original content — Sports, Documentaries, Podcasts, Music &amp; Video Clips. Also available on Roku.</p>
+    <div class="roku-badge">
+      <span class="dot"></span>
+      Available on Roku
+    </div>
+  </section>
+
+  <div class="filter-bar">
+    <button class="filter-btn active" data-filter="all">All</button>
+    {feed.categories.map((cat: any) => (
+            <button class="filter-btn" data-filter={cat.id}>{cat.title}</button>
+          ))}
+  </div>
+
+  <main class="categories-container">
+    {feed.categories.map((category: any) => (
+            <section class="category-section" data-category={category.id}>
+              <div class="category-header">
+                <h2>{category.title}</h2>
+                <span class="category-count">{category.items.length} items</span>
+              </div>
+              <div class="video-grid">
+                {category.items.map((item: any) => (
+                              <article
+                                class="video-card"
+                                data-stream={item.streamUrl}
+                                data-title={item.title}
+                                data-desc={item.description}
+                              >
+                                <div class="card-thumbnail">
+                                  <img
+                                    src={item.thumbnail}
+                                    alt={item.title}
+                                    loading="lazy"
+                                    onerror="this.style.display='none'"
+                                  />
+                                  <div class="play-overlay">
+                                    <div class="play-icon">
+                                      <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21" /></svg>
+                                    </div>
+                                  </div>
+                                  <span class="content-type-badge">{item.contentType}</span>
+                                  {item.duration > 0 && (
+                                                      <span class="duration-badge">
+                                      {Math.floor(item.duration / 60)}:{String(item.duration % 60).padStart(2, '0')}
+                                    </span>
+                                                    )}
+                                </div>
+                                <div class="card-info">
+                                  <h3>{item.title}</h3>
+                                  <p>{item.description}</p>
+                                </div>
+                              </article>
+                            ))}
+              </div>
+            </section>
+          ))}
+  </main>
+
+  <div class="modal-overlay" id="playerModal">
+    <button class="modal-close" id="modalClose">&times;</button>
+    <div class="modal-content">
+      <div class="modal-video">
+        <video id="modalVideo" controls preload="metadata"></video>
+      </div>
+      <div class="modal-info">
+        <h2 id="modalTitle"></h2>
+        <p id="modalDesc"></p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 <span class="gold">Mind's Gambit</span>. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const categorySections = document.querySelectorAll('.category-section');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+              filterBtns.forEach(b => b.classList.remove('active'));
+              btn.classList.add('active');
+              const filter = btn.dataset.filter;
+              categorySections.forEach(section => {
+                  if (filter === 'all' || section.dataset.category === filter) {
+                    section.style.display = 'block';
+                  } else {
+                    section.style.display = 'none';
+                  }
+                });
+            });
+    });
+
+    const modal = document.getElementById('playerModal');
+    const modalVideo = document.getElementById('modalVideo');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalClose = document.getElementById('modalClose');
+
+    document.querySelectorAll('.video-card').forEach(card => {
+      card.addEventListener('click', () => {
+              const streamUrl = card.dataset.stream;
+              const title = card.dataset.title;
+              const desc = card.dataset.desc;
+              modalVideo.src = streamUrl;
+              modalTitle.textContent = title;
+              modalDesc.textContent = desc;
+              modal.classList.add('active');
+              modalVideo.play();
+            });
+    });
+
+    function closeModal() {
+      modal.classList.remove('active');
+      modalVideo.pause();
+      modalVideo.src = '';
+    }
+
+    modalClose.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+  </script>
+</body>
+</html>

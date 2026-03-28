@@ -1,0 +1,155 @@
+{
+    "title": "Manifest",
+    "description": "Sports, Documentaries, Podcasts, Music & Video Clips by Mourad — Mind's Gambit",
+    "lastUpdated": "2026-03-28T00:00:00Z",
+    "feedUrl": "https://mindsgambit.com/feed/manifest_feed.json",
+    "categories": [
+          {
+                  "id": "sports",
+                  "title": "Sports",
+                  "items": [
+                            {
+                                        "title": "Game Day Highlights - Season Opener",
+                                        "description": "Full highlights from the season opener. All the best plays, goals, and key moments.",
+                                        "thumbnail": "https://YOUR-CDN.b-cdn.net/thumbnails/sports_01.jpg",
+                                        "streamUrl": "https://YOUR-CDN.b-cdn.net/media/sports/game_day_highlights.mp4",
+                                        "streamFormat": "mp4",
+                                        "contentType": "video",
+                                        "duration": 1845
+                            },
+                            {
+                                        "title": "Training Camp Behind the Scenes",
+                                        "description": "Exclusive access to preseason training camp. See how the athletes prepare.",
+                                        "thumbnail": "https://YOUR-CDN.b-cdn.net/thumbnails/sports_02.jpg",
+                                        "streamUrl": "https://YOUR-CDN.b-cdn.net/media/sports/training_camp.mp4",
+                                        "streamFormat": "mp4",
+                                        "contentType": "video",
+                                        "duration": 2400
+                            },
+                            {
+                                        "title": "Top 10 Plays of the Month",
+                                        "description": "The most incredible plays from this month, ranked and analyzed.",
+                                        "thumbnail": "https://YOUR-CDN.b-cdn.net/thumbnails/sports_03.jpg",
+                                        "streamUrl": "https://YOUR-CDN.b-cdn.net/media/sports/top10_plays.mp4",
+                                        "streamFormat": "mp4",
+                                        "contentType": "video",
+                                        "duration": 960
+                            }
+                  ]
+          },
+          {
+                  "id": "documentaries",
+                  "title": "Documentaries",
+                  "items": [
+                            {
+                                        "title": "The Rise - A Hometown Story",
+                                        "description": "Documentary exploring the journey from local roots to the big stage.",
+                                        "thumbnail": "https://YOUR-CDN.b-cdn.net/thumbnails/doc_01.jpg",
+                                        "streamUrl": "https://YOUR-CDN.b-cdn.net/media/docs/the_rise.mp4",
+                                        "streamFormat": "mp4",
+                                        "contentType": "video",
+                                        "duration": 5400
+                            },
+                            {
+                                        "title": "Culture & Sound",
+                                        "description": "A deep dive into the intersection of music, culture, and identity.",
+                                        "thumbnail": "https://YOUR-CDN.b-cdn.net/thumbnails/doc_02.jpg",
+                                        "streamUrl": "https://YOUR-CDN.b-cdn.net/media/docs/culture_and_sound.mp4",
+                                        "streamFormat": "mp4",
+                                        "contentType": "video",
+                                        "duration": 4200
+                            }
+                  ]
+          },
+          {
+                  "id": "podcasts",
+                  "title": "Podcasts",
+                  "items": [
+                            {
+                                        "title": "Manifest Podcast - Ep. 1: Origins",
+                                        "description": "The very first episode. We talk about how it all started and where we're headed.",
+                                        "thumbnail": "https://YOUR-CDN.b-cdn.net/thumbnails/podcast_01.jpg",
+                                        "streamUrl": "https://YOUR-CDN.b-cdn.net/media/podcasts/ep01_origins.mp4",
+                                        "streamFormat": "mp4",
+                                        "contentType": "podcast",
+                                        "duration": 3600
+                            },
+                            {
+                                        "title": "Manifest Podcast - Ep. 2: The Grind",
+                                        "description": "Real talk about discipline, sacrifice, and what it takes to keep going.",
+                                        "thumbnail": "https://YOUR-CDN.b-cdn.net/thumbnails/podcast_02.jpg",
+                                        "streamUrl": "https://YOUR-CDN.b-cdn.net/media/podcasts/ep02_the_grind.mp4",
+                                        "streamFormat": "mp4",
+                                        "contentType": "podcast",
+                                        "duration": 4200
+                            },
+                            {
+                                        "title": "Manifest Podcast - Ep. 3: Community",
+                                        "description": "Conversations about building community and lifting each other up.",
+                                        "thumbnail": "https://YOUR-CDN.b-cdn.net/thumbnails/podcast_03.jpg",
+                                        "streamUrl": "https://YOUR-CDN.b-cdn.net/media/podcasts/ep03_community.mp4",
+                                        "streamFormat": "mp4",
+                                        "contentType": "podcast",
+                                        "duration": 3300
+                            }
+                  ]
+          },
+          {
+                  "id": "songs",
+                  "title": "Songs",
+                  "items": [
+                            {
+                                        "title": "Night Drive (Official Audio)",
+                                        "description": "Late night vibes. Stream the full track with visualizer.",
+                                        "thumbnail": "https://YOUR-CDN.b-cdn.net/thumbnails/song_01.jpg",
+                                        "streamUrl": "https://YOUR-CDN.b-cdn.net/media/songs/night_drive.mp4",
+                                        "streamFormat": "mp4",
+                                        "contentType": "audio",
+                                        "duration": 234
+                            },
+                            {
+                                        "title": "Elevation (Official Audio)",
+                                        "description": "New single. Turn it up.",
+                                        "thumbnail": "https://YOUR-CDN.b-cdn.net/thumbnails/song_02.jpg",
+                                        "streamUrl": "https://YOUR-CDN.b-cdn.net/media/songs/elevation.mp4",
+                                        "streamFormat": "mp4",
+                                        "contentType": "audio",
+                                        "duration": 198
+                            }
+                  ]
+          },
+          {
+                  "id": "videoclips",
+                  "title": "Video Clips",
+                  "items": [
+                            {
+                                        "title": "Night Drive (Official Music Video)",
+                                        "description": "The official music video for Night Drive. Shot on location downtown.",
+                                        "thumbnail": "https://YOUR-CDN.b-cdn.net/thumbnails/mv_01.jpg",
+                                        "streamUrl": "https://YOUR-CDN.b-cdn.net/media/videoclips/night_drive_mv.mp4",
+                                        "streamFormat": "mp4",
+                                        "contentType": "video",
+                                        "duration": 248
+                            },
+                            {
+                                        "title": "Elevation (Lyric Video)",
+                                        "description": "Follow along with the lyrics. Full visual experience.",
+                                        "thumbnail": "https://YOUR-CDN.b-cdn.net/thumbnails/mv_02.jpg",
+                                        "streamUrl": "https://YOUR-CDN.b-cdn.net/media/videoclips/elevation_lyric.mp4",
+                                        "streamFormat": "mp4",
+                                        "contentType": "video",
+                                        "duration": 205
+                            },
+                            {
+                                        "title": "Studio Session - Making Of 'Elevation'",
+                                        "description": "Behind the scenes in the studio. See how the track came together.",
+                                        "thumbnail": "https://YOUR-CDN.b-cdn.net/thumbnails/mv_03.jpg",
+                                        "streamUrl": "https://YOUR-CDN.b-cdn.net/media/videoclips/making_of_elevation.mp4",
+                                        "streamFormat": "mp4",
+                                        "contentType": "video",
+                                        "duration": 720
+                            }
+                  ]
+          }
+    ]
+}

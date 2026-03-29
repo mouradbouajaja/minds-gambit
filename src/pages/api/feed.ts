@@ -25,7 +25,7 @@ export const GET: APIRoute = async ({ request }) => {
     const allowed =
           origin.includes('mindsgambit.com') ||
           referer.includes('mindsgambit.com') ||
-          origin === ''; // allow server-side / Roku requests
+          !origin; // allow server-side / Roku requests
 
     if (!allowed) {
           return new Response(JSON.stringify({ error: 'Forbidden' }), {

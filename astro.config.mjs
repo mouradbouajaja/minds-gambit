@@ -6,6 +6,6 @@ import vercel from '@astrojs/vercel';
 export default defineConfig({
       integrations: [mdx(), sitemap()],
       site: 'https://mindsgambit.com',
-      output: 'hybrid',
+      output: 'server',
       adapter: vercel(),
 });

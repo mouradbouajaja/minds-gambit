@@ -1,107 +1,107 @@
 {
-        "title": "Manifest",
-        "description": "Podcasts, Music & Video Clips by Mourad — Mind's Gambit",
-        "lastUpdated": "2026-03-28T00:00:00Z",
-        "feedUrl": "https://mindsgambit.com/feed/manifest_feed.json",
-        "categories": [
-                  {
-                              "id": "podcasts",
-                              "title": "Podcasts",
-                              "items": [
-                                            {
-                                                            "title": "Mind's Gambit - Pilot Episode",
-                                                            "description": "The pilot episode of Mind's Gambit. Where it all begins.",
-                                                            "thumbnail": "https://img.youtube.com/vi/-6TadGp8Usw/maxresdefault.jpg",
-                                                            "streamUrl": "https://manifest-media.b-cdn.net/media/podcasts/minds_gambit_pilot.mp4",
-                                                            "streamFormat": "mp4",
-                                                            "contentType": "podcast",
-                                                            "duration": 3600
-                                            },
-                                            {
-                                                            "title": "Mind's Gambit - Pilot Episode (French)",
-                                                            "description": "L'épisode pilote de Mind's Gambit. Version française.",
-                                                            "thumbnail": "https://img.youtube.com/vi/-6TadGp8Usw/maxresdefault.jpg",
-                                                            "streamUrl": "https://manifest-media.b-cdn.net/media/podcasts/minds_gambit_pilot_fr.mp4",
-                                                            "streamFormat": "mp4",
-                                                            "contentType": "podcast",
-                                                            "duration": 3600
-                                            },
-                                            {
-                                                            "title": "Mind's Gambit - Pilot Episode (Spanish)",
-                                                            "description": "El episodio piloto de Mind's Gambit. Versión en español.",
-                                                            "thumbnail": "https://img.youtube.com/vi/-6TadGp8Usw/maxresdefault.jpg",
-                                                            "streamUrl": "https://manifest-media.b-cdn.net/media/podcasts/minds_gambit_pilot_es.mp4",
-                                                            "streamFormat": "mp4",
-                                                            "contentType": "podcast",
-                                                            "duration": 3600
-                                            }
-                              ]
-                  },
-                  {
-                              "id": "songs",
-                              "title": "Songs",
-                              "items": [
-                                            {
-                                                            "title": "From the Moment I Saw You",
-                                                            "description": "Official audio. Stream the full track.",
-                                                            "thumbnail": "https://img.youtube.com/vi/Px0x9JJLG0Y/maxresdefault.jpg",
-                                                            "streamUrl": "https://manifest-media.b-cdn.net/media/songs/from_the_moment_i_saw_you.mp4",
-                                                            "streamFormat": "mp4",
-                                                            "contentType": "audio",
-                                                            "duration": 240
-                                            },
-                                            {
-                                                            "title": "I Love You",
-                                                            "description": "Official audio. Turn it up.",
-                                                            "thumbnail": "https://img.youtube.com/vi/KnMdNAwoKXA/maxresdefault.jpg",
-                                                            "streamUrl": "https://manifest-media.b-cdn.net/media/songs/i_love_you.mp4",
-                                                            "streamFormat": "mp4",
-                                                            "contentType": "audio",
-                                                            "duration": 210
-                                            }
-                              ]
-                  },
-                  {
-                              "id": "videoclips",
-                              "title": "Video Clips",
-                              "items": [
-                                            {
-                                                            "title": "Beside My Beloved",
-                                                            "description": "Official music video.",
-                                                            "thumbnail": "https://img.youtube.com/vi/npybHpnkExU/maxresdefault.jpg",
-                                                            "streamUrl": "https://manifest-media.b-cdn.net/media/videoclips/beside_my_beloved.mp4",
-                                                            "streamFormat": "mp4",
-                                                            "contentType": "video",
-                                                            "duration": 240
-                                            },
-                                            {
-                                                            "title": "Sidi Mansour",
-                                                            "description": "Official music video.",
-                                                            "thumbnail": "https://img.youtube.com/vi/VTtjkZzTHQg/maxresdefault.jpg",
-                                                            "streamUrl": "https://manifest-media.b-cdn.net/media/videoclips/sidi_mansour.mp4",
-                                                            "streamFormat": "mp4",
-                                                            "contentType": "video",
-                                                            "duration": 240
-                                            },
-                                            {
-                                                            "title": "Gharib",
-                                                            "description": "Official music video. 120K+ views in the first week.",
-                                                            "thumbnail": "https://img.youtube.com/vi/8Gbqn2CI4DY/maxresdefault.jpg",
-                                                            "streamUrl": "https://manifest-media.b-cdn.net/media/videoclips/gharib.mov",
-                                                            "streamFormat": "mp4",
-                                                            "contentType": "video",
-                                                            "duration": 240
-                                            },
-                                            {
-                                                            "title": "Memories",
-                                                            "description": "Official music video.",
-                                                            "thumbnail": "https://img.youtube.com/vi/cQ7UkjQB-jE/maxresdefault.jpg",
-                                                            "streamUrl": "https://manifest-media.b-cdn.net/media/videoclips/memories.mp4",
-                                                            "streamFormat": "mp4",
-                                                            "contentType": "video",
-                                                            "duration": 240
-                                            }
-                              ]
-                  }
-        ]
+          "title": "Manifest",
+          "description": "Podcasts, Music & Video Clips by Mourad — Mind's Gambit",
+          "lastUpdated": "2026-03-28T00:00:00Z",
+          "feedUrl": "https://mindsgambit.com/feed/manifest_feed.json",
+          "categories": [
+                      {
+                                    "id": "podcasts",
+                                    "title": "Podcasts",
+                                    "items": [
+                                                    {
+                                                                      "title": "The Examined Republic - Episode 1",
+                                                                      "description": "Episode 1 of The Examined Republic — a Mind's Gambit production.",
+                                                                      "thumbnail": "https://vz-748d4d74-b82.b-cdn.net/e7725168-0470-491e-8a75-259083376bcd/thumbnail.jpg",
+                                                                      "streamUrl": "https://vz-748d4d74-b82.b-cdn.net/e7725168-0470-491e-8a75-259083376bcd/playlist.m3u8",
+                                                                      "streamFormat": "m3u8",
+                                                                      "contentType": "podcast",
+                                                                      "duration": 1114
+                                                    },
+                                                    {
+                                                                      "title": "The Examined Republic - Episode 1 (Français)",
+                                                                      "description": "Épisode 1 de The Examined Republic — version française.",
+                                                                      "thumbnail": "https://vz-748d4d74-b82.b-cdn.net/baa1575f-b1ee-4db6-866c-a37a3f2fad0f/thumbnail.jpg",
+                                                                      "streamUrl": "https://vz-748d4d74-b82.b-cdn.net/baa1575f-b1ee-4db6-866c-a37a3f2fad0f/playlist.m3u8",
+                                                                      "streamFormat": "m3u8",
+                                                                      "contentType": "podcast",
+                                                                      "duration": 1201
+                                                    },
+                                                    {
+                                                                      "title": "The Examined Republic - Episode 1 (Español)",
+                                                                      "description": "Episodio 1 de The Examined Republic — versión en español.",
+                                                                      "thumbnail": "https://vz-748d4d74-b82.b-cdn.net/1aa5be12-e6ce-46f4-af16-11bf96229fab/thumbnail.jpg",
+                                                                      "streamUrl": "https://vz-748d4d74-b82.b-cdn.net/1aa5be12-e6ce-46f4-af16-11bf96229fab/playlist.m3u8",
+                                                                      "streamFormat": "m3u8",
+                                                                      "contentType": "podcast",
+                                                                      "duration": 1237
+                                                    }
+                                    ]
+                      },
+                      {
+                                    "id": "songs",
+                                    "title": "Songs",
+                                    "items": [
+                                                    {
+                                                                      "title": "From the Moment I Saw You",
+                                                                      "description": "Official audio. Stream the full track.",
+                                                                      "thumbnail": "https://vz-748d4d74-b82.b-cdn.net/abf5bdbe-b70f-4bff-ae3c-786746041744/thumbnail.jpg",
+                                                                      "streamUrl": "https://vz-748d4d74-b82.b-cdn.net/abf5bdbe-b70f-4bff-ae3c-786746041744/playlist.m3u8",
+                                                                      "streamFormat": "m3u8",
+                                                                      "contentType": "audio",
+                                                                      "duration": 181
+                                                    },
+                                                    {
+                                                                      "title": "I Love You",
+                                                                      "description": "Official audio. Turn it up.",
+                                                                      "thumbnail": "https://vz-748d4d74-b82.b-cdn.net/02a2322c-410f-46ec-a5ad-82ad7a62221d/thumbnail.jpg",
+                                                                      "streamUrl": "https://vz-748d4d74-b82.b-cdn.net/02a2322c-410f-46ec-a5ad-82ad7a62221d/playlist.m3u8",
+                                                                      "streamFormat": "m3u8",
+                                                                      "contentType": "audio",
+                                                                      "duration": 238
+                                                    }
+                                    ]
+                      },
+                      {
+                                    "id": "videoclips",
+                                    "title": "Video Clips",
+                                    "items": [
+                                                    {
+                                                                      "title": "Beside My Beloved",
+                                                                      "description": "Official music video.",
+                                                                      "thumbnail": "https://vz-748d4d74-b82.b-cdn.net/b0d8e154-fe20-4c2c-b73c-f88f1eace579/thumbnail.jpg",
+                                                                      "streamUrl": "https://vz-748d4d74-b82.b-cdn.net/b0d8e154-fe20-4c2c-b73c-f88f1eace579/playlist.m3u8",
+                                                                      "streamFormat": "m3u8",
+                                                                      "contentType": "video",
+                                                                      "duration": 297
+                                                    },
+                                                    {
+                                                                      "title": "Sidi Mansour",
+                                                                      "description": "Official music video.",
+                                                                      "thumbnail": "https://vz-748d4d74-b82.b-cdn.net/210b95dd-9b3a-4686-983c-11014d8bee00/thumbnail.jpg",
+                                                                      "streamUrl": "https://vz-748d4d74-b82.b-cdn.net/210b95dd-9b3a-4686-983c-11014d8bee00/playlist.m3u8",
+                                                                      "streamFormat": "m3u8",
+                                                                      "contentType": "video",
+                                                                      "duration": 252
+                                                    },
+                                                    {
+                                                                      "title": "Gharib",
+                                                                      "description": "Official music video. 120K+ views in the first week.",
+                                                                      "thumbnail": "https://vz-748d4d74-b82.b-cdn.net/3c6a54ab-c1b0-416f-b3e9-ff2099105192/thumbnail.jpg",
+                                                                      "streamUrl": "https://vz-748d4d74-b82.b-cdn.net/3c6a54ab-c1b0-416f-b3e9-ff2099105192/playlist.m3u8",
+                                                                      "streamFormat": "m3u8",
+                                                                      "contentType": "video",
+                                                                      "duration": 374
+                                                    },
+                                                    {
+                                                                      "title": "Memories",
+                                                                      "description": "Official music video.",
+                                                                      "thumbnail": "https://vz-748d4d74-b82.b-cdn.net/9f5f656f-69ff-476a-98de-d149710a5740/thumbnail.jpg",
+                                                                      "streamUrl": "https://vz-748d4d74-b82.b-cdn.net/9f5f656f-69ff-476a-98de-d149710a5740/playlist.m3u8",
+                                                                      "streamFormat": "m3u8",
+                                                                      "contentType": "video",
+                                                                      "duration": 210
+                                                    }
+                                    ]
+                      }
+          ]
 }

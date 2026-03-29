@@ -1,10 +1,9 @@
 ---
 /*
-  watch.astro — Manifest Media Hub
-  Browse and watch Sports, Documentaries, Podcasts, Songs & Video Clips
-  Pulls content from the same JSON feed as the Roku channel app
+ watch.astro — The Mind's Gambit
+ Fetches signed video URLs from the secure /api/feed endpoint
 */
-const feedUrl = '/feed/manifest_feed.json';
+const feedUrl = '/api/feed';
 const response = await fetch(new URL(feedUrl, Astro.url));
 const feed = await response.json();
 ---
@@ -115,8 +114,8 @@ const feed = await response.json();
   </header>
 
   <section class="hero">
-    <h1>The <em>Manifest</em> Channel</h1>
-    <p>Stream original content — Sports, Documentaries, Podcasts, Music &amp; Video Clips. Also available on Roku.</p>
+    <h1>The <em>Mind's</em> Gambit</h1>
+    <p>Stream original content — Sports, Documentaries, Podcasts, Music & Video Clips. Also available on Roku.</p>
     <div class="roku-badge">
       <span class="dot"></span>
       Available on Roku
@@ -189,7 +188,6 @@ const feed = await response.json();
   </footer>
 
   <script>
-    // Filter buttons
     const filterBtns = document.querySelectorAll('.filter-btn');
     const categorySections = document.querySelectorAll('.category-section');
     filterBtns.forEach(btn => {
@@ -207,7 +205,6 @@ const feed = await response.json();
       });
     });
 
-    // Video modal with HLS.js support
     const modal = document.getElementById('playerModal')!;
     const modalVideo = document.getElementById('modalVideo') as HTMLVideoElement;
     const modalTitle = document.getElementById('modalTitle')!;
@@ -216,20 +213,13 @@ const feed = await response.json();
     let hlsInstance: any = null;
 
     function playStream(streamUrl: string, format: string) {
-      // Destroy any previous HLS instance
-      if (hlsInstance) {
-        hlsInstance.destroy();
-        hlsInstance = null;
-      }
+      if (hlsInstance) { hlsInstance.destroy(); hlsInstance = null; }
       if (format === 'm3u8' && (window as any).Hls && (window as any).Hls.isSupported()) {
         hlsInstance = new (window as any).Hls();
         hlsInstance.loadSource(streamUrl);
         hlsInstance.attachMedia(modalVideo);
-        hlsInstance.on((window as any).Hls.Events.MANIFEST_PARSED, () => {
-          modalVideo.play();
-        });
+        hlsInstance.on((window as any).Hls.Events.MANIFEST_PARSED, () => { modalVideo.play(); });
       } else {
-        // Native HLS (Safari) or direct MP4
         modalVideo.src = streamUrl;
         modalVideo.play();
       }
@@ -239,7 +229,7 @@ const feed = await response.json();
       card.addEventListener('click', () => {
         const el = card as HTMLElement;
         const streamUrl = el.dataset.stream!;
-        const format = el.dataset.format || 'mp4';
+        const format = el.dataset.format || 'm3u8';
         const title = el.dataset.title!;
         const desc = el.dataset.desc!;
         modalTitle.textContent = title;
@@ -253,10 +243,7 @@ const feed = await response.json();
       modal.classList.remove('active');
       modalVideo.pause();
       modalVideo.src = '';
-      if (hlsInstance) {
-        hlsInstance.destroy();
-        hlsInstance = null;
-      }
+      if (hlsInstance) { hlsInstance.destroy(); hlsInstance = null; }
     }
 
     modalClose.addEventListener('click', closeModal);

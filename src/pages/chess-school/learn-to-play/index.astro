@@ -1,0 +1,98 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+export const prerender = true;
+---
+
+<BaseLayout title="Learn How to Play Chess — Mind's Gambit Chess School">
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo"><img src="/images/logo.jpg" alt="Mind's Gambit" style="height:55px;width:55px;border-radius:50%;object-fit:cover;border:2px solid #c8a84e;margin-left:10px;vertical-align:middle;" /></a>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/chess-school/grandmasters">Grandmasters</a></li>
+        <li><a href="/chess-school/resources">Resources</a></li>
+        <li><a href="/#contact" class="nav-btn">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="page">
+    <a href="/" class="back-link">&larr; Back to Mind's Gambit</a>
+    <span class="eyebrow">Mind's Gambit Chess School</span>
+    <h1>Learn How to Play Chess</h1>
+    <p class="lead">New to chess? Start here. The game's basic rules can be learned in an afternoon &mdash; and from there, an entire lifetime of depth opens up.</p>
+
+    <div class="path-card">
+      <h2>Step 1 &mdash; Learn the pieces and how they move</h2>
+      <p>Six different pieces, each with its own movement pattern. The best free walkthroughs are interactive boards that let you try moves immediately.</p>
+      <div class="path-actions">
+        <a href="https://www.chess.com/learn-how-to-play-chess" target="_blank" rel="noopener" class="path-btn">Chess.com Tutorial &rarr;</a>
+        <a href="https://lichess.org/learn" target="_blank" rel="noopener" class="path-btn">Lichess Learn &rarr;</a>
+      </div>
+    </div>
+
+    <div class="path-card">
+      <h2>Step 2 &mdash; Play a lot of games</h2>
+      <p>The fastest way to internalize the patterns is to play. Start with longer time controls (10 to 15 minutes) so you can actually think. Blitz comes later.</p>
+      <div class="path-actions">
+        <a href="https://www.chess.com/play/online" target="_blank" rel="noopener" class="path-btn">Play on Chess.com &rarr;</a>
+        <a href="https://lichess.org/play" target="_blank" rel="noopener" class="path-btn">Play on Lichess &rarr;</a>
+      </div>
+    </div>
+
+    <div class="path-card">
+      <h2>Step 3 &mdash; Solve tactics every day</h2>
+      <p>Tactics are short puzzles where there's a winning move to find. Doing five to ten a day, every day, will teach your brain the patterns faster than anything else. This is the single highest-return habit in chess.</p>
+      <div class="path-actions">
+        <a href="https://www.chess.com/puzzles" target="_blank" rel="noopener" class="path-btn">Daily Tactics on Chess.com &rarr;</a>
+        <a href="https://lichess.org/training" target="_blank" rel="noopener" class="path-btn">Tactics on Lichess &rarr;</a>
+      </div>
+    </div>
+
+    <div class="path-card path-card-featured">
+      <h2>Step 4 &mdash; Work with a coach</h2>
+      <p>Once you're playing regularly and want to improve seriously, one-on-one work with a titled coach is the fastest path forward. The Mind's Gambit Chess School maintains a curated roster of grandmaster teachers who work with students at every level.</p>
+      <a href="/chess-school/grandmasters" class="path-btn-primary">Meet our Grandmasters &rarr;</a>
+    </div>
+
+    <footer class="page-footer">
+      <p class="footer-credit">&copy; 2026 Mourad Bouajaja. Mind's Gambit Chess School is a production of &copy; MYB Studio LLC.</p>
+    </footer>
+  </section>
+</BaseLayout>
+
+<style is:global>
+nav { background: rgba(15,17,28,0.95); border-bottom: 1px solid rgba(201,168,76,0.2); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
+.nav-inner { max-width: 1200px; margin: 0 auto; padding: 0.75rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+.nav-links { display: flex; gap: 2rem; list-style: none; margin: 0; padding: 0; align-items: center; }
+.nav-links a { color: #e8e0d0; text-decoration: none; font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; font-family: 'Playfair Display', Georgia, serif; transition: color 0.3s; }
+.nav-links a:hover { color: #c9a84c; }
+.nav-btn { background: #c9a84c !important; color: #0f111c !important; padding: 0.5rem 1.25rem; border-radius: 4px; font-weight: 600; }
+
+.page { max-width: 900px; margin: 0 auto; padding: 3rem 1.5rem; }
+.back-link { color: #c9a84c; text-decoration: none; font-size: 0.9rem; letter-spacing: 0.05em; display: inline-block; margin-bottom: 2rem; }
+.back-link:hover { opacity: 0.7; }
+.eyebrow { color: #c9a84c; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.25em; display: block; margin-bottom: 1rem; }
+.page h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 3rem; color: #e8e0d0; line-height: 1.1; margin: 0 0 1rem; }
+.lead { color: rgba(232,224,208,0.8); font-size: 1.2rem; font-family: 'EB Garamond', Georgia, serif; line-height: 1.6; margin: 0 0 3rem; max-width: 740px; }
+
+.path-card { background: rgba(30,34,52,0.5); border: 1px solid rgba(201,168,76,0.2); border-radius: 12px; padding: 2rem; margin-bottom: 1.5rem; font-family: 'EB Garamond', Georgia, serif; }
+.path-card h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.5rem; color: #c9a84c; margin: 0 0 0.75rem; }
+.path-card p { color: #e0e0e0; font-size: 1.05rem; line-height: 1.6; margin: 0 0 1.25rem; }
+.path-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+.path-btn { background: transparent; border: 1px solid #c9a84c; color: #c9a84c; padding: 0.65rem 1.25rem; border-radius: 6px; text-decoration: none; font-size: 0.9rem; letter-spacing: 0.05em; transition: all 0.25s; }
+.path-btn:hover { background: rgba(201,168,76,0.15); }
+
+.path-card-featured { background: linear-gradient(135deg, rgba(201,168,76,0.12) 0%, rgba(30,34,52,0.5) 100%); border-color: #c9a84c; }
+.path-btn-primary { display: inline-block; background: #c9a84c; color: #0f111c; padding: 0.85rem 1.75rem; border-radius: 6px; text-decoration: none; font-size: 1rem; font-weight: 700; letter-spacing: 0.05em; transition: all 0.25s; box-shadow: 0 4px 20px rgba(201,168,76,0.25); }
+.path-btn-primary:hover { background: #d4b356; transform: translateY(-2px); }
+
+.page-footer { margin-top: 4rem; padding-top: 2rem; text-align: center; border-top: 1px solid rgba(201,168,76,0.1); }
+.footer-credit { color: rgba(232,224,208,0.4); font-size: 0.8rem; font-family: 'EB Garamond', Georgia, serif; }
+
+@media (max-width: 720px) {
+  .page h1 { font-size: 2.25rem; }
+  .path-actions { flex-direction: column; }
+}
+</style>

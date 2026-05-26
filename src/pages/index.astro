@@ -24,13 +24,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <li><a href="#podcast">Podcast</a></li>
       <li><a href="#portfolio">Portfolio</a></li>
       <li><a href="#services">Services</a></li>
+      <li class="has-dropdown">
+        <a href="/chess-school/grandmasters" class="dropdown-toggle">Chess School <span class="caret">&#9662;</span></a>
+        <ul class="dropdown-menu">
+          <li><a href="/chess-school/grandmasters">Learn from Grandmasters</a></li>
+          <li><a href="/chess-school/resources">Chess Resources</a></li>
+          <li><a href="/chess-school/learn-to-play">Learn How to Play Chess</a></li>
+        </ul>
+      </li>
       <li><a href="#donate">Donate</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </div>
 </nav>
 
-<script>document.querySelectorAll('.nav-links a').forEach(function(a){a.addEventListener('click',function(){var t=a.getAttribute('href');if(t){var el=document.querySelector(t);if(el)setTimeout(function(){el.scrollIntoView({behavior:'instant',block:'start'});},300);}});});</script><style>section[data-reveal]{transition:transform 0.3s ease;overflow:hidden;}section[data-reveal]:hover{transform:scale(1.02);}#about,#book,#blog,#podcast{padding-top:10px !important;scroll-margin-top:80px;}
+<script>document.querySelectorAll('.nav-links a').forEach(function(a){a.addEventListener('click',function(){var t=a.getAttribute('href');if(t&&t.indexOf('#')===0){var el=document.querySelector(t);if(el)setTimeout(function(){el.scrollIntoView({behavior:'instant',block:'start'});},300);}});});</script><style>section[data-reveal]{transition:transform 0.3s ease;overflow:hidden;}section[data-reveal]:hover{transform:scale(1.02);}#about,#book,#blog,#podcast{padding-top:10px !important;scroll-margin-top:80px;}
   @keyframes comingSoonBlink {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.3; }
@@ -88,6 +96,62 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     @keyframes ctaPulse {
       0%, 100% { box-shadow: 0 0 20px rgba(201, 168, 76, 0.3); }
       50% { box-shadow: 0 0 40px rgba(201, 168, 76, 0.6), 0 0 60px rgba(201, 168, 76, 0.2); }
+    }
+
+    /* Chess School dropdown */
+    .nav-links .has-dropdown { position: relative; }
+    .nav-links .has-dropdown > .dropdown-toggle { display: inline-flex; align-items: center; gap: 0.35rem; }
+    .nav-links .has-dropdown > .dropdown-toggle .caret { font-size: 0.7em; transition: transform 0.2s; }
+    .nav-links .has-dropdown:hover > .dropdown-toggle .caret,
+    .nav-links .has-dropdown:focus-within > .dropdown-toggle .caret { transform: rotate(180deg); color: #c9a84c; }
+    .nav-links .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 17, 28, 0.98);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(201, 168, 76, 0.3);
+      border-radius: 8px;
+      padding: 0.5rem 0;
+      min-width: 260px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
+      list-style: none;
+      margin: 0;
+      gap: 0;
+      flex-direction: column;
+      z-index: 200;
+    }
+    .nav-links .has-dropdown:hover > .dropdown-menu,
+    .nav-links .has-dropdown:focus-within > .dropdown-menu { display: flex; }
+    .nav-links .dropdown-menu li { padding: 0; }
+    .nav-links .dropdown-menu a {
+      display: block;
+      padding: 0.7rem 1.1rem;
+      text-transform: none;
+      letter-spacing: 0.02em;
+      font-size: 0.85rem;
+      font-family: 'Playfair Display', Georgia, serif;
+      color: #e8e0d0;
+      white-space: nowrap;
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-links .dropdown-menu a:hover,
+    .nav-links .dropdown-menu a:focus { background: rgba(201, 168, 76, 0.12); color: #c9a84c; }
+
+    @media (max-width: 880px) {
+      .nav-links .dropdown-menu {
+        position: static;
+        transform: none;
+        display: none;
+        box-shadow: none;
+        border: none;
+        background: transparent;
+        padding: 0;
+        margin-top: 0.5rem;
+      }
+      .nav-links .has-dropdown.open > .dropdown-menu { display: flex; }
     }
 
   </style>

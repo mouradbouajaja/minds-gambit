@@ -19,13 +19,13 @@ Ask any tournament player what their rating is, and they will tell you immediate
 
 ### Origins of the System
 
-Arpad Elo was a physics professor at Marquette University and a chess player of moderate strength. He was asked by the United States Chess Federation to develop a more accurate rating system than the one then in use, which was riddled with inconsistencies. What he produced was elegant: a system based on expected versus actual results, where the probability of winning could be calculated from the difference between two players’ ratings.
+Arpad Elo was a physics professor at Marquette University and a chess player of moderate strength. He was asked by the United States Chess Federation to develop a more accurate rating system than the one then in use, which was riddled with inconsistencies. What he produced was elegant: a system based on expected versus actual results, where the probability of winning could be calculated from the difference between two players' ratings.
 
 The mathematics were borrowed from psychometrics—the science of measuring mental capacities. This is the first irony. A system designed to measure performance was built on tools designed to measure minds. The conflation was baked in from the start.
 
 ### When the Measure Becomes the Goal
 
-Goodhart’s Law states that when a measure becomes a target, it ceases to be a good measure. In chess, this transformation is total. Players do not play to improve; they play to raise their rating. They avoid stronger opponents who might lower it. They enter tournaments strategically, calculating not which events will make them better players but which will protect or inflate their number.
+Goodhart's Law states that when a measure becomes a target, it ceases to be a good measure. In chess, this transformation is total. Players do not play to improve; they play to raise their rating. They avoid stronger opponents who might lower it. They enter tournaments strategically, calculating not which events will make them better players but which will protect or inflate their number.
 
 The rating, meant to reflect ability, now shapes ability. A player rated 1800 begins to believe they are an 1800-level player—no more, no less. The number creates a ceiling that has nothing to do with talent and everything to do with self-perception.
 
@@ -42,3 +42,19 @@ The Elo system has escaped chess entirely. It now rates everything from football
 In chess, at least, we know what we are measuring—or think we do. In life, the numbers we assign to ourselves and others are far less precise and far more damaging. The Elo system teaches us something important about all measurement: the moment we reduce a person to a number, we have already lost something essential about who they are.
 
 The question is not whether we can measure. The question is what we forget when we do.
+
+---
+
+<div style="margin-top:4rem; padding:2.25rem; background:linear-gradient(135deg, rgba(201,168,76,0.12) 0%, rgba(30,34,52,0.7) 100%); border:1px solid #c9a84c; border-radius:14px; box-shadow:0 12px 36px rgba(201,168,76,0.15);">
+
+<span style="display:inline-block; background:#c9a84c; color:#0f111c; padding:0.3rem 0.85rem; border-radius:999px; font-size:0.72rem; font-weight:800; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:1.25rem; font-family:'Playfair Display', Georgia, serif;">Peer Review</span>
+
+<p style="font-size:1.15rem; line-height:1.75; font-style:italic; color:#e8e0d0; margin:0 0 1.5rem;">"I had a chance to read the article on Mind's Gambit, 'The Number: Elo Ratings, Identity, and the Sociology of Competitive Chess,' and I found it to be a thoughtful and well-developed reflection on how the Elo rating system influences not only competitive structures but also player identity and perception within modern chess culture. What stands out is the ability to move beyond purely technical discussion and explore the psychological and social dimensions surrounding competitive chess. The writing is clear, intellectually engaging, and supported by a strong sense of purpose throughout the platform itself. This project brings an interesting and distinctive perspective to contemporary chess discourse."</p>
+
+<div style="border-top:1px solid rgba(201,168,76,0.25); padding-top:1.25rem;">
+<strong style="color:#c9a84c; font-size:1.05rem; font-family:'Playfair Display', Georgia, serif;">WGM Maryana Huda</strong><br>
+<span style="color:rgba(232,224,208,0.7); font-size:0.92rem;">Woman Grandmaster (FIDE) · FIDE Trainer · Master of Physical Culture and Sports</span><br>
+<a href="/chess-school/grandmasters/maryana-huda" style="color:#c9a84c; font-size:0.9rem; display:inline-block; margin-top:0.75rem; letter-spacing:0.04em;">View Coach Profile →</a>
+</div>
+
+</div>

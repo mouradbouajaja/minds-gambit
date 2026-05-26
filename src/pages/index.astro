@@ -9,7 +9,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <!-- FLOATING CHESS PARTICLES -->
 <div class="particles-container" id="particles"></div>
 
-<!-- NAV -->h
+<!-- NAV -->
 <nav id="navbar">
   <div class="nav-inner">
     <a href="#home" class="nav-logo"><img src="/images/logo.jpg" alt="Mind's Gambit" style="height:55px;width:55px;border-radius:50%;object-fit:cover;border:2px solid #c8a84e;margin-left:10px;vertical-align:middle;" /></a>
@@ -26,12 +26,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <li><a href="#services">Services</a></li>
       <li><a href="#donate">Donate</a></li>
       <li><a href="#contact">Contact</a></li>
-      <li class="nav-auth"><button id="clerk-sign-in-btn" class="nav-sign-in" onclick="openClerkSignIn()">Sign In</button></li>
     </ul>
   </div>
 </nav>
 
-<script>document.querySelectorAll('.nav-links a').forEach(function(a){a.addEventListener('click',function(){document.body.classList.remove('content-locked');var g=document.getElementById('content-gate');if(g)g.style.display='none';var t=a.getAttribute('href');if(t){var el=document.querySelector(t);if(el)setTimeout(function(){el.scrollIntoView({behavior:'instant',block:'start'});},300);}});});</script><style>section[data-reveal]{transition:transform 0.3s ease;overflow:hidden;}section[data-reveal]:hover{transform:scale(1.02);}#about,#book,#blog,#podcast{padding-top:10px !important;scroll-margin-top:80px;}
+<script>document.querySelectorAll('.nav-links a').forEach(function(a){a.addEventListener('click',function(){var t=a.getAttribute('href');if(t){var el=document.querySelector(t);if(el)setTimeout(function(){el.scrollIntoView({behavior:'instant',block:'start'});},300);}});});</script><style>section[data-reveal]{transition:transform 0.3s ease;overflow:hidden;}section[data-reveal]:hover{transform:scale(1.02);}#about,#book,#blog,#podcast{padding-top:10px !important;scroll-margin-top:80px;}
   @keyframes comingSoonBlink {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.3; }
@@ -91,17 +90,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       50% { box-shadow: 0 0 40px rgba(201, 168, 76, 0.6), 0 0 60px rgba(201, 168, 76, 0.2); }
     }
 
-  </style><!-- CONTENT GATE -->
-<div id="content-gate" class="content-gate">
-  <div class="gate-overlay"></div>
-  <div class="gate-message">
-    
-    <h2>Create a free account or log in</h2>
-    <p>Gain access to articles, podcast episodes, and exclusive content.</p>
-    <button id="gate-signup-btn" class="gate-btn gate-btn-primary" onclick="openClerkSignUp()">Create a Free Account</button>
-    <button id="gate-signin-btn" class="gate-btn gate-btn-secondary" onclick="openClerkSignIn()">Log In</button><p class="gate-terms">By continuing, you agree to our <a href="#" onclick="document.getElementById('termsModal').classList.add('active');return false;">Terms</a> and <a href="#" onclick="document.getElementById('privacyModal').classList.add('active');return false;">Privacy Policy</a></p>
-  </div>
-</div>
+  </style>
 
 <!-- HERO -->
 <section class="hero" id="home" data-reveal>
@@ -185,7 +174,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div class="chapter-info">
           <h4>The Myth of the Mad Genius</h4>
           <p>Paul Morphy, Wilhelm Steinitz, and the origins of a dangerous narrative</p>
-        
+
           <span class="chapter-status in-progress">In Progress</span></div>
       </div>
       <div class="chapter-card">
@@ -193,7 +182,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div class="chapter-info">
           <h4>Two Endgames: From Fischer to Naroditsky</h4>
           <p>Genius without support, decades apart</p>
-        
+
           <span class="chapter-status in-progress">In Progress</span></div>
       </div>
       <div class="chapter-card">
@@ -201,7 +190,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div class="chapter-info">
           <h4>The Body at the Board</h4>
           <p>The science of competitive stress in chess</p>
-        
+
           <span class="chapter-status in-progress">In Progress</span></div>
       </div>
       <div class="chapter-card">
@@ -209,7 +198,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div class="chapter-info">
           <h4>One More Game</h4>
           <p>Digital chess, compulsive play, and the architecture of addiction</p>
-        
+
           <span class="chapter-status in-progress">In Progress</span></div>
       </div>
       <div class="chapter-card">
@@ -217,7 +206,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div class="chapter-info">
           <h4>The Pattern Seekers</h4>
           <p>Chess and neurodivergence &mdash; a game built for different minds</p>
-        
+
           <span class="chapter-status in-progress">In Progress</span></div>
       </div>
       <div class="chapter-card">
@@ -225,7 +214,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div class="chapter-info">
           <h4>Medicine on 64 Squares</h4>
           <p>From ninth-century Baghdad to modern prisons: chess as therapy</p>
-        
+
           <span class="chapter-status in-progress">In Progress</span></div>
       </div>
       <div class="chapter-card">
@@ -233,7 +222,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div class="chapter-info">
           <h4>The Queen's Burden</h4>
           <p>Women, hostility, and the mental health cost of playing in a man's world</p>
-        
+
           <span class="chapter-status in-progress">In Progress</span></div>
       </div>
       <div class="chapter-card">
@@ -241,7 +230,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div class="chapter-info">
           <h4>The Youngest Pawns</h4>
           <p>Ratings, parents, burnout, and the question of childhood in chess</p>
-        
+
           <span class="chapter-status in-progress">In Progress</span></div>
       </div>
       <div class="chapter-card">
@@ -249,7 +238,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div class="chapter-info">
           <h4>The Ghost in the Machine</h4>
           <p>Chess in the age of artificial intelligence</p>
-        
+
           <span class="chapter-status in-progress">In Progress</span></div>
       </div>
     </div>
@@ -316,11 +305,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <div class="episodes-grid">
       <div class="episode-card episode-published">
               <div class="episode-embed">
-                <iframe 
-                  src="https://www.youtube.com/embed/TC8F4YSz-7k?start=72&rel=0" 
+                <iframe
+                  src="https://www.youtube.com/embed/TC8F4YSz-7k?start=72&rel=0"
                   title="The Mind's Gambit - Pilot Episode"
-                  frameborder="0" 
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowfullscreen>
                 </iframe>
               </div>
@@ -594,7 +583,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
         </a>
         <!-- YouTube - Official brand icon -->
-        <a href="https://www.youtube.com/@BMY-w7m" target="_blank" rel="noopener" aria-label="YouTube" class="social-btn social-youtube">
+        <a href="https://www.youtube.com/@MouradYBouajaja" target="_blank" rel="noopener" aria-label="YouTube" class="social-btn social-youtube">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
         </a>
         <!-- Substack - Official brand icon -->
@@ -607,37 +596,37 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <span class="footer-legal-sep">|</span>
         <a href="#" class="footer-legal-link" onclick="document.getElementById('privacyModal').classList.add('active');return false;">Privacy</a>
       </div>
-      <p class="footer-copy">&copy; 2026 Mourad Bouajaja. All rights reserved.</p>
+      <p class="footer-copy">&copy; 2026 Mourad Bouajaja. All rights reserved. The Mind's Gambit is a production of &copy; MYB Studio LLC.</p>
     </div>
-  
+
     <!-- Terms Modal -->
     <div id="termsModal" class="legal-modal">
       <div class="legal-modal-content">
         <button class="legal-modal-close" onclick="this.closest('.legal-modal').classList.remove('active')">&times;</button>
         <h2>Terms of Service</h2>
         <p class="legal-updated">Last updated: February 27, 2026</p>
-        
+
         <h3>1. Acceptance of Terms</h3>
         <p>By accessing and using this website (minds-gambit.vercel.app), you agree to be bound by these Terms of Service. If you do not agree, please do not use this site.</p>
-        
+
         <h3>2. Intellectual Property</h3>
         <p>All content on this website &#8212; including text, articles, book excerpts, podcast episodes, images, and design elements &#8212; is the intellectual property of Mourad Bouajaja unless otherwise stated. You may not reproduce, distribute, or republish any content without prior written permission.</p>
-        
+
         <h3>3. Use of Content</h3>
         <p>You are welcome to share links to articles and episodes. Brief quotations for review, commentary, or academic purposes are permitted with proper attribution. Unauthorized commercial use of any content is strictly prohibited.</p>
-        
+
         <h3>4. User Conduct</h3>
         <p>When interacting with this site (comments, contact forms, or community features), you agree not to submit content that is defamatory, abusive, hateful, or violates any law. We reserve the right to remove any content that violates these terms.</p>
-        
+
         <h3>5. External Links</h3>
         <p>This site may contain links to third-party platforms (YouTube, Substack, social media). We are not responsible for the content, privacy practices, or terms of these external sites.</p>
-        
+
         <h3>6. Disclaimer</h3>
         <p>Content on this site is provided for informational and educational purposes. The views expressed in articles and podcast episodes represent the author&#8217;s perspective and do not constitute professional advice. The Mind&#8217;s Gambit explores sensitive topics including mental health and child welfare &#8212; if you or someone you know needs support, please contact a qualified professional.</p>
-        
+
         <h3>7. Modifications</h3>
         <p>We reserve the right to update these terms at any time. Continued use of the site after changes constitutes acceptance of the revised terms.</p>
-        
+
         <h3>8. Contact</h3>
         <p>For questions about these terms, contact: <a href="mailto:Mourad@mindsgambit.com">Mourad@mindsgambit.com</a></p>
       </div>
@@ -649,34 +638,34 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <button class="legal-modal-close" onclick="this.closest('.legal-modal').classList.remove('active')">&times;</button>
         <h2>Privacy Policy</h2>
         <p class="legal-updated">Last updated: February 27, 2026</p>
-        
+
         <h3>1. Information We Collect</h3>
         <p>We may collect limited information when you interact with this site:</p>
         <p>&#8226; <strong>Contact Form:</strong> Name, email address, and message content when you voluntarily submit the contact form.</p>
         <p>&#8226; <strong>Analytics:</strong> Anonymous usage data such as pages visited, time on site, and general geographic region through standard web analytics.</p>
         <p>&#8226; <strong>Cookies:</strong> Essential cookies for site functionality. No advertising or tracking cookies are used.</p>
-        
+
         <h3>2. How We Use Your Information</h3>
         <p>Any information collected is used solely to respond to your inquiries, improve the website experience, and communicate updates about The Mind&#8217;s Gambit (only if you opt in). We will never sell, rent, or share your personal information with third parties.</p>
-        
+
         <h3>3. Third-Party Services</h3>
         <p>This site integrates with third-party services that have their own privacy policies:</p>
         <p>&#8226; <strong>YouTube</strong> (embedded video player) &#8212; Google Privacy Policy applies</p>
         <p>&#8226; <strong>Substack</strong> (newsletter and articles) &#8212; Substack Privacy Policy applies</p>
         <p>&#8226; <strong>Vercel</strong> (hosting) &#8212; Vercel Privacy Policy applies</p>
-        
+
         <h3>4. Data Security</h3>
         <p>We take reasonable measures to protect any personal data collected. However, no method of electronic transmission or storage is 100% secure.</p>
-        
+
         <h3>5. Your Rights</h3>
         <p>You have the right to request access to, correction of, or deletion of any personal data we hold about you. To exercise these rights, contact us at the email below.</p>
-        
+
         <h3>6. Children&#8217;s Privacy</h3>
         <p>This site does not knowingly collect personal information from children under 13. If you believe we have inadvertently collected such data, please contact us immediately.</p>
-        
+
         <h3>7. Changes to This Policy</h3>
         <p>We may update this Privacy Policy from time to time. Changes will be posted on this page with an updated date.</p>
-        
+
         <h3>8. Contact</h3>
         <p>For privacy-related questions: <a href="mailto:Mourad@mindsgambit.com">Mourad@mindsgambit.com</a></p>
       </div>
@@ -688,14 +677,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <script>
   // ===== SCROLL PROGRESS BAR =====
   const progressBar = document.getElementById('scrollProgress');
-  
+
   // ===== FLOATING CHESS PARTICLES =====
   const particlesContainer = document.getElementById('particles');
   const chessPieces = [
-    '\u2654', '\u2655', '\u2656', '\u2657', '\u2658', '\u2659',
-    '\u265A', '\u265B', '\u265C', '\u265D', '\u265E', '\u265F'
+    '♔', '♕', '♖', '♗', '♘', '♙',
+    '♚', '♛', '♜', '♝', '♞', '♟'
   ];
-  
+
   for (let i = 0; i < 30; i++) {
     const particle = document.createElement('span');
     particle.className = 'particle';
@@ -708,7 +697,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     particle.style.opacity = 0.12 + Math.random() * 0.16;
     particlesContainer.appendChild(particle);
   }
-  
+
   // ===== SCROLL-TRIGGERED REVEAL ANIMATIONS =====
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -723,11 +712,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       }
     });
   }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-  
+
   document.querySelectorAll('[data-reveal]').forEach(el => {
     revealObserver.observe(el);
   });
-  
+
   // ===== 3D TILT ON CHAPTER CARDS =====
   document.querySelectorAll('.chapter-card').forEach(card => {
     card.addEventListener('mousemove', (e) => {
@@ -740,7 +729,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       card.style.transform = 'perspective(800px) rotateY(0deg) rotateX(0deg) scale(1)';
     });
   });
-  
+
   // ===== PARALLAX SCROLL EFFECTS =====
   let ticking = false;
   function onScroll() {
@@ -748,18 +737,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       requestAnimationFrame(() => {
         const scrollY = window.scrollY;
         const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-        
+
         // Scroll progress bar
         if (progressBar) {
           progressBar.style.width = ((scrollY / maxScroll) * 100) + '%';
         }
-        
+
         // Navbar background on scroll
         const navbar = document.getElementById('navbar');
         if (navbar) {
           navbar.classList.toggle('scrolled', scrollY > 50);
         }
-        
+
         // Parallax hero elements
         const hero = document.getElementById('home');
         if (hero && scrollY < window.innerHeight) {
@@ -768,20 +757,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           if (heroContent) heroContent.style.transform = 'translateY(' + (scrollY * 0.3) + 'px)';
           if (bookCover) bookCover.style.transform = 'translateY(' + (scrollY * 0.15) + 'px)';
         }
-        
+
         ticking = false;
       });
       ticking = true;
     }
   }
   window.addEventListener('scroll', onScroll, { passive: true });
-  
+
   // ===== HERO TEXT REVEAL ANIMATION =====
   const heroTitle = document.querySelector('.hero-title');
   if (heroTitle) {
     heroTitle.classList.add('text-reveal');
   }
-  
+
   // ===== SMOOTH SCROLL FOR NAV LINKS =====
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
@@ -794,7 +783,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       }
     });
   });
-  
+
   // ===== ARTICLE TOGGLE =====
   function toggleArticle(id) {
     const body = document.getElementById(id);
@@ -808,7 +797,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     }
   }
   window.toggleArticle = toggleArticle;
-  
+
   // ===== MAGNETIC HOVER ON CTA BUTTONS =====
   document.querySelectorAll('.cta-btn, .social-btn').forEach(btn => {
     btn.addEventListener('mousemove', (e) => {
@@ -821,55 +810,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       btn.style.transform = '';
     });
   });
-  
+
   // ===== REDUCED MOTION RESPECT =====
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     document.documentElement.style.setProperty('--animation-duration', '0s');
     document.querySelectorAll('.particle').forEach(p => p.remove());
   }
-
-  // === CLERK AUTHENTICATION & CONTENT GATE ===
-  window.openClerkSignIn = function() {
-    if (window.Clerk) {
-      window.Clerk.openSignIn({ afterSignInUrl: window.location.href, afterSignUpUrl: window.location.href });
-    }
-  }
-  window.openClerkSignUp = function() {
-    if (window.Clerk) {
-      window.Clerk.openSignUp({ afterSignInUrl: window.location.href, afterSignUpUrl: window.location.href });
-    }
-  }
-  window.updateAuthUI = function(user) {
-    const gate = document.getElementById('content-gate');
-    const signInBtn = document.getElementById('clerk-sign-in-btn');
-    if (user) {
-      if (gate) gate.style.display = 'none';
-      document.body.classList.remove('content-locked');
-      if (signInBtn) {
-        signInBtn.textContent = 'Sign Out';
-        signInBtn.onclick = function() { window.Clerk.signOut(); };
-      }
-    } else {
-      var _sf=function(){if(window.scrollY>80){var ov=document.getElementById("nyt-override");if(ov)ov.remove();var ov=document.getElementById("nyt-override");if(ov)ov.remove();if(gate){gate.style.display="flex";}document.body.classList.add("content-locked");document.body.style.overflow="hidden";window.removeEventListener("scroll",_sf);}};if(window.scrollY>80){_sf();}else{window.addEventListener("scroll",_sf);}
-      // body lock handled by scroll trigger
-      if (signInBtn) {
-        signInBtn.textContent = 'Sign In';
-        signInBtn.onclick = window.openClerkSignIn;
-      }
-    }
-  }
-  window.initClerk = function() {
-    if (window.Clerk) {
-      window.Clerk.load().then(function() {
-        window.updateAuthUI(window.Clerk.user);
-        window.Clerk.addListener(function(e) {
-          window.updateAuthUI(e.user);
-        });
-      });
-    } else {
-      setTimeout(window.initClerk, 200);
-    }
-  }
-  window.initClerk();
 </script>
 </BaseLayout>

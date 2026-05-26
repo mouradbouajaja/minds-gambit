@@ -1,0 +1,180 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+export const prerender = true;
+
+const teacher = {
+  name: "WGM Maryana Huda",
+  title: "Woman Grandmaster",
+  shortTitle: "WGM",
+  tagline: "Coach · Chess Educator · Olympiad Veteran",
+  // PLACEHOLDER: Upload photo to /public/images/teachers/maryana-huda.jpg and uncomment the line below
+  photo: "/images/teachers/maryana-huda.jpg",
+  photoPlaceholder: true, // set to false once real photo is uploaded
+  federation: "Ukraine",
+  languages: ["English", "Ukrainian", "Russian"],
+  // PLACEHOLDER: Replace with Huda's actual email when she confirms
+  contactEmail: "Mourad@mindsgambit.com",
+  // PLACEHOLDER: Optional Calendly / booking link
+  bookingUrl: null,
+  // PLACEHOLDER: Optional external profile links
+  chessComProfile: null,
+  lichessProfile: null,
+  fideProfile: null
+};
+---
+
+<BaseLayout title={`${teacher.name} — Chess School — The Mind's Gambit`}>
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo"><img src="/images/logo.jpg" alt="Mind's Gambit" style="height:55px;width:55px;border-radius:50%;object-fit:cover;border:2px solid #c8a84e;margin-left:10px;vertical-align:middle;" /></a>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/chess-school/grandmasters">All Grandmasters</a></li>
+        <li><a href="/#contact" class="nav-btn">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="teacher-page">
+    <a href="/chess-school/grandmasters" class="back-link">&larr; All Grandmasters</a>
+
+    <header class="teacher-header">
+      <div class="teacher-photo-wrap">
+        {teacher.photoPlaceholder
+          ? <div class="teacher-photo-placeholder">
+              <span class="placeholder-monogram">MH</span>
+              <span class="placeholder-note">Photo coming soon</span>
+            </div>
+          : <img src={teacher.photo} alt={teacher.name} class="teacher-photo" />
+        }
+      </div>
+
+      <div class="teacher-intro">
+        <span class="teacher-eyebrow">Learn from Grandmasters</span>
+        <h1 class="teacher-name">{teacher.name}</h1>
+        <p class="teacher-tagline">{teacher.tagline}</p>
+        <div class="teacher-badges">
+          <span class="badge badge-primary">{teacher.shortTitle}</span>
+          <span class="badge">Federation: {teacher.federation}</span>
+        </div>
+      </div>
+    </header>
+
+    <section class="teacher-section">
+      <h2>About Maryana</h2>
+      <p>Maryana Huda is a Woman Grandmaster titled by FIDE, the International Chess Federation. She has competed at the international level for more than a decade, representing her national team in major events including the Chess Olympiad and contributing to women's chess at the highest tiers of competitive play.</p>
+      <p>Her coaching draws on a lifetime of tournament experience and deep technical study across all phases of the game &mdash; opening theory, middlegame strategy, and endgame technique. She works with students at every level, from ambitious club players to titled competitors preparing for serious events.</p>
+      <p>What sets Maryana's coaching apart is her emphasis on the <em>thinking</em> behind the moves: pattern recognition, calculation discipline, and the psychological dimensions of competitive play that separate strong club players from elite performers.</p>
+      <!-- PLACEHOLDER: Replace the three paragraphs above with Maryana's approved bio when she confirms. -->
+    </section>
+
+    <section class="teacher-section">
+      <h2>Coaching specialties</h2>
+      <ul class="specialty-list">
+        <li><strong>Opening repertoires</strong> &mdash; tailored to your style and ambition</li>
+        <li><strong>Middlegame strategy</strong> &mdash; pattern recognition and positional planning</li>
+        <li><strong>Endgame technique</strong> &mdash; the precision phase where rated points are won and lost</li>
+        <li><strong>Tournament preparation</strong> &mdash; opening prep, opponent study, mental conditioning</li>
+        <li><strong>Game analysis</strong> &mdash; honest review of your own games to find recurring errors</li>
+        <li><strong>Women's competitive chess</strong> &mdash; the unique pressures and pathways of the women's circuit</li>
+      </ul>
+    </section>
+
+    <section class="teacher-section">
+      <h2>Teaching approach</h2>
+      <p>Maryana believes chess is taught best one-on-one &mdash; through close, sustained attention to your own games and the kind of honest analysis that group lessons cannot provide. Lessons are conducted online via video and a shared interactive board, with the flexibility to fit your schedule across time zones.</p>
+      <p>Students typically begin with an introductory session to assess current level, identify priorities, and design a personalized curriculum. From there, sessions follow a rhythm of analysis, study, practice, and review.</p>
+    </section>
+
+    <section class="teacher-section">
+      <h2>Languages</h2>
+      <p class="language-list">
+        {teacher.languages.map((lang, i) => (
+          <span class="language-chip">{lang}</span>
+        ))}
+      </p>
+    </section>
+
+    <section class="teacher-cta">
+      <h2>Book a Lesson</h2>
+      <p class="cta-lead">Ready to work with Maryana? Reach out below and we'll connect you for an introductory session.</p>
+
+      {teacher.bookingUrl ? (
+        <a href={teacher.bookingUrl} target="_blank" rel="noopener" class="btn-primary">Schedule a Session</a>
+      ) : (
+        <a href={`mailto:${teacher.contactEmail}?subject=Chess Lessons with WGM Maryana Huda`} class="btn-primary">Inquire by Email</a>
+      )}
+
+      <p class="cta-note">For general questions or to be referred, you can also reach the Mind's Gambit team at <a href="mailto:Mourad@mindsgambit.com">Mourad@mindsgambit.com</a>.</p>
+    </section>
+
+    <footer class="teacher-footer">
+      <div class="footer-divider"></div>
+      <p class="footer-credit">&copy; 2026 Mourad Bouajaja. Mind's Gambit Chess School is a production of &copy; MYB Studio LLC.</p>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style is:global>
+nav { background: rgba(15,17,28,0.95); border-bottom: 1px solid rgba(201,168,76,0.2); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
+.nav-inner { max-width: 1200px; margin: 0 auto; padding: 0.75rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+.nav-links { display: flex; gap: 2rem; list-style: none; margin: 0; padding: 0; align-items: center; }
+.nav-links a { color: #e8e0d0; text-decoration: none; font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; font-family: 'Playfair Display', Georgia, serif; transition: color 0.3s; }
+.nav-links a:hover { color: #c9a84c; }
+.nav-btn { background: #c9a84c !important; color: #0f111c !important; padding: 0.5rem 1.25rem; border-radius: 4px; font-weight: 600; }
+
+.teacher-page { max-width: 900px; margin: 0 auto; padding: 3rem 1.5rem; }
+.back-link { color: #c9a84c; text-decoration: none; font-size: 0.9rem; letter-spacing: 0.05em; display: inline-block; margin-bottom: 2rem; transition: opacity 0.3s; }
+.back-link:hover { opacity: 0.7; }
+
+.teacher-header { display: grid; grid-template-columns: 280px 1fr; gap: 3rem; align-items: center; margin-bottom: 4rem; padding-bottom: 3rem; border-bottom: 1px solid rgba(201,168,76,0.2); }
+.teacher-photo-wrap { width: 280px; height: 280px; }
+.teacher-photo { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 3px solid rgba(201,168,76,0.4); box-shadow: 0 12px 40px rgba(0,0,0,0.5); }
+.teacher-photo-placeholder { width: 100%; height: 100%; border-radius: 50%; background: linear-gradient(135deg, #1e2234 0%, #0f111c 100%); border: 3px solid rgba(201,168,76,0.4); display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 12px 40px rgba(0,0,0,0.5); }
+.placeholder-monogram { font-family: 'Playfair Display', Georgia, serif; font-size: 5rem; color: #c9a84c; line-height: 1; }
+.placeholder-note { color: rgba(232,224,208,0.5); font-size: 0.75rem; margin-top: 0.5rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
+.teacher-intro { display: flex; flex-direction: column; gap: 0.75rem; }
+.teacher-eyebrow { color: #c9a84c; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em; }
+.teacher-name { font-family: 'Playfair Display', Georgia, serif; font-size: 3rem; color: #e8e0d0; line-height: 1.1; margin: 0; }
+.teacher-tagline { color: rgba(232,224,208,0.75); font-size: 1.1rem; font-style: italic; margin: 0; }
+.teacher-badges { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.5rem; }
+.badge { background: rgba(201,168,76,0.15); color: #c9a84c; padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; letter-spacing: 0.05em; }
+.badge-primary { background: #c9a84c; color: #0f111c; font-weight: 700; }
+
+.teacher-section { margin-bottom: 3rem; font-family: 'EB Garamond', Georgia, serif; }
+.teacher-section h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.75rem; color: #c9a84c; margin: 0 0 1.25rem; }
+.teacher-section p { color: #e0e0e0; font-size: 1.1rem; line-height: 1.75; margin: 0 0 1rem; }
+.teacher-section p:last-child { margin-bottom: 0; }
+.teacher-section em { color: #c9a84c; font-style: italic; }
+
+.specialty-list { list-style: none; padding: 0; margin: 0; }
+.specialty-list li { color: #e0e0e0; font-size: 1.05rem; line-height: 1.6; padding: 0.6rem 0 0.6rem 1.5rem; border-bottom: 1px solid rgba(201,168,76,0.1); position: relative; }
+.specialty-list li:last-child { border-bottom: none; }
+.specialty-list li::before { content: '♞'; position: absolute; left: 0; color: #c9a84c; font-size: 1rem; }
+.specialty-list strong { color: #e8e0d0; }
+
+.language-list { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+.language-chip { background: rgba(30,34,52,0.6); border: 1px solid rgba(201,168,76,0.25); color: #e8e0d0; padding: 0.5rem 1.25rem; border-radius: 20px; font-size: 0.95rem; font-family: 'EB Garamond', Georgia, serif; }
+
+.teacher-cta { background: rgba(30,34,52,0.5); border: 1px solid rgba(201,168,76,0.25); border-radius: 16px; padding: 3rem 2rem; text-align: center; margin-top: 3rem; }
+.teacher-cta h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 2rem; color: #c9a84c; margin: 0 0 1rem; }
+.cta-lead { color: #e0e0e0; font-size: 1.1rem; max-width: 540px; margin: 0 auto 2rem; line-height: 1.6; font-family: 'EB Garamond', Georgia, serif; }
+.btn-primary { display: inline-block; background: #c9a84c; color: #0f111c; padding: 1rem 2.5rem; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 1.05rem; letter-spacing: 0.05em; transition: all 0.25s; box-shadow: 0 4px 20px rgba(201,168,76,0.25); }
+.btn-primary:hover { background: #d4b356; transform: translateY(-2px); box-shadow: 0 6px 28px rgba(201,168,76,0.4); }
+.cta-note { color: rgba(232,224,208,0.55); font-size: 0.9rem; margin-top: 1.5rem; font-family: 'EB Garamond', Georgia, serif; }
+.cta-note a { color: #c9a84c; text-decoration: underline; }
+
+.teacher-footer { margin-top: 4rem; padding-top: 2rem; text-align: center; }
+.footer-divider { width: 60px; height: 1px; background: rgba(201,168,76,0.4); margin: 0 auto 2rem; }
+.footer-credit { color: rgba(232,224,208,0.4); font-size: 0.8rem; padding-top: 2rem; border-top: 1px solid rgba(201,168,76,0.1); font-family: 'EB Garamond', Georgia, serif; }
+
+@media (max-width: 720px) {
+  .teacher-header { grid-template-columns: 1fr; text-align: center; gap: 2rem; }
+  .teacher-photo-wrap { margin: 0 auto; width: 220px; height: 220px; }
+  .teacher-name { font-size: 2.25rem; }
+  .teacher-badges { justify-content: center; }
+  .language-list { justify-content: center; }
+}
+</style>

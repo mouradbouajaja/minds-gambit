@@ -5,176 +5,689 @@ export const prerender = true;
 
 const teacher = {
   name: "WGM Maryana Huda",
-  title: "Woman Grandmaster",
   shortTitle: "WGM",
-  tagline: "Coach · Chess Educator · Olympiad Veteran",
-  // PLACEHOLDER: Upload photo to /public/images/teachers/maryana-huda.jpg and uncomment the line below
-  photo: "/images/teachers/maryana-huda.jpg",
-  photoPlaceholder: true, // set to false once real photo is uploaded
-  federation: "Ukraine",
-  languages: ["English", "Ukrainian", "Russian"],
-  // PLACEHOLDER: Replace with Huda's actual email when she confirms
-  contactEmail: "Mourad@mindsgambit.com",
-  // PLACEHOLDER: Optional Calendly / booking link
-  bookingUrl: null,
-  // PLACEHOLDER: Optional external profile links
-  chessComProfile: null,
-  lichessProfile: null,
-  fideProfile: null
+  fideTitle: "Woman Grandmaster",
+  trainerTitle: "FIDE Trainer (2022)",
+  tagline: "Quality professional coaching for all levels, including for players with serious tournament goals.",
+  photo: "https://image.lichess1.org/display?fmt=webp&h=350&op=thumbnail&path=morshynska1:coach:morshynska1:47WCJA8z.jpg&w=350&sig=7153456a989676933f39b96c09cc68502ebf226c",
+  location: "Morshyn, Lviv region — Ukraine",
+  fideRating: 2179,
+  nationalRating: 2283,
+  hourlyRate: "€20",
+  packageRate: "€75 / 5 lessons",
+  availability: "Accepting students",
+  languages: ["English", "Spanish", "Ukrainian", "Russian", "Catalan"],
+  email: "gudachess@gmail.com",
+  lichessCoach: "https://lichess.org/coach/Morshynska1",
+  lichessProfile: "https://lichess.org/@/Morshynska1",
+  chessComProfile: "https://chess.com/member/morshynska",
+  twitchProfile: "https://twitch.tv/maryanahuda"
 };
+
+const specialties = [
+  "Openings — repertoire design, theory, your questions answered",
+  "Middlegame strategy and positional understanding",
+  "Endgame technique",
+  "Tactics and calculation",
+  "Advantage conversion and chess technique",
+  "Game analysis with detailed human commentary",
+  "Tournament preparation and opponent study",
+  "Sports psychology and mental conditioning",
+  "Prophylaxis and planning",
+  "Work with chess classics and literature",
+  "Spotting and neutralizing recurring mistakes",
+  "Developing your own game style"
+];
+
+const freeStudies = [
+  { title: "Lecture on the Center for beginners", url: "https://lichess.org/study/oPTsIN7c", chapters: 2 },
+  { title: "Lecture on Piece Development for beginners", url: "https://lichess.org/study/b0ZqKFLd", chapters: 4 },
+  { title: "Practice Exercises", url: "https://lichess.org/study/g7rXay67", chapters: 4 }
+];
 ---
 
-<BaseLayout title={`${teacher.name} — Chess School — The Mind's Gambit`}>
+<BaseLayout title={`${teacher.name} — Chess Coach — Mind's Gambit Chess School`} description="Book lessons with WGM Maryana Huda — Woman Grandmaster, FIDE Trainer, and chess educator from Ukraine. Quality professional coaching for all levels, online.">
+  <!-- Floating chess particle background -->
+  <div class="particles-container" id="coach-particles"></div>
+  <!-- Scroll progress ribbon -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+
   <nav>
     <div class="nav-inner">
       <a href="/" class="nav-logo"><img src="/images/logo.jpg" alt="Mind's Gambit" style="height:55px;width:55px;border-radius:50%;object-fit:cover;border:2px solid #c8a84e;margin-left:10px;vertical-align:middle;" /></a>
       <ul class="nav-links">
         <li><a href="/">Home</a></li>
         <li><a href="/chess-school/grandmasters">All Grandmasters</a></li>
-        <li><a href="/#contact" class="nav-btn">Contact</a></li>
+        <li><a href={`mailto:${teacher.email}?subject=Chess%20Lessons%20with%20WGM%20Maryana%20Huda`} class="nav-btn cta-btn">Book a Lesson</a></li>
       </ul>
     </div>
   </nav>
 
-  <article class="teacher-page">
-    <a href="/chess-school/grandmasters" class="back-link">&larr; All Grandmasters</a>
+  <article class="coach-page">
+    <a href="/chess-school/grandmasters" class="back-link" data-reveal>&larr; All Grandmasters</a>
 
-    <header class="teacher-header">
-      <div class="teacher-photo-wrap">
-        {teacher.photoPlaceholder
-          ? <div class="teacher-photo-placeholder">
-              <span class="placeholder-monogram">MH</span>
-              <span class="placeholder-note">Photo coming soon</span>
-            </div>
-          : <img src={teacher.photo} alt={teacher.name} class="teacher-photo" />
-        }
+    <!-- HERO -->
+    <header class="coach-hero" data-reveal>
+      <div class="hero-photo-wrap">
+        <div class="photo-aura"></div>
+        <div class="photo-ring"></div>
+        <img src={teacher.photo} alt={teacher.name} class="hero-photo" loading="eager" referrerpolicy="no-referrer" />
+        <span class="availability-badge"><span class="pulse-dot"></span>{teacher.availability}</span>
       </div>
 
-      <div class="teacher-intro">
-        <span class="teacher-eyebrow">Learn from Grandmasters</span>
-        <h1 class="teacher-name">{teacher.name}</h1>
-        <p class="teacher-tagline">{teacher.tagline}</p>
-        <div class="teacher-badges">
-          <span class="badge badge-primary">{teacher.shortTitle}</span>
-          <span class="badge">Federation: {teacher.federation}</span>
+      <div class="hero-content">
+        <span class="eyebrow">Mind's Gambit Chess School &middot; Coach Profile</span>
+        <h1 class="gradient-text">{teacher.name}</h1>
+        <p class="tagline">{teacher.tagline}</p>
+
+        <div class="title-row">
+          <span class="title-chip primary">{teacher.shortTitle}</span>
+          <span class="title-chip">{teacher.fideTitle}</span>
+          <span class="title-chip">{teacher.trainerTitle}</span>
+          <span class="title-chip">Master of Sports · Ukraine</span>
+        </div>
+
+        <div class="hero-cta">
+          <a href={`mailto:${teacher.email}?subject=Chess%20Lessons%20with%20WGM%20Maryana%20Huda`} class="btn-primary cta-btn">
+            <span class="btn-text">Book by Email</span>
+            <span class="btn-shimmer"></span>
+          </a>
+          <a href={teacher.lichessCoach} target="_blank" rel="noopener" class="btn-secondary cta-btn">Book via Lichess &rarr;</a>
         </div>
       </div>
     </header>
 
-    <section class="teacher-section">
-      <h2>About Maryana</h2>
-      <p>Maryana Huda is a Woman Grandmaster titled by FIDE, the International Chess Federation. She has competed at the international level for more than a decade, representing her national team in major events including the Chess Olympiad and contributing to women's chess at the highest tiers of competitive play.</p>
-      <p>Her coaching draws on a lifetime of tournament experience and deep technical study across all phases of the game &mdash; opening theory, middlegame strategy, and endgame technique. She works with students at every level, from ambitious club players to titled competitors preparing for serious events.</p>
-      <p>What sets Maryana's coaching apart is her emphasis on the <em>thinking</em> behind the moves: pattern recognition, calculation discipline, and the psychological dimensions of competitive play that separate strong club players from elite performers.</p>
-      <!-- PLACEHOLDER: Replace the three paragraphs above with Maryana's approved bio when she confirms. -->
+    <!-- AT-A-GLANCE CARD -->
+    <section class="at-a-glance" data-reveal>
+      <div class="stat glass-card">
+        <div class="stat-label">FIDE Rating</div>
+        <div class="stat-value count-up" data-target="2179">0</div>
+        <div class="stat-sub">Ukrainian: {teacher.nationalRating}</div>
+      </div>
+      <div class="stat glass-card">
+        <div class="stat-label">Hourly Rate</div>
+        <div class="stat-value">{teacher.hourlyRate}</div>
+        <div class="stat-sub">{teacher.packageRate}</div>
+      </div>
+      <div class="stat glass-card">
+        <div class="stat-label">Location</div>
+        <div class="stat-value-sm">Ukraine 🇺🇦</div>
+        <div class="stat-sub">Online lessons · worldwide</div>
+      </div>
+      <div class="stat glass-card">
+        <div class="stat-label">Languages</div>
+        <div class="stat-value count-up" data-target="5">0</div>
+        <div class="stat-sub">{teacher.languages.join(" · ")}</div>
+      </div>
     </section>
 
-    <section class="teacher-section">
-      <h2>Coaching specialties</h2>
-      <ul class="specialty-list">
-        <li><strong>Opening repertoires</strong> &mdash; tailored to your style and ambition</li>
-        <li><strong>Middlegame strategy</strong> &mdash; pattern recognition and positional planning</li>
-        <li><strong>Endgame technique</strong> &mdash; the precision phase where rated points are won and lost</li>
-        <li><strong>Tournament preparation</strong> &mdash; opening prep, opponent study, mental conditioning</li>
-        <li><strong>Game analysis</strong> &mdash; honest review of your own games to find recurring errors</li>
-        <li><strong>Women's competitive chess</strong> &mdash; the unique pressures and pathways of the women's circuit</li>
+    <!-- BIO -->
+    <section class="coach-section" data-reveal>
+      <h2>About Maryana</h2>
+      <p>Maryana Huda is a Woman Grandmaster (WGM) and certified FIDE Trainer from Morshyn in Ukraine's Lviv region. A holder of the Ukrainian Master of Sports title, she earned bronze medals at the 2015 Ukrainian Women's Championships in the U20 and rapid categories, and has been a winner and medalist in numerous national and international tournaments. She continues to compete actively in international events while maintaining deep ongoing study of chess theory, training methodology, and competitive practice.</p>
+      <p>Her coaching experience spans nearly twenty years and began in the traditional system of specialized Children's and Youth Sports Schools (DYuSSh) in Ukraine, where long-term in-person development of tournament players formed the foundation of her teaching approach. Known for detailed and deeply explanatory game analysis, her coaching combines classical chess-school methods with modern understanding of sports psychology and competitive performance.</p>
+      <p>She holds a Master's degree with honors in Physical Culture and Sports from Lviv State University of Physical Culture, where her research focused on psychological aspects of competitive chess, including concentration maintenance and advantage conversion under tournament pressure.</p>
+    </section>
+
+    <!-- PRICING -->
+    <section class="pricing-section" data-reveal>
+      <h2>Lessons &amp; Pricing</h2>
+      <div class="pricing-grid">
+        <div class="pricing-card tilt-card">
+          <div class="pricing-eyebrow">Single Session</div>
+          <div class="pricing-amount">€20<span class="pricing-unit">/ hour</span></div>
+          <p class="pricing-description">A focused one-on-one session. Bring a recent game, a question, or a position you want to work through.</p>
+          <a href={`mailto:${teacher.email}?subject=Single%20Lesson%20Inquiry%20%E2%80%94%20WGM%20Maryana%20Huda`} class="pricing-cta cta-btn">Book a Single Lesson</a>
+        </div>
+
+        <div class="pricing-card pricing-card-featured tilt-card">
+          <div class="pricing-badge">Best Value</div>
+          <div class="featured-glow"></div>
+          <div class="pricing-eyebrow">Package</div>
+          <div class="pricing-amount">€75<span class="pricing-unit">/ 5 lessons</span></div>
+          <p class="pricing-description">Five hours of structured coaching at a reduced rate. The right choice for students serious about long-term improvement. Discounts available for regular students.</p>
+          <a href={`mailto:${teacher.email}?subject=Five-Lesson%20Package%20Inquiry%20%E2%80%94%20WGM%20Maryana%20Huda`} class="pricing-cta pricing-cta-primary cta-btn">Book the 5-Lesson Package</a>
+        </div>
+      </div>
+      <p class="pricing-note">Lessons conducted via Lichess, chess.com, Skype, or written analysis &mdash; whichever fits your workflow. Discounts offered to regular students.</p>
+    </section>
+
+    <!-- SPECIALTIES -->
+    <section class="coach-section" data-reveal>
+      <h2>Coaching Specialties</h2>
+      <p class="section-intro">Detailed, "human" analysis. Individual approach to every student. The full range of competitive chess preparation:</p>
+      <ul class="specialty-grid">
+        {specialties.map((item, i) => (
+          <li class="specialty-item" style={`--delay: ${i * 60}ms`}><span class="specialty-mark">♞</span>{item}</li>
+        ))}
       </ul>
     </section>
 
-    <section class="teacher-section">
-      <h2>Teaching approach</h2>
-      <p>Maryana believes chess is taught best one-on-one &mdash; through close, sustained attention to your own games and the kind of honest analysis that group lessons cannot provide. Lessons are conducted online via video and a shared interactive board, with the flexibility to fit your schedule across time zones.</p>
-      <p>Students typically begin with an introductory session to assess current level, identify priorities, and design a personalized curriculum. From there, sessions follow a rhythm of analysis, study, practice, and review.</p>
+    <!-- TEACHING APPROACH -->
+    <section class="coach-section" data-reveal>
+      <h2>Teaching Approach</h2>
+      <blockquote class="pull-quote">
+        "I try to do the work for students as it's usually done for players who prepare to be professional ones &mdash; step by step. We can discuss your games and practice some important positions."
+      </blockquote>
+      <p>Lessons follow an individual curriculum built around your level, your goals, and your gaps. Common rhythm: analyze your own games, study targeted positions or themes, work on openings or endgames you want to sharpen, and discuss the psychological dimensions of tournament play.</p>
+      <p>For tournament players: opening prep, opponent study, and the mental conditioning that separates strong club performance from elite results. For improvers: pattern recognition, calculation discipline, and the chess-school methods that build a real foundation.</p>
     </section>
 
-    <section class="teacher-section">
-      <h2>Languages</h2>
-      <p class="language-list">
-        {teacher.languages.map((lang, i) => (
-          <span class="language-chip">{lang}</span>
+    <!-- WHO -->
+    <section class="coach-section" data-reveal>
+      <h2>Who She Works Best With</h2>
+      <blockquote class="pull-quote">
+        "Motivated and serious learners interested in long-term improvement and deeper understanding of chess &mdash; especially tournament players and ambitious improvers."
+      </blockquote>
+      <p>Languages of instruction adapt to the student. Sessions available in English, Spanish, Ukrainian, Russian, or Catalan &mdash; whichever you're most comfortable with.</p>
+    </section>
+
+    <!-- FREE STUDIES -->
+    <section class="coach-section" data-reveal>
+      <h2>Sample Her Teaching &mdash; Free</h2>
+      <p class="section-intro">Before booking, see her teaching style directly. Three free interactive Lichess studies authored by Maryana:</p>
+      <div class="studies-grid">
+        {freeStudies.map(study => (
+          <a href={study.url} target="_blank" rel="noopener" class="study-card tilt-card">
+            <div class="study-glow"></div>
+            <span class="study-icon">♟</span>
+            <h3 class="study-title">{study.title}</h3>
+            <span class="study-meta">{study.chapters} chapters · Free on Lichess</span>
+            <span class="study-cta">Open Study &rarr;</span>
+          </a>
         ))}
-      </p>
+      </div>
     </section>
 
-    <section class="teacher-cta">
-      <h2>Book a Lesson</h2>
-      <p class="cta-lead">Ready to work with Maryana? Reach out below and we'll connect you for an introductory session.</p>
-
-      {teacher.bookingUrl ? (
-        <a href={teacher.bookingUrl} target="_blank" rel="noopener" class="btn-primary">Schedule a Session</a>
-      ) : (
-        <a href={`mailto:${teacher.contactEmail}?subject=Chess Lessons with WGM Maryana Huda`} class="btn-primary">Inquire by Email</a>
-      )}
-
-      <p class="cta-note">For general questions or to be referred, you can also reach the Mind's Gambit team at <a href="mailto:Mourad@mindsgambit.com">Mourad@mindsgambit.com</a>.</p>
+    <!-- SCIENTIFIC -->
+    <section class="coach-section" data-reveal>
+      <h2>Scientific Work</h2>
+      <p>Maryana's academic research examines the intersection of sports psychology and chess performance &mdash; how psychological factors, temperament, and stress management influence competitive outcomes. A selection of her published work:</p>
+      <ul class="publications">
+        <li><a href="https://journals.ldufk.lviv.ua/index.php/pahs/article/view/92" target="_blank" rel="noopener">Physical Activity, Health and Sport Journal · LDUFK</a></li>
+        <li><a href="https://repository.ldufk.edu.ua/items/cb21e1d6-2112-469b-a3e3-99d1f3250158" target="_blank" rel="noopener">LDUFK Repository · Research paper (1)</a></li>
+        <li><a href="https://repository.ldufk.edu.ua/items/f3338c64-10e3-4ec9-b765-85dd621ef320" target="_blank" rel="noopener">LDUFK Repository · Research paper (2)</a></li>
+        <li><a href="https://ktmfks.pnu.edu.ua/wp-content/uploads/sites/99/2025/06/tezy_2025-2.pdf" target="_blank" rel="noopener">PNU Conference Proceedings (PDF)</a></li>
+      </ul>
     </section>
 
-    <footer class="teacher-footer">
-      <div class="footer-divider"></div>
-      <p class="footer-credit">&copy; 2026 Mourad Bouajaja. Mind's Gambit Chess School is a production of &copy; MYB Studio LLC.</p>
+    <!-- PROFILES -->
+    <section class="coach-section" data-reveal>
+      <h2>Find Maryana Online</h2>
+      <div class="profile-links">
+        <a href={teacher.lichessCoach} target="_blank" rel="noopener" class="profile-link tilt-card">
+          <span class="profile-platform">Lichess Coach Page</span>
+          <span class="profile-handle">@Morshynska1</span>
+        </a>
+        <a href={teacher.chessComProfile} target="_blank" rel="noopener" class="profile-link tilt-card">
+          <span class="profile-platform">Chess.com</span>
+          <span class="profile-handle">@morshynska</span>
+        </a>
+        <a href={teacher.twitchProfile} target="_blank" rel="noopener" class="profile-link tilt-card">
+          <span class="profile-platform">Twitch · occasional streams</span>
+          <span class="profile-handle">@maryanahuda</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- BIG CTA -->
+    <section class="big-cta" data-reveal>
+      <div class="big-cta-glow"></div>
+      <div class="big-cta-inner">
+        <h2>Ready to work with Maryana?</h2>
+        <p>Reach out for an introductory session. Tell her your current level, your goals, and what you'd most like to improve. She'll design a plan from there.</p>
+        <div class="big-cta-actions">
+          <a href={`mailto:${teacher.email}?subject=Chess%20Lessons%20with%20WGM%20Maryana%20Huda`} class="btn-primary btn-large cta-btn">
+            <span class="btn-text">Email Maryana Directly</span>
+            <span class="btn-shimmer"></span>
+          </a>
+          <a href={teacher.lichessCoach} target="_blank" rel="noopener" class="btn-secondary btn-large cta-btn">Book on Lichess &rarr;</a>
+        </div>
+        <p class="cta-fineprint">Or reach the Mind's Gambit team at <a href="mailto:Mourad@mindsgambit.com">Mourad@mindsgambit.com</a> for an introduction.</p>
+      </div>
+    </section>
+
+    <footer class="coach-footer">
+      <p class="footer-credit">&copy; 2026 Mourad Bouajaja. Mind's Gambit Chess School is a production of &copy; MYB Studio LLC. Maryana Huda is featured here as an independent coach &mdash; all coaching arrangements are made directly with her.</p>
     </footer>
   </article>
+
+  <script>
+    // ===== FLOATING CHESS PARTICLES =====
+    const particlesContainer = document.getElementById('coach-particles');
+    const chessPieces = ['♔','♕','♖','♗','♘','♙','♚','♛','♜','♝','♞','♟'];
+    if (particlesContainer) {
+      for (let i = 0; i < 22; i++) {
+        const p = document.createElement('span');
+        p.className = 'particle';
+        p.textContent = chessPieces[Math.floor(Math.random() * chessPieces.length)];
+        p.style.left = Math.random() * 100 + '%';
+        p.style.top = Math.random() * 100 + '%';
+        p.style.animationDuration = (20 + Math.random() * 28) + 's';
+        p.style.animationDelay = (-Math.random() * 25) + 's';
+        p.style.fontSize = (1.3 + Math.random() * 2.4) + 'rem';
+        p.style.opacity = (0.08 + Math.random() * 0.12).toFixed(2);
+        particlesContainer.appendChild(p);
+      }
+    }
+
+    // ===== SCROLL PROGRESS =====
+    const bar = document.getElementById('scrollProgress');
+    function updateBar() {
+      if (!bar) return;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = ((window.scrollY / max) * 100) + '%';
+    }
+    window.addEventListener('scroll', updateBar, { passive: true });
+
+    // ===== SCROLL REVEAL =====
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+    document.querySelectorAll('[data-reveal]').forEach(el => revealObserver.observe(el));
+
+    // ===== COUNT-UP STATS =====
+    const countObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const target = parseInt(el.dataset.target, 10);
+          const duration = 1400;
+          const start = performance.now();
+          function step(now) {
+            const progress = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            el.textContent = Math.floor(target * eased).toLocaleString();
+            if (progress < 1) requestAnimationFrame(step);
+            else el.textContent = target.toLocaleString();
+          }
+          requestAnimationFrame(step);
+          countObserver.unobserve(el);
+        }
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.count-up').forEach(el => countObserver.observe(el));
+
+    // ===== 3D TILT ON CARDS =====
+    document.querySelectorAll('.tilt-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        card.style.transform = `perspective(900px) rotateY(${x * 6}deg) rotateX(${-y * 6}deg) translateY(-4px)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(900px) rotateY(0) rotateX(0) translateY(0)';
+      });
+    });
+
+    // ===== MAGNETIC CTAS =====
+    document.querySelectorAll('.cta-btn').forEach(btn => {
+      btn.addEventListener('mousemove', (e) => {
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        btn.style.transform = `translate(${x * 0.12}px, ${y * 0.18}px)`;
+      });
+      btn.addEventListener('mouseleave', () => {
+        btn.style.transform = '';
+      });
+    });
+
+    // ===== PARALLAX HERO PHOTO =====
+    const heroPhoto = document.querySelector('.hero-photo-wrap');
+    if (heroPhoto) {
+      window.addEventListener('scroll', () => {
+        if (window.scrollY < 800) {
+          heroPhoto.style.transform = `translateY(${window.scrollY * 0.06}px)`;
+        }
+      }, { passive: true });
+    }
+
+    // ===== REDUCED MOTION =====
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.querySelectorAll('.particle').forEach(p => p.remove());
+      document.querySelectorAll('[data-reveal]').forEach(el => el.classList.add('revealed'));
+    }
+  </script>
 </BaseLayout>
 
 <style is:global>
-nav { background: rgba(15,17,28,0.95); border-bottom: 1px solid rgba(201,168,76,0.2); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
+nav { background: rgba(15,17,28,0.92); border-bottom: 1px solid rgba(201,168,76,0.18); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
 .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0.75rem 2rem; display: flex; align-items: center; justify-content: space-between; }
 .nav-links { display: flex; gap: 2rem; list-style: none; margin: 0; padding: 0; align-items: center; }
 .nav-links a { color: #e8e0d0; text-decoration: none; font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; font-family: 'Playfair Display', Georgia, serif; transition: color 0.3s; }
 .nav-links a:hover { color: #c9a84c; }
-.nav-btn { background: #c9a84c !important; color: #0f111c !important; padding: 0.5rem 1.25rem; border-radius: 4px; font-weight: 600; }
+.nav-btn { background: #c9a84c !important; color: #0f111c !important; padding: 0.5rem 1.25rem; border-radius: 6px; font-weight: 700; transition: transform 0.2s, box-shadow 0.2s; }
+.nav-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(201,168,76,0.35); }
 
-.teacher-page { max-width: 900px; margin: 0 auto; padding: 3rem 1.5rem; }
-.back-link { color: #c9a84c; text-decoration: none; font-size: 0.9rem; letter-spacing: 0.05em; display: inline-block; margin-bottom: 2rem; transition: opacity 0.3s; }
-.back-link:hover { opacity: 0.7; }
+/* ====== PARTICLES ====== */
+.particles-container { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+.particle { position: absolute; color: #c9a84c; will-change: transform; animation: float linear infinite; }
+@keyframes float {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(35px, -50px) rotate(180deg); }
+  100% { transform: translate(0, -100vh) rotate(360deg); }
+}
 
-.teacher-header { display: grid; grid-template-columns: 280px 1fr; gap: 3rem; align-items: center; margin-bottom: 4rem; padding-bottom: 3rem; border-bottom: 1px solid rgba(201,168,76,0.2); }
-.teacher-photo-wrap { width: 280px; height: 280px; }
-.teacher-photo { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 3px solid rgba(201,168,76,0.4); box-shadow: 0 12px 40px rgba(0,0,0,0.5); }
-.teacher-photo-placeholder { width: 100%; height: 100%; border-radius: 50%; background: linear-gradient(135deg, #1e2234 0%, #0f111c 100%); border: 3px solid rgba(201,168,76,0.4); display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 12px 40px rgba(0,0,0,0.5); }
-.placeholder-monogram { font-family: 'Playfair Display', Georgia, serif; font-size: 5rem; color: #c9a84c; line-height: 1; }
-.placeholder-note { color: rgba(232,224,208,0.5); font-size: 0.75rem; margin-top: 0.5rem; letter-spacing: 0.1em; text-transform: uppercase; }
+/* ====== SCROLL PROGRESS ====== */
+.scroll-progress { position: fixed; top: 0; left: 0; height: 3px; width: 0%; background: linear-gradient(90deg, #c9a84c, #f4d989, #c9a84c); z-index: 200; transition: width 0.1s ease-out; box-shadow: 0 0 18px rgba(201,168,76,0.6); }
 
-.teacher-intro { display: flex; flex-direction: column; gap: 0.75rem; }
-.teacher-eyebrow { color: #c9a84c; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em; }
-.teacher-name { font-family: 'Playfair Display', Georgia, serif; font-size: 3rem; color: #e8e0d0; line-height: 1.1; margin: 0; }
-.teacher-tagline { color: rgba(232,224,208,0.75); font-size: 1.1rem; font-style: italic; margin: 0; }
-.teacher-badges { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.5rem; }
-.badge { background: rgba(201,168,76,0.15); color: #c9a84c; padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; letter-spacing: 0.05em; }
-.badge-primary { background: #c9a84c; color: #0f111c; font-weight: 700; }
+/* ====== PAGE ====== */
+.coach-page { max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; font-family: 'EB Garamond', Georgia, serif; color: #e0e0e0; position: relative; z-index: 1; }
+.back-link { color: #c9a84c; text-decoration: none; font-size: 0.9rem; letter-spacing: 0.05em; display: inline-block; margin-bottom: 2rem; font-family: 'Playfair Display', Georgia, serif; transition: opacity 0.25s; }
+.back-link:hover { opacity: 0.75; transform: translateX(-3px); }
 
-.teacher-section { margin-bottom: 3rem; font-family: 'EB Garamond', Georgia, serif; }
-.teacher-section h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.75rem; color: #c9a84c; margin: 0 0 1.25rem; }
-.teacher-section p { color: #e0e0e0; font-size: 1.1rem; line-height: 1.75; margin: 0 0 1rem; }
-.teacher-section p:last-child { margin-bottom: 0; }
-.teacher-section em { color: #c9a84c; font-style: italic; }
+/* ====== REVEAL ====== */
+[data-reveal] { opacity: 0; transform: translateY(28px); transition: opacity 0.85s cubic-bezier(.2,.7,.2,1), transform 0.85s cubic-bezier(.2,.7,.2,1); }
+[data-reveal].revealed { opacity: 1; transform: translateY(0); }
 
-.specialty-list { list-style: none; padding: 0; margin: 0; }
-.specialty-list li { color: #e0e0e0; font-size: 1.05rem; line-height: 1.6; padding: 0.6rem 0 0.6rem 1.5rem; border-bottom: 1px solid rgba(201,168,76,0.1); position: relative; }
-.specialty-list li:last-child { border-bottom: none; }
-.specialty-list li::before { content: '♞'; position: absolute; left: 0; color: #c9a84c; font-size: 1rem; }
-.specialty-list strong { color: #e8e0d0; }
+/* ====== HERO ====== */
+.coach-hero { display: grid; grid-template-columns: 340px 1fr; gap: 3.5rem; align-items: center; margin-bottom: 4rem; padding-bottom: 3.5rem; border-bottom: 1px solid rgba(201,168,76,0.2); }
 
-.language-list { display: flex; gap: 0.75rem; flex-wrap: wrap; }
-.language-chip { background: rgba(30,34,52,0.6); border: 1px solid rgba(201,168,76,0.25); color: #e8e0d0; padding: 0.5rem 1.25rem; border-radius: 20px; font-size: 0.95rem; font-family: 'EB Garamond', Georgia, serif; }
+.hero-photo-wrap { width: 340px; position: relative; will-change: transform; }
+.photo-aura {
+  position: absolute; inset: -30px; border-radius: 24px;
+  background: radial-gradient(circle, rgba(201,168,76,0.35) 0%, transparent 65%);
+  filter: blur(28px); animation: pulseAura 5s ease-in-out infinite;
+  z-index: 0;
+}
+@keyframes pulseAura {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(1.07); }
+}
+.photo-ring {
+  position: absolute; inset: -6px; border-radius: 20px;
+  background: conic-gradient(from 0deg, #c9a84c, #f4d989, #c9a84c, #b88a30, #c9a84c);
+  animation: rotateRing 12s linear infinite;
+  z-index: 1;
+}
+@keyframes rotateRing { to { transform: rotate(360deg); } }
+.hero-photo {
+  position: relative; width: 340px; height: 340px; object-fit: cover; border-radius: 16px;
+  border: 4px solid #0f111c; box-shadow: 0 20px 60px rgba(0,0,0,0.55);
+  z-index: 2; display: block;
+}
+.availability-badge {
+  position: absolute; bottom: 18px; left: 18px;
+  background: rgba(20,32,22,0.92); color: #4ade80;
+  padding: 0.5rem 0.95rem; border-radius: 999px;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; backdrop-filter: blur(8px);
+  border: 1px solid rgba(74,222,128,0.4); z-index: 3;
+  display: flex; align-items: center; gap: 0.5rem;
+  font-family: 'Playfair Display', Georgia, serif;
+}
+.pulse-dot {
+  width: 8px; height: 8px; border-radius: 50%; background: #4ade80;
+  box-shadow: 0 0 0 0 rgba(74,222,128,0.7); animation: pulseDot 2s infinite;
+}
+@keyframes pulseDot {
+  0% { box-shadow: 0 0 0 0 rgba(74,222,128,0.7); }
+  70% { box-shadow: 0 0 0 12px rgba(74,222,128,0); }
+  100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); }
+}
 
-.teacher-cta { background: rgba(30,34,52,0.5); border: 1px solid rgba(201,168,76,0.25); border-radius: 16px; padding: 3rem 2rem; text-align: center; margin-top: 3rem; }
-.teacher-cta h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 2rem; color: #c9a84c; margin: 0 0 1rem; }
-.cta-lead { color: #e0e0e0; font-size: 1.1rem; max-width: 540px; margin: 0 auto 2rem; line-height: 1.6; font-family: 'EB Garamond', Georgia, serif; }
-.btn-primary { display: inline-block; background: #c9a84c; color: #0f111c; padding: 1rem 2.5rem; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 1.05rem; letter-spacing: 0.05em; transition: all 0.25s; box-shadow: 0 4px 20px rgba(201,168,76,0.25); }
-.btn-primary:hover { background: #d4b356; transform: translateY(-2px); box-shadow: 0 6px 28px rgba(201,168,76,0.4); }
-.cta-note { color: rgba(232,224,208,0.55); font-size: 0.9rem; margin-top: 1.5rem; font-family: 'EB Garamond', Georgia, serif; }
-.cta-note a { color: #c9a84c; text-decoration: underline; }
+.hero-content { display: flex; flex-direction: column; gap: 1rem; }
+.eyebrow { color: #c9a84c; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.22em; }
+.coach-hero h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 3.2rem; line-height: 1.05; margin: 0; }
+.gradient-text {
+  background: linear-gradient(120deg, #f4d989 0%, #c9a84c 40%, #e8e0d0 70%, #c9a84c 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  animation: shimmer 6s ease-in-out infinite;
+}
+@keyframes shimmer { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+.tagline { font-size: 1.15rem; color: rgba(232,224,208,0.8); line-height: 1.55; font-style: italic; margin: 0; }
 
-.teacher-footer { margin-top: 4rem; padding-top: 2rem; text-align: center; }
-.footer-divider { width: 60px; height: 1px; background: rgba(201,168,76,0.4); margin: 0 auto 2rem; }
-.footer-credit { color: rgba(232,224,208,0.4); font-size: 0.8rem; padding-top: 2rem; border-top: 1px solid rgba(201,168,76,0.1); font-family: 'EB Garamond', Georgia, serif; }
+.title-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.title-chip {
+  background: rgba(201,168,76,0.13); color: #c9a84c;
+  padding: 0.45rem 1rem; border-radius: 999px;
+  font-size: 0.8rem; letter-spacing: 0.04em;
+  font-family: 'Playfair Display', Georgia, serif;
+  border: 1px solid rgba(201,168,76,0.22);
+  transition: transform 0.2s, background 0.2s;
+}
+.title-chip:hover { transform: translateY(-2px); background: rgba(201,168,76,0.2); }
+.title-chip.primary { background: linear-gradient(135deg, #c9a84c, #d4b356); color: #0f111c; font-weight: 800; border: none; box-shadow: 0 4px 14px rgba(201,168,76,0.35); }
 
-@media (max-width: 720px) {
-  .teacher-header { grid-template-columns: 1fr; text-align: center; gap: 2rem; }
-  .teacher-photo-wrap { margin: 0 auto; width: 220px; height: 220px; }
-  .teacher-name { font-size: 2.25rem; }
-  .teacher-badges { justify-content: center; }
-  .language-list { justify-content: center; }
+.hero-cta { display: flex; gap: 1rem; margin-top: 0.5rem; flex-wrap: wrap; }
+.btn-primary {
+  position: relative; display: inline-flex; align-items: center; gap: 0.5rem;
+  background: linear-gradient(135deg, #c9a84c, #d4b356);
+  color: #0f111c; padding: 1rem 1.85rem; border-radius: 10px;
+  text-decoration: none; font-weight: 700; font-size: 1rem;
+  letter-spacing: 0.04em; transition: all 0.25s;
+  box-shadow: 0 6px 22px rgba(201,168,76,0.32);
+  font-family: 'Playfair Display', Georgia, serif; overflow: hidden;
+}
+.btn-primary:hover { box-shadow: 0 10px 32px rgba(201,168,76,0.55); }
+.btn-text { position: relative; z-index: 1; }
+.btn-shimmer {
+  position: absolute; top: 0; left: -120%; width: 60%; height: 100%;
+  background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.45) 50%, transparent 100%);
+  transform: skewX(-20deg);
+}
+.btn-primary:hover .btn-shimmer { animation: shineSweep 0.9s ease forwards; }
+@keyframes shineSweep { to { left: 120%; } }
+
+.btn-secondary {
+  display: inline-block; background: transparent; color: #c9a84c;
+  padding: 1rem 1.85rem; border-radius: 10px; text-decoration: none;
+  font-weight: 600; font-size: 1rem; letter-spacing: 0.04em;
+  border: 1px solid #c9a84c; transition: all 0.25s;
+  font-family: 'Playfair Display', Georgia, serif;
+  backdrop-filter: blur(6px);
+}
+.btn-secondary:hover { background: rgba(201,168,76,0.12); }
+.btn-large { padding: 1.2rem 2.4rem; font-size: 1.1rem; }
+
+/* ====== AT A GLANCE ====== */
+.at-a-glance {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;
+  margin-bottom: 4rem;
+}
+.glass-card {
+  background: rgba(30,34,52,0.45);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(201,168,76,0.22);
+  border-radius: 16px;
+  padding: 1.75rem 1.25rem;
+  text-align: center;
+  position: relative; overflow: hidden;
+  transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+.glass-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.7), transparent);
+}
+.glass-card:hover { transform: translateY(-4px); border-color: rgba(201,168,76,0.45); box-shadow: 0 14px 36px rgba(0,0,0,0.35); }
+.stat-label { color: rgba(232,224,208,0.55); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.18em; margin-bottom: 0.65rem; font-family: 'Playfair Display', Georgia, serif; }
+.stat-value { font-family: 'Playfair Display', Georgia, serif; font-size: 2.5rem; color: #c9a84c; line-height: 1; margin-bottom: 0.5rem; font-weight: 700; }
+.stat-value-sm { font-family: 'Playfair Display', Georgia, serif; font-size: 1.4rem; color: #e8e0d0; line-height: 1.2; margin-bottom: 0.5rem; }
+.stat-sub { color: rgba(232,224,208,0.6); font-size: 0.8rem; line-height: 1.4; }
+
+/* ====== SECTIONS ====== */
+.coach-section { margin-bottom: 4rem; }
+.coach-section h2 {
+  font-family: 'Playfair Display', Georgia, serif; font-size: 2rem; color: #c9a84c;
+  margin: 0 0 1.5rem; position: relative; padding-bottom: 0.75rem;
+}
+.coach-section h2::after {
+  content: ''; position: absolute; left: 0; bottom: 0; width: 56px; height: 2px;
+  background: linear-gradient(90deg, #c9a84c, transparent);
+}
+.coach-section p { font-size: 1.1rem; line-height: 1.75; margin: 0 0 1rem; }
+.coach-section p:last-child { margin-bottom: 0; }
+.section-intro { color: rgba(232,224,208,0.8); font-size: 1.05rem; margin-bottom: 1.75rem !important; }
+
+.pull-quote {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.35rem; font-style: italic; color: #e8e0d0;
+  line-height: 1.55; margin: 0 0 1.5rem;
+  padding: 1.5rem 2rem; border-left: 3px solid #c9a84c;
+  background: linear-gradient(90deg, rgba(201,168,76,0.08), transparent);
+  border-radius: 0 8px 8px 0;
+}
+
+/* ====== PRICING ====== */
+.pricing-section {
+  margin-bottom: 4rem; padding: 3rem 2.5rem;
+  background: linear-gradient(135deg, rgba(201,168,76,0.08) 0%, rgba(30,34,52,0.55) 100%);
+  border: 1px solid rgba(201,168,76,0.25); border-radius: 20px;
+  position: relative; overflow: hidden;
+}
+.pricing-section::before {
+  content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+  background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 50%);
+  animation: rotateRing 25s linear infinite; pointer-events: none;
+}
+.pricing-section > * { position: relative; }
+.pricing-section h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 2rem; color: #c9a84c; margin: 0 0 2rem; text-align: center; padding-bottom: 0; }
+.pricing-section h2::after { display: none; }
+.pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.pricing-card {
+  background: rgba(15,17,28,0.72); border: 1px solid rgba(201,168,76,0.22);
+  border-radius: 14px; padding: 2.25rem; position: relative;
+  transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+  cursor: default;
+}
+.pricing-card:hover { border-color: rgba(201,168,76,0.5); box-shadow: 0 14px 40px rgba(0,0,0,0.4); }
+.pricing-card-featured { border-color: #c9a84c; box-shadow: 0 14px 40px rgba(201,168,76,0.18); }
+.featured-glow {
+  position: absolute; inset: -1px; border-radius: 14px; pointer-events: none;
+  background: linear-gradient(135deg, rgba(201,168,76,0.4), transparent 40%, transparent 60%, rgba(201,168,76,0.4));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  padding: 1px; opacity: 0; transition: opacity 0.3s;
+}
+.pricing-card-featured:hover .featured-glow { opacity: 1; }
+.pricing-badge {
+  position: absolute; top: -14px; right: 22px;
+  background: linear-gradient(135deg, #c9a84c, #f4d989);
+  color: #0f111c; padding: 0.35rem 0.95rem; border-radius: 999px;
+  font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em;
+  text-transform: uppercase; font-family: 'Playfair Display', Georgia, serif;
+  box-shadow: 0 4px 14px rgba(201,168,76,0.4);
+}
+.pricing-eyebrow { color: #c9a84c; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 0.65rem; font-family: 'Playfair Display', Georgia, serif; }
+.pricing-amount { font-family: 'Playfair Display', Georgia, serif; font-size: 3.2rem; color: #e8e0d0; font-weight: 700; line-height: 1; margin-bottom: 1rem; }
+.pricing-unit { font-size: 1.1rem; color: rgba(232,224,208,0.55); font-weight: 400; margin-left: 0.4rem; }
+.pricing-description { color: rgba(232,224,208,0.8); font-size: 1rem; line-height: 1.55; margin: 0 0 1.5rem; }
+.pricing-cta {
+  display: inline-block; padding: 0.85rem 1.5rem; background: transparent;
+  border: 1px solid #c9a84c; color: #c9a84c; text-decoration: none;
+  border-radius: 8px; font-family: 'Playfair Display', Georgia, serif;
+  font-size: 0.95rem; letter-spacing: 0.04em; transition: all 0.25s;
+}
+.pricing-cta:hover { background: rgba(201,168,76,0.12); }
+.pricing-cta-primary { background: linear-gradient(135deg, #c9a84c, #d4b356); color: #0f111c; font-weight: 700; border: none; box-shadow: 0 5px 18px rgba(201,168,76,0.32); }
+.pricing-cta-primary:hover { box-shadow: 0 8px 24px rgba(201,168,76,0.5); }
+.pricing-note { color: rgba(232,224,208,0.6); font-size: 0.95rem; line-height: 1.55; text-align: center; margin-top: 1.75rem; font-style: italic; }
+
+/* ====== SPECIALTIES ====== */
+.specialty-grid { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0.4rem 1.5rem; }
+.specialty-item {
+  display: flex; align-items: flex-start; gap: 0.7rem;
+  color: #e0e0e0; font-size: 1rem; line-height: 1.55;
+  padding: 0.6rem 0; border-bottom: 1px solid rgba(201,168,76,0.08);
+  opacity: 0; transform: translateX(-12px);
+  animation: slideIn 0.6s cubic-bezier(.2,.7,.2,1) forwards;
+  animation-delay: var(--delay, 0ms);
+}
+[data-reveal] .specialty-item { animation-play-state: paused; }
+[data-reveal].revealed .specialty-item { animation-play-state: running; }
+@keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
+.specialty-mark { color: #c9a84c; font-size: 1.05rem; flex-shrink: 0; transition: transform 0.25s; }
+.specialty-item:hover .specialty-mark { transform: scale(1.25) rotate(-8deg); }
+
+/* ====== STUDIES ====== */
+.studies-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
+.study-card {
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column; gap: 0.55rem;
+  padding: 1.75rem 1.5rem; background: rgba(30,34,52,0.55);
+  border: 1px solid rgba(201,168,76,0.22); border-radius: 14px;
+  text-decoration: none; color: inherit; transition: all 0.3s;
+  cursor: pointer;
+}
+.study-card:hover { border-color: #c9a84c; }
+.study-glow {
+  position: absolute; top: -50%; right: -50%; width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(201,168,76,0.25), transparent 70%);
+  filter: blur(40px); opacity: 0; transition: opacity 0.4s;
+}
+.study-card:hover .study-glow { opacity: 1; }
+.study-icon { font-size: 2.2rem; color: #c9a84c; line-height: 1; }
+.study-title { font-family: 'Playfair Display', Georgia, serif; font-size: 1.15rem; color: #e8e0d0; margin: 0.25rem 0; line-height: 1.35; }
+.study-meta { color: rgba(232,224,208,0.55); font-size: 0.85rem; }
+.study-cta { color: #c9a84c; font-family: 'Playfair Display', Georgia, serif; font-size: 0.9rem; margin-top: 0.5rem; transition: transform 0.25s; }
+.study-card:hover .study-cta { transform: translateX(4px); }
+
+/* ====== PUBLICATIONS ====== */
+.publications { list-style: none; padding: 0; margin: 1rem 0 0; }
+.publications li { padding: 0.75rem 0; border-bottom: 1px solid rgba(201,168,76,0.1); }
+.publications a { color: #c9a84c; text-decoration: none; font-size: 1rem; transition: opacity 0.2s; }
+.publications a:hover { text-decoration: underline; opacity: 0.85; }
+
+/* ====== PROFILES ====== */
+.profile-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+.profile-link {
+  display: flex; flex-direction: column; gap: 0.3rem;
+  padding: 1.25rem 1.35rem; background: rgba(30,34,52,0.55);
+  border: 1px solid rgba(201,168,76,0.22); border-radius: 12px;
+  text-decoration: none; color: inherit;
+  transition: all 0.25s; cursor: pointer;
+}
+.profile-link:hover { border-color: #c9a84c; }
+.profile-platform { color: #e8e0d0; font-size: 0.95rem; font-family: 'Playfair Display', Georgia, serif; }
+.profile-handle { color: #c9a84c; font-size: 0.88rem; font-family: 'EB Garamond', Georgia, serif; }
+
+/* ====== BIG CTA ====== */
+.big-cta {
+  position: relative; overflow: hidden;
+  margin: 5rem 0 2rem; padding: 4rem 2rem;
+  background: linear-gradient(135deg, rgba(201,168,76,0.15) 0%, rgba(30,34,52,0.65) 100%);
+  border: 1px solid rgba(201,168,76,0.4); border-radius: 20px;
+  text-align: center;
+}
+.big-cta-glow {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 70%; height: 130%;
+  background: radial-gradient(ellipse, rgba(201,168,76,0.18), transparent 60%);
+  filter: blur(40px); pointer-events: none;
+}
+.big-cta-inner { max-width: 640px; margin: 0 auto; position: relative; }
+.big-cta h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 2.4rem; color: #e8e0d0; margin: 0 0 1rem; padding-bottom: 0; }
+.big-cta h2::after { display: none; }
+.big-cta p { color: rgba(232,224,208,0.85); font-size: 1.15rem; line-height: 1.6; margin: 0 0 2rem; }
+.big-cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.cta-fineprint { color: rgba(232,224,208,0.6) !important; font-size: 0.92rem !important; margin-top: 2rem; }
+.cta-fineprint a { color: #c9a84c; text-decoration: underline; }
+
+/* ====== FOOTER ====== */
+.coach-footer { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(201,168,76,0.12); text-align: center; }
+.footer-credit { color: rgba(232,224,208,0.45); font-size: 0.8rem; line-height: 1.55; max-width: 720px; margin: 0 auto; }
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 880px) {
+  .coach-hero { grid-template-columns: 1fr; text-align: center; gap: 2.5rem; }
+  .hero-photo-wrap { margin: 0 auto; width: 260px; }
+  .hero-photo { width: 260px; height: 260px; }
+  .coach-hero h1 { font-size: 2.4rem; }
+  .title-row, .hero-cta { justify-content: center; }
+  .at-a-glance { grid-template-columns: repeat(2, 1fr); }
+  .pricing-grid { grid-template-columns: 1fr; }
+  .pricing-section { padding: 2rem 1.5rem; }
+  .big-cta { padding: 3rem 1.5rem; }
+  .big-cta h2 { font-size: 1.85rem; }
+  .pull-quote { font-size: 1.15rem; padding: 1.25rem 1.5rem; }
 }
 </style>

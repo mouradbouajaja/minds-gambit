@@ -11,8 +11,8 @@ const teachers = [
     shortTitle: "WGM",
     tagline: "Woman Grandmaster · Coach · Olympiad Veteran",
     federation: "Ukraine",
-    photo: "/images/teachers/maryana-huda.jpg",
-    photoPlaceholder: true,
+    photo: "https://image.lichess1.org/display?fmt=webp&h=350&op=thumbnail&path=morshynska1:coach:morshynska1:47WCJA8z.jpg&w=350&sig=7153456a989676933f39b96c09cc68502ebf226c",
+    photoPlaceholder: false,
     monogram: "MH",
     blurb: "International competitor and dedicated coach. Works with serious students across all levels — from ambitious club players to titled competitors preparing for major events.",
     available: true
@@ -62,7 +62,7 @@ const teachers = [
               ? <div class="card-photo-placeholder">
                   <span class="card-monogram">{teacher.monogram}</span>
                 </div>
-              : <img src={teacher.photo} alt={teacher.name} class="card-photo" />
+              : <img src={teacher.photo} alt={teacher.name} class="card-photo" referrerpolicy="no-referrer" loading="lazy" />
             }
             <span class="card-title-chip">{teacher.shortTitle}</span>
           </div>
@@ -117,10 +117,11 @@ nav { background: rgba(15,17,28,0.95); border-bottom: 1px solid rgba(201,168,76,
 .teacher-card:hover { border-color: #c9a84c; transform: translateY(-4px); box-shadow: 0 12px 36px rgba(0,0,0,0.4); }
 
 .card-photo-wrap { position: relative; width: 100%; aspect-ratio: 4/3; overflow: hidden; background: linear-gradient(135deg, #1e2234 0%, #0f111c 100%); }
-.card-photo { width: 100%; height: 100%; object-fit: cover; }
+.card-photo { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
+.teacher-card:hover .card-photo { transform: scale(1.04); }
 .card-photo-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
 .card-monogram { font-family: 'Playfair Display', Georgia, serif; font-size: 5rem; color: rgba(201,168,76,0.6); line-height: 1; }
-.card-title-chip { position: absolute; top: 1rem; right: 1rem; background: #c9a84c; color: #0f111c; padding: 0.4rem 0.85rem; border-radius: 4px; font-size: 0.85rem; font-weight: 800; letter-spacing: 0.05em; }
+.card-title-chip { position: absolute; top: 1rem; right: 1rem; background: #c9a84c; color: #0f111c; padding: 0.4rem 0.85rem; border-radius: 4px; font-size: 0.85rem; font-weight: 800; letter-spacing: 0.05em; box-shadow: 0 4px 12px rgba(0,0,0,0.35); }
 
 .card-body { padding: 1.5rem; font-family: 'EB Garamond', Georgia, serif; }
 .card-name { font-family: 'Playfair Display', Georgia, serif; font-size: 1.5rem; color: #e8e0d0; margin: 0 0 0.4rem; line-height: 1.2; }

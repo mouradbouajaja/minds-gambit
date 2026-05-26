@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+export const prerender = true;
+---
+
+<BaseLayout title="Chess Resources — Mind's Gambit Chess School">
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo"><img src="/images/logo.jpg" alt="Mind's Gambit" style="height:55px;width:55px;border-radius:50%;object-fit:cover;border:2px solid #c8a84e;margin-left:10px;vertical-align:middle;" /></a>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/chess-school/grandmasters">Grandmasters</a></li>
+        <li><a href="/chess-school/learn-to-play">Learn to Play</a></li>
+        <li><a href="/#contact" class="nav-btn">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="page">
+    <a href="/" class="back-link">&larr; Back to Mind's Gambit</a>
+    <span class="eyebrow">Mind's Gambit Chess School</span>
+    <h1>Chess Resources</h1>
+    <p class="lead">Trusted platforms, books, and tools — curated for serious students of the game.</p>
+
+    <div class="resource-grid">
+      <a href="https://www.chess.com" target="_blank" rel="noopener" class="resource-card">
+        <h3>Chess.com</h3>
+        <p>The world's largest chess platform. Play, study, watch, and join the daily-puzzle habit. Beginner-friendly through master-level.</p>
+        <span class="card-cta">Visit Chess.com &rarr;</span>
+      </a>
+      <a href="https://lichess.org" target="_blank" rel="noopener" class="resource-card">
+        <h3>Lichess</h3>
+        <p>Free, open-source, ad-free chess. Excellent training tools, opening studies, and analysis engine. The serious player's quiet alternative.</p>
+        <span class="card-cta">Visit Lichess &rarr;</span>
+      </a>
+      <a href="https://www.chessable.com" target="_blank" rel="noopener" class="resource-card">
+        <h3>Chessable</h3>
+        <p>Spaced-repetition learning for openings, tactics, and endgames. Books authored by top grandmasters in an interactive format that actually makes patterns stick.</p>
+        <span class="card-cta">Visit Chessable &rarr;</span>
+      </a>
+      <div class="resource-card resource-card-soon">
+        <h3>Recommended Reading List</h3>
+        <p>Curated books on chess psychology, strategy, and history that inform <em>The Mind's Gambit</em>.</p>
+        <span class="card-cta-soon">Coming Soon</span>
+      </div>
+      <div class="resource-card resource-card-soon">
+        <h3>Parent's Guide to Youth Chess</h3>
+        <p>What to look for, what questions to ask, and how to protect your child in competitive environments.</p>
+        <span class="card-cta-soon">Coming Soon</span>
+      </div>
+      <div class="resource-card resource-card-soon">
+        <h3>Opening Repertoire Starter</h3>
+        <p>Free starter repertoires for White and Black, designed by our grandmaster coaches for new tournament players.</p>
+        <span class="card-cta-soon">Coming Soon</span>
+      </div>
+    </div>
+
+    <footer class="page-footer">
+      <p class="footer-credit">&copy; 2026 Mourad Bouajaja. Mind's Gambit Chess School is a production of &copy; MYB Studio LLC.</p>
+    </footer>
+  </section>
+</BaseLayout>
+
+<style is:global>
+nav { background: rgba(15,17,28,0.95); border-bottom: 1px solid rgba(201,168,76,0.2); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
+.nav-inner { max-width: 1200px; margin: 0 auto; padding: 0.75rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+.nav-links { display: flex; gap: 2rem; list-style: none; margin: 0; padding: 0; align-items: center; }
+.nav-links a { color: #e8e0d0; text-decoration: none; font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; font-family: 'Playfair Display', Georgia, serif; transition: color 0.3s; }
+.nav-links a:hover { color: #c9a84c; }
+.nav-btn { background: #c9a84c !important; color: #0f111c !important; padding: 0.5rem 1.25rem; border-radius: 4px; font-weight: 600; }
+
+.page { max-width: 1100px; margin: 0 auto; padding: 3rem 1.5rem; }
+.back-link { color: #c9a84c; text-decoration: none; font-size: 0.9rem; letter-spacing: 0.05em; display: inline-block; margin-bottom: 2rem; }
+.back-link:hover { opacity: 0.7; }
+.eyebrow { color: #c9a84c; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.25em; display: block; margin-bottom: 1rem; }
+.page h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 3rem; color: #e8e0d0; line-height: 1.1; margin: 0 0 1rem; }
+.lead { color: rgba(232,224,208,0.75); font-size: 1.15rem; font-family: 'EB Garamond', Georgia, serif; max-width: 640px; margin: 0 0 3rem; line-height: 1.5; }
+
+.resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+.resource-card { display: block; text-decoration: none; color: inherit; background: rgba(30,34,52,0.5); border: 1px solid rgba(201,168,76,0.2); border-radius: 12px; padding: 1.75rem; transition: all 0.3s; font-family: 'EB Garamond', Georgia, serif; }
+.resource-card:hover { border-color: #c9a84c; transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.35); }
+.resource-card h3 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.4rem; color: #c9a84c; margin: 0 0 0.75rem; }
+.resource-card p { color: #e0e0e0; font-size: 1rem; line-height: 1.6; margin: 0 0 1.25rem; }
+.resource-card em { color: #c9a84c; font-style: italic; }
+.card-cta { color: #c9a84c; font-size: 0.9rem; letter-spacing: 0.05em; }
+.card-cta-soon { color: rgba(232,224,208,0.4); font-size: 0.85rem; font-style: italic; text-transform: uppercase; letter-spacing: 0.1em; }
+.resource-card-soon { border-style: dashed; cursor: default; }
+.resource-card-soon:hover { transform: none; border-color: rgba(201,168,76,0.3); box-shadow: none; }
+
+.page-footer { margin-top: 4rem; padding-top: 2rem; text-align: center; border-top: 1px solid rgba(201,168,76,0.1); }
+.footer-credit { color: rgba(232,224,208,0.4); font-size: 0.8rem; font-family: 'EB Garamond', Georgia, serif; }
+
+@media (max-width: 720px) {
+  .page h1 { font-size: 2.25rem; }
+}
+</style>

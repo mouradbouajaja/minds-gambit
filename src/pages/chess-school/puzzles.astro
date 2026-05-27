@@ -1,0 +1,471 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export const prerender = true;
+---
+
+<BaseLayout title="Daily Puzzle — Mind's Gambit Chess School" description="A fresh chess puzzle every day. Train tactics, build your streak, sharpen your eye. Free and ad-free — by Mind's Gambit.">
+
+<!-- Chessboard.js styles + piece SVGs -->
+<link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" />
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><img src="/images/logo.jpg" alt="Mind's Gambit" style="height:55px;width:55px;border-radius:50%;object-fit:cover;border:2px solid #c8a84e;margin-left:10px;vertical-align:middle;" /></a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/chess-school/grandmasters">Grandmasters</a></li>
+      <li><a href="/chess-school/learn-to-play">Learn to Play</a></li>
+      <li><a href="/chess-school/resources">Resources</a></li>
+      <li><a href="/#contact" class="nav-btn">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="page">
+  <a href="/chess-school/grandmasters" class="back-link">&larr; Back to Chess School</a>
+  <span class="eyebrow">Mind's Gambit Chess School</span>
+  <h1>Daily Puzzle</h1>
+  <p class="lead">One fresh tactical puzzle every day. Build the habit. Sharpen the eye. Watch your streak climb.</p>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-label">Today</div>
+      <div class="stat-value" id="today-date">—</div>
+    </div>
+    <div class="stat stat-streak">
+      <div class="stat-label">Streak</div>
+      <div class="stat-value"><span id="streak-counter">0</span><span class="streak-fire">🔥</span></div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Puzzle Rating</div>
+      <div class="stat-value" id="puzzle-rating">—</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Times Played</div>
+      <div class="stat-value" id="puzzle-plays">—</div>
+    </div>
+  </div>
+
+  <!-- MAIN BOARD AREA -->
+  <div class="puzzle-area">
+    <div class="board-wrap">
+      <div id="puzzle-board"></div>
+      <div class="board-status" id="board-status">Loading today's puzzle…</div>
+    </div>
+
+    <aside class="puzzle-info">
+      <div class="turn-indicator" id="turn-indicator">—</div>
+
+      <div class="info-block">
+        <div class="info-label">Themes</div>
+        <div class="info-content theme-tags" id="puzzle-themes">—</div>
+      </div>
+
+      <div class="info-block">
+        <div class="info-label">Instructions</div>
+        <div class="info-content">Find the best move. The opponent will respond. Continue until the puzzle is solved.</div>
+      </div>
+
+      <div class="puzzle-controls" id="puzzle-controls">
+        <button class="ctrl-btn" id="btn-hint" type="button">Hint</button>
+        <button class="ctrl-btn" id="btn-solution" type="button">Show Solution</button>
+        <button class="ctrl-btn" id="btn-reset" type="button">Reset Position</button>
+      </div>
+
+      <div class="solved-block" id="solved-block">
+        <div class="solved-title">Solved.</div>
+        <p class="solved-text">Come back tomorrow for a fresh puzzle. Your streak is logged.</p>
+        <a href="/chess-school/grandmasters" class="solved-cta">Work with a Grandmaster &rarr;</a>
+      </div>
+    </aside>
+  </div>
+
+  <!-- HABIT EXPLAINER -->
+  <div class="habit-card">
+    <h2>Why the daily habit works</h2>
+    <p>Five minutes of tactics every day &mdash; not an hour every Sunday &mdash; is the single highest-return habit in chess improvement. The patterns sink in faster, your calculation gets sharper, and the game itself stops feeling like a fight against the board and starts feeling like a conversation.</p>
+    <p>The streak counter exists because consistency beats intensity. Miss a day and the streak resets &mdash; not as punishment, but as a small honest signal. Show up tomorrow. Try again.</p>
+  </div>
+
+  <!-- WHAT'S NEXT -->
+  <div class="next-card">
+    <h2>Coming soon to Mind's Gambit Chess School</h2>
+    <ul class="next-list">
+      <li><strong>Tactics Trainer</strong> &mdash; pick a theme (pins, forks, mating nets, endgames), get rated puzzles, track your accuracy.</li>
+      <li><strong>Play vs the Computer</strong> &mdash; face Stockfish at any strength, fully in your browser.</li>
+      <li><strong>Game Analysis</strong> &mdash; paste a PGN, get a computer evaluation, find your blunders.</li>
+      <li><strong>Lessons with Grandmasters</strong> &mdash; structured curricula authored by WGM Maryana Huda and the Mind's Gambit roster.</li>
+    </ul>
+    <p class="next-note">Built little by little. Free, ad-free, open-source-powered, branded to stay in your lane &mdash; ours.</p>
+  </div>
+
+  <!-- ATTRIBUTION -->
+  <p class="attribution">Daily puzzle data sourced from the <a href="https://lichess.org/training" target="_blank" rel="noopener">Lichess</a> open puzzle database (CC0). Board rendering powered by chessboard.js and chess.js, both open-source. No tracking. No accounts required.</p>
+
+  <footer class="page-footer">
+    <p class="footer-credit">&copy; 2026 Mourad Bouajaja. Mind's Gambit Chess School is a production of &copy; MYB Studio LLC.</p>
+  </footer>
+</section>
+
+<!-- Libraries from jsDelivr / unpkg (cached globally) -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chess.js@0.13.4/chess.min.js"></script>
+<script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+
+<script is:inline>
+(function() {
+  'use strict';
+
+  var game;
+  var board;
+  var solution = [];
+  var solutionIdx = 0;
+  var puzzleId = null;
+  var userColor = 'w';
+  var startFen = null;
+  var hintShown = false;
+  var solved = false;
+  var isAnimating = false;
+
+  var statusEl = document.getElementById('board-status');
+  var turnEl = document.getElementById('turn-indicator');
+  var themesEl = document.getElementById('puzzle-themes');
+  var ratingEl = document.getElementById('puzzle-rating');
+  var playsEl = document.getElementById('puzzle-plays');
+  var streakEl = document.getElementById('streak-counter');
+  var dateEl = document.getElementById('today-date');
+  var hintBtn = document.getElementById('btn-hint');
+  var solBtn = document.getElementById('btn-solution');
+  var resetBtn = document.getElementById('btn-reset');
+  var solvedBlock = document.getElementById('solved-block');
+  var controlsEl = document.getElementById('puzzle-controls');
+
+  dateEl.textContent = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+  function loadStreak() {
+    var n = parseInt(localStorage.getItem('mg_puzzle_streak') || '0', 10);
+    streakEl.textContent = n;
+    return n;
+  }
+
+  function bumpStreakOnSolve() {
+    var today = new Date().toISOString().slice(0, 10);
+    var last = localStorage.getItem('mg_puzzle_lastSolved');
+    var streak = parseInt(localStorage.getItem('mg_puzzle_streak') || '0', 10);
+
+    if (last === today) {
+      return streak;
+    }
+    var yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+    if (last === yesterday) {
+      streak += 1;
+    } else {
+      streak = 1;
+    }
+    localStorage.setItem('mg_puzzle_streak', String(streak));
+    localStorage.setItem('mg_puzzle_lastSolved', today);
+    streakEl.textContent = streak;
+    return streak;
+  }
+
+  loadStreak();
+
+  function setStatus(msg, kind) {
+    statusEl.textContent = msg;
+    statusEl.className = 'board-status' + (kind ? ' status-' + kind : '');
+  }
+
+  function setTurn() {
+    if (!game || solved) return;
+    var t = game.turn() === 'w' ? 'White' : 'Black';
+    var who = (game.turn() === userColor) ? 'Your move' : 'Opponent thinking…';
+    turnEl.innerHTML = '<span class="turn-color turn-' + game.turn() + '">' + t + ' to move</span><br/><span class="turn-who">' + who + '</span>';
+  }
+
+  function uciToMove(uci) {
+    return {
+      from: uci.substring(0, 2),
+      to: uci.substring(2, 4),
+      promotion: uci.length >= 5 ? uci.substring(4, 5) : undefined
+    };
+  }
+
+  function moveToUci(move) {
+    return move.from + move.to + (move.promotion || '');
+  }
+
+  function onDragStart(source, piece) {
+    if (solved || isAnimating) return false;
+    if (!game || game.game_over()) return false;
+    if (game.turn() !== userColor) return false;
+    if ((userColor === 'w' && piece.charAt(0) !== 'w') ||
+        (userColor === 'b' && piece.charAt(0) !== 'b')) return false;
+    return true;
+  }
+
+  function onDrop(source, target) {
+    var attempt = game.move({ from: source, to: target, promotion: 'q' });
+    if (attempt === null) return 'snapback';
+
+    var played = moveToUci(attempt);
+    var expected = solution[solutionIdx];
+
+    if (played === expected) {
+      solutionIdx += 1;
+      if (solutionIdx >= solution.length) {
+        finishSolved();
+        return;
+      }
+      setStatus('Correct. Watch the response…', 'good');
+      setTurn();
+      isAnimating = true;
+      setTimeout(playOpponent, 550);
+    } else {
+      setStatus('Not the best move. Try again.', 'bad');
+      setTimeout(function() {
+        game.undo();
+        board.position(game.fen());
+        setTurn();
+      }, 700);
+    }
+  }
+
+  function onSnapEnd() {
+    board.position(game.fen());
+  }
+
+  function playOpponent() {
+    if (solutionIdx >= solution.length) {
+      finishSolved();
+      isAnimating = false;
+      return;
+    }
+    var uci = solution[solutionIdx];
+    var mv = game.move(uciToMove(uci));
+    board.position(game.fen());
+    solutionIdx += 1;
+    isAnimating = false;
+    if (solutionIdx >= solution.length) {
+      finishSolved();
+    } else {
+      setStatus('Your move. Find the best continuation.', '');
+      setTurn();
+    }
+  }
+
+  function finishSolved() {
+    solved = true;
+    setStatus('Solved.', 'good');
+    turnEl.innerHTML = '<span class="turn-color">Puzzle complete</span>';
+    controlsEl.classList.add('controls-done');
+    solvedBlock.classList.add('shown');
+    bumpStreakOnSolve();
+  }
+
+  hintBtn.addEventListener('click', function() {
+    if (solved || isAnimating) return;
+    if (solutionIdx >= solution.length) return;
+    var uci = solution[solutionIdx];
+    var from = uci.substring(0, 2);
+    var squareEl = document.querySelector('.square-' + from);
+    if (squareEl) {
+      squareEl.classList.add('hint-square');
+      setTimeout(function() { squareEl.classList.remove('hint-square'); }, 1400);
+    }
+    hintShown = true;
+    setStatus('Hint: the piece on ' + from + ' moves.', '');
+  });
+
+  solBtn.addEventListener('click', function() {
+    if (solved) return;
+    setStatus('Playing through the full solution…', '');
+    isAnimating = true;
+    function step() {
+      if (solutionIdx >= solution.length) {
+        finishSolved();
+        isAnimating = false;
+        return;
+      }
+      var uci = solution[solutionIdx];
+      game.move(uciToMove(uci));
+      board.position(game.fen());
+      solutionIdx += 1;
+      setTimeout(step, 700);
+    }
+    step();
+  });
+
+  resetBtn.addEventListener('click', function() {
+    if (!startFen) return;
+    game.load(startFen);
+    solutionIdx = 0;
+    solved = false;
+    solvedBlock.classList.remove('shown');
+    controlsEl.classList.remove('controls-done');
+    board.position(game.fen());
+    setStatus('Position reset. Opponent moves first…', '');
+    setTimeout(function() {
+      if (solutionIdx === 0 && solution.length > 0) {
+        var uci = solution[0];
+        game.move(uciToMove(uci));
+        board.position(game.fen());
+        solutionIdx = 1;
+        setStatus('Your move. Find the best continuation.', '');
+        setTurn();
+      }
+    }, 800);
+  });
+
+  function loadPuzzle() {
+    setStatus('Fetching today\'s puzzle…', '');
+    fetch('https://lichess.org/api/puzzle/daily')
+      .then(function(r) {
+        if (!r.ok) throw new Error('Lichess API responded ' + r.status);
+        return r.json();
+      })
+      .then(function(data) {
+        puzzleId = data.puzzle.id;
+        solution = data.puzzle.solution;
+        ratingEl.textContent = data.puzzle.rating || '—';
+        playsEl.textContent = (data.puzzle.plays || 0).toLocaleString();
+
+        var themes = (data.puzzle.themes || []).slice(0, 6);
+        themesEl.innerHTML = themes.map(function(t) {
+          return '<span class="theme-tag">' + t.replace(/([A-Z])/g, ' $1').toLowerCase().trim() + '</span>';
+        }).join('');
+
+        game = new Chess();
+        var tempGame = new Chess();
+        tempGame.load_pgn(data.game.pgn);
+        var allMoves = tempGame.history();
+        for (var i = 0; i < data.puzzle.initialPly && i < allMoves.length; i++) {
+          game.move(allMoves[i]);
+        }
+        startFen = game.fen();
+
+        userColor = game.turn() === 'w' ? 'b' : 'w';
+
+        board = Chessboard('puzzle-board', {
+          position: game.fen(),
+          orientation: userColor === 'w' ? 'white' : 'black',
+          draggable: true,
+          onDragStart: onDragStart,
+          onDrop: onDrop,
+          onSnapEnd: onSnapEnd,
+          pieceTheme: 'https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/website/img/chesspieces/wikipedia/{piece}.png',
+          moveSpeed: 'slow',
+          snapbackSpeed: 250
+        });
+
+        setStatus('Opponent\'s move first…', '');
+
+        setTimeout(function() {
+          if (solution.length > 0) {
+            var firstUci = solution[0];
+            game.move(uciToMove(firstUci));
+            board.position(game.fen());
+            solutionIdx = 1;
+            setStatus('Your move. Find the best continuation.', '');
+            setTurn();
+          }
+        }, 1000);
+
+        window.addEventListener('resize', function() {
+          if (board) board.resize();
+        });
+      })
+      .catch(function(err) {
+        setStatus('Could not load today\'s puzzle. Check your connection and refresh. (' + err.message + ')', 'bad');
+      });
+  }
+
+  function whenReady(cb) {
+    if (window.Chess && window.Chessboard && window.jQuery) {
+      cb();
+    } else {
+      setTimeout(function() { whenReady(cb); }, 50);
+    }
+  }
+  whenReady(loadPuzzle);
+})();
+</script>
+
+</BaseLayout>
+
+<style is:global>
+nav { background: rgba(15,17,28,0.95); border-bottom: 1px solid rgba(201,168,76,0.2); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
+.nav-inner { max-width: 1200px; margin: 0 auto; padding: 0.75rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+.nav-links { display: flex; gap: 2rem; list-style: none; margin: 0; padding: 0; align-items: center; }
+.nav-links a { color: #e8e0d0; text-decoration: none; font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; font-family: 'Playfair Display', Georgia, serif; transition: color 0.3s; }
+.nav-links a:hover { color: #c9a84c; }
+.nav-btn { background: #c9a84c !important; color: #0f111c !important; padding: 0.5rem 1.25rem; border-radius: 4px; font-weight: 600; }
+
+.page { max-width: 1200px; margin: 0 auto; padding: 3rem 1.5rem; }
+.back-link { color: #c9a84c; text-decoration: none; font-size: 0.9rem; letter-spacing: 0.05em; display: inline-block; margin-bottom: 2rem; transition: opacity 0.25s; }
+.back-link:hover { opacity: 0.7; transform: translateX(-3px); }
+.eyebrow { color: #c9a84c; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.25em; display: block; margin-bottom: 1rem; }
+.page h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 3rem; color: #e8e0d0; line-height: 1.1; margin: 0 0 1rem; }
+.lead { color: rgba(232,224,208,0.8); font-size: 1.2rem; font-family: 'EB Garamond', Georgia, serif; line-height: 1.55; max-width: 720px; margin: 0 0 2.5rem; }
+
+.stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2.5rem; }
+.stat { background: rgba(30,34,52,0.55); border: 1px solid rgba(201,168,76,0.2); border-radius: 12px; padding: 1.25rem 1rem; text-align: center; transition: border-color 0.25s, transform 0.25s; }
+.stat:hover { border-color: rgba(201,168,76,0.45); transform: translateY(-2px); }
+.stat-label { color: rgba(232,224,208,0.55); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.18em; margin-bottom: 0.5rem; font-family: 'Playfair Display', Georgia, serif; }
+.stat-value { color: #c9a84c; font-family: 'Playfair Display', Georgia, serif; font-size: 1.7rem; font-weight: 700; line-height: 1; }
+.stat-streak .stat-value { color: #f4d989; }
+.streak-fire { font-size: 1.2rem; margin-left: 0.3rem; filter: hue-rotate(-20deg); }
+
+.puzzle-area { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 2rem; margin-bottom: 3rem; align-items: start; }
+.board-wrap { position: relative; }
+#puzzle-board { width: 100%; max-width: 640px; margin: 0 auto; box-shadow: 0 18px 50px rgba(0,0,0,0.5); border-radius: 8px; overflow: hidden; }
+.board-status { margin-top: 1.25rem; padding: 0.85rem 1.2rem; background: rgba(30,34,52,0.65); border: 1px solid rgba(201,168,76,0.25); border-radius: 10px; color: #e0e0e0; font-family: 'EB Garamond', Georgia, serif; font-size: 1.05rem; text-align: center; transition: background 0.25s, border-color 0.25s, color 0.25s; }
+.status-good { background: rgba(74,222,128,0.12); border-color: rgba(74,222,128,0.5); color: #a7f3d0; }
+.status-bad { background: rgba(248,113,113,0.12); border-color: rgba(248,113,113,0.5); color: #fecaca; }
+
+@keyframes hintPulse { 0%, 100% { box-shadow: inset 0 0 0 0 rgba(201,168,76,0); } 50% { box-shadow: inset 0 0 0 6px rgba(201,168,76,0.85); } }
+.hint-square { animation: hintPulse 1.4s ease-out; }
+
+.puzzle-info { background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(30,34,52,0.6)); border: 1px solid rgba(201,168,76,0.25); border-radius: 14px; padding: 1.5rem; font-family: 'EB Garamond', Georgia, serif; }
+.turn-indicator { background: rgba(15,17,28,0.65); border: 1px solid rgba(201,168,76,0.2); border-radius: 10px; padding: 0.95rem 1.1rem; margin-bottom: 1.25rem; text-align: center; }
+.turn-color { color: #c9a84c; font-family: 'Playfair Display', Georgia, serif; font-size: 1.15rem; font-weight: 700; letter-spacing: 0.04em; }
+.turn-who { color: rgba(232,224,208,0.6); font-size: 0.85rem; font-style: italic; }
+.info-block { margin-bottom: 1.25rem; }
+.info-label { color: #c9a84c; font-family: 'Playfair Display', Georgia, serif; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.16em; margin-bottom: 0.5rem; }
+.info-content { color: rgba(232,224,208,0.85); font-size: 0.98rem; line-height: 1.55; }
+.theme-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.theme-tag { background: rgba(201,168,76,0.14); color: #c9a84c; padding: 0.25rem 0.7rem; border-radius: 999px; font-size: 0.78rem; letter-spacing: 0.03em; text-transform: capitalize; border: 1px solid rgba(201,168,76,0.22); }
+
+.puzzle-controls { display: flex; flex-direction: column; gap: 0.55rem; margin-top: 1.5rem; }
+.ctrl-btn { background: transparent; border: 1px solid rgba(201,168,76,0.45); color: #c9a84c; padding: 0.7rem 1.1rem; border-radius: 8px; cursor: pointer; font-family: 'Playfair Display', Georgia, serif; font-size: 0.92rem; letter-spacing: 0.04em; transition: background 0.2s, border-color 0.2s, transform 0.15s; }
+.ctrl-btn:hover { background: rgba(201,168,76,0.12); border-color: #c9a84c; transform: translateY(-1px); }
+.ctrl-btn:active { transform: translateY(0); }
+.controls-done .ctrl-btn { opacity: 0.4; pointer-events: none; }
+
+.solved-block { display: none; margin-top: 1.5rem; padding: 1.25rem; background: linear-gradient(135deg, rgba(74,222,128,0.1), rgba(30,34,52,0.65)); border: 1px solid rgba(74,222,128,0.4); border-radius: 12px; text-align: center; }
+.solved-block.shown { display: block; animation: slideIn 0.4s ease-out; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.solved-title { font-family: 'Playfair Display', Georgia, serif; font-size: 1.6rem; color: #a7f3d0; margin-bottom: 0.4rem; }
+.solved-text { color: rgba(232,224,208,0.8); font-size: 0.95rem; margin: 0 0 1rem; line-height: 1.5; }
+.solved-cta { display: inline-block; background: #c9a84c; color: #0f111c; padding: 0.65rem 1.3rem; border-radius: 8px; text-decoration: none; font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: 0.92rem; transition: transform 0.2s, box-shadow 0.2s; }
+.solved-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(201,168,76,0.4); }
+
+.habit-card, .next-card { background: rgba(30,34,52,0.5); border: 1px solid rgba(201,168,76,0.18); border-radius: 12px; padding: 2rem; margin-bottom: 1.5rem; font-family: 'EB Garamond', Georgia, serif; }
+.habit-card h2, .next-card h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.6rem; color: #c9a84c; margin: 0 0 1rem; }
+.habit-card p, .next-card p { color: #e0e0e0; font-size: 1.05rem; line-height: 1.65; margin: 0 0 1rem; }
+.next-list { list-style: none; padding: 0; margin: 1rem 0 1.5rem; }
+.next-list li { padding: 0.6rem 0 0.6rem 1.5rem; border-bottom: 1px solid rgba(201,168,76,0.1); color: #e0e0e0; font-size: 1rem; line-height: 1.55; position: relative; }
+.next-list li::before { content: '♞'; color: #c9a84c; position: absolute; left: 0; top: 0.6rem; }
+.next-list strong { color: #c9a84c; font-family: 'Playfair Display', Georgia, serif; }
+.next-note { color: rgba(232,224,208,0.55) !important; font-size: 0.92rem !important; font-style: italic; margin: 0 !important; }
+
+.attribution { color: rgba(232,224,208,0.5); font-size: 0.82rem; font-family: 'EB Garamond', Georgia, serif; line-height: 1.55; margin: 2rem 0 1rem; font-style: italic; }
+.attribution a { color: #c9a84c; text-decoration: underline; }
+.page-footer { margin-top: 3rem; padding-top: 2rem; text-align: center; border-top: 1px solid rgba(201,168,76,0.1); }
+.footer-credit { color: rgba(232,224,208,0.4); font-size: 0.8rem; font-family: 'EB Garamond', Georgia, serif; }
+
+@media (max-width: 960px) { .puzzle-area { grid-template-columns: 1fr; } .puzzle-info { order: 2; } .stats-bar { grid-template-columns: repeat(2, 1fr); } .page h1 { font-size: 2.25rem; } }
+@media (max-width: 560px) { .stats-bar { grid-template-columns: 1fr 1fr; } .puzzle-controls { gap: 0.4rem; } .habit-card, .next-card { padding: 1.5rem; } }
+.board-b72b1 { box-sizing: border-box; }
+</style>

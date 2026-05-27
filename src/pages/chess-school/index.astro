@@ -1,0 +1,130 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export const prerender = true;
+---
+
+<BaseLayout title="Chess School — Mind's Gambit" description="Daily tactical puzzles, lessons with grandmasters, and resources for chess improvement. Free, ad-free, open-source-powered.">
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><img src="/images/logo.jpg" alt="Mind's Gambit" style="height:55px;width:55px;border-radius:50%;object-fit:cover;border:2px solid #c8a84e;margin-left:10px;vertical-align:middle;" /></a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/chess-school/puzzles">Daily Puzzle</a></li>
+      <li><a href="/chess-school/grandmasters">Grandmasters</a></li>
+      <li><a href="/chess-school/learn-to-play">Learn to Play</a></li>
+      <li><a href="/chess-school/resources">Resources</a></li>
+      <li><a href="/#contact" class="nav-btn">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <span class="eyebrow">Mind's Gambit Chess School</span>
+  <h1>Chess School</h1>
+  <p class="lead">Free. Ad-free. Open-source-powered. Built one piece at a time, the way chess is meant to be learned.</p>
+</section>
+
+<section class="tiles-section">
+  <div class="tiles-grid">
+
+    <a href="/chess-school/puzzles" class="tile tile-feature">
+      <div class="tile-badge">Live Now</div>
+      <div class="tile-icon">&#9818;</div>
+      <h2>Daily Puzzle</h2>
+      <p>One fresh tactical puzzle every day. Build the habit. Sharpen the eye. Watch your streak climb.</p>
+      <span class="tile-cta">Play today's puzzle &rarr;</span>
+    </a>
+
+    <div class="tile tile-soon">
+      <div class="tile-badge tile-badge-soon">Coming Soon</div>
+      <div class="tile-icon">&#9822;</div>
+      <h2>Tactics Trainer</h2>
+      <p>Pick a theme — pins, forks, mating nets, endgames — and grind rated puzzles. Track your accuracy. Powered by 5.94 million puzzles on our CDN.</p>
+      <span class="tile-cta tile-cta-soon">In development</span>
+    </div>
+
+    <a href="/chess-school/grandmasters" class="tile">
+      <div class="tile-icon">&#9819;</div>
+      <h2>Learn from Grandmasters</h2>
+      <p>One-on-one coaching with titled players. Featuring WGM Maryana Huda and a curated roster of professional teachers.</p>
+      <span class="tile-cta">Meet the coaches &rarr;</span>
+    </a>
+
+    <a href="/chess-school/resources" class="tile">
+      <div class="tile-icon">&#9820;</div>
+      <h2>Chess Resources</h2>
+      <p>Curated, open-source-friendly tools and study material. No ads. No upsells. Just the good stuff.</p>
+      <span class="tile-cta">Browse resources &rarr;</span>
+    </a>
+
+    <a href="/chess-school/learn-to-play" class="tile">
+      <div class="tile-icon">&#9817;</div>
+      <h2>Learn How to Play</h2>
+      <p>New to chess? Start here. Piece movement, basic rules, the first principles of attack and defense — built for absolute beginners.</p>
+      <span class="tile-cta">Start learning &rarr;</span>
+    </a>
+
+    <div class="tile tile-soon">
+      <div class="tile-badge tile-badge-soon">Coming Soon</div>
+      <div class="tile-icon">&#9823;</div>
+      <h2>Play vs Computer</h2>
+      <p>Face Stockfish at any strength, fully in your browser. From "I just learned the rules" to "give me your best."</p>
+      <span class="tile-cta tile-cta-soon">In development</span>
+    </div>
+
+  </div>
+</section>
+
+<section class="manifesto">
+  <h2>Why Mind's Gambit Chess School?</h2>
+  <p>Because the existing chess platforms are loud, ad-saturated, and want your subscription before they want your improvement. Mind's Gambit is the opposite: free at the front, paid only where a human teacher's time is involved. Built on the open Lichess puzzle database, the open chess.js library, and a small CDN we own outright. No tracking. No accounts required to start playing. Just chess — the way it's meant to be.</p>
+</section>
+
+<footer class="page-footer">
+  <p class="footer-credit">&copy; 2026 Mourad Bouajaja. Mind's Gambit Chess School is a production of &copy; MYB Studio LLC.</p>
+</footer>
+
+</BaseLayout>
+
+<style is:global>
+nav { background: rgba(15,17,28,0.95); border-bottom: 1px solid rgba(201,168,76,0.2); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
+.nav-inner { max-width: 1200px; margin: 0 auto; padding: 0.75rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+.nav-links { display: flex; gap: 2rem; list-style: none; margin: 0; padding: 0; align-items: center; }
+.nav-links a { color: #e8e0d0; text-decoration: none; font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; font-family: 'Playfair Display', Georgia, serif; transition: color 0.3s; }
+.nav-links a:hover { color: #c9a84c; }
+.nav-btn { background: #c9a84c !important; color: #0f111c !important; padding: 0.5rem 1.25rem; border-radius: 4px; font-weight: 600; }
+
+.hero { max-width: 1200px; margin: 0 auto; padding: 4rem 1.5rem 2rem; text-align: center; }
+.eyebrow { color: #c9a84c; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.25em; display: block; margin-bottom: 1.25rem; }
+.hero h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 4rem; color: #e8e0d0; line-height: 1.05; margin: 0 0 1.25rem; }
+.hero .lead { color: rgba(232,224,208,0.78); font-size: 1.25rem; font-family: 'EB Garamond', Georgia, serif; line-height: 1.55; max-width: 720px; margin: 0 auto; }
+
+.tiles-section { max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+.tiles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 1.5rem; }
+
+.tile { background: linear-gradient(135deg, rgba(30,34,52,0.65), rgba(20,22,36,0.85)); border: 1px solid rgba(201,168,76,0.22); border-radius: 16px; padding: 2rem 1.75rem; color: inherit; text-decoration: none; display: flex; flex-direction: column; position: relative; transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease; min-height: 270px; cursor: pointer; }
+.tile:hover { transform: translateY(-5px); border-color: rgba(201,168,76,0.55); box-shadow: 0 18px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(201,168,76,0.15); }
+.tile-feature { background: linear-gradient(135deg, rgba(201,168,76,0.18), rgba(30,34,52,0.85)); border-color: rgba(201,168,76,0.45); grid-column: span 2; min-height: 320px; }
+@media (max-width: 720px) { .tile-feature { grid-column: span 1; } }
+.tile-feature h2 { font-size: 2.1rem; }
+.tile-soon { opacity: 0.85; cursor: default; }
+.tile-soon:hover { transform: none; border-color: rgba(201,168,76,0.22); box-shadow: none; }
+.tile-badge { position: absolute; top: 1.1rem; right: 1.1rem; background: rgba(74,222,128,0.18); color: #a7f3d0; border: 1px solid rgba(74,222,128,0.45); padding: 0.28rem 0.7rem; border-radius: 999px; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; font-family: 'Playfair Display', Georgia, serif; }
+.tile-badge-soon { background: rgba(201,168,76,0.12); color: #c9a84c; border-color: rgba(201,168,76,0.4); }
+.tile-icon { font-size: 3.2rem; color: #c9a84c; margin-bottom: 0.6rem; line-height: 1; }
+.tile h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.55rem; color: #e8e0d0; margin: 0 0 0.65rem; }
+.tile p { color: rgba(232,224,208,0.78); font-size: 1rem; font-family: 'EB Garamond', Georgia, serif; line-height: 1.55; margin: 0 0 1.25rem; flex-grow: 1; }
+.tile-cta { color: #c9a84c; font-family: 'Playfair Display', Georgia, serif; font-size: 0.95rem; letter-spacing: 0.04em; margin-top: auto; }
+.tile-cta-soon { color: rgba(201,168,76,0.6); font-style: italic; }
+
+.manifesto { max-width: 900px; margin: 1rem auto 2rem; padding: 2.5rem 1.5rem; text-align: center; }
+.manifesto h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.85rem; color: #c9a84c; margin: 0 0 1rem; }
+.manifesto p { color: rgba(232,224,208,0.78); font-size: 1.08rem; font-family: 'EB Garamond', Georgia, serif; line-height: 1.7; }
+
+.page-footer { margin-top: 1rem; padding: 2rem 1.5rem; text-align: center; border-top: 1px solid rgba(201,168,76,0.1); }
+.footer-credit { color: rgba(232,224,208,0.4); font-size: 0.82rem; font-family: 'EB Garamond', Georgia, serif; }
+
+@media (max-width: 780px) { .hero h1 { font-size: 2.6rem; } .hero .lead { font-size: 1.1rem; } .tile { min-height: auto; } }
+</style>

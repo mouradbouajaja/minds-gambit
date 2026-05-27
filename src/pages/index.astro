@@ -27,6 +27,928 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <li class="has-dropdown">
         <a href="/chess-school/grandmasters" class="dropdown-toggle">Chess School <span class="caret">&#9662;</span></a>
         <ul class="dropdown-menu">
+          <li><a href="/chess-school/puzzles">Daily Puzzle</a></li>
+          <li><a href="/chess-school/grandmasters">Learn from Grandmasters</a></li>
+          <li><a href="/chess-school/resources">Chess Resources</a></li>
+          <li><a href="/chess-school/learn-to-play">Learn How to Play Chess</a></li>
+        </ul>
+      </li>
+      <li><a href="#donate">Donate</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<script>document.querySelectorAll('.nav-links a').forEach(function(a){a.addEventListener('click',function(){var t=a.getAttribute('href');if(t&&t.indexOf('#')===0){var el=document.querySelector(t);if(el)setTimeout(function(){el.scrollIntoView({behavior:'instant',block:'start'});},300);}});});</script><style>section[data-reveal]{transition:transform 0.3s ease;overflow:hidden;}section[data-reveal]:hover{transform:scale(1.02);}#about,#book,#blog,#documentary{padding-top:10px !important;scroll-margin-top:80px;}
+  @keyframes comingSoonBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+  .coming-soon-blink {
+    animation: comingSoonBlink 1.8s ease-in-out infinite;
+    color: #e74c3c;
+    font-style: italic;
+    margin-top: 12px;
+    font-size: 0.9rem;
+  }
+
+    /* Chess Player CTA Button */
+    .chess-cta-section {
+      text-align: center;
+      padding: 4rem 2rem 5rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .chess-cta-inner {
+      background: rgba(30, 33, 48, 0.8);
+      border: 1px solid rgba(201, 168, 76, 0.2);
+      border-radius: 20px;
+      padding: 3rem 2rem;
+    }
+    .chess-cta-question {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 2.2rem;
+      color: #c9a84c;
+      margin-bottom: 0.5rem;
+    }
+    .chess-cta-subtitle {
+      font-size: 1rem;
+      color: #a0a0a0;
+      margin-bottom: 2rem;
+    }
+    .chess-cta-btn {
+      display: inline-block;
+      padding: 1.1rem 3rem;
+      background: #c9a84c;
+      color: #0f111c;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 1.2rem;
+      letter-spacing: 0.03em;
+      animation: ctaPulse 2s ease-in-out infinite;
+      transition: transform 0.2s;
+      box-shadow: 0 0 20px rgba(201, 168, 76, 0.3);
+    }
+    .chess-cta-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 35px rgba(201, 168, 76, 0.5);
+    }
+    @keyframes ctaPulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(201, 168, 76, 0.3); }
+      50% { box-shadow: 0 0 40px rgba(201, 168, 76, 0.6), 0 0 60px rgba(201, 168, 76, 0.2); }
+    }
+
+    /* Chess School dropdown */
+    .nav-links .has-dropdown { position: relative; }
+    .nav-links .has-dropdown > .dropdown-toggle { display: inline-flex; align-items: center; gap: 0.35rem; }
+    .nav-links .has-dropdown > .dropdown-toggle .caret { font-size: 0.7em; transition: transform 0.2s; }
+    .nav-links .has-dropdown:hover > .dropdown-toggle .caret,
+    .nav-links .has-dropdown:focus-within > .dropdown-toggle .caret { transform: rotate(180deg); color: #c9a84c; }
+    .nav-links .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 17, 28, 0.98);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(201, 168, 76, 0.3);
+      border-radius: 8px;
+      padding: 0.5rem 0;
+      min-width: 260px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
+      list-style: none;
+      margin: 0;
+      gap: 0;
+      flex-direction: column;
+      z-index: 200;
+    }
+    .nav-links .has-dropdown:hover > .dropdown-menu,
+    .nav-links .has-dropdown:focus-within > .dropdown-menu { display: flex; }
+    .nav-links .dropdown-menu li { padding: 0; }
+    .nav-links .dropdown-menu a {
+      display: block;
+      padding: 0.7rem 1.1rem;
+      text-transform: none;
+      letter-spacing: 0.02em;
+      font-size: 0.85rem;
+      font-family: 'Playfair Display', Georgia, serif;
+      color: #e8e0d0;
+      white-space: nowrap;
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-links .dropdown-menu a:hover,
+    .nav-links .dropdown-menu a:focus { background: rgba(201, 168, 76, 0.12); color: #c9a84c; }
+
+    @media (max-width: 880px) {
+      .nav-links .dropdown-menu {
+        position: static;
+        transform: none;
+        display: none;
+        box-shadow: none;
+        border: none;
+        background: transparent;
+        padding: 0;
+        margin-top: 0.5rem;
+      }
+      .nav-links .has-dropdown.open > .dropdown-menu { display: flex; }
+    }
+
+  </style>
+
+<!-- HERO -->
+<section class="hero" id="home" data-reveal>
+  <div class="hero-inner">
+    <div class="hero-banner-tile">
+      <video src="/hero_video.mp4" autoplay loop muted playsinline onloadeddata="this.playbackRate=1.5"></video>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" data-reveal>
+  <div class="section-inner">
+    <div class="section-label">About</div>
+    <h2 class="section-title">Who I Am</h2>
+    <div class="section-divider"></div>
+    <div class="about-content">
+      <div class="about-text">
+        <p>I bring a distinctive perspective to the world of chess&mdash;one shaped not by grandmaster ambitions but by a career spent in the most consequential arenas of human struggle. A graduate of Illinois State University with a degree in Sociology, I have devoted my professional life to child protection and mental health&mdash;fields that have given me a profound understanding of how individuals navigate systemic pressure, institutional failure, and the quiet crises that unfold far from public view.</p>
+        <p>My encounter with chess began during graduate studies in International Affairs at The New School in Manhattan, where afternoons spent at the stone chess tables of Stuyvesant Town became an unexpected counterweight to the global complexities of the classroom. What started as a neighborhood pastime grew into a lifelong fascination with the game's social dimensions&mdash;its hierarchies, its rituals, its capacity to both heal and harm.</p>
+        <p>I later deepened my engagement with the chess community through the Pittsburgh Chess League and the University of Pittsburgh Chess Club&mdash;experiences that sharpened the questions at the heart of my work: Who benefits from chess, and who is left behind? What happens to the mind under sustained competitive pressure? And what obligations do the institutions of chess owe to the people who entrust their development to the game?</p>
+        <p>I am currently writing <em>The Mind's Gambit: Chess, Madness, and the Battle for the Mind</em>. This blog is where I develop those ideas in public, one chapter at a time, and I welcome your feedback along the way.</p>
+      </div>
+      <div class="about-sidebar">
+        <div class="about-photo">
+          <img src="/images/Me.JPG" alt="Mourad Bouajaja, author of The Mind's Gambit" loading="lazy">
+        </div>
+        <div class="stat-card">
+          <div class="label">Background</div>
+          <div class="value">Child Protection &amp; Mental Health</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Education</div>
+          <div class="value">Illinois State (Sociology) &middot; The New School (Int'l Affairs)</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Chess Community</div>
+          <div class="value">Pittsburgh Chess League &middot; University of Pittsburgh Chess Club</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Current Project</div>
+          <div class="value"><em>The Mind's Gambit</em> &mdash; A Book in Ten Chapters</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOK -->
+<section id="book" data-reveal>
+  <div class="section-inner">
+    <div class="section-label">The Book</div>
+    <h2 class="section-title">The Mind's Gambit</h2>
+    <p class="section-subtitle">Chess, Madness, and the Battle for the Mind &mdash; a book in ten chapters exploring the intersection of chess and mental health, from history to science to lived experience.</p>
+    <div class="section-divider"></div>
+
+    <div class="book-banner">
+      <div class="book-cover">
+            <img src="/images/book_cover75.png" alt="The Mind's Gambit - Book Cover" class="cover-image" style="width:100%;height:100%;object-fit:contain;border-radius:8px;" loading="lazy">
+          </div>
+      <div class="book-details">
+        <h3>A Book Built in Public</h3>
+        <p class="book-sub">Chess, Madness, and the Battle for the Mind</p>
+        <p>Each chapter of this book begins its life as an article on this blog. I publish drafts, gather feedback from readers and the chess community, then refine the material back into its final form. This process keeps the work honest, the arguments sharp, and the door open to perspectives I might otherwise miss.</p>
+        <p>The book is written for general readers. No chess knowledge is required. The 64 squares are simply a lens through which we can see, with unusual clarity, how the human mind works under pressure, in community, and in solitude.</p>
+        <span class="book-status">In Progress &middot; 2026</span>
+      </div>
+    </div>
+
+    <div class="chapters-grid">
+      <a href="/blog/the-constant-board" class="chapter-card chapter-published">
+        <div class="chapter-num">1</div>
+        <div class="chapter-info">
+          <h4>The Constant</h4>
+          <p>From M&eacute;grine to Manhattan &mdash; a personal entry into the world of chess</p>
+          <span class="chapter-status published">Read Now</span>
+        </div>
+      </a>
+      <a href="/blog/the-number" class="chapter-card chapter-published">
+        <div class="chapter-num">2</div>
+        <div class="chapter-info">
+          <h4>The Number</h4>
+          <p>A number on your forehead &mdash; Elo ratings, identity, and the sociology of competitive chess</p>
+          <span class="chapter-status published">Read Now</span>
+        </div>
+      </a>
+      <a href="#documentary" class="chapter-card chapter-published">
+        <div class="chapter-num">3</div>
+        <div class="chapter-info">
+          <h4>Brilliance That Bleeds</h4>
+          <p>The myth of the mad chess genius &mdash; from Morphy to Fischer</p>
+          <span class="chapter-status published">Watch Episode</span>
+        </div>
+      </a>
+      <a href="#documentary" class="chapter-card chapter-published">
+        <div class="chapter-num">4</div>
+        <div class="chapter-info">
+          <h4>The Queen's Burden</h4>
+          <p>Women, hostility, and the mental health cost of playing in a man's world</p>
+          <span class="chapter-status published">Watch Episode</span>
+        </div>
+      </a>
+      <div class="chapter-card">
+        <div class="chapter-num">5</div>
+        <div class="chapter-info">
+          <h4>The Youngest Pawns</h4>
+          <p>Ratings, parents, burnout, and the question of childhood in chess</p>
+
+          <span class="chapter-status in-progress">In Progress</span></div>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-num">6</div>
+        <div class="chapter-info">
+          <h4>The Pattern Seekers</h4>
+          <p>Chess and neurodivergence &mdash; a game built for different minds</p>
+
+          <span class="chapter-status in-progress">In Progress</span></div>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-num">7</div>
+        <div class="chapter-info">
+          <h4>Medicine on 64 Squares</h4>
+          <p>From ninth-century Baghdad to modern prisons &mdash; chess as therapy</p>
+
+          <span class="chapter-status in-progress">In Progress</span></div>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-num">8</div>
+        <div class="chapter-info">
+          <h4>One More Game</h4>
+          <p>Digital chess, compulsive play, and the architecture of addiction &mdash; the body and the screen</p>
+
+          <span class="chapter-status in-progress">In Progress</span></div>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-num">9</div>
+        <div class="chapter-info">
+          <h4>The Ghost in the Machine</h4>
+          <p>Chess in the age of artificial intelligence</p>
+
+          <span class="chapter-status in-progress">In Progress</span></div>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-num">10</div>
+        <div class="chapter-info">
+          <h4>The Mind&#8217;s Gambit Empirical Study</h4>
+          <p>Survey findings &mdash; what chess players told us about the mental health cost of the game</p>
+
+          <span class="chapter-status in-progress">In Progress</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG -->
+<section id="blog">
+    <div class="section-inner">
+      <div class="section-label">Blog</div>
+      <h2 class="section-title">Chapters in Progress</h2>
+      <p class="blog-intro">Each article below is a draft chapter from <em>The Mind&#8217;s Gambit</em>, published here to invite conversation before the book goes to print. Read them, challenge them, and help me make the arguments stronger.</p>
+      <div class="section-divider"></div>
+      <h3 style="color:#c9a84c; text-align:center; font-family:'Playfair Display',Georgia,serif; font-size:1.6rem; margin: 2rem 0 1.5rem; letter-spacing:0.05em;">Published Articles</h3>
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:1.5rem; margin-bottom:2rem;">
+        <a href="/blog/the-constant-board" style="display:block; text-decoration:none; color:inherit; background:rgba(255,255,255,0.03); border:1px solid rgba(201,168,76,0.2); border-radius:12px; padding:1.5rem; transition:all 0.3s; cursor:pointer;" onmouseover="this.style.borderColor='#c9a84c';this.style.transform='translateY(-4px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,0.3)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.2)';this.style.transform='none';this.style.boxShadow='none'">
+          <img src="/images/A_cinematic_realistic_scene_in_a_mgrine_____tunisi_delpmaspu.png" alt="The Constant Board" loading="lazy" style="width:100%; border-radius:8px; margin-bottom:1rem; aspect-ratio:16/9; object-fit:cover;">
+          <span style="display:inline-block; font-size:0.75rem; color:#c9a84c; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.5rem;">Introduction &#183; Personal Essay</span>
+          <h4 style="font-family:'Playfair Display',Georgia,serif; font-size:1.2rem; color:#e8e0d0; margin:0 0 0.5rem;">The Constant Board: From M&#233;grine to Manhattan</h4>
+          <p style="font-size:0.9rem; color:rgba(232,224,208,0.7); line-height:1.5;">A personal journey through the coffee houses of Tunisia and across the Atlantic&#8212;how a vinyl board, a humbling defeat, and a father&#8217;s quiet faith shaped a lifelong relationship with chess.</p>
+          <div style="display:flex; gap:1rem; margin-top:0.75rem; font-size:0.8rem; color:rgba(232,224,208,0.5);">
+            <span>February 2026</span><span>12 min read</span>
+          </div>
+        </a>
+        <a href="/blog/the-number" style="display:block; text-decoration:none; color:inherit; background:rgba(255,255,255,0.03); border:1px solid rgba(201,168,76,0.2); border-radius:12px; padding:1.5rem; transition:all 0.3s; cursor:pointer;" onmouseover="this.style.borderColor='#c9a84c';this.style.transform='translateY(-4px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,0.3)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.2)';this.style.transform='none';this.style.boxShadow='none'">
+          <img src="/images/For%20Website%20The%20Number.png" alt="The Number" loading="lazy" style="width:100%; border-radius:8px; margin-bottom:1rem; aspect-ratio:16/9; object-fit:cover;">
+          <span style="display:inline-block; font-size:0.75rem; color:#c9a84c; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.5rem;">Chapter 1 &#183; Academic Essay</span>
+          <h4 style="font-family:'Playfair Display',Georgia,serif; font-size:1.2rem; color:#e8e0d0; margin:0 0 0.5rem;">The Number: Elo Ratings, Identity and the Sociology of Competitive Chess</h4>
+          <p style="font-size:0.9rem; color:rgba(232,224,208,0.7); line-height:1.5;">How the Elo rating became the most powerful psychological force in chess&#8212;a statistical tool that reshaped identity, status, and self-worth in the game.</p>
+          <div style="display:flex; gap:1rem; margin-top:0.75rem; font-size:0.8rem; color:rgba(232,224,208,0.5);">
+            <span>February 2026</span><span>18 min read</span>
+          </div>
+        </a>
+      </div>
+      <div style="text-align:center; padding: 2rem 0;">
+        <a href="/blog" style="display:inline-block; padding: 1rem 2.5rem; background: transparent; border: 1px solid #c9a84c; color: #c9a84c; text-decoration: none; font-size: 1rem; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 4px; transition: all 0.3s; font-family: 'Playfair Display', Georgia, serif;">Visit the Blog &rarr;</a>
+      </div>
+    </div>
+  </section>
+<section id="documentary" data-reveal>
+  <div class="section-inner">
+    <h2 class="section-title">Documentary</h2>
+    <p class="section-subtitle">A long-form documentary series at the intersection of chess, psychology, and the systems that shape competitive life.</p>
+
+    <p style="text-align:center; font-size:0.9rem; color:rgba(232,224,208,0.65); max-width:720px; margin:0 auto 2.5rem; font-style:italic; line-height:1.6;">Episodes are numbered by publication order on YouTube. Book chapter numbers (see <a href="#book" style="color:#c9a84c; text-decoration:underline;">The Book</a> section above) follow the linear sequence of the manuscript and may differ.</p>
+
+    <div class="podcast-hero">
+      <div class="podcast-info">
+        <h3>The Mind's Gambit Documentary</h3>
+        <p>Long-form documentary episodes exploring each chapter's themes &#8212; the psychology of competition, the institutions that shape young minds, and the human cost of the metrics we measure ourselves by.</p>
+        <div class="podcast-badges" style="display:flex;gap:24px;align-items:flex-start;">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 300 300" style="display:block;"><defs><linearGradient id="apg" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#F452FF"/><stop offset="100%" style="stop-color:#832BC1"/></linearGradient></defs><rect width="300" height="300" rx="65" fill="url(#apg)"/><path d="M150 75c-41.4 0-75 33.6-75 75 0 25.5 12.7 48 32.1 61.5-.3-2.7-.6-6.9.1-9.9.7-2.7 4.2-17.7 4.2-17.7s-1.1-2.1-1.1-5.3c0-5 2.9-8.7 6.5-8.7 3.1 0 4.5 2.3 4.5 5 0 3.1-1.9 7.7-2.9 11.9-.8 3.5 1.7 6.3 5.2 6.3 6.2 0 11-6.5 11-16 0-8.4-6-14.2-14.6-14.2-9.9 0-15.7 7.5-15.7 15.2 0 3 1.2 6.3 2.6 8 .3.4.3.7.2 1.1l-1 3.9c-.2.7-.5.8-1.3.5-4.7-2.2-7.6-9-7.6-14.5 0-11.8 8.6-22.7 24.8-22.7 13 0 23.1 9.3 23.1 21.7 0 12.9-8.2 23.4-19.5 23.4-3.8 0-7.4-2-8.6-4.3l-2.3 8.9c-.8 3.2-3.1 7.2-4.6 9.6 3.5 1.1 7.1 1.7 11 1.7 41.4 0 75-33.6 75-75s-33.6-75-75-75z" fill="#fff"/></path></svg>
+            <span class="coming-soon-blink" style="font-size:0.85rem;">Coming Soon</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 168 168" style="display:block;"><circle cx="84" cy="84" r="84" fill="#1DB954"/><path d="M115.7 80.9c-22-13.1-58.3-14.3-79.3-7.9-3.4 1-7-1-8-4.3-1-3.4 1-7 4.3-8 24.2-7.3 64.4-5.9 89.8 9.2 3.1 1.8 4.1 5.8 2.3 8.9-1.8 3-5.8 4-8.9 2.1h-.2zm-1.1 24.6c-1.6 2.5-4.9 3.3-7.4 1.7-18.3-11.3-46.3-14.5-68-7.9-2.8.9-5.8-.8-6.7-3.6-.8-2.8.8-5.8 3.6-6.7 24.8-7.6 55.7-3.9 76.7 9.1 2.6 1.5 3.4 4.8 1.8 7.4zm-8.5 23.6c-1.2 2-3.9 2.7-5.9 1.4-16-9.7-36-11.9-59.7-6.5-2.3.5-4.6-1-5.1-3.2-.5-2.3 1-4.5 3.2-5.1 25.9-5.9 48.2-3.4 66.2 7.5 2 1.3 2.7 3.9 1.4 5.9h-.1z" fill="#fff"/></svg>
+            <span class="coming-soon-blink" style="font-size:0.85rem;">Coming Soon</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="34" viewBox="0 0 159 110" style="display:block;"><path d="M154 17.5c-1.82-6.73-7.07-12-13.8-13.8C128.04 0 79.5 0 79.5 0S30.96 0 18.8 3.7C12.07 5.5 6.82 10.77 5 17.5 1.3 29.66 1.3 55 1.3 55s0 25.34 3.7 37.5c1.82 6.73 7.07 12 13.8 13.8C30.96 110 79.5 110 79.5 110s48.54 0 60.7-3.7c6.73-1.82 12-7.07 13.8-13.8 3.7-12.16 3.7-37.5 3.7-37.5s0-25.34-3.7-37.5z" fill="#FF0000"/><path d="M64 78.8V31.2L105 55 64 78.8z" fill="#fff"/></svg>
+            <span style="color:#4CAF50;font-style:italic;font-size:0.85rem;">Active</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="episodes-grid">
+
+      <!-- EPISODE 01 - THE CONSTANT -->
+      <div class="episode-card episode-published">
+        <div class="episode-embed">
+          <iframe
+            src="https://www.youtube.com/embed/wJNpyDy9IH0?rel=0"
+            title="The Mind's Gambit Episode 1: The Constant"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <span class="episode-number">EP 01</span>
+        <h3 class="episode-chapter-title">The Constant</h3>
+        <h4>A Journey from M&#233;grine to Manhattan</h4>
+        <p>A personal journey through the coffee houses of Tunisia and across the Atlantic &#8212; how a vinyl board, a humbling defeat, and a father&#8217;s quiet faith shaped a lifelong relationship with chess.</p>
+        <div class="episode-links">
+          <a href="https://www.youtube.com/watch?v=wJNpyDy9IH0" target="_blank" rel="noopener" class="episode-link youtube-link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/><path d="M9.545 15.568V8.432L15.818 12l-6.273 3.568z" fill="#fff"/></svg>
+            Watch on YouTube
+          </a>
+        </div>
+      </div>
+
+      <!-- EPISODE 02 - THE NUMBER -->
+      <div class="episode-card episode-published">
+        <div class="episode-embed">
+          <iframe
+            src="https://www.youtube.com/embed/bfKfvECKdx8?rel=0"
+            title="The Mind's Gambit Episode 2: The Number"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <span class="episode-number">EP 02</span>
+        <h3 class="episode-chapter-title">The Number</h3>
+        <h4>The Sociology of the Elo Rating</h4>
+        <p>How a statistical tool became the metric by which players measure their own worth &#8212; and what happens when the number on the screen replaces the person standing behind it.</p>
+        <div class="episode-links">
+          <a href="https://www.youtube.com/watch?v=bfKfvECKdx8" target="_blank" rel="noopener" class="episode-link youtube-link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/><path d="M9.545 15.568V8.432L15.818 12l-6.273 3.568z" fill="#fff"/></svg>
+            Watch on YouTube
+          </a>
+        </div>
+      </div>
+
+      <!-- EPISODE 03 - BRILLIANCE THAT BLEEDS -->
+      <div class="episode-card episode-published">
+        <div class="episode-embed">
+          <iframe
+            src="https://www.youtube.com/embed/T64f8l_B4lA?rel=0"
+            title="The Mind's Gambit Episode 3: Brilliance That Bleeds"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <span class="episode-number">EP 03</span>
+        <h3 class="episode-chapter-title">Brilliance That Bleeds</h3>
+        <h4>The Myth of the Mad Chess Genius</h4>
+        <p>For one hundred and fifty years, the chess world has told one story about brilliance and madness. Tonight, we take that story apart &#8212; and ask who it actually serves.</p>
+        <div class="episode-links">
+          <a href="https://www.youtube.com/watch?v=T64f8l_B4lA" target="_blank" rel="noopener" class="episode-link youtube-link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/><path d="M9.545 15.568V8.432L15.818 12l-6.273 3.568z" fill="#fff"/></svg>
+            Watch on YouTube
+          </a>
+        </div>
+      </div>
+
+      <!-- EPISODE 04 - THE QUEEN'S BURDEN -->
+      <div class="episode-card episode-published">
+        <div class="episode-embed">
+          <iframe
+            src="https://www.youtube.com/embed/2G_VxgiraI8?rel=0"
+            title="The Mind's Gambit Episode 4: The Queen's Burden"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <span class="episode-number">EP 04</span>
+        <h3 class="episode-chapter-title">The Queen's Burden</h3>
+        <h4>Women, Hostility, and the Mental Health Cost of Playing in a Man's World</h4>
+        <p>The queen is the most powerful piece on the board. The women who play this game have spent more than a century being told they don't quite belong. This episode is about that gap.</p>
+        <div class="episode-links">
+          <a href="https://www.youtube.com/watch?v=2G_VxgiraI8" target="_blank" rel="noopener" class="episode-link youtube-link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/><path d="M9.545 15.568V8.432L15.818 12l-6.273 3.568z" fill="#fff"/></svg>
+            Watch on YouTube
+          </a>
+        </div>
+      </div>
+
+      <!-- EPISODE 05 - COMING SOON -->
+      <div class="episode-card">
+        <span class="episode-number">EP 05</span>
+        <h4>The Youngest Pawns</h4>
+        <p>Ratings, parents, burnout, and the question of childhood in chess.</p>
+        <span class="episode-status">Coming Soon</span>
+      </div>
+
+    </div>
+
+    <!-- TRAILERS / SHORTS -->
+    <div style="margin-top:4rem; padding-top:3rem; border-top:1px solid rgba(201,168,76,0.15);">
+      <h3 style="text-align:center; color:#c9a84c; font-family:'Playfair Display',Georgia,serif; font-size:1.6rem; margin-bottom:0.5rem; letter-spacing:0.05em;">Trailers</h3>
+      <p style="text-align:center; font-size:0.9rem; color:rgba(232,224,208,0.6); margin-bottom:2.5rem;">Short-form previews of each episode.</p>
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:1.5rem; max-width:1000px; margin:0 auto;">
+        <a href="https://www.youtube.com/shorts/rqZAUlwCcOc" target="_blank" rel="noopener" style="display:block; text-decoration:none; color:inherit; aspect-ratio:9/16; background:#0f111c; border:1px solid rgba(201,168,76,0.2); border-radius:12px; overflow:hidden; position:relative; transition:transform 0.3s, border-color 0.3s;" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='#c9a84c'" onmouseout="this.style.transform='none';this.style.borderColor='rgba(201,168,76,0.2)'">
+          <img src="https://i.ytimg.com/vi/rqZAUlwCcOc/hqdefault.jpg" alt="The Constant Trailer" loading="lazy" style="width:100%; height:100%; object-fit:cover;">
+          <div style="position:absolute; bottom:0; left:0; right:0; padding:1rem; background:linear-gradient(transparent, rgba(0,0,0,0.85)); color:#e8e0d0; font-size:0.9rem; font-weight:600;">EP 01 &middot; The Constant</div>
+        </a>
+        <a href="https://www.youtube.com/shorts/BmraEIP3-5o" target="_blank" rel="noopener" style="display:block; text-decoration:none; color:inherit; aspect-ratio:9/16; background:#0f111c; border:1px solid rgba(201,168,76,0.2); border-radius:12px; overflow:hidden; position:relative; transition:transform 0.3s, border-color 0.3s;" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='#c9a84c'" onmouseout="this.style.transform='none';this.style.borderColor='rgba(201,168,76,0.2)'">
+          <img src="https://i.ytimg.com/vi/BmraEIP3-5o/hqdefault.jpg" alt="The Number Trailer" loading="lazy" style="width:100%; height:100%; object-fit:cover;">
+          <div style="position:absolute; bottom:0; left:0; right:0; padding:1rem; background:linear-gradient(transparent, rgba(0,0,0,0.85)); color:#e8e0d0; font-size:0.9rem; font-weight:600;">EP 02 &middot; The Number</div>
+        </a>
+        <a href="https://www.youtube.com/shorts/Aobf_fPQtcg" target="_blank" rel="noopener" style="display:block; text-decoration:none; color:inherit; aspect-ratio:9/16; background:#0f111c; border:1px solid rgba(201,168,76,0.2); border-radius:12px; overflow:hidden; position:relative; transition:transform 0.3s, border-color 0.3s;" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='#c9a84c'" onmouseout="this.style.transform='none';this.style.borderColor='rgba(201,168,76,0.2)'">
+          <img src="https://i.ytimg.com/vi/Aobf_fPQtcg/hqdefault.jpg" alt="Brilliance That Bleeds Trailer" loading="lazy" style="width:100%; height:100%; object-fit:cover;">
+          <div style="position:absolute; bottom:0; left:0; right:0; padding:1rem; background:linear-gradient(transparent, rgba(0,0,0,0.85)); color:#e8e0d0; font-size:0.9rem; font-weight:600;">EP 03 &middot; Brilliance That Bleeds</div>
+        </a>
+        <a href="https://www.youtube.com/shorts/_ejLveDA3iI" target="_blank" rel="noopener" style="display:block; text-decoration:none; color:inherit; aspect-ratio:9/16; background:#0f111c; border:1px solid rgba(201,168,76,0.2); border-radius:12px; overflow:hidden; position:relative; transition:transform 0.3s, border-color 0.3s;" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='#c9a84c'" onmouseout="this.style.transform='none';this.style.borderColor='rgba(201,168,76,0.2)'">
+          <img src="https://i.ytimg.com/vi/_ejLveDA3iI/hqdefault.jpg" alt="The Queen's Burden Trailer" loading="lazy" style="width:100%; height:100%; object-fit:cover;">
+          <div style="position:absolute; bottom:0; left:0; right:0; padding:1rem; background:linear-gradient(transparent, rgba(0,0,0,0.85)); color:#e8e0d0; font-size:0.9rem; font-weight:600;">EP 04 &middot; The Queen's Burden</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKS & PORTFOLIO -->
+<section id="portfolio" data-reveal>
+  <div class="section-inner">
+    <h2 class="section-title">Books &amp; Portfolio</h2>
+    <p class="section-subtitle">Published works, ongoing projects, and selected writing.</p>
+    <div class="portfolio-grid">
+      <div class="portfolio-card featured">
+        <div class="portfolio-badge">Upcoming Book</div>
+        <h3>The Mind's Gambit</h3>
+        <p>Chess, Madness, and the Battle for the Mind &#8212; a book in ten chapters exploring the intersection of competitive chess, child welfare, and mental health. Expected 2026.</p>
+      </div>
+      <div class="portfolio-card">
+        <div class="portfolio-badge">Blog Series</div>
+        <h3>Articles &amp; Essays</h3>
+        <p>Ongoing essays exploring chess culture, institutional accountability, and the psychology of competition from a social worker's perspective.</p>
+        <p class="coming-soon-blink">Coming Soon</p>
+      </div>
+      <div class="portfolio-card">
+        <div class="portfolio-badge">Research</div>
+        <h3>Academic &amp; Professional</h3>
+        <p>Selected research and professional writing on child protection policy, systemic reform, and the sociology of competitive youth sports.</p>
+        <p class="coming-soon-blink">Coming Soon</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESOURCES & FREEBIES -->
+<section id="resources" data-reveal>
+  <div class="section-inner">
+    <h2 class="section-title">Resources &amp; Freebies</h2>
+    <p class="section-subtitle">Free tools, guides, and materials for parents, coaches, and anyone navigating competitive youth environments.</p>
+    <div class="resources-grid">
+      <div class="resource-card">
+        <div class="resource-icon">&#128218;</div>
+        <h3>Recommended Reading List</h3>
+        <p>Curated books on chess psychology, child development, and systemic reform that informed this project.</p>
+        <span class="coming-soon-blink">Coming Soon</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-icon">&#128101;</div>
+        <h3>A Parent's Guide</h3>
+        <p>What to look for, what questions to ask, and how to protect your child in competitive environments.</p>
+        <span class="coming-soon-blink">Coming Soon</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-icon">&#127908;</div>
+        <h3>Documentary Discussion Guides</h3>
+        <p>Companion discussion guides for each documentary episode &#8212; perfect for book clubs and study groups.</p>
+        <span class="coming-soon-blink">Coming Soon</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-icon">&#128196;</div>
+        <h3>Chapter 1 Preview</h3>
+        <p>Read the complete first chapter of The Mind's Gambit &#8212; "The Number: Elo Ratings, Identity, and the Sociology of Competitive Chess."</p>
+        <a href="/blog/the-number" class="resource-tag" style="text-decoration:none;color:inherit;cursor:pointer;">Free Preview</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials" data-reveal>
+  <div class="section-inner">
+    <h2 class="section-title">Testimonials</h2>
+    <p class="section-subtitle">What readers and collaborators are saying.</p>
+    <div class="testimonials-grid">
+      <a href="/chess-school/grandmasters/maryana-huda" style="display:block; text-decoration:none; color:inherit; background:linear-gradient(135deg, rgba(201,168,76,0.12) 0%, rgba(30,34,52,0.7) 100%); border:1px solid #c9a84c; border-radius:14px; padding:2rem; position:relative; box-shadow:0 12px 36px rgba(201,168,76,0.18); transition: transform 0.3s, box-shadow 0.3s; grid-column: span 2;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 18px 48px rgba(201,168,76,0.28)'" onmouseout="this.style.transform='none';this.style.boxShadow='0 12px 36px rgba(201,168,76,0.18)'">
+        <span style="display:inline-block; background:#c9a84c; color:#0f111c; padding:0.3rem 0.85rem; border-radius:999px; font-size:0.7rem; font-weight:800; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:1rem; font-family:'Playfair Display', Georgia, serif;">Featured Endorsement</span>
+        <p class="testimonial-text" style="font-size:1.15rem; line-height:1.7; font-style:italic; color:#e8e0d0; margin:0 0 1.5rem;">"Mind's Gambit offers a thoughtful and unusually honest exploration of modern chess culture and the psychological realities behind competitive play. What makes the project stand out is its willingness to go beyond surface-level discussion and examine how systems, identity, pressure, and ambition shape players both inside and outside the game. A very promising and intellectually engaging initiative with a distinctive voice."</p>
+        <div class="testimonial-author">
+          <strong style="color:#c9a84c; font-size:1.05rem; font-family:'Playfair Display', Georgia, serif;">WGM Maryana Huda</strong>
+          <span style="color:rgba(232,224,208,0.7); font-size:0.92rem; display:block; margin-top:0.25rem;">Woman Grandmaster (FIDE) &middot; FIDE Trainer &middot; Master of Physical Culture and Sports</span>
+          <span style="color:#c9a84c; font-size:0.85rem; display:inline-block; margin-top:1rem; letter-spacing:0.05em;">View Coach Profile &rarr;</span>
+        </div>
+      </a>
+      <div class="testimonial-card">
+        <p class="testimonial-text">"Mourad brings a social worker's eye to the chess world &#8212; and what he sees is both fascinating and deeply troubling. This book needed to be written."</p>
+        <div class="testimonial-author">
+          <strong>Early Reader</strong>
+          <span>Chess Community Member</span>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <p class="testimonial-text">"Part investigative journalism, part memoir, part manifesto for change. The Mind's Gambit doesn't just describe the problem &#8212; it demands a solution."</p>
+        <div class="testimonial-author">
+          <strong>Early Reader</strong>
+          <span>Academic Researcher</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services" data-reveal>
+  <div class="section-inner">
+    <h2 class="section-title">Services</h2>
+    <p class="section-subtitle">Speaking, consulting, and collaboration opportunities.</p>
+    <div class="services-grid">
+      <div class="service-card">
+        <h3>Keynote Speaking</h3>
+        <p>Engaging talks on chess psychology, child protection in competitive sports, mental health advocacy, and systemic reform. Available for conferences, universities, and organizations.</p>
+      </div>
+      <div class="service-card">
+        <h3>Workshops</h3>
+        <p>Interactive workshops for chess organizations, schools, and youth sports programs on creating safer competitive environments and recognizing warning signs.</p>
+      </div>
+      <div class="service-card">
+        <h3>Consulting</h3>
+        <p>Advisory services for organizations looking to improve child safeguarding policies, mental health support systems, and ethical governance in competitive programs.</p>
+      </div>
+      <div class="service-card">
+        <h3>Documentary &amp; Media Appearances</h3>
+        <p>Available for interviews and guest appearances on documentary projects, audio programs, and panels covering chess, mental health, child welfare, sports psychology, and social justice topics.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DONATE -->
+<section id="donate" data-reveal>
+  <div class="section-inner">
+    <h2 class="section-title">Support This Work</h2>
+    <p class="section-subtitle">Your generosity helps keep this research independent and this content free for everyone.</p>
+    <div class="donation-content">
+      <div class="donation-tiers">
+        <div class="donation-tier">
+          <h3>$5</h3>
+          <p class="tier-name">Coffee Fund</p>
+          <p>Help fuel the late-night writing sessions that make these chapters possible.</p>
+        </div>
+        <div class="donation-tier featured">
+          <h3>$25</h3>
+          <p class="tier-name">Chapter Sponsor</p>
+          <p>Support the research and writing of a full chapter. Your name will appear in the acknowledgements.</p>
+        </div>
+        <div class="donation-tier">
+          <h3>$100</h3>
+          <p class="tier-name">Patron</p>
+          <p>Receive early access to chapters, exclusive behind-the-scenes content, and a signed copy when published.</p>
+        </div>
+      </div>
+      <div class="donation-cta">
+        <p class="donation-appeal">Your donation will help support my work in bringing these important stories to light. Every contribution, no matter the size, makes a difference in keeping this research independent and accessible.</p>
+        <a href="https://www.buymeacoffee.com/mouradbouajaja" target="_blank" rel="noopener" class="cta-button">Support My Work</a>
+        <p class="donation-thanks">Thank you for believing in this project. Your support means the world to me and helps ensure these stories are told with the care and depth they deserve.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEDICATION -->
+<section id="dedication" data-reveal>
+  <div class="section-inner">
+    <div class="dedication-content">
+      <div class="section-label">Dedication</div>
+      <h2 class="section-title">In Memory of My Father</h2>
+      <div class="section-divider" style="margin-left:auto;margin-right:auto;"></div>
+      <div class="dedication-photo">
+        <img src="/images/papa2.1.jpg" alt="The author's father, educator and lifelong mentor" loading="lazy">
+        <span class="placeholder" style="display:none;">Photo coming soon</span>
+      </div>
+      <p class="dedication-text">To my beloved father and mentor, who departed from our world on September 29, 2026. With your passing, the world lost a great man who gave his life to the noblest of missions: the education of generations. From the playing fields of schoolyards to university lecture halls, you built minds as you built bodies, holding fast to the belief that physical discipline is the foundation upon which the discipline of thought is raised.</p>
+      <p class="dedication-text">Your journey&mdash;from devoted teacher to leader in the highest ranks of public service&mdash;was a living testament to your integrity, your foresight, and your unshakeable faith in what education can do. Even after retirement, your heart remained with children. You wrote stories for them that ignited their imaginations and opened the doors of dreaming.</p>
+      <p class="dedication-name">Teacher. Leader. Traveler. Storyteller.</p>
+      <p class="dedication-dates">d. September 29, 2026</p>
+      <p class="dedication-note">This book is but a humble attempt to continue the circle of learning that he began.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" data-reveal>
+  <div class="section-inner">
+    <div class="section-label">Contact</div>
+    <h2 class="section-title">Join the Conversation</h2>
+    <div class="section-divider"></div>
+    <div class="contact-layout">
+      <div class="contact-info">
+        <p>This book is being written in dialogue with its readers. If you're a chess player, a researcher, a mental health professional, a parent of a young player, or simply someone who cares about how institutions treat the people they're meant to serve&mdash;I want to hear from you. Your perspective might change a chapter.</p>
+        <div class="contact-links">
+          <a href="mailto:Mourad@mindsgambit.com" class="contact-link">
+            <span class="icon">&#9993;</span>
+            <span>Mourad@mindsgambit.com</span>
+          </a>
+        </div>
+      </div>
+      <form class="contact-form" name="contact" method="POST" action="https://formsubmit.co/mourad@mindsgambit.com">
+        <input type="hidden" name="form-name" value="contact">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <input type="text" name="chapter" placeholder="Which chapter are you responding to?">
+        <textarea name="message" placeholder="Your thoughts, feedback, or questions..." required></textarea>
+        <button type="submit">Send Feedback</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+
+<!-- ARE YOU A CHESS PLAYER? CTA -->
+<section class="chess-cta-section">
+  <div class="chess-cta-inner">
+    <p class="chess-cta-question">Are You a Chess Player?</p>
+    <p class="chess-cta-subtitle">Click the button below to help shape the future of this book</p>
+    <a href="/chess-player" class="chess-cta-btn">
+      <span class="btn-text">&#9816; Yes, Take Me There!</span>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-social">
+        <a href="https://x.com/jaja_m368" target="_blank" rel="noopener" aria-label="X (Twitter)" class="social-btn social-x">
+          <svg width="22" height="22" viewBox="0 0 1200 1227" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M714.163 519.284L1160.89 0H1055.03L667.137 450.887L357.328 0H0L468.492 681.821L0 1226.37H105.866L515.491 750.218L842.672 1226.37H1200L714.137 519.284H714.163ZM569.165 687.828L521.697 619.934L144.011 79.6944H306.615L611.412 515.685L658.88 583.579L1055.08 1150.3H892.476L569.165 687.854V687.828Z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/mourad.bouajaja" target="_blank" rel="noopener" aria-label="Instagram" class="social-btn social-instagram">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/mbouajaja/" target="_blank" rel="noopener" aria-label="LinkedIn" class="social-btn social-linkedin">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=61588555206407" target="_blank" rel="noopener" aria-label="Facebook" class="social-btn social-facebook">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </a>
+        <a href="https://www.youtube.com/@TheExaminedRepublic" target="_blank" rel="noopener" aria-label="YouTube" class="social-btn social-youtube">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </a>
+        <a href="https://open.substack.com/pub/mouradbouajaja/p/the-constant-board-from-megrine-to?r=7oqs6g&utm_campaign=post&utm_medium=web&showWelcomeOnShare=true" target="_blank" rel="noopener" aria-label="Substack" class="social-btn social-substack">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/></svg>
+        </a>
+      </div>
+      <div class="footer-legal">
+        <a href="#" class="footer-legal-link" onclick="document.getElementById('termsModal').classList.add('active');return false;">Terms</a>
+        <span class="footer-legal-sep">|</span>
+        <a href="#" class="footer-legal-link" onclick="document.getElementById('privacyModal').classList.add('active');return false;">Privacy</a>
+      </div>
+      <p class="footer-copy">&copy; 2026 Mourad Bouajaja. All rights reserved. The Mind's Gambit is a production of &copy; MYB Studio LLC.</p>
+    </div>
+
+    <!-- Terms Modal -->
+    <div id="termsModal" class="legal-modal">
+      <div class="legal-modal-content">
+        <button class="legal-modal-close" onclick="this.closest('.legal-modal').classList.remove('active')">&times;</button>
+        <h2>Terms of Service</h2>
+        <p class="legal-updated">Last updated: February 27, 2026</p>
+
+        <h3>1. Acceptance of Terms</h3>
+        <p>By accessing and using this website (minds-gambit.vercel.app), you agree to be bound by these Terms of Service. If you do not agree, please do not use this site.</p>
+
+        <h3>2. Intellectual Property</h3>
+        <p>All content on this website &#8212; including text, articles, book excerpts, documentary episodes, images, and design elements &#8212; is the intellectual property of Mourad Bouajaja unless otherwise stated. You may not reproduce, distribute, or republish any content without prior written permission.</p>
+
+        <h3>3. Use of Content</h3>
+        <p>You are welcome to share links to articles and episodes. Brief quotations for review, commentary, or academic purposes are permitted with proper attribution. Unauthorized commercial use of any content is strictly prohibited.</p>
+
+        <h3>4. User Conduct</h3>
+        <p>When interacting with this site (comments, contact forms, or community features), you agree not to submit content that is defamatory, abusive, hateful, or violates any law. We reserve the right to remove any content that violates these terms.</p>
+
+        <h3>5. External Links</h3>
+        <p>This site may contain links to third-party platforms (YouTube, Substack, social media). We are not responsible for the content, privacy practices, or terms of these external sites.</p>
+
+        <h3>6. Disclaimer</h3>
+        <p>Content on this site is provided for informational and educational purposes. The views expressed in articles and documentary episodes represent the author&#8217;s perspective and do not constitute professional advice. The Mind&#8217;s Gambit explores sensitive topics including mental health and child welfare &#8212; if you or someone you know needs support, please contact a qualified professional.</p>
+
+        <h3>7. Modifications</h3>
+        <p>We reserve the right to update these terms at any time. Continued use of the site after changes constitutes acceptance of the revised terms.</p>
+
+        <h3>8. Contact</h3>
+        <p>For questions about these terms, contact: <a href="mailto:Mourad@mindsgambit.com">Mourad@mindsgambit.com</a></p>
+      </div>
+    </div>
+
+    <!-- Privacy Policy Modal -->
+    <div id="privacyModal" class="legal-modal">
+      <div class="legal-modal-content">
+        <button class="legal-modal-close" onclick="this.closest('.legal-modal').classList.remove('active')">&times;</button>
+        <h2>Privacy Policy</h2>
+        <p class="legal-updated">Last updated: February 27, 2026</p>
+
+        <h3>1. Information We Collect</h3>
+        <p>We may collect limited information when you interact with this site:</p>
+        <p>&#8226; <strong>Contact Form:</strong> Name, email address, and message content when you voluntarily submit the contact form.</p>
+        <p>&#8226; <strong>Analytics:</strong> Anonymous usage data such as pages visited, time on site, and general geographic region through standard web analytics.</p>
+        <p>&#8226; <strong>Cookies:</strong> Essential cookies for site functionality. No advertising or tracking cookies are used.</p>
+
+        <h3>2. How We Use Your Information</h3>
+        <p>Any information collected is used solely to respond to your inquiries, improve the website experience, and communicate updates about The Mind&#8217;s Gambit (only if you opt in). We will never sell, rent, or share your personal information with third parties.</p>
+
+        <h3>3. Third-Party Services</h3>
+        <p>This site integrates with third-party services that have their own privacy policies:</p>
+        <p>&#8226; <strong>YouTube</strong> (embedded video player) &#8212; Google Privacy Policy applies</p>
+        <p>&#8226; <strong>Substack</strong> (newsletter and articles) &#8212; Substack Privacy Policy applies</p>
+        <p>&#8226; <strong>Vercel</strong> (hosting) &#8212; Vercel Privacy Policy applies</p>
+
+        <h3>4. Data Security</h3>
+        <p>We take reasonable measures to protect any personal data collected. However, no method of electronic transmission or storage is 100% secure.</p>
+
+        <h3>5. Your Rights</h3>
+        <p>You have the right to request access to, correction of, or deletion of any personal data we hold about you. To exercise these rights, contact us at the email below.</p>
+
+        <h3>6. Children&#8217;s Privacy</h3>
+        <p>This site does not knowingly collect personal information from children under 13. If you believe we have inadvertently collected such data, please contact us immediately.</p>
+
+        <h3>7. Changes to This Policy</h3>
+        <p>We may update this Privacy Policy from time to time. Changes will be posted on this page with an updated date.</p>
+
+        <h3>8. Contact</h3>
+        <p>For privacy-related questions: <a href="mailto:Mourad@mindsgambit.com">Mourad@mindsgambit.com</a></p>
+      </div>
+    </div>
+
+</footer>
+
+<!-- JS -->
+<script>
+  const progressBar = document.getElementById('scrollProgress');
+  const particlesContainer = document.getElementById('particles');
+  const chessPieces = ['♔', '♕', '♖', '♗', '♘', '♙', '♚', '♛', '♜', '♝', '♞', '♟'];
+  for (let i = 0; i < 30; i++) {
+    const particle = document.createElement('span');
+    particle.className = 'particle';
+    particle.textContent = chessPieces[Math.floor(Math.random() * chessPieces.length)];
+    particle.style.left = Math.random() * 100 + '%';
+    particle.style.top = Math.random() * 100 + '%';
+    particle.style.animationDuration = (15 + Math.random() * 25) + 's';
+    particle.style.animationDelay = (-Math.random() * 20) + 's';
+    particle.style.fontSize = (1.5 + Math.random() * 2.5) + 'rem';
+    particle.style.opacity = 0.12 + Math.random() * 0.16;
+    particlesContainer.appendChild(particle);
+  }
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        const children = entry.target.querySelectorAll('.chapter-card, .episode-card, .portfolio-card, .resource-card, .testimonial-card, .service-card, .donation-tier, .credential-card');
+        children.forEach((child, i) => {
+          child.style.transitionDelay = (i * 0.1) + 's';
+          child.classList.add('card-revealed');
+        });
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  document.querySelectorAll('[data-reveal]').forEach(el => { revealObserver.observe(el); });
+  document.querySelectorAll('.chapter-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      card.style.transform = 'perspective(800px) rotateY(' + (x * 12) + 'deg) rotateX(' + (-y * 12) + 'deg) scale(1.02)';
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(800px) rotateY(0deg) rotateX(0deg) scale(1)';
+    });
+  });
+  let ticking = false;
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        const scrollY = window.scrollY;
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        if (progressBar) { progressBar.style.width = ((scrollY / maxScroll) * 100) + '%'; }
+        const navbar = document.getElementById('navbar');
+        if (navbar) { navbar.classList.toggle('scrolled', scrollY > 50); }
+        const hero = document.getElementById('home');
+        if (hero && scrollY < window.innerHeight) {
+          const heroContent = hero.querySelector('.hero-content');
+          const bookCover = hero.querySelector('.book-cover-hero');
+          if (heroContent) heroContent.style.transform = 'translateY(' + (scrollY * 0.3) + 'px)';
+          if (bookCover) bookCover.style.transform = 'translateY(' + (scrollY * 0.15) + 'px)';
+        }
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  const heroTitle = document.querySelector('.hero-title');
+  if (heroTitle) { heroTitle.classList.add('text-reveal'); }
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.querySelector('.nav-links')?.classList.remove('open');
+      }
+    });
+  });
+  function toggleArticle(id) {
+    const body = document.getElementById(id);
+    if (body) {
+      body.classList.toggle('expanded');
+      const toggle = body.previousElementSibling;
+      if (toggle) {
+        const arrow = toggle.querySelector('.arrow');
+        if (arrow) arrow.style.transform = body.classList.contains('expanded') ? 'rotate(180deg)' : '';
+      }
+    }
+  }
+  window.toggleArticle = toggleArticle;
+  document.querySelectorAll('.cta-btn, .social-btn').forEach(btn => {
+    btn.addEventListener('mousemove', (e) => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      btn.style.transform = 'translate(' + (x * 0.15) + 'px, ' + (y * 0.15) + 'px)';
+    });
+    btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+  });
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.style.setProperty('--animation-duration', '0s');
+    document.querySelectorAll('.particle').forEach(p => p.remove());
+  }
+</script>
+</BaseLayout>
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout>
+<!-- SCROLL PROGRESS BAR -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- FLOATING CHESS PARTICLES -->
+<div class="particles-container" id="particles"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#home" class="nav-logo"><img src="/images/logo.jpg" alt="Mind's Gambit" style="height:55px;width:55px;border-radius:50%;object-fit:cover;border:2px solid #c8a84e;margin-left:10px;vertical-align:middle;" /></a>
+    <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#book">The Book</a></li>
+      <li><a href="/blog">Blog</a></li>
+      <li><a href="#documentary">Documentary</a></li>
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#services">Services</a></li>
+      <li class="has-dropdown">
+        <a href="/chess-school/grandmasters" class="dropdown-toggle">Chess School <span class="caret">&#9662;</span></a>
+        <ul class="dropdown-menu">
           <li><a href="/chess-school/grandmasters">Learn from Grandmasters</a></li>
           <li><a href="/chess-school/resources">Chess Resources</a></li>
           <li><a href="/chess-school/learn-to-play">Learn How to Play Chess</a></li>

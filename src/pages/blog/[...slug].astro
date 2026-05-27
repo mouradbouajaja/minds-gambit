@@ -18,45 +18,45 @@ const formattedDate = new Date(entry.data.date).toLocaleDateString('en-US', { ye
 ---
 
 <BaseLayout title={`${entry.data.title} — The Mind's Gambit`}>
-  <nav>
-    <div class="nav-inner">
-      <a href="/" class="nav-logo"><img src="/images/logo.jpg" alt="Mind's Gambit" style="height:55px;width:55px;border-radius:50%;object-fit:cover;border:2px solid #c8a84e;margin-left:10px;vertical-align:middle;" /></a>
-      <ul class="nav-links">
-        <li><a href="/">Home</a></li>
-        <li><a href="/blog">Blog</a></li>
-        <li><a href="/#podcast" class="nav-btn">Podcast</a></li>
-      </ul>
-    </div>
-  </nav>
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><img src="/images/logo.jpg" alt="Mind's Gambit" style="height:55px;width:55px;border-radius:50%;object-fit:cover;border:2px solid #c8a84e;margin-left:10px;vertical-align:middle;" /></a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/blog">Blog</a></li>
+      <li><a href="/#documentary" class="nav-btn">Documentary</a></li>
+    </ul>
+  </div>
+</nav>
 
-  <article>
-    <header class="article-header">
-      <a href="/blog" class="back-link">&larr; Back to Blog</a>
-      <span class="date">{formattedDate}</span>
-      <h1>{entry.data.title}</h1>
-      <p class="subtitle">{entry.data.description}</p>
-      <div class="article-meta">
-        <span class="author">By {entry.data.author}</span>
-        <div class="tags">
-          {entry.data.tags && entry.data.tags.map(tag => <span class="tag">{tag}</span>)}
-        </div>
+<article>
+  <header class="article-header">
+    <a href="/blog" class="back-link">&larr; Back to Blog</a>
+    <span class="date">{formattedDate}</span>
+    <h1>{entry.data.title}</h1>
+    <p class="subtitle">{entry.data.description}</p>
+    <div class="article-meta">
+      <span class="author">By {entry.data.author}</span>
+      <div class="tags">
+        {entry.data.tags && entry.data.tags.map(tag => <span class="tag">{tag}</span>)}
       </div>
-    </header>
-
-    <div class="article-content">
-      <Content />
     </div>
+  </header>
 
-    <footer class="article-footer">
-      <div class="footer-divider"></div>
-      <p class="footer-cta">If this chapter resonated, share it with someone who needs to read it. Every reader sharpens the next draft.</p>
-      <div class="footer-actions">
-        <a href="/blog" class="back-link">&larr; All Articles</a>
-        <a href="/#podcast" class="back-link">Watch the Podcast &rarr;</a>
-      </div>
-      <p class="footer-credit">&copy; 2026 Mourad Bouajaja. The Mind's Gambit is a production of &copy; MYB Studio LLC.</p>
-    </footer>
-  </article>
+  <div class="article-content">
+    <Content />
+  </div>
+
+  <footer class="article-footer">
+    <div class="footer-divider"></div>
+    <p class="footer-cta">If this chapter resonated, share it with someone who needs to read it. Every reader sharpens the next draft.</p>
+    <div class="footer-actions">
+      <a href="/blog" class="back-link">&larr; All Articles</a>
+      <a href="/#documentary" class="back-link">Watch the Documentary &rarr;</a>
+    </div>
+    <p class="footer-credit">&copy; 2026 Mourad Bouajaja. The Mind's Gambit is a production of &copy; MYB Studio LLC.</p>
+  </footer>
+</article>
 
 </BaseLayout>
 

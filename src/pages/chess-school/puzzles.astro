@@ -74,7 +74,7 @@ export const prerender = true;
     <p class="next-note">Built little by little. Free, ad-free, open-source-powered, branded to stay in your lane &mdash; ours.</p>
   </div>
 
-  <p class="attribution">Daily puzzle data sourced from the <a href="https://lichess.org/training" target="_blank" rel="noopener">Lichess</a> open puzzle database (CC0). Board rendering powered by chessboard.js and chess.js, both open-source. No tracking. No accounts required.</p>
+  <p class="attribution">Daily puzzles drawn from the <a href="https://database.lichess.org/#puzzles" target="_blank" rel="noopener">Lichess Open Puzzle Database</a> (CC0 / public domain) — 5.9 million tactics hosted on the Mind’s Gambit CDN. Board rendering powered by chessboard.js and chess.js, both open-source. No tracking. No accounts required.</p>
 
   <footer class="page-footer">
     <p class="footer-credit">&copy; 2026 Mourad Bouajaja. Mind's Gambit Chess School is a production of &copy; MYB Studio LLC.</p>
@@ -211,22 +211,39 @@ export const prerender = true;
     },800);
   });
 
+  var CDN='https://mindsgambit-cdn.b-cdn.net/puzzles';
+
+  function dailySeed(){
+    // YYYYMMDD as integer — deterministic per calendar day, same for everyone
+    var d=new Date(); var y=d.getUTCFullYear(), m=d.getUTCMonth()+1, day=d.getUTCDate();
+    return y*10000 + m*100 + day;
+  }
+
   function loadPuzzle(){
-    setStatus('Fetching today’s puzzle…','');
-    fetch('https://lichess.org/api/puzzle/daily')
-      .then(function(r){ if(!r.ok)throw new Error('Lichess API '+r.status); return r.json(); })
-      .then(function(data){
-        solution=data.puzzle.solution;
-        ratingEl.textContent=data.puzzle.rating||'—';
-        playsEl.textContent=(data.puzzle.plays||0).toLocaleString();
-        var themes=(data.puzzle.themes||[]).slice(0,6);
+    setStatus('Loading today’s puzzle from Mind’s Gambit CDN…','');
+    var seed=dailySeed();
+    fetch(CDN+'/metadata.json')
+      .then(function(r){ if(!r.ok)throw new Error('Metadata '+r.status); return r.json(); })
+      .then(function(meta){
+        var shardKeys=meta.shardKeys||[];
+        if(!shardKeys.length)throw new Error('No shards in metadata');
+        var shardKey=shardKeys[seed % shardKeys.length];
+        return fetch(CDN+'/shards/'+shardKey+'.json')
+          .then(function(r){ if(!r.ok)throw new Error('Shard '+shardKey+' '+r.status); return r.json(); })
+          .then(function(puzzles){
+            if(!puzzles.length)throw new Error('Empty shard');
+            return puzzles[seed % puzzles.length];
+          });
+      })
+      .then(function(puzzle){
+        solution=(puzzle.moves||'').split(' ').filter(Boolean);
+        ratingEl.textContent=puzzle.rating||'—';
+        playsEl.textContent=(puzzle.nbPlays||0).toLocaleString();
+        var themes=(puzzle.themes||[]).slice(0,6);
         themesEl.innerHTML=themes.map(function(t){ return '<span class="theme-tag">'+t.replace(/([A-Z])/g,' $1').toLowerCase().trim()+'</span>'; }).join('');
 
         game=new Chess();
-        var tempGame=new Chess();
-        tempGame.load_pgn(data.game.pgn);
-        var allMoves=tempGame.history();
-        for(var i=0;i<data.puzzle.initialPly&&i<allMoves.length;i++) game.move(allMoves[i]);
+        game.load(puzzle.fen);
         startFen=game.fen();
         userColor=game.turn()==='w'?'b':'w';
 

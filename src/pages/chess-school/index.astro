@@ -4,7 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 export const prerender = true;
 ---
 
-<BaseLayout title="Chess School — Mind's Gambit" description="Daily tactical puzzles, lessons with grandmasters, and resources for chess improvement. Free, ad-free, open-source-powered.">
+<BaseLayout title="Chess School — Mind's Gambit" description="Train, play, learn, and analyze. Free, ad-free, open-source-powered. Daily tactical puzzles, lessons with grandmasters, and 5.94 million puzzles to grind.">
 
 <nav>
   <div class="nav-inner">
@@ -23,63 +23,181 @@ export const prerender = true;
 <section class="hero">
   <span class="eyebrow">Mind's Gambit Chess School</span>
   <h1>Chess School</h1>
-  <p class="lead">Free. Ad-free. Open-source-powered. Built one piece at a time, the way chess is meant to be learned.</p>
+  <p class="lead">Free. Ad-free. Open-source-powered. Train, play, learn, analyze — built one piece at a time, the way chess is meant to be learned.</p>
+  <div class="train-now-wrap">
+    <a href="/chess-school/train" class="train-now-btn">
+      <span class="train-now-icon">&#9889;</span>
+      <span>Train Now</span>
+    </a>
+    <span class="train-now-sub">One click. Random puzzle. Start sharpening immediately.</span>
+  </div>
 </section>
 
-<section class="tiles-section">
-  <div class="tiles-grid">
-
-    <a href="/chess-school/puzzles" class="tile tile-feature">
-      <div class="tile-badge">Live Now</div>
-      <div class="tile-icon">&#9818;</div>
-      <h2>Daily Puzzle</h2>
-      <p>One fresh tactical puzzle every day. Build the habit. Sharpen the eye. Watch your streak climb.</p>
-      <span class="tile-cta">Play today's puzzle &rarr;</span>
-    </a>
-
-    <div class="tile tile-soon">
-      <div class="tile-badge tile-badge-soon">Coming Soon</div>
-      <div class="tile-icon">&#9822;</div>
-      <h2>Tactics Trainer</h2>
-      <p>Pick a theme — pins, forks, mating nets, endgames — and grind rated puzzles. Track your accuracy. Powered by 5.94 million puzzles on our CDN.</p>
-      <span class="tile-cta tile-cta-soon">In development</span>
+<section class="gm-hero">
+  <a href="/chess-school/grandmasters" class="gm-hero-inner">
+    <div class="gm-avatar">&#9819;</div>
+    <div class="gm-content">
+      <span class="gm-eyebrow">Featured &middot; Work with a Grandmaster</span>
+      <h2>One-on-one coaching with titled players</h2>
+      <p>Curated roster of professional teachers. Start with WGM Maryana Huda — over a decade of coaching experience, two-time European Youth Champion, Lichess-verified. New coaches added by referral, not by application.</p>
+      <ul class="gm-features">
+        <li>Real titled players</li>
+        <li>Recordings included</li>
+        <li>Lichess training boards</li>
+      </ul>
     </div>
+    <div class="gm-cta-wrap">
+      <span class="gm-cta">Meet the Coaches &rarr;</span>
+    </div>
+  </a>
+</section>
 
-    <a href="/chess-school/grandmasters" class="tile">
-      <div class="tile-icon">&#9819;</div>
-      <h2>Learn from Grandmasters</h2>
-      <p>One-on-one coaching with titled players. Featuring WGM Maryana Huda and a curated roster of professional teachers.</p>
-      <span class="tile-cta">Meet the coaches &rarr;</span>
+<section class="grid-section">
+  <div class="section-head">
+    <span class="section-num">01</span>
+    <h2 class="section-title">Train</h2>
+    <span class="section-sub">Solo practice. Sharpen the eye.</span>
+  </div>
+  <div class="tiles">
+    <a href="/chess-school/puzzles" class="tile">
+      <span class="badge badge-live">Live</span>
+      <div class="tile-icon">&#9818;</div>
+      <h3>Daily Puzzle</h3>
+      <p>One fresh puzzle every day. Streak counter. Same puzzle for everyone — solve it before the day ends.</p>
+      <span class="tile-cta">Play today's &rarr;</span>
     </a>
-
-    <a href="/chess-school/resources" class="tile">
-      <div class="tile-icon">&#9820;</div>
-      <h2>Chess Resources</h2>
-      <p>Curated, open-source-friendly tools and study material. No ads. No upsells. Just the good stuff.</p>
-      <span class="tile-cta">Browse resources &rarr;</span>
+    <a href="/chess-school/tactics" class="tile">
+      <span class="badge badge-new">New</span>
+      <div class="tile-icon">&#9822;</div>
+      <h3>Tactics Trainer</h3>
+      <p>Pick a theme — pins, forks, mate-in-2, endgames — and grind rated puzzles. 5.94M to choose from.</p>
+      <span class="tile-cta">Grind by theme &rarr;</span>
     </a>
+    <div class="tile tile-soon">
+      <span class="badge badge-soon">Soon</span>
+      <div class="tile-icon">&#9812;</div>
+      <h3>Endgame Trainer</h3>
+      <p>Master king-and-pawn, rook endings, opposite-color bishops. The endings that decide most games.</p>
+      <span class="tile-cta">In development</span>
+    </div>
+    <div class="tile tile-soon">
+      <span class="badge badge-soon">Soon</span>
+      <div class="tile-icon">&#9821;</div>
+      <h3>Opening Repertoire Builder</h3>
+      <p>Build your white &amp; black repertoire. Drill it until every move is automatic.</p>
+      <span class="tile-cta">In development</span>
+    </div>
+    <div class="tile tile-soon">
+      <span class="badge badge-soon">Soon</span>
+      <div class="tile-icon">&#127919;</div>
+      <h3>Chess Trivia</h3>
+      <p>Did Capablanca really blunder a queen? Test your chess history — from Philidor to AlphaZero.</p>
+      <span class="tile-cta">In development</span>
+    </div>
+    <div class="tile tile-soon">
+      <span class="badge badge-soon">Soon</span>
+      <div class="tile-icon">&#127963;</div>
+      <h3>Featured Games</h3>
+      <p>Annotated immortal games. Replay move by move with commentary on every key decision.</p>
+      <span class="tile-cta">In development</span>
+    </div>
+  </div>
+</section>
 
-    <a href="/chess-school/learn-to-play" class="tile">
+<section class="grid-section">
+  <div class="section-head">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Play</h2>
+    <span class="section-sub">Face the engine. Or a friend.</span>
+  </div>
+  <div class="tiles">
+    <div class="tile tile-soon">
+      <span class="badge badge-soon">Soon</span>
+      <div class="tile-icon">&#9823;</div>
+      <h3>Play The Mind's Gambit</h3>
+      <p>Our engine. Pick any strength from "just learning" to "merciless." All in your browser. <em class="powered">Powered by Stockfish.</em></p>
+      <span class="tile-cta">In development</span>
+    </div>
+    <div class="tile tile-soon">
+      <span class="badge badge-soon">Soon</span>
       <div class="tile-icon">&#9817;</div>
-      <h2>Learn How to Play</h2>
-      <p>New to chess? Start here. Piece movement, basic rules, the first principles of attack and defense — built for absolute beginners.</p>
+      <h3>Pass &amp; Play</h3>
+      <p>Two players, one device. No accounts, no clock — just the board.</p>
+      <span class="tile-cta">In development</span>
+    </div>
+    <div class="tile tile-soon">
+      <span class="badge badge-soon">Soon</span>
+      <div class="tile-icon">&#128250;</div>
+      <h3>Live Streams</h3>
+      <p>Embedded Lichess broadcasts and curated chess streams from YouTube. Watch top events live.</p>
+      <span class="tile-cta">In development</span>
+    </div>
+  </div>
+</section>
+
+<section class="grid-section">
+  <div class="section-head">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Learn</h2>
+    <span class="section-sub">From the rules to mastery.</span>
+  </div>
+  <div class="tiles">
+    <a href="/chess-school/learn-to-play" class="tile">
+      <span class="badge badge-live">Live</span>
+      <div class="tile-icon">&#9820;</div>
+      <h3>Learn to Play</h3>
+      <p>Brand new? Start here. Piece movement, basic rules, first principles of attack and defense.</p>
       <span class="tile-cta">Start learning &rarr;</span>
     </a>
-
     <div class="tile tile-soon">
-      <div class="tile-badge tile-badge-soon">Coming Soon</div>
-      <div class="tile-icon">&#9823;</div>
-      <h2>Play vs Computer</h2>
-      <p>Face Stockfish at any strength, fully in your browser. From "I just learned the rules" to "give me your best."</p>
-      <span class="tile-cta tile-cta-soon">In development</span>
+      <span class="badge badge-soon">Soon</span>
+      <div class="tile-icon">&#128214;</div>
+      <h3>Opening Encyclopedia</h3>
+      <p>Search by name or by moves. Typical plans for both sides, mainlines and sidelines.</p>
+      <span class="tile-cta">In development</span>
     </div>
+    <div class="tile tile-soon tile-faded">
+      <div class="tile-icon">&#9203;</div>
+      <h3>Lesson Library</h3>
+      <p><em>Curated curricula by level — a later phase.</em></p>
+      <span class="tile-cta">&nbsp;</span>
+    </div>
+  </div>
+</section>
 
+<section class="grid-section">
+  <div class="section-head">
+    <span class="section-num">04</span>
+    <h2 class="section-title">Analyze &amp; Resources</h2>
+    <span class="section-sub">Look back. Look forward.</span>
+  </div>
+  <div class="tiles">
+    <div class="tile tile-soon">
+      <span class="badge badge-soon">Soon</span>
+      <div class="tile-icon">&#9881;</div>
+      <h3>Game Analysis</h3>
+      <p>Paste a PGN. Get a computer evaluation. Find your blunders. <em class="powered">Powered by Stockfish.</em></p>
+      <span class="tile-cta">In development</span>
+    </div>
+    <a href="/chess-school/resources" class="tile">
+      <span class="badge badge-live">Live</span>
+      <div class="tile-icon">&#128218;</div>
+      <h3>Chess Resources</h3>
+      <p>Curated, open-source-friendly tools and study material. No ads. No upsells. Just the good stuff.</p>
+      <span class="tile-cta">Browse &rarr;</span>
+    </a>
+    <div class="tile tile-soon tile-faded">
+      <div class="tile-icon">&#9203;</div>
+      <h3>Position Explorer</h3>
+      <p><em>Set up any position, query the engine — later.</em></p>
+      <span class="tile-cta">&nbsp;</span>
+    </div>
   </div>
 </section>
 
 <section class="manifesto">
   <h2>Why Mind's Gambit Chess School?</h2>
-  <p>Because the existing chess platforms are loud, ad-saturated, and want your subscription before they want your improvement. Mind's Gambit is the opposite: free at the front, paid only where a human teacher's time is involved. Built on the open Lichess puzzle database, the open chess.js library, and a small CDN we own outright. No tracking. No accounts required to start playing. Just chess — the way it's meant to be.</p>
+  <p>Because the existing chess platforms are loud, ad-saturated, and want your subscription before they want your improvement. Mind's Gambit is the opposite: free at the front, paid only where a human teacher's time is involved. Built on the open Lichess puzzle database, the open chess.js library, the open-source Stockfish engine, and a small CDN we own outright. No tracking. No accounts required to start playing.</p>
 </section>
 
 <footer class="page-footer">
@@ -96,35 +214,65 @@ nav { background: rgba(15,17,28,0.95); border-bottom: 1px solid rgba(201,168,76,
 .nav-links a:hover { color: #c9a84c; }
 .nav-btn { background: #c9a84c !important; color: #0f111c !important; padding: 0.5rem 1.25rem; border-radius: 4px; font-weight: 600; }
 
-.hero { max-width: 1200px; margin: 0 auto; padding: 4rem 1.5rem 2rem; text-align: center; }
+.hero { max-width: 1200px; margin: 0 auto; padding: 4rem 1.5rem 1.5rem; text-align: center; }
 .eyebrow { color: #c9a84c; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.25em; display: block; margin-bottom: 1.25rem; }
 .hero h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 4rem; color: #e8e0d0; line-height: 1.05; margin: 0 0 1.25rem; }
-.hero .lead { color: rgba(232,224,208,0.78); font-size: 1.25rem; font-family: 'EB Garamond', Georgia, serif; line-height: 1.55; max-width: 720px; margin: 0 auto; }
+.hero .lead { color: rgba(232,224,208,0.78); font-size: 1.2rem; font-family: 'EB Garamond', Georgia, serif; line-height: 1.55; max-width: 720px; margin: 0 auto 2rem; }
 
-.tiles-section { max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
-.tiles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 1.5rem; }
+.train-now-wrap { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+.train-now-btn { display: inline-flex; align-items: center; gap: 0.75rem; background: linear-gradient(135deg, #c9a84c, #d4b556); color: #0f111c; padding: 1.1rem 2.5rem; border-radius: 12px; font-family: 'Playfair Display', Georgia, serif; font-size: 1.1rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; box-shadow: 0 14px 36px rgba(201,168,76,0.4); text-decoration: none; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.train-now-btn:hover { transform: translateY(-2px); box-shadow: 0 20px 44px rgba(201,168,76,0.55); }
+.train-now-icon { font-size: 1.6rem; }
+.train-now-sub { color: rgba(232,224,208,0.5); font-size: 0.85rem; font-style: italic; letter-spacing: 0.04em; }
 
-.tile { background: linear-gradient(135deg, rgba(30,34,52,0.65), rgba(20,22,36,0.85)); border: 1px solid rgba(201,168,76,0.22); border-radius: 16px; padding: 2rem 1.75rem; color: inherit; text-decoration: none; display: flex; flex-direction: column; position: relative; transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease; min-height: 270px; cursor: pointer; }
-.tile:hover { transform: translateY(-5px); border-color: rgba(201,168,76,0.55); box-shadow: 0 18px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(201,168,76,0.15); }
-.tile-feature { background: linear-gradient(135deg, rgba(201,168,76,0.18), rgba(30,34,52,0.85)); border-color: rgba(201,168,76,0.45); grid-column: span 2; min-height: 320px; }
-@media (max-width: 720px) { .tile-feature { grid-column: span 1; } }
-.tile-feature h2 { font-size: 2.1rem; }
-.tile-soon { opacity: 0.85; cursor: default; }
-.tile-soon:hover { transform: none; border-color: rgba(201,168,76,0.22); box-shadow: none; }
-.tile-badge { position: absolute; top: 1.1rem; right: 1.1rem; background: rgba(74,222,128,0.18); color: #a7f3d0; border: 1px solid rgba(74,222,128,0.45); padding: 0.28rem 0.7rem; border-radius: 999px; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; font-family: 'Playfair Display', Georgia, serif; }
-.tile-badge-soon { background: rgba(201,168,76,0.12); color: #c9a84c; border-color: rgba(201,168,76,0.4); }
-.tile-icon { font-size: 3.2rem; color: #c9a84c; margin-bottom: 0.6rem; line-height: 1; }
-.tile h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.55rem; color: #e8e0d0; margin: 0 0 0.65rem; }
-.tile p { color: rgba(232,224,208,0.78); font-size: 1rem; font-family: 'EB Garamond', Georgia, serif; line-height: 1.55; margin: 0 0 1.25rem; flex-grow: 1; }
-.tile-cta { color: #c9a84c; font-family: 'Playfair Display', Georgia, serif; font-size: 0.95rem; letter-spacing: 0.04em; margin-top: auto; }
-.tile-cta-soon { color: rgba(201,168,76,0.6); font-style: italic; }
+.gm-hero { max-width: 1200px; margin: 2rem auto; padding: 0 1.5rem; }
+.gm-hero-inner { display: grid; grid-template-columns: 200px 1fr auto; gap: 2rem; align-items: center; background: linear-gradient(135deg, rgba(201,168,76,0.22), rgba(20,22,32,0.85)); border: 1px solid rgba(201,168,76,0.5); border-radius: 18px; padding: 2.25rem 2.5rem; text-decoration: none; color: inherit; box-shadow: 0 18px 50px rgba(0,0,0,0.4); transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.gm-hero-inner:hover { transform: translateY(-3px); box-shadow: 0 24px 56px rgba(201,168,76,0.2), 0 18px 50px rgba(0,0,0,0.5); }
+.gm-avatar { width: 170px; height: 170px; border-radius: 14px; background: linear-gradient(135deg, #c9a84c, #8a6f2a); display: flex; align-items: center; justify-content: center; font-size: 5.5rem; color: #0f111c; border: 3px solid rgba(201,168,76,0.6); }
+.gm-content { font-family: 'EB Garamond', Georgia, serif; }
+.gm-eyebrow { color: #c9a84c; font-family: 'Playfair Display', Georgia, serif; font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; display: block; margin-bottom: 0.6rem; }
+.gm-content h2 { font-family: 'Playfair Display', Georgia, serif; color: #e8e0d0; font-size: 1.85rem; margin: 0 0 0.7rem; line-height: 1.15; }
+.gm-content p { color: rgba(232,224,208,0.78); font-size: 1.02rem; line-height: 1.55; margin: 0 0 1rem; max-width: 600px; }
+.gm-features { list-style: none; padding: 0; margin: 0; display: flex; gap: 1.5rem; font-size: 0.85rem; color: rgba(232,224,208,0.6); flex-wrap: wrap; }
+.gm-features li::before { content: '\25C6 '; color: rgba(201,168,76,0.7); margin-right: 0.4rem; }
+.gm-cta { background: #c9a84c; color: #0f111c; padding: 0.95rem 1.6rem; border-radius: 10px; font-family: 'Playfair Display', Georgia, serif; font-size: 0.92rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; display: inline-block; }
 
-.manifesto { max-width: 900px; margin: 1rem auto 2rem; padding: 2.5rem 1.5rem; text-align: center; }
+.grid-section { max-width: 1200px; margin: 2.5rem auto 1.25rem; padding: 0 1.5rem; }
+.section-head { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1.1rem; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(201,168,76,0.15); flex-wrap: wrap; }
+.section-num { color: rgba(201,168,76,0.5); font-family: 'Playfair Display', Georgia, serif; font-size: 1rem; }
+.section-title { color: #c9a84c; font-family: 'Playfair Display', Georgia, serif; font-size: 1.25rem; letter-spacing: 0.16em; text-transform: uppercase; margin: 0; }
+.section-sub { color: rgba(232,224,208,0.5); font-size: 0.85rem; font-style: italic; margin-left: auto; }
+
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+.tile { background: linear-gradient(135deg, rgba(30,34,52,0.6), rgba(20,22,32,0.85)); border: 1px solid rgba(201,168,76,0.2); border-radius: 12px; padding: 1.25rem 1.4rem; min-height: 170px; position: relative; cursor: pointer; transition: all 0.25s ease; display: flex; flex-direction: column; text-decoration: none; color: inherit; }
+.tile:hover { border-color: rgba(201,168,76,0.5); transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.5); }
+.tile-soon { opacity: 0.78; cursor: default; }
+.tile-soon:hover { transform: none; border-color: rgba(201,168,76,0.2); box-shadow: none; }
+.tile-faded { opacity: 0.45; }
+.tile-icon { font-size: 1.85rem; color: #c9a84c; line-height: 1; margin-bottom: 0.6rem; }
+.tile h3 { font-family: 'Playfair Display', Georgia, serif; color: #e8e0d0; font-size: 1.15rem; margin: 0 0 0.45rem; }
+.tile p { font-size: 0.9rem; color: rgba(232,224,208,0.7); line-height: 1.5; margin: 0 0 0.5rem; font-family: 'EB Garamond', Georgia, serif; flex-grow: 1; }
+.tile p .powered { color: rgba(232,224,208,0.45); font-size: 0.78rem; font-style: italic; display: block; margin-top: 0.4rem; }
+.tile-cta { color: #c9a84c; font-size: 0.78rem; font-family: 'Playfair Display', Georgia, serif; letter-spacing: 0.1em; text-transform: uppercase; margin-top: auto; }
+.tile-soon .tile-cta { color: rgba(201,168,76,0.5); font-style: italic; }
+.badge { position: absolute; top: 0.85rem; right: 0.85rem; font-size: 0.65rem; padding: 0.2rem 0.55rem; border-radius: 99px; letter-spacing: 0.14em; text-transform: uppercase; font-family: 'Playfair Display', Georgia, serif; font-weight: 600; }
+.badge-live { color: #a7f3d0; background: rgba(74,222,128,0.15); border: 1px solid rgba(74,222,128,0.45); }
+.badge-new { color: #fbbf24; background: rgba(251,191,36,0.15); border: 1px solid rgba(251,191,36,0.45); }
+.badge-soon { color: #c9a84c; background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.4); }
+
+.manifesto { max-width: 900px; margin: 2.5rem auto 1.5rem; padding: 2.5rem 1.5rem; text-align: center; }
 .manifesto h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.85rem; color: #c9a84c; margin: 0 0 1rem; }
 .manifesto p { color: rgba(232,224,208,0.78); font-size: 1.08rem; font-family: 'EB Garamond', Georgia, serif; line-height: 1.7; }
 
 .page-footer { margin-top: 1rem; padding: 2rem 1.5rem; text-align: center; border-top: 1px solid rgba(201,168,76,0.1); }
 .footer-credit { color: rgba(232,224,208,0.4); font-size: 0.82rem; font-family: 'EB Garamond', Georgia, serif; }
 
-@media (max-width: 780px) { .hero h1 { font-size: 2.6rem; } .hero .lead { font-size: 1.1rem; } .tile { min-height: auto; } }
+@media (max-width: 820px) {
+  .hero h1 { font-size: 2.6rem; }
+  .hero .lead { font-size: 1.05rem; }
+  .gm-hero-inner { grid-template-columns: 1fr; gap: 1.25rem; text-align: center; padding: 1.5rem; }
+  .gm-avatar { margin: 0 auto; width: 130px; height: 130px; font-size: 4rem; }
+  .gm-features { justify-content: center; }
+  .section-sub { width: 100%; margin-left: 0; }
+}
 </style>

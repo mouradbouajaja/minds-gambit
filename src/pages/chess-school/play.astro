@@ -32,6 +32,23 @@ export const prerender = true;
 
   <!-- Setup state (shown first) -->
   <div id="setup-panel" class="setup-panel">
+    <div class="setup-block player-block">
+      <label class="setup-label" for="player-name">Your name <span class="setup-label-thin">(saved on this device)</span></label>
+      <div class="player-row">
+        <input type="text" id="player-name" maxlength="24" placeholder="Anonymous Player" autocomplete="off" />
+        <div class="player-rating-display">
+          <span class="player-rating-value" id="player-rating">1200</span>
+          <span class="player-rating-label">your rating</span>
+        </div>
+      </div>
+      <div class="player-stats-grid">
+        <div class="player-stat"><span class="player-stat-num" id="stat-wins">0</span><span class="player-stat-label">Wins</span></div>
+        <div class="player-stat"><span class="player-stat-num" id="stat-losses">0</span><span class="player-stat-label">Losses</span></div>
+        <div class="player-stat"><span class="player-stat-num" id="stat-draws">0</span><span class="player-stat-label">Draws</span></div>
+        <div class="player-stat"><span class="player-stat-num" id="stat-peak">1200</span><span class="player-stat-label">Peak</span></div>
+      </div>
+    </div>
+
     <div class="setup-block">
       <label class="setup-label">Pick your strength</label>
       <div class="strength-row">
@@ -67,9 +84,16 @@ export const prerender = true;
       </div>
 
       <aside class="game-info">
+        <div class="player-banner">
+          <div class="player-banner-row">
+            <span class="player-banner-name" id="play-player-name">Anonymous Player</span>
+            <span class="player-banner-rating" id="play-player-rating">1200</span>
+          </div>
+          <span class="player-banner-vs">vs. Mind&rsquo;s Gambit Engine</span>
+        </div>
         <div class="info-row">
           <div class="info-stat">
-            <span class="info-stat-label">You</span>
+            <span class="info-stat-label">You play</span>
             <span class="info-stat-value" id="player-color">&mdash;</span>
           </div>
           <div class="info-stat">
@@ -97,6 +121,7 @@ export const prerender = true;
         <div class="game-over" id="game-over">
           <div class="game-over-title" id="game-over-title">&mdash;</div>
           <div class="game-over-sub" id="game-over-sub">&mdash;</div>
+          <div class="rating-delta" id="rating-delta"></div>
           <button class="ctrl-btn ctrl-btn-primary" id="btn-rematch" type="button">Play Again</button>
         </div>
       </aside>
@@ -138,6 +163,83 @@ export const prerender = true;
   var skillLevel = 5;
   var gameOver = false;
   var enginePending = false;
+  var resultRecorded = false;    // Prevent double-counting (e.g. resign then checkmate)
+
+  // ----- Player profile (localStorage, no account needed) -----
+  var DEFAULT_RATING = 1200;
+  var player = loadPlayer();
+
+  function loadPlayer() {
+    try {
+      var name = localStorage.getItem('mg_player_name') || '';
+      var rating = parseInt(localStorage.getItem('mg_player_rating') || String(DEFAULT_RATING), 10);
+      var stats = JSON.parse(localStorage.getItem('mg_player_stats') || 'null') || { wins: 0, losses: 0, draws: 0, peak: DEFAULT_RATING, games: 0 };
+      return { name: name, rating: rating, stats: stats };
+    } catch (e) {
+      return { name: '', rating: DEFAULT_RATING, stats: { wins: 0, losses: 0, draws: 0, peak: DEFAULT_RATING, games: 0 } };
+    }
+  }
+
+  function savePlayer() {
+    try {
+      localStorage.setItem('mg_player_name', player.name || '');
+      localStorage.setItem('mg_player_rating', String(player.rating));
+      localStorage.setItem('mg_player_stats', JSON.stringify(player.stats));
+    } catch (e) {}
+  }
+
+  function engineRating(skill) {
+    // Map Stockfish skill 0..20 to approximate engine playing strength
+    // skill 0 → ~800, skill 10 → ~1800, skill 20 → ~2800
+    return 800 + skill * 100;
+  }
+
+  function expectedScore(playerR, engineR) {
+    return 1 / (1 + Math.pow(10, (engineR - playerR) / 400));
+  }
+
+  function kFactor() {
+    // Higher K for fewer games (learns rating faster), lower K once stable
+    if (player.stats.games < 30) return 32;
+    if (player.rating < 2400) return 24;
+    return 16;
+  }
+
+  function updateRatingFromResult(result) {
+    // result: 1 = win, 0.5 = draw, 0 = loss
+    var oldRating = player.rating;
+    var E = expectedScore(player.rating, engineRating(skillLevel));
+    var k = kFactor();
+    var delta = Math.round(k * (result - E));
+    var newRating = Math.max(100, player.rating + delta);
+    player.rating = newRating;
+    if (newRating > player.stats.peak) player.stats.peak = newRating;
+    if (result === 1) player.stats.wins += 1;
+    else if (result === 0) player.stats.losses += 1;
+    else player.stats.draws += 1;
+    player.stats.games += 1;
+    savePlayer();
+    refreshPlayerUI();
+    return { oldRating: oldRating, newRating: newRating, delta: delta };
+  }
+
+  function refreshPlayerUI() {
+    var nameDisplay = player.name && player.name.trim() ? player.name : 'Anonymous Player';
+    var ratingEl = document.getElementById('player-rating');
+    var peakEl = document.getElementById('stat-peak');
+    var winsEl = document.getElementById('stat-wins');
+    var lossesEl = document.getElementById('stat-losses');
+    var drawsEl = document.getElementById('stat-draws');
+    var playNameEl = document.getElementById('play-player-name');
+    var playRatingEl = document.getElementById('play-player-rating');
+    if (ratingEl) ratingEl.textContent = player.rating;
+    if (peakEl) peakEl.textContent = player.stats.peak;
+    if (winsEl) winsEl.textContent = player.stats.wins;
+    if (lossesEl) lossesEl.textContent = player.stats.losses;
+    if (drawsEl) drawsEl.textContent = player.stats.draws;
+    if (playNameEl) playNameEl.textContent = nameDisplay;
+    if (playRatingEl) playRatingEl.textContent = player.rating;
+  }
 
   // ----- DOM refs -----
   var skillSlider = document.getElementById('skill-slider');
@@ -265,6 +367,8 @@ export const prerender = true;
   function startGame() {
     gameOver = false;
     enginePending = false;
+    resultRecorded = false;
+    refreshPlayerUI();
     game = new Chess();
     playerColorEl.textContent = userColor === 'w' ? 'White' : 'Black';
     engineSkillEl.textContent = skillLevel + ' / 20';
@@ -363,29 +467,45 @@ export const prerender = true;
     if (!game.game_over()) return false;
     gameOver = true;
     var title, sub;
+    var result = null; // 1 = user win, 0 = user loss, 0.5 = draw
     if (game.in_checkmate()) {
       var loser = game.turn(); // turn = the side that's checkmated
-      if (loser === userColor) { title = 'Checkmate.'; sub = 'The engine wins. Tomorrow you take it back.'; }
-      else { title = 'Checkmate!'; sub = 'You beat Stockfish at skill ' + skillLevel + '. Bump it up.'; }
+      if (loser === userColor) { title = 'Checkmate.'; sub = 'The engine wins. Tomorrow you take it back.'; result = 0; }
+      else { title = 'Checkmate!'; sub = 'You beat Stockfish at skill ' + skillLevel + '. Bump it up.'; result = 1; }
     } else if (game.in_stalemate()) {
-      title = 'Stalemate.'; sub = 'A draw by stalemate.';
+      title = 'Stalemate.'; sub = 'A draw by stalemate.'; result = 0.5;
     } else if (game.in_threefold_repetition()) {
-      title = 'Draw.'; sub = 'Threefold repetition.';
+      title = 'Draw.'; sub = 'Threefold repetition.'; result = 0.5;
     } else if (game.insufficient_material()) {
-      title = 'Draw.'; sub = 'Insufficient material to mate.';
+      title = 'Draw.'; sub = 'Insufficient material to mate.'; result = 0.5;
     } else if (game.in_draw()) {
-      title = 'Draw.'; sub = 'Drawn position.';
+      title = 'Draw.'; sub = 'Drawn position.'; result = 0.5;
     } else {
       title = 'Game over.'; sub = '';
     }
-    showGameOver(title, sub);
+    showGameOver(title, sub, result);
     setStatus(title, gameOver && game.in_checkmate() && game.turn() !== userColor ? 'good' : '');
     return true;
   }
 
-  function showGameOver(title, sub) {
+  function showGameOver(title, sub, result) {
     gameOverTitle.textContent = title;
     gameOverSub.textContent = sub;
+    var deltaEl = document.getElementById('rating-delta');
+    if (deltaEl) deltaEl.innerHTML = '';
+    // Only record once per game, only if we have a defined result
+    if (!resultRecorded && (result === 0 || result === 1 || result === 0.5)) {
+      resultRecorded = true;
+      var change = updateRatingFromResult(result);
+      if (deltaEl) {
+        var sign = change.delta > 0 ? '+' : '';
+        var cls = change.delta > 0 ? 'delta-up' : (change.delta < 0 ? 'delta-down' : 'delta-flat');
+        deltaEl.innerHTML = '<span class="rating-delta-label">Your rating:</span> ' +
+          '<span class="rating-delta-old">' + change.oldRating + '</span>' +
+          ' <span class="rating-delta-arrow ' + cls + '">' + sign + change.delta + '</span> ' +
+          '<span class="rating-delta-new">' + change.newRating + '</span>';
+      }
+    }
     gameOverEl.classList.add('shown');
   }
 
@@ -417,7 +537,7 @@ export const prerender = true;
   document.getElementById('btn-resign').addEventListener('click', function() {
     if (gameOver) return;
     gameOver = true;
-    showGameOver('You resigned.', 'The engine wins. New game when you\'re ready.');
+    showGameOver('You resigned.', 'The engine wins. New game when you\'re ready.', 0);
     setStatus('Resigned.', '');
   });
   document.getElementById('btn-newgame').addEventListener('click', function() {
@@ -428,6 +548,18 @@ export const prerender = true;
     gameOverEl.classList.remove('shown');
     startGame();
   });
+
+  // ----- Player name input -----
+  var nameInput = document.getElementById('player-name');
+  if (nameInput) {
+    nameInput.value = player.name || '';
+    nameInput.addEventListener('input', function() {
+      player.name = nameInput.value;
+      savePlayer();
+      refreshPlayerUI();
+    });
+  }
+  refreshPlayerUI();
 
   // ----- Boot -----
   function whenLibsReady(cb) {
@@ -462,6 +594,38 @@ nav { background: rgba(15,17,28,0.95); border-bottom: 1px solid rgba(201,168,76,
 .setup-block { margin-bottom: 1.75rem; }
 .setup-block:last-child { margin-bottom: 0; }
 .setup-label { display: block; color: #c9a84c; font-family: 'Playfair Display', Georgia, serif; font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.85rem; }
+.setup-label-thin { color: rgba(232,224,208,0.45); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: none; font-style: italic; margin-left: 0.5rem; }
+
+/* Player block (name + rating + stats) */
+.player-block { padding-bottom: 1.75rem; border-bottom: 1px solid rgba(201,168,76,0.15); }
+.player-row { display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: center; margin-bottom: 1rem; }
+#player-name { width: 100%; background: rgba(15,17,28,0.55); border: 1px solid rgba(201,168,76,0.3); border-radius: 8px; color: #e8e0d0; padding: 0.75rem 1rem; font-family: 'Playfair Display', Georgia, serif; font-size: 1rem; box-sizing: border-box; transition: border-color 0.2s, box-shadow 0.2s; }
+#player-name:focus { outline: none; border-color: #c9a84c; box-shadow: 0 0 0 3px rgba(201,168,76,0.15); }
+#player-name::placeholder { color: rgba(232,224,208,0.35); font-style: italic; }
+.player-rating-display { text-align: right; min-width: 110px; }
+.player-rating-value { color: #c9a84c; font-family: 'Playfair Display', Georgia, serif; font-size: 1.85rem; font-weight: 700; display: block; line-height: 1; }
+.player-rating-label { color: rgba(232,224,208,0.5); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; font-family: 'Playfair Display', Georgia, serif; }
+.player-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
+.player-stat { background: rgba(15,17,28,0.45); border: 1px solid rgba(201,168,76,0.18); border-radius: 8px; padding: 0.6rem 0.4rem; text-align: center; }
+.player-stat-num { color: #e8e0d0; font-family: 'Playfair Display', Georgia, serif; font-size: 1.15rem; font-weight: 700; display: block; line-height: 1.1; }
+.player-stat-label { color: rgba(232,224,208,0.5); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; font-family: 'Playfair Display', Georgia, serif; margin-top: 0.15rem; }
+
+/* Player banner during play */
+.player-banner { background: linear-gradient(135deg, rgba(201,168,76,0.14), rgba(15,17,28,0.55)); border: 1px solid rgba(201,168,76,0.35); border-radius: 10px; padding: 0.85rem 1rem; margin-bottom: 0.5rem; }
+.player-banner-row { display: flex; justify-content: space-between; align-items: baseline; gap: 0.75rem; }
+.player-banner-name { color: #e8e0d0; font-family: 'Playfair Display', Georgia, serif; font-size: 1.05rem; font-weight: 700; }
+.player-banner-rating { color: #c9a84c; font-family: 'Playfair Display', Georgia, serif; font-size: 1.2rem; font-weight: 700; }
+.player-banner-vs { color: rgba(232,224,208,0.55); font-size: 0.78rem; font-style: italic; font-family: 'EB Garamond', Georgia, serif; }
+
+/* Rating delta on game-over screen */
+.rating-delta { margin: 0.75rem 0 0.5rem; font-family: 'Playfair Display', Georgia, serif; font-size: 0.95rem; color: rgba(232,224,208,0.8); }
+.rating-delta-label { color: rgba(232,224,208,0.55); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.rating-delta-old { color: rgba(232,224,208,0.55); }
+.rating-delta-new { color: #c9a84c; font-weight: 700; }
+.rating-delta-arrow { font-weight: 700; padding: 0 0.2rem; }
+.delta-up { color: #a7f3d0; }
+.delta-down { color: #fecaca; }
+.delta-flat { color: rgba(232,224,208,0.6); }
 .strength-row { display: flex; align-items: center; gap: 1.5rem; }
 #skill-slider { flex: 1; -webkit-appearance: none; height: 6px; background: rgba(201,168,76,0.3); border-radius: 999px; outline: none; }
 #skill-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 22px; height: 22px; border-radius: 50%; background: #c9a84c; border: 3px solid #0f111c; cursor: pointer; box-shadow: 0 0 0 1px rgba(201,168,76,0.5); }

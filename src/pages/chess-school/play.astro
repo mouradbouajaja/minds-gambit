@@ -1,0 +1,524 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export const prerender = true;
+---
+
+<BaseLayout title="Play The Mind's Gambit — Chess School" description="Face our engine in your browser. Pick any strength from just-learning to merciless. Free, ad-free, no accounts. Powered by Stockfish.">
+
+<link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" />
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><img src="/images/logo.jpg" alt="Mind's Gambit" style="height:55px;width:55px;border-radius:50%;object-fit:cover;border:2px solid #c8a84e;margin-left:10px;vertical-align:middle;" /></a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/chess-school">Chess School</a></li>
+      <li><a href="/chess-school/puzzles">Daily Puzzle</a></li>
+      <li><a href="/chess-school/train">Train Now</a></li>
+      <li><a href="/chess-school/tactics">Tactics</a></li>
+      <li><a href="/#contact" class="nav-btn">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="page">
+  <a href="/chess-school" class="back-link">&larr; Back to Chess School</a>
+  <span class="eyebrow">Mind's Gambit Chess School</span>
+  <h1>Play The Mind&rsquo;s Gambit</h1>
+  <p class="lead">Face our engine. Twenty levels of strength &mdash; from "just learning" to "merciless." All in your browser. No accounts, no waiting, no ads.</p>
+
+  <!-- Setup state (shown first) -->
+  <div id="setup-panel" class="setup-panel">
+    <div class="setup-block">
+      <label class="setup-label">Pick your strength</label>
+      <div class="strength-row">
+        <input type="range" min="0" max="20" value="5" id="skill-slider" />
+        <div class="strength-display">
+          <span class="strength-value" id="skill-value">5</span>
+          <span class="strength-desc" id="skill-desc">Casual club</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="setup-block">
+      <label class="setup-label">Play as</label>
+      <div class="color-row">
+        <button class="color-btn color-btn-active" data-color="w" type="button"><span class="color-king">&#9812;</span> White</button>
+        <button class="color-btn" data-color="b" type="button"><span class="color-king color-king-dark">&#9818;</span> Black</button>
+        <button class="color-btn" data-color="random" type="button">&#127922; Random</button>
+      </div>
+    </div>
+
+    <div class="setup-block">
+      <button class="start-btn" id="start-btn" type="button" disabled>Loading engine&hellip;</button>
+      <p class="setup-note" id="setup-note">Loading Stockfish&hellip;</p>
+    </div>
+  </div>
+
+  <!-- Playing state (hidden until game starts) -->
+  <div id="play-panel" class="play-panel hidden">
+    <div class="play-area">
+      <div class="board-wrap">
+        <div id="play-board"></div>
+        <div class="board-status" id="board-status">Game on.</div>
+      </div>
+
+      <aside class="game-info">
+        <div class="info-row">
+          <div class="info-stat">
+            <span class="info-stat-label">You</span>
+            <span class="info-stat-value" id="player-color">&mdash;</span>
+          </div>
+          <div class="info-stat">
+            <span class="info-stat-label">Engine Skill</span>
+            <span class="info-stat-value" id="engine-skill">&mdash;</span>
+          </div>
+          <div class="info-stat">
+            <span class="info-stat-label">Turn</span>
+            <span class="info-stat-value" id="turn-display">&mdash;</span>
+          </div>
+        </div>
+
+        <div class="move-history">
+          <div class="info-label">Move History</div>
+          <div class="move-list" id="move-list"></div>
+        </div>
+
+        <div class="play-controls">
+          <button class="ctrl-btn" id="btn-flip" type="button">&#8645; Flip Board</button>
+          <button class="ctrl-btn" id="btn-takeback" type="button">&#8630; Take Back</button>
+          <button class="ctrl-btn" id="btn-resign" type="button">&#9873; Resign</button>
+          <button class="ctrl-btn ctrl-btn-primary" id="btn-newgame" type="button">&#8634; New Game</button>
+        </div>
+
+        <div class="game-over" id="game-over">
+          <div class="game-over-title" id="game-over-title">&mdash;</div>
+          <div class="game-over-sub" id="game-over-sub">&mdash;</div>
+          <button class="ctrl-btn ctrl-btn-primary" id="btn-rematch" type="button">Play Again</button>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <p class="attribution">
+    Engine: <a href="https://stockfishchess.org/" target="_blank" rel="noopener">Stockfish</a> &mdash; the world&rsquo;s leading open-source chess engine, distributed under the <a href="https://www.gnu.org/licenses/gpl-3.0.en.html" target="_blank" rel="noopener">GNU General Public License v3</a>. Board rendering powered by chessboard.js and chess.js. No tracking. No accounts.
+  </p>
+
+  <footer class="page-footer">
+    <p class="footer-credit">&copy; 2026 Mourad Bouajaja. Mind&rsquo;s Gambit Chess School is a production of &copy; MYB Studio LLC.</p>
+  </footer>
+</section>
+
+<script is:inline src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script is:inline src="https://cdn.jsdelivr.net/npm/chess.js@0.10.3/chess.min.js"></script>
+<script is:inline src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+
+<script is:inline>
+(function() {
+  'use strict';
+
+  // ----- Strength descriptions -----
+  var SKILL_DESCS = [
+    'Just learning', 'Beginner', 'Beginner+', 'Improving', 'Improving+',
+    'Casual club', 'Club player', 'Club+', 'Strong club', 'Strong+',
+    'Tournament', 'Tournament+', 'Expert', 'Expert+', 'Master',
+    'Master+', 'Strong master', 'IM-level', 'GM-level', 'Super-GM', 'Merciless'
+  ];
+
+  // ----- State -----
+  var stockfish = null;          // The Worker
+  var stockfishReady = false;
+  var game = null;               // chess.js instance
+  var board = null;              // chessboard.js instance
+  var userColor = 'w';
+  var engineColor = 'b';
+  var skillLevel = 5;
+  var gameOver = false;
+  var enginePending = false;
+
+  // ----- DOM refs -----
+  var skillSlider = document.getElementById('skill-slider');
+  var skillValue = document.getElementById('skill-value');
+  var skillDesc = document.getElementById('skill-desc');
+  var colorBtns = Array.from(document.querySelectorAll('.color-btn'));
+  var startBtn = document.getElementById('start-btn');
+  var setupNote = document.getElementById('setup-note');
+  var setupPanel = document.getElementById('setup-panel');
+  var playPanel = document.getElementById('play-panel');
+  var statusEl = document.getElementById('board-status');
+  var turnEl = document.getElementById('turn-display');
+  var playerColorEl = document.getElementById('player-color');
+  var engineSkillEl = document.getElementById('engine-skill');
+  var moveListEl = document.getElementById('move-list');
+  var gameOverEl = document.getElementById('game-over');
+  var gameOverTitle = document.getElementById('game-over-title');
+  var gameOverSub = document.getElementById('game-over-sub');
+
+  // ----- Initialize Stockfish via blob worker (avoids cross-origin worker issues) -----
+  function initStockfish() {
+    setupNote.textContent = 'Loading engine (Stockfish)…';
+    var STOCKFISH_URL = 'https://cdn.jsdelivr.net/npm/stockfish@10.0.2/src/stockfish.js';
+    fetch(STOCKFISH_URL)
+      .then(function(r) { if (!r.ok) throw new Error('Engine fetch ' + r.status); return r.text(); })
+      .then(function(code) {
+        var blob = new Blob([code], { type: 'application/javascript' });
+        var workerUrl = URL.createObjectURL(blob);
+        stockfish = new Worker(workerUrl);
+        stockfish.onmessage = handleEngineMessage;
+        stockfish.postMessage('uci');
+      })
+      .catch(function(err) {
+        setupNote.textContent = 'Could not load engine: ' + err.message + '. Refresh to retry.';
+      });
+  }
+
+  function handleEngineMessage(e) {
+    var msg = String(e.data || '');
+    if (msg === 'uciok' || msg.indexOf('uciok') !== -1) {
+      stockfish.postMessage('isready');
+      return;
+    }
+    if (msg === 'readyok' || msg.indexOf('readyok') !== -1) {
+      if (!stockfishReady) {
+        stockfishReady = true;
+        startBtn.disabled = false;
+        startBtn.textContent = 'Start Game';
+        setupNote.textContent = 'Engine ready. Pick your level and color, then start.';
+      }
+      return;
+    }
+    if (msg.indexOf('bestmove') === 0 || msg.indexOf('bestmove') !== -1) {
+      var parts = msg.split(/\s+/);
+      var bi = parts.indexOf('bestmove');
+      var bm = parts[bi + 1];
+      if (bm && bm !== '(none)') {
+        applyEngineMove(bm);
+      } else {
+        // No move (mate/stalemate)
+        enginePending = false;
+        evaluateGameOver();
+      }
+    }
+  }
+
+  function applyEngineMove(uci) {
+    if (!game || gameOver) { enginePending = false; return; }
+    var move = {
+      from: uci.substring(0, 2),
+      to: uci.substring(2, 4),
+      promotion: uci.length >= 5 ? uci.substring(4, 5) : undefined
+    };
+    var result = game.move(move);
+    if (!result) {
+      // Engine produced an illegal move — shouldn't happen
+      enginePending = false;
+      return;
+    }
+    board.position(game.fen());
+    pushMove(result);
+    enginePending = false;
+    if (evaluateGameOver()) return;
+    setStatus('Your move.', '');
+    updateTurn();
+  }
+
+  // ----- Slider UI -----
+  skillSlider.addEventListener('input', function() {
+    var v = parseInt(skillSlider.value, 10);
+    skillLevel = v;
+    skillValue.textContent = v;
+    skillDesc.textContent = SKILL_DESCS[v] || ('Level ' + v);
+  });
+  // Initial display
+  skillValue.textContent = skillSlider.value;
+  skillDesc.textContent = SKILL_DESCS[parseInt(skillSlider.value, 10)] || '—';
+
+  // ----- Color picker -----
+  colorBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      colorBtns.forEach(function(b) { b.classList.remove('color-btn-active'); });
+      btn.classList.add('color-btn-active');
+    });
+  });
+
+  function getPickedColor() {
+    var active = document.querySelector('.color-btn-active');
+    var c = active ? active.getAttribute('data-color') : 'w';
+    if (c === 'random') return Math.random() < 0.5 ? 'w' : 'b';
+    return c;
+  }
+
+  // ----- Start game -----
+  startBtn.addEventListener('click', function() {
+    if (!stockfishReady) return;
+    userColor = getPickedColor();
+    engineColor = userColor === 'w' ? 'b' : 'w';
+    setupPanel.classList.add('hidden');
+    playPanel.classList.remove('hidden');
+    gameOverEl.classList.remove('shown');
+    startGame();
+  });
+
+  function startGame() {
+    gameOver = false;
+    enginePending = false;
+    game = new Chess();
+    playerColorEl.textContent = userColor === 'w' ? 'White' : 'Black';
+    engineSkillEl.textContent = skillLevel + ' / 20';
+    moveListEl.innerHTML = '';
+
+    if (board) { try { board.destroy && board.destroy(); } catch (e) {} }
+    board = Chessboard('play-board', {
+      position: 'start',
+      orientation: userColor === 'w' ? 'white' : 'black',
+      draggable: true,
+      onDragStart: onDragStart,
+      onDrop: onDrop,
+      onSnapEnd: function() { board.position(game.fen()); },
+      pieceTheme: 'https://cdn.jsdelivr.net/gh/oakmac/chessboardjs@v1.0.0/website/img/chesspieces/wikipedia/{piece}.png',
+      moveSpeed: 'slow',
+      snapbackSpeed: 250
+    });
+
+    // Configure engine
+    stockfish.postMessage('ucinewgame');
+    stockfish.postMessage('setoption name Skill Level value ' + skillLevel);
+    stockfish.postMessage('isready');
+
+    setStatus(userColor === 'w' ? 'Your move. Make your opening.' : 'Engine moves first…', '');
+    updateTurn();
+
+    if (engineColor === 'w') {
+      setTimeout(requestEngineMove, 600);
+    }
+
+    window.addEventListener('resize', function() { if (board) board.resize(); });
+  }
+
+  // ----- Drag/Drop validation -----
+  function onDragStart(source, piece) {
+    if (gameOver || enginePending) return false;
+    if (!game || game.game_over()) return false;
+    if (game.turn() !== userColor) return false;
+    if ((userColor === 'w' && piece.charAt(0) !== 'w') ||
+        (userColor === 'b' && piece.charAt(0) !== 'b')) return false;
+    return true;
+  }
+
+  function onDrop(source, target) {
+    if (gameOver) return 'snapback';
+    var move = game.move({ from: source, to: target, promotion: 'q' });
+    if (move === null) return 'snapback';
+    board.position(game.fen());
+    pushMove(move);
+    if (evaluateGameOver()) return;
+    setStatus('Engine thinking…', '');
+    updateTurn();
+    setTimeout(requestEngineMove, 350);
+  }
+
+  function requestEngineMove() {
+    if (gameOver) return;
+    enginePending = true;
+    var fen = game.fen();
+    // Time per move scales with skill — easier engine = quick move; harder = think longer
+    var movetime = 200 + skillLevel * 90; // 200ms (skill 0) up to 2000ms (skill 20)
+    stockfish.postMessage('position fen ' + fen);
+    stockfish.postMessage('go movetime ' + movetime);
+  }
+
+  function pushMove(move) {
+    var n = Math.ceil(game.history().length / 2);
+    var entry;
+    if (game.history().length % 2 === 1) {
+      // White move just played — start a new line
+      entry = document.createElement('div');
+      entry.className = 'move-line';
+      entry.innerHTML = '<span class="move-num">' + n + '.</span> <span class="move-white">' + move.san + '</span>';
+      moveListEl.appendChild(entry);
+    } else {
+      // Black move — append to last line
+      var last = moveListEl.lastElementChild;
+      if (last) last.innerHTML += ' <span class="move-black">' + move.san + '</span>';
+    }
+    moveListEl.scrollTop = moveListEl.scrollHeight;
+  }
+
+  function rebuildMoveList() {
+    moveListEl.innerHTML = '';
+    var hist = game.history({ verbose: true });
+    for (var i = 0; i < hist.length; i++) pushMove(hist[i]);
+  }
+
+  function evaluateGameOver() {
+    if (!game.game_over()) return false;
+    gameOver = true;
+    var title, sub;
+    if (game.in_checkmate()) {
+      var loser = game.turn(); // turn = the side that's checkmated
+      if (loser === userColor) { title = 'Checkmate.'; sub = 'The engine wins. Tomorrow you take it back.'; }
+      else { title = 'Checkmate!'; sub = 'You beat Stockfish at skill ' + skillLevel + '. Bump it up.'; }
+    } else if (game.in_stalemate()) {
+      title = 'Stalemate.'; sub = 'A draw by stalemate.';
+    } else if (game.in_threefold_repetition()) {
+      title = 'Draw.'; sub = 'Threefold repetition.';
+    } else if (game.insufficient_material()) {
+      title = 'Draw.'; sub = 'Insufficient material to mate.';
+    } else if (game.in_draw()) {
+      title = 'Draw.'; sub = 'Drawn position.';
+    } else {
+      title = 'Game over.'; sub = '';
+    }
+    showGameOver(title, sub);
+    setStatus(title, gameOver && game.in_checkmate() && game.turn() !== userColor ? 'good' : '');
+    return true;
+  }
+
+  function showGameOver(title, sub) {
+    gameOverTitle.textContent = title;
+    gameOverSub.textContent = sub;
+    gameOverEl.classList.add('shown');
+  }
+
+  function setStatus(msg, kind) {
+    statusEl.textContent = msg;
+    statusEl.className = 'board-status' + (kind ? ' status-' + kind : '');
+  }
+  function updateTurn() {
+    if (!game) return;
+    var t = game.turn();
+    turnEl.textContent = t === userColor ? 'You' : 'Engine';
+  }
+
+  // ----- Controls -----
+  document.getElementById('btn-flip').addEventListener('click', function() {
+    if (board) board.flip();
+  });
+  document.getElementById('btn-takeback').addEventListener('click', function() {
+    if (gameOver || enginePending) return;
+    // Take back the last pair (engine move + your move) so it's your turn again
+    if (game.history().length === 0) return;
+    game.undo();
+    if (game.history().length > 0) game.undo();
+    board.position(game.fen());
+    rebuildMoveList();
+    setStatus('Take-back. Try again.', '');
+    updateTurn();
+  });
+  document.getElementById('btn-resign').addEventListener('click', function() {
+    if (gameOver) return;
+    gameOver = true;
+    showGameOver('You resigned.', 'The engine wins. New game when you\'re ready.');
+    setStatus('Resigned.', '');
+  });
+  document.getElementById('btn-newgame').addEventListener('click', function() {
+    setupPanel.classList.remove('hidden');
+    playPanel.classList.add('hidden');
+  });
+  document.getElementById('btn-rematch').addEventListener('click', function() {
+    gameOverEl.classList.remove('shown');
+    startGame();
+  });
+
+  // ----- Boot -----
+  function whenLibsReady(cb) {
+    if (window.Chess && window.Chessboard && window.jQuery) cb();
+    else setTimeout(function() { whenLibsReady(cb); }, 50);
+  }
+  whenLibsReady(initStockfish);
+})();
+</script>
+
+</BaseLayout>
+
+<style is:global>
+nav { background: rgba(15,17,28,0.95); border-bottom: 1px solid rgba(201,168,76,0.2); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
+.nav-inner { max-width: 1200px; margin: 0 auto; padding: 0.75rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+.nav-links { display: flex; gap: 2rem; list-style: none; margin: 0; padding: 0; align-items: center; }
+.nav-links a { color: #e8e0d0; text-decoration: none; font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; font-family: 'Playfair Display', Georgia, serif; transition: color 0.3s; }
+.nav-links a:hover { color: #c9a84c; }
+.nav-btn { background: #c9a84c !important; color: #0f111c !important; padding: 0.5rem 1.25rem; border-radius: 4px; font-weight: 600; }
+
+.page { max-width: 1200px; margin: 0 auto; padding: 3rem 1.5rem; }
+.back-link { color: #c9a84c; text-decoration: none; font-size: 0.9rem; letter-spacing: 0.05em; display: inline-block; margin-bottom: 2rem; transition: opacity 0.25s; }
+.back-link:hover { opacity: 0.7; transform: translateX(-3px); }
+.eyebrow { color: #c9a84c; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.25em; display: block; margin-bottom: 1rem; }
+.page h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 3rem; color: #e8e0d0; line-height: 1.1; margin: 0 0 1rem; }
+.lead { color: rgba(232,224,208,0.8); font-size: 1.18rem; font-family: 'EB Garamond', Georgia, serif; line-height: 1.55; max-width: 760px; margin: 0 0 2.5rem; }
+
+.hidden { display: none !important; }
+
+/* Setup panel */
+.setup-panel { background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(30,34,52,0.65)); border: 1px solid rgba(201,168,76,0.3); border-radius: 16px; padding: 2.25rem; max-width: 680px; margin: 0 auto; }
+.setup-block { margin-bottom: 1.75rem; }
+.setup-block:last-child { margin-bottom: 0; }
+.setup-label { display: block; color: #c9a84c; font-family: 'Playfair Display', Georgia, serif; font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.85rem; }
+.strength-row { display: flex; align-items: center; gap: 1.5rem; }
+#skill-slider { flex: 1; -webkit-appearance: none; height: 6px; background: rgba(201,168,76,0.3); border-radius: 999px; outline: none; }
+#skill-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 22px; height: 22px; border-radius: 50%; background: #c9a84c; border: 3px solid #0f111c; cursor: pointer; box-shadow: 0 0 0 1px rgba(201,168,76,0.5); }
+#skill-slider::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: #c9a84c; border: 3px solid #0f111c; cursor: pointer; }
+.strength-display { min-width: 160px; text-align: right; }
+.strength-value { color: #c9a84c; font-family: 'Playfair Display', Georgia, serif; font-size: 1.8rem; font-weight: 700; line-height: 1; display: block; }
+.strength-desc { color: rgba(232,224,208,0.6); font-size: 0.85rem; font-style: italic; font-family: 'EB Garamond', Georgia, serif; }
+
+.color-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+.color-btn { background: rgba(30,34,52,0.7); border: 1px solid rgba(201,168,76,0.3); color: #e8e0d0; padding: 0.95rem 1.4rem; border-radius: 10px; font-family: 'Playfair Display', Georgia, serif; font-size: 0.95rem; letter-spacing: 0.05em; cursor: pointer; transition: all 0.2s; flex: 1; min-width: 120px; }
+.color-btn:hover { background: rgba(201,168,76,0.15); border-color: rgba(201,168,76,0.6); }
+.color-btn-active { background: rgba(201,168,76,0.25); border-color: #c9a84c; color: #c9a84c; }
+.color-king { font-size: 1.2rem; vertical-align: middle; margin-right: 0.35rem; }
+.color-king-dark { color: rgba(232,224,208,0.6); }
+
+.start-btn { width: 100%; background: linear-gradient(135deg, #c9a84c, #d4b556); color: #0f111c; padding: 1.1rem; border-radius: 12px; font-family: 'Playfair Display', Georgia, serif; font-size: 1.1rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; border: 0; cursor: pointer; box-shadow: 0 12px 28px rgba(201,168,76,0.35); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.start-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 16px 36px rgba(201,168,76,0.5); }
+.start-btn:disabled { opacity: 0.55; cursor: wait; box-shadow: none; }
+.setup-note { color: rgba(232,224,208,0.55); font-size: 0.85rem; text-align: center; margin: 0.85rem 0 0; font-style: italic; font-family: 'EB Garamond', Georgia, serif; }
+
+/* Play state */
+.play-area { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 2rem; align-items: start; }
+.board-wrap { position: relative; }
+#play-board { width: 100%; max-width: 640px; margin: 0 auto; box-shadow: 0 18px 50px rgba(0,0,0,0.5); border-radius: 8px; overflow: hidden; }
+.board-status { margin-top: 1.25rem; padding: 0.85rem 1.2rem; background: rgba(30,34,52,0.65); border: 1px solid rgba(201,168,76,0.25); border-radius: 10px; color: #e0e0e0; font-family: 'EB Garamond', Georgia, serif; font-size: 1.05rem; text-align: center; transition: background 0.25s, border-color 0.25s, color 0.25s; }
+.status-good { background: rgba(74,222,128,0.12); border-color: rgba(74,222,128,0.5); color: #a7f3d0; }
+.status-bad { background: rgba(248,113,113,0.12); border-color: rgba(248,113,113,0.5); color: #fecaca; }
+
+.game-info { background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(30,34,52,0.6)); border: 1px solid rgba(201,168,76,0.25); border-radius: 14px; padding: 1.5rem; font-family: 'EB Garamond', Georgia, serif; display: flex; flex-direction: column; gap: 1.25rem; }
+.info-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+.info-stat { background: rgba(15,17,28,0.55); border: 1px solid rgba(201,168,76,0.18); border-radius: 8px; padding: 0.6rem 0.4rem; text-align: center; }
+.info-stat-label { display: block; color: rgba(232,224,208,0.55); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 0.25rem; font-family: 'Playfair Display', Georgia, serif; }
+.info-stat-value { color: #c9a84c; font-family: 'Playfair Display', Georgia, serif; font-size: 1rem; font-weight: 700; }
+
+.move-history { background: rgba(15,17,28,0.55); border: 1px solid rgba(201,168,76,0.18); border-radius: 10px; padding: 0.9rem 1rem; }
+.info-label { color: #c9a84c; font-family: 'Playfair Display', Georgia, serif; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.16em; margin-bottom: 0.5rem; }
+.move-list { font-size: 0.92rem; line-height: 1.55; color: rgba(232,224,208,0.85); max-height: 200px; overflow-y: auto; font-family: 'Courier New', monospace; }
+.move-line { padding: 0.18rem 0; }
+.move-num { color: rgba(201,168,76,0.7); display: inline-block; min-width: 2.2em; }
+.move-white { color: #e8e0d0; }
+.move-black { color: rgba(232,224,208,0.65); margin-left: 0.5rem; }
+
+.play-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+.ctrl-btn { background: transparent; border: 1px solid rgba(201,168,76,0.45); color: #c9a84c; padding: 0.7rem 0.6rem; border-radius: 8px; cursor: pointer; font-family: 'Playfair Display', Georgia, serif; font-size: 0.85rem; letter-spacing: 0.04em; transition: background 0.2s, border-color 0.2s, transform 0.15s; }
+.ctrl-btn:hover { background: rgba(201,168,76,0.12); border-color: #c9a84c; transform: translateY(-1px); }
+.ctrl-btn-primary { background: #c9a84c; color: #0f111c; font-weight: 700; }
+.ctrl-btn-primary:hover { background: #d4b556; }
+
+.game-over { display: none; padding: 1.25rem; background: linear-gradient(135deg, rgba(74,222,128,0.08), rgba(30,34,52,0.65)); border: 1px solid rgba(74,222,128,0.35); border-radius: 12px; text-align: center; }
+.game-over.shown { display: block; animation: slideIn 0.4s ease-out; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.game-over-title { font-family: 'Playfair Display', Georgia, serif; font-size: 1.5rem; color: #a7f3d0; margin-bottom: 0.4rem; }
+.game-over-sub { color: rgba(232,224,208,0.78); font-size: 0.95rem; margin: 0 0 1rem; line-height: 1.5; }
+
+.attribution { color: rgba(232,224,208,0.5); font-size: 0.82rem; font-family: 'EB Garamond', Georgia, serif; line-height: 1.55; margin: 3rem 0 1rem; font-style: italic; }
+.attribution a { color: #c9a84c; text-decoration: underline; }
+.page-footer { margin-top: 2rem; padding-top: 1.5rem; text-align: center; border-top: 1px solid rgba(201,168,76,0.1); }
+.footer-credit { color: rgba(232,224,208,0.4); font-size: 0.8rem; font-family: 'EB Garamond', Georgia, serif; }
+
+@media (max-width: 960px) {
+  .play-area { grid-template-columns: 1fr; }
+  .game-info { order: 2; }
+  .page h1 { font-size: 2.25rem; }
+  .strength-row { flex-direction: column; align-items: stretch; gap: 0.85rem; }
+  .strength-display { text-align: center; }
+}
+.board-b72b1 { box-sizing: border-box; }
+</style>

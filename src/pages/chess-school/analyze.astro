@@ -383,6 +383,9 @@ export const prerender = true;
       row.setAttribute('data-ply', String(i + 1));
       var classBadge = m.classification && m.classification.label ? '<span class="move-tag ' + m.classification.class + '">' + m.classification.label + '</span>' : '';
       var bestHint = m.classification && (m.classification.tag === 'blunder' || m.classification.tag === 'mistake' || m.classification.tag === 'inaccuracy') && m.bestMove ? '<span class="best-hint">(better: ' + m.bestMove + ')</span>' : '';
+      // Explain button shows on Blunder/Mistake/Inaccuracy only — calls Claude for coach commentary
+      var explainBtn = m.classification && (m.classification.tag === 'blunder' || m.classification.tag === 'mistake' || m.classification.tag === 'inaccuracy')
+        ? '<button class="explain-btn" data-ply="' + (i + 1) + '" type="button" title="Get coach commentary">Explain &#8250;</button>' : '';
       var evalStr = evals[i + 1] ? formatScore({ cp: -evalToScore(evals[i + 1]), mate: evals[i + 1].mate ? -evals[i + 1].mate : null }) : '...';
       // Show from white's perspective
       var whitePovEval = evals[i + 1] ? formatScore({ cp: whitePovScore(evals[i + 1], i % 2 === 0 ? 'b' : 'w'), mate: null }) : '...';
@@ -391,14 +394,90 @@ export const prerender = true;
         '<span class="move-color move-' + (i % 2 === 0 ? 'white' : 'black') + '">' + (i % 2 === 0 ? '♙' : '♟') + '</span>' +
         '<span class="move-san">' + m.san + '</span>' +
         '<span class="move-eval">' + whitePovEval + '</span>' +
-        classBadge + bestHint;
+        classBadge + bestHint + explainBtn;
       row.addEventListener('click', function(ev) {
+        // Don't navigate when the Explain button itself was clicked
+        if (ev.target && ev.target.classList && ev.target.classList.contains('explain-btn')) return;
         var ply = parseInt(ev.currentTarget.getAttribute('data-ply'), 10);
         currentPly = ply;
         showCurrentPosition();
       });
       moveListEl.appendChild(row);
+
+      // Hidden commentary slot below the row (rendered when Explain is clicked)
+      var slot = document.createElement('div');
+      slot.className = 'coach-slot';
+      slot.setAttribute('data-ply', String(i + 1));
+      moveListEl.appendChild(slot);
     }
+
+    // One delegated listener for all Explain buttons
+    moveListEl.addEventListener('click', function(ev) {
+      var btn = ev.target;
+      if (!btn || !btn.classList || !btn.classList.contains('explain-btn')) return;
+      ev.stopPropagation();
+      var ply = parseInt(btn.getAttribute('data-ply'), 10);
+      explainMove(ply, btn);
+    }, true);
+  }
+
+  function explainMove(ply, button) {
+    var idx = ply - 1; // moves array is 0-indexed
+    var m = moves[idx];
+    if (!m || !m.classification) return;
+    var slot = moveListEl.querySelector('.coach-slot[data-ply="' + ply + '"]');
+    if (!slot) return;
+    // Toggle: if already rendered, just toggle visibility
+    if (slot.dataset.loaded === '1') {
+      slot.classList.toggle('coach-slot-open');
+      return;
+    }
+    button.disabled = true;
+    var oldLabel = button.innerHTML;
+    button.innerHTML = '&#9203; Thinking&hellip;';
+    slot.innerHTML = '<div class="coach-loading">Coach is thinking&hellip;</div>';
+    slot.classList.add('coach-slot-open');
+
+    var preEval = evals[idx];      // before the move
+    var postEval = evals[idx + 1]; // after the move
+    var color = (idx % 2 === 0) ? 'w' : 'b';
+
+    fetch('/api/explain-move', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        fen: positions[idx],
+        played: m.san,
+        best: m.bestMove || '?',
+        evalBefore: preEval ? evalToScore(preEval) : 0,
+        evalAfter: postEval ? evalToScore(postEval) : 0,
+        color: color,
+        moveNumber: Math.ceil(ply / 2),
+        severity: m.classification.tag
+      })
+    }).then(function(r) {
+      return r.json().then(function(data) { return { status: r.status, data: data }; });
+    }).then(function(res) {
+      button.disabled = false;
+      button.innerHTML = oldLabel;
+      if (res.status === 429) {
+        slot.innerHTML = '<div class="coach-rate-limited"><strong>Daily limit reached.</strong> ' + (res.data.message || 'You have used today\'s free explanations. Limit resets at midnight UTC.') + '</div>';
+        slot.dataset.loaded = '1';
+        return;
+      }
+      if (res.status !== 200 || !res.data.explanation) {
+        slot.innerHTML = '<div class="coach-error">Couldn\'t get coach commentary right now. ' + (res.data.error ? '(' + res.data.error + ')' : 'Try again in a moment.') + '</div>';
+        return;
+      }
+      slot.innerHTML = '<div class="coach-commentary"><span class="coach-eyebrow">Coach commentary</span><p>' + res.data.explanation + '</p>' +
+        (typeof res.data.remaining === 'number' ? '<span class="coach-remaining">' + res.data.remaining + ' free explanation' + (res.data.remaining === 1 ? '' : 's') + ' left today</span>' : '') +
+        '</div>';
+      slot.dataset.loaded = '1';
+    }).catch(function(err) {
+      button.disabled = false;
+      button.innerHTML = oldLabel;
+      slot.innerHTML = '<div class="coach-error">Network error reaching coach. Check your connection.</div>';
+    });
   }
 
   function showCurrentPosition() {
@@ -782,6 +861,21 @@ nav { background: rgba(15,17,28,0.95); border-bottom: 1px solid rgba(201,168,76,
 .tag-inaccuracy { background: rgba(251,191,36,0.15); color: #fde68a; border: 1px solid rgba(251,191,36,0.4); }
 .tag-best { background: rgba(74,222,128,0.15); color: #a7f3d0; border: 1px solid rgba(74,222,128,0.4); }
 .best-hint { color: rgba(201,168,76,0.7); font-size: 0.78em; font-style: italic; margin-left: 0.35rem; }
+
+/* Explain button + coach commentary */
+.explain-btn { background: transparent; border: 1px solid rgba(201,168,76,0.4); color: #c9a84c; padding: 0.18rem 0.55rem; border-radius: 99px; font-size: 0.7rem; letter-spacing: 0.06em; cursor: pointer; font-family: 'Playfair Display', Georgia, serif; transition: all 0.15s; margin-left: 0.4rem; }
+.explain-btn:hover { background: rgba(201,168,76,0.15); border-color: #c9a84c; }
+.explain-btn:disabled { opacity: 0.6; cursor: wait; }
+.coach-slot { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+.coach-slot-open { max-height: 600px; }
+.coach-commentary { background: linear-gradient(135deg, rgba(201,168,76,0.12), rgba(20,22,32,0.85)); border: 1px solid rgba(201,168,76,0.35); border-left-width: 3px; border-radius: 10px; padding: 0.85rem 1rem; margin: 0.4rem 0.45rem 0.6rem 2.6rem; font-family: 'EB Garamond', Georgia, serif; }
+.coach-eyebrow { color: #c9a84c; font-family: 'Playfair Display', Georgia, serif; font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; display: block; margin-bottom: 0.35rem; }
+.coach-commentary p { color: rgba(232,224,208,0.88); font-size: 0.92rem; line-height: 1.55; margin: 0 0 0.4rem; font-style: italic; }
+.coach-remaining { color: rgba(232,224,208,0.45); font-size: 0.7rem; font-style: italic; }
+.coach-loading { color: rgba(201,168,76,0.7); font-style: italic; padding: 0.6rem 1rem; margin: 0.3rem 0.45rem 0.5rem 2.6rem; font-family: 'EB Garamond', Georgia, serif; font-size: 0.88rem; }
+.coach-rate-limited { background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.4); color: #fde68a; padding: 0.7rem 0.95rem; margin: 0.3rem 0.45rem 0.5rem 2.6rem; border-radius: 8px; font-family: 'EB Garamond', Georgia, serif; font-size: 0.85rem; }
+.coach-rate-limited strong { color: #fbbf24; font-style: normal; }
+.coach-error { background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.4); color: #fecaca; padding: 0.7rem 0.95rem; margin: 0.3rem 0.45rem 0.5rem 2.6rem; border-radius: 8px; font-family: 'EB Garamond', Georgia, serif; font-size: 0.85rem; }
 
 .attribution { color: rgba(232,224,208,0.5); font-size: 0.82rem; font-family: 'EB Garamond', Georgia, serif; line-height: 1.6; margin: 3rem 0 1rem; font-style: italic; max-width: 900px; }
 .attribution a { color: #c9a84c; text-decoration: underline; }

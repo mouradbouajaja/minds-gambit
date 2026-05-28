@@ -1,0 +1,639 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export const prerender = true;
+---
+
+<BaseLayout title="Chess Trivia — Mind's Gambit Chess School" description="Test your chess history. 20 questions from Steinitz to Stockfish, Morphy to Magnus. Free. No signup.">
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><img src="/images/logo.jpg" alt="Mind's Gambit" style="height:55px;width:55px;border-radius:50%;object-fit:cover;border:2px solid #c8a84e;margin-left:10px;vertical-align:middle;" /></a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/#book">The Book</a></li>
+      <li><a href="/watch">Documentary</a></li>
+      <li><a href="/blog">Blog</a></li>
+      <li><a href="/chess-school">Chess School</a></li>
+      <li><a href="/#about">About</a></li>
+      <li><a href="/#contact">Contact</a></li>
+      <li><a href="https://buymeacoffee.com/mouradbouajaja" target="_blank" rel="noopener" class="nav-btn">&#9749; Buy Me a Coffee</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="page">
+  <a href="/chess-school" class="back-link">&larr; Back to Chess School</a>
+  <span class="eyebrow">Mind&rsquo;s Gambit Chess School</span>
+  <h1>Chess Trivia</h1>
+  <p class="lead">Twenty questions. From Steinitz to Stockfish, Morphy to Magnus. Test what you know about the people, games, and ideas that shaped chess.</p>
+
+  <!-- START SCREEN -->
+  <div id="trivia-start" class="trivia-screen trivia-start">
+    <div class="trivia-quote">&ldquo;Chess is the gymnasium of the mind.&rdquo;<br><span class="trivia-quote-attr">&mdash; attributed to Blaise Pascal</span></div>
+    <div class="trivia-best" id="trivia-best-display">&nbsp;</div>
+    <button class="trivia-btn trivia-btn-primary" id="btn-trivia-start" type="button">Begin the quiz &rarr;</button>
+    <p class="trivia-meta">20 questions &middot; multiple choice &middot; no time limit &middot; no signup</p>
+  </div>
+
+  <!-- GAME SCREEN -->
+  <div id="trivia-game" class="trivia-screen trivia-game" hidden>
+    <div class="trivia-progress-row">
+      <div class="trivia-progress-track"><div class="trivia-progress-fill" id="trivia-progress-fill"></div></div>
+      <div class="trivia-progress-text" id="trivia-progress-text">Question 1 of 20</div>
+    </div>
+    <div class="trivia-question-card">
+      <h2 class="trivia-question" id="trivia-question">&nbsp;</h2>
+      <div class="trivia-options" id="trivia-options"></div>
+      <div class="trivia-feedback" id="trivia-feedback" hidden></div>
+      <button class="trivia-btn trivia-btn-primary trivia-next" id="btn-trivia-next" type="button" hidden>Next question &rarr;</button>
+    </div>
+    <div class="trivia-score-strip">
+      <span class="trivia-score-label">Score</span>
+      <span class="trivia-score-value" id="trivia-score">0 / 0</span>
+    </div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="trivia-result" class="trivia-screen trivia-result" hidden>
+    <div class="trivia-result-piece" id="trivia-result-piece">&#9819;</div>
+    <h2 class="trivia-result-headline" id="trivia-result-headline">&nbsp;</h2>
+    <div class="trivia-result-score" id="trivia-result-score">0 / 20</div>
+    <p class="trivia-result-subline" id="trivia-result-subline">&nbsp;</p>
+    <div class="trivia-result-best" id="trivia-result-best">&nbsp;</div>
+    <div class="trivia-result-actions">
+      <button class="trivia-btn trivia-btn-primary" id="btn-trivia-replay" type="button">Play again &rarr;</button>
+      <a href="/chess-school" class="trivia-btn trivia-btn-secondary">Back to Chess School</a>
+    </div>
+  </div>
+
+  <p class="attribution">Brand-new chess players welcome. If a question stumps you, that&rsquo;s the point. Read the explanation, click next, learn one more thing about chess history.</p>
+
+  <footer class="page-footer">
+    <p class="footer-credit">&copy; 2026 Mourad Bouajaja. Mind&rsquo;s Gambit Chess School is a production of &copy; MYB Studio LLC.</p>
+  </footer>
+</section>
+
+<script is:inline>
+(function() {
+  'use strict';
+
+  // 20 carefully fact-checked questions on chess history, theory, and culture
+  var QUESTIONS = [
+    {
+      q: "Who is the youngest player ever to achieve the Grandmaster title?",
+      options: ["Magnus Carlsen", "Sergey Karjakin", "Abhimanyu Mishra", "Bobby Fischer"],
+      correct: 2,
+      explain: "American Abhimanyu Mishra earned the GM title in 2021 at 12 years, 4 months, 25 days &mdash; breaking Karjakin’s 19-year-old record."
+    },
+    {
+      q: "In what year did the Fischer–Spassky &lsquo;Match of the Century&rsquo; take place in Reykjavik?",
+      options: ["1966", "1969", "1972", "1975"],
+      correct: 2,
+      explain: "1972. Fischer defeated Spassky 12&frac12;–8&frac12; in a Cold War showdown that captivated the world and ended Soviet domination of the title."
+    },
+    {
+      q: "Who is widely considered the first official World Chess Champion?",
+      options: ["Paul Morphy", "Wilhelm Steinitz", "Adolf Anderssen", "Emanuel Lasker"],
+      correct: 1,
+      explain: "Steinitz won the first match recognized as a world championship in 1886, defeating Zukertort. He held the title until 1894."
+    },
+    {
+      q: "Which chess engine famously defeated Garry Kasparov in 1997?",
+      options: ["Stockfish", "Deep Blue", "AlphaZero", "Fritz"],
+      correct: 1,
+      explain: "IBM’s Deep Blue beat Kasparov 3&frac12;–2&frac12; in their rematch &mdash; the first reigning world champion to lose a match to a computer."
+    },
+    {
+      q: "In 2017, this AI taught itself chess in four hours and crushed Stockfish 8:",
+      options: ["AlphaGo", "AlphaZero", "Leela Chess Zero", "GPT-3"],
+      correct: 1,
+      explain: "DeepMind’s AlphaZero used self-play reinforcement learning from random play and changed engine design forever. Today’s top engines use neural networks because of it."
+    },
+    {
+      q: "Who was the first woman to defeat a reigning World Champion in a classical game?",
+      options: ["Vera Menchik", "Susan Polgar", "Judit Polgar", "Hou Yifan"],
+      correct: 2,
+      explain: "Judit Polgar beat Garry Kasparov at Linares 2002 &mdash; the strongest female player in chess history, the only woman to reach the world top 10."
+    },
+    {
+      q: "The opening 1. d4 d5 2. c4 is known as the:",
+      options: ["King’s Gambit", "Queen’s Gambit", "French Defense", "Ruy Lopez"],
+      correct: 1,
+      explain: "The Queen’s Gambit &mdash; White offers the c-pawn to seize central control. Played for over five centuries, and made culturally famous (again) by the 2020 Netflix series."
+    },
+    {
+      q: "Who held the World Championship for 27 consecutive years (1894–1921) &mdash; the longest reign in chess history?",
+      options: ["Wilhelm Steinitz", "Emanuel Lasker", "José Raúl Capablanca", "Alexander Alekhine"],
+      correct: 1,
+      explain: "Lasker. A mathematician and philosopher, he treated chess as psychological combat. He finally lost the title to Capablanca in 1921."
+    },
+    {
+      q: "The Sicilian Defense begins with which Black reply to 1. e4?",
+      options: ["1...e5", "1...c5", "1...c6", "1...d5"],
+      correct: 1,
+      explain: "1...c5 &mdash; Black’s most popular and most combative reply to 1.e4, creating an asymmetric pawn structure from move one. Still the highest-scoring defense for Black at top level."
+    },
+    {
+      q: "The famous &lsquo;Immortal Game&rsquo; (1851) was played by:",
+      options: ["Morphy vs Anderssen", "Anderssen vs Kieseritzky", "Staunton vs Saint-Amant", "Steinitz vs Zukertort"],
+      correct: 1,
+      explain: "Adolf Anderssen sacrificed his queen, both rooks, and a bishop against Lionel Kieseritzky in London &mdash; and won. The most celebrated game of the 19th century."
+    },
+    {
+      q: "Who won the 2024 World Chess Championship in Singapore?",
+      options: ["Magnus Carlsen", "Ding Liren", "Gukesh Dommaraju", "Ian Nepomniachtchi"],
+      correct: 2,
+      explain: "At 18, India’s Gukesh D became the youngest undisputed World Champion ever, defeating Ding Liren 7–6 in December 2024."
+    },
+    {
+      q: "The chess school of thought born in the 1920s, prioritizing controlling the center with pieces rather than occupying it with pawns, was called:",
+      options: ["The Soviet School", "Hypermodernism", "The Classical School", "The Romantic School"],
+      correct: 1,
+      explain: "Hypermodernism &mdash; led by Aron Nimzowitsch, Richard Réti, and Savielly Tartakower &mdash; challenged classical doctrine and gave us the Réti and King’s Indian openings."
+    },
+    {
+      q: "In algebraic notation, what does &lsquo;O-O-O&rsquo; mean?",
+      options: ["Pawn promotion", "En passant capture", "Kingside castling", "Queenside castling"],
+      correct: 3,
+      explain: "Three letter Os = queenside castling (the longer move; rook travels three squares). Two Os = kingside castling."
+    },
+    {
+      q: "How many possible positions can arise after both players have made one move?",
+      options: ["20", "200", "400", "1,600"],
+      correct: 2,
+      explain: "Each side has 20 legal first moves (16 pawn moves + 4 knight moves), so 20 × 20 = 400 possible positions after move 1 by each side. The combinatorial explosion starts here."
+    },
+    {
+      q: "Which piece can never move backward?",
+      options: ["The knight", "The pawn", "The bishop", "The king"],
+      correct: 1,
+      explain: "Pawns only move forward &mdash; though they capture diagonally and transform into another piece upon reaching the eighth rank. Every other piece can retreat."
+    },
+    {
+      q: "Magnus Carlsen first became World Champion by defeating:",
+      options: ["Vladimir Kramnik", "Viswanathan Anand", "Veselin Topalov", "Levon Aronian"],
+      correct: 1,
+      explain: "In 2013, Carlsen defeated Viswanathan Anand in Chennai (Anand’s home country) to claim the title at age 22. He went on to hold it until 2023, when he voluntarily relinquished it."
+    },
+    {
+      q: "The book &lsquo;My System&rsquo; (1925) &mdash; a cornerstone of modern chess strategy &mdash; was written by:",
+      options: ["José Capablanca", "Emanuel Lasker", "Aron Nimzowitsch", "Siegbert Tarrasch"],
+      correct: 2,
+      explain: "Nimzowitsch’s &lsquo;My System&rsquo; introduced concepts like prophylaxis, overprotection, and the blockade &mdash; still foundational a century later. Every serious player reads it eventually."
+    },
+    {
+      q: "FIDE &mdash; the world chess governing body &mdash; stands for:",
+      options: ["Federation of International Diamond Excellence", "Fédération Internationale des Échecs", "Federation of International Defense Engineers", "Federazione Internazionale degli Scacchi"],
+      correct: 1,
+      explain: "Fédération Internationale des Échecs &mdash; French for &lsquo;International Chess Federation.&rsquo; Founded in Paris in 1924 and headquartered in Lausanne, Switzerland."
+    },
+    {
+      q: "Which World Champion’s brilliant career ended in self-imposed isolation and severe mental illness &mdash; the inspiration for many chess-and-madness narratives?",
+      options: ["Magnus Carlsen", "Bobby Fischer", "Anatoly Karpov", "Vladimir Kramnik"],
+      correct: 1,
+      explain: "Bobby Fischer disappeared from competitive chess after winning the title in 1972, resurfaced briefly in 1992, then spent decades in increasing paranoia and exile. He died in Iceland in 2008. His story is part of why The Mind’s Gambit explores the intersection of chess and madness."
+    },
+    {
+      q: "Paul Morphy &mdash; 19th-century American genius and the &lsquo;pride and sorrow of chess&rsquo; &mdash; retired from chess at age 22 and:",
+      options: ["Founded FIDE", "Won five world championships", "Suffered paranoia and lived as a recluse", "Wrote a 12-volume treatise on chess theory"],
+      correct: 2,
+      explain: "Morphy walked away from chess at his peak, returned to New Orleans, and lived increasingly paranoid and isolated until his death in 1884 at age 47. Brilliance and fragility, intertwined."
+    }
+  ];
+
+  // ----- State -----
+  var order = [];
+  var currentIdx = 0;
+  var score = 0;
+  var answered = false;
+
+  // ----- Elements -----
+  var startEl = document.getElementById('trivia-start');
+  var gameEl = document.getElementById('trivia-game');
+  var resultEl = document.getElementById('trivia-result');
+  var bestDisplayEl = document.getElementById('trivia-best-display');
+  var progressFillEl = document.getElementById('trivia-progress-fill');
+  var progressTextEl = document.getElementById('trivia-progress-text');
+  var questionEl = document.getElementById('trivia-question');
+  var optionsEl = document.getElementById('trivia-options');
+  var feedbackEl = document.getElementById('trivia-feedback');
+  var nextBtn = document.getElementById('btn-trivia-next');
+  var scoreEl = document.getElementById('trivia-score');
+  var resultPieceEl = document.getElementById('trivia-result-piece');
+  var resultHeadlineEl = document.getElementById('trivia-result-headline');
+  var resultScoreEl = document.getElementById('trivia-result-score');
+  var resultSublineEl = document.getElementById('trivia-result-subline');
+  var resultBestEl = document.getElementById('trivia-result-best');
+
+  // ----- Best score in localStorage -----
+  function getBest() {
+    try { return parseInt(localStorage.getItem('mg_trivia_best') || '0', 10) || 0; } catch (e) { return 0; }
+  }
+  function setBest(v) {
+    try { localStorage.setItem('mg_trivia_best', String(v)); } catch (e) {}
+  }
+  function refreshBestDisplay() {
+    var best = getBest();
+    if (best > 0) {
+      bestDisplayEl.innerHTML = '<span class="trivia-best-label">Your best:</span> <strong>' + best + ' / ' + QUESTIONS.length + '</strong>';
+    } else {
+      bestDisplayEl.innerHTML = '&nbsp;';
+    }
+  }
+
+  // ----- Shuffle Fisher–Yates -----
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  function startGame() {
+    order = shuffle(QUESTIONS.map(function(_, i) { return i; }));
+    currentIdx = 0;
+    score = 0;
+    answered = false;
+    startEl.setAttribute('hidden', '');
+    resultEl.setAttribute('hidden', '');
+    gameEl.removeAttribute('hidden');
+    renderQuestion();
+  }
+
+  function renderQuestion() {
+    var q = QUESTIONS[order[currentIdx]];
+    answered = false;
+    feedbackEl.setAttribute('hidden', '');
+    feedbackEl.innerHTML = '';
+    nextBtn.setAttribute('hidden', '');
+    progressFillEl.style.width = ((currentIdx / QUESTIONS.length) * 100) + '%';
+    progressTextEl.textContent = 'Question ' + (currentIdx + 1) + ' of ' + QUESTIONS.length;
+    questionEl.innerHTML = q.q;
+    optionsEl.innerHTML = '';
+    for (var i = 0; i < q.options.length; i++) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'trivia-option';
+      btn.setAttribute('data-idx', String(i));
+      btn.innerHTML = '<span class="trivia-option-letter">' + 'ABCD'.charAt(i) + '</span><span class="trivia-option-text">' + q.options[i] + '</span>';
+      (function(idx) {
+        btn.addEventListener('click', function() { onAnswer(idx); });
+      })(i);
+      optionsEl.appendChild(btn);
+    }
+    scoreEl.textContent = score + ' / ' + currentIdx;
+  }
+
+  function onAnswer(picked) {
+    if (answered) return;
+    answered = true;
+    var q = QUESTIONS[order[currentIdx]];
+    var correct = q.correct;
+    var optBtns = optionsEl.querySelectorAll('.trivia-option');
+    for (var i = 0; i < optBtns.length; i++) {
+      var btn = optBtns[i];
+      var idx = parseInt(btn.getAttribute('data-idx'), 10);
+      btn.disabled = true;
+      if (idx === correct) btn.classList.add('trivia-option-correct');
+      else if (idx === picked) btn.classList.add('trivia-option-wrong');
+    }
+    if (picked === correct) {
+      score += 1;
+      feedbackEl.className = 'trivia-feedback trivia-feedback-correct';
+      feedbackEl.innerHTML = '<strong>&#10003; Correct.</strong> ' + q.explain;
+    } else {
+      feedbackEl.className = 'trivia-feedback trivia-feedback-wrong';
+      feedbackEl.innerHTML = '<strong>&#10007; Not quite.</strong> The answer is <em>' + q.options[correct] + '</em>. ' + q.explain;
+    }
+    feedbackEl.removeAttribute('hidden');
+    scoreEl.textContent = score + ' / ' + (currentIdx + 1);
+    if (currentIdx + 1 >= QUESTIONS.length) {
+      nextBtn.textContent = 'See your result →';
+    } else {
+      nextBtn.innerHTML = 'Next question &rarr;';
+    }
+    nextBtn.removeAttribute('hidden');
+  }
+
+  function onNext() {
+    if (!answered) return;
+    currentIdx += 1;
+    if (currentIdx >= QUESTIONS.length) {
+      finish();
+    } else {
+      renderQuestion();
+    }
+  }
+
+  function finish() {
+    gameEl.setAttribute('hidden', '');
+    resultEl.removeAttribute('hidden');
+    var total = QUESTIONS.length;
+    var pct = score / total;
+    var headline, subline, piece;
+    if (pct === 1)         { headline = 'A perfect game.';            subline = 'You know your chess history cold. Capablanca-tier recall.'; piece = '♚'; }
+    else if (pct >= 0.85)  { headline = 'Grandmaster level.';         subline = 'You’re reading the right books. Or you’ve lived this stuff.'; piece = '♛'; }
+    else if (pct >= 0.7)   { headline = 'Strong club player.';        subline = 'Solid chess knowledge. A few gaps in the deep history.'; piece = '♜'; }
+    else if (pct >= 0.5)   { headline = 'Honest middle.';             subline = 'Decent base. There’s a fascinating world of chess history waiting for you — start with The Mind’s Gambit book.'; piece = '♝'; }
+    else if (pct >= 0.3)   { headline = 'Beginner’s curiosity.'; subline = 'No shame here. Now you know what to read next. Try again — the questions rotate.'; piece = '♞'; }
+    else                   { headline = 'A fresh start.';             subline = 'Chess history is enormous and weird. Welcome in. The Mind’s Gambit book might be your next read.'; piece = '♟'; }
+    resultPieceEl.innerHTML = piece;
+    resultHeadlineEl.textContent = headline;
+    resultScoreEl.textContent = score + ' / ' + total;
+    resultSublineEl.innerHTML = subline;
+    var previousBest = getBest();
+    if (score > previousBest) {
+      setBest(score);
+      resultBestEl.innerHTML = '<span class="trivia-best-new">✨ New personal best!</span>';
+    } else if (previousBest > 0) {
+      resultBestEl.innerHTML = '<span class="trivia-best-label">Your best:</span> ' + previousBest + ' / ' + total;
+    } else {
+      resultBestEl.innerHTML = '&nbsp;';
+    }
+  }
+
+  function replay() {
+    refreshBestDisplay();
+    startGame();
+  }
+
+  // ----- Wire up -----
+  document.getElementById('btn-trivia-start').addEventListener('click', startGame);
+  document.getElementById('btn-trivia-replay').addEventListener('click', replay);
+  nextBtn.addEventListener('click', onNext);
+
+  refreshBestDisplay();
+})();
+</script>
+
+<style>
+.eyebrow { display: block; font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.18em; margin-top: 1.5rem; }
+.page { max-width: 880px; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+.back-link { display: inline-block; color: rgba(232,224,208,0.65); text-decoration: none; font-family: 'EB Garamond', Georgia, serif; font-size: 0.95rem; margin: 1rem 0 0; transition: color 0.18s; }
+.back-link:hover { color: #c9a84c; }
+.page h1 { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 2.6rem; margin: 0.6rem 0 0.7rem; letter-spacing: 0.01em; }
+.lead { color: rgba(232,224,208,0.82); font-family: 'EB Garamond', Georgia, serif; font-size: 1.12rem; line-height: 1.65; margin: 0 0 2rem; }
+
+.trivia-screen { background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(30,34,52,0.6)); border: 1px solid rgba(201,168,76,0.28); border-radius: 16px; padding: 2.2rem 2rem; margin-bottom: 1.5rem; }
+
+/* START */
+.trivia-start { text-align: center; }
+.trivia-quote { font-family: 'Playfair Display', Georgia, serif; font-style: italic; color: rgba(232,224,208,0.92); font-size: 1.4rem; line-height: 1.5; margin: 0 0 0.4rem; }
+.trivia-quote-attr { font-size: 0.92rem; color: rgba(232,224,208,0.55); font-style: normal; }
+.trivia-best { color: rgba(232,224,208,0.7); font-family: 'EB Garamond', Georgia, serif; font-size: 1rem; margin: 1.4rem 0 1.6rem; min-height: 1.4em; }
+.trivia-best strong { color: #c9a84c; }
+.trivia-best-label { color: rgba(232,224,208,0.55); }
+.trivia-meta { color: rgba(232,224,208,0.5); font-family: 'EB Garamond', Georgia, serif; font-size: 0.88rem; margin: 1.2rem 0 0; font-style: italic; }
+
+/* Buttons */
+.trivia-btn { display: inline-block; font-family: 'EB Garamond', Georgia, serif; font-size: 1.05rem; font-weight: 700; padding: 0.95rem 1.8rem; border-radius: 10px; cursor: pointer; border: 0; text-decoration: none; transition: all 0.18s; }
+.trivia-btn-primary { background: linear-gradient(135deg, #c9a84c, #d4b556); color: #0f111c; box-shadow: 0 8px 22px rgba(201,168,76,0.32); }
+.trivia-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(201,168,76,0.48); }
+.trivia-btn-secondary { background: rgba(30,34,52,0.6); color: #c9a84c; border: 1px solid rgba(201,168,76,0.32); display: inline-flex; align-items: center; }
+.trivia-btn-secondary:hover { background: rgba(201,168,76,0.12); border-color: #c9a84c; }
+
+/* GAME */
+.trivia-progress-row { display: flex; align-items: center; gap: 1rem; margin: 0 0 1.4rem; }
+.trivia-progress-track { flex: 1; height: 6px; background: rgba(232,224,208,0.1); border-radius: 4px; overflow: hidden; }
+.trivia-progress-fill { height: 100%; background: linear-gradient(135deg, #c9a84c, #d4b556); transition: width 0.4s ease; width: 0%; }
+.trivia-progress-text { color: rgba(232,224,208,0.65); font-family: 'EB Garamond', Georgia, serif; font-size: 0.88rem; white-space: nowrap; }
+.trivia-question-card { padding: 0; }
+.trivia-question { font-family: 'Playfair Display', Georgia, serif; color: #e8e0d0; font-size: 1.35rem; line-height: 1.5; margin: 0 0 1.4rem; font-weight: 600; }
+.trivia-options { display: flex; flex-direction: column; gap: 0.7rem; }
+.trivia-option { display: flex; align-items: center; gap: 0.9rem; text-align: left; background: rgba(15,17,28,0.55); border: 1px solid rgba(201,168,76,0.22); color: #e8e0d0; padding: 0.9rem 1.1rem; border-radius: 10px; font-family: 'EB Garamond', Georgia, serif; font-size: 1.02rem; line-height: 1.4; cursor: pointer; transition: all 0.15s; }
+.trivia-option:hover:not(:disabled) { background: rgba(201,168,76,0.1); border-color: rgba(201,168,76,0.55); transform: translateX(2px); }
+.trivia-option:disabled { cursor: default; }
+.trivia-option-letter { background: rgba(201,168,76,0.18); color: #c9a84c; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.92rem; flex-shrink: 0; }
+.trivia-option-text { flex: 1; }
+.trivia-option-correct { background: rgba(74,222,128,0.18) !important; border-color: rgba(74,222,128,0.55) !important; }
+.trivia-option-correct .trivia-option-letter { background: rgba(74,222,128,0.35); color: #a7f3d0; }
+.trivia-option-wrong { background: rgba(239,68,68,0.15) !important; border-color: rgba(239,68,68,0.45) !important; }
+.trivia-option-wrong .trivia-option-letter { background: rgba(239,68,68,0.32); color: #fca5a5; }
+.trivia-feedback { margin-top: 1.2rem; padding: 1rem 1.1rem; border-radius: 10px; font-family: 'EB Garamond', Georgia, serif; font-size: 0.98rem; line-height: 1.55; }
+.trivia-feedback-correct { background: rgba(74,222,128,0.10); border: 1px solid rgba(74,222,128,0.32); color: #a7f3d0; }
+.trivia-feedback-wrong { background: rgba(245,158,11,0.10); border: 1px solid rgba(245,158,11,0.32); color: #fbbf24; }
+.trivia-feedback em { color: #c9a84c; font-style: italic; }
+.trivia-feedback strong { display: inline; }
+.trivia-next { margin-top: 1.2rem; }
+.trivia-score-strip { margin-top: 1.4rem; padding-top: 1rem; border-top: 1px solid rgba(201,168,76,0.18); display: flex; justify-content: space-between; align-items: center; }
+.trivia-score-label { color: rgba(232,224,208,0.55); font-family: 'EB Garamond', Georgia, serif; font-size: 0.88rem; letter-spacing: 0.04em; }
+.trivia-score-value { color: #c9a84c; font-family: 'Playfair Display', Georgia, serif; font-size: 1.2rem; font-weight: 600; }
+
+/* RESULT */
+.trivia-result { text-align: center; }
+.trivia-result-piece { font-size: 4rem; color: #c9a84c; line-height: 1; margin: 0 0 0.6rem; }
+.trivia-result-headline { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1.85rem; margin: 0 0 0.6rem; }
+.trivia-result-score { font-family: 'Playfair Display', Georgia, serif; color: #e8e0d0; font-size: 3rem; margin: 0.6rem 0; font-weight: 600; }
+.trivia-result-subline { color: rgba(232,224,208,0.78); font-family: 'EB Garamond', Georgia, serif; font-size: 1.05rem; line-height: 1.6; margin: 0 auto 1.2rem; max-width: 540px; }
+.trivia-result-best { margin: 0.6rem 0 1.6rem; color: rgba(232,224,208,0.7); font-family: 'EB Garamond', Georgia, serif; font-size: 0.98rem; min-height: 1.4em; }
+.trivia-best-new { color: #c9a84c; font-weight: 600; font-size: 1.05rem; }
+.trivia-result-actions { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
+
+.attribution { color: rgba(232,224,208,0.55); font-family: 'EB Garamond', Georgia, serif; font-size: 0.92rem; font-style: italic; text-align: center; margin: 2.5rem 0 0; line-height: 1.55; }
+.page-footer { margin-top: 2.5rem; padding: 1.5rem 1rem; text-align: center; border-top: 1px solid rgba(201,168,76,0.1); }
+.footer-credit { color: rgba(232,224,208,0.4); font-size: 0.82rem; font-family: 'EB Garamond', Georgia, serif; }
+
+@media (max-width: 600px) {
+  .page h1 { font-size: 2rem; }
+  .trivia-screen { padding: 1.5rem 1.1rem; }
+  .trivia-question { font-size: 1.15rem; }
+  .trivia-quote { font-size: 1.15rem; }
+  .trivia-result-score { font-size: 2.4rem; }
+}
+</style>
+
+<!-- ============================================================
+     MIND'S GAMBIT FAQ BOT — Static keyword-search bot.
+     Free. No API calls. Edit the FAQ_DATA array below to add Q&As.
+============================================================ -->
+<button id="mg-faq-bubble" type="button" aria-label="Need help? Open Mind's Gambit Help" title="Click me for help &mdash; technical questions, engine issues, account, anything.">
+  <span class="mg-faq-bubble-icon">&#9819;</span>
+  <span class="mg-faq-bubble-label">Need help?</span>
+  <span class="mg-faq-bubble-dot"></span>
+</button>
+
+<div id="mg-faq-panel" hidden>
+  <header class="mg-faq-header">
+    <div>
+      <div class="mg-faq-title">Mind&rsquo;s Gambit Help</div>
+      <div class="mg-faq-subtitle">Ask anything &middot; instant answers</div>
+    </div>
+    <button id="mg-faq-close" type="button" aria-label="Close">&times;</button>
+  </header>
+  <div class="mg-faq-messages" id="mg-faq-messages"></div>
+  <form class="mg-faq-form" id="mg-faq-form" autocomplete="off">
+    <input type="text" id="mg-faq-input" placeholder="Type your question&hellip;" maxlength="200" autocomplete="off" />
+    <button type="submit" aria-label="Send">&#10142;</button>
+  </form>
+  <div class="mg-faq-suggested" id="mg-faq-suggested"></div>
+</div>
+
+<script is:inline>
+(function() {
+  'use strict';
+  var FAQ_DATA = [
+    { keywords: ['trivia', 'quiz', 'questions'],
+      q: 'How does the Chess Trivia quiz work?',
+      a: 'Twenty questions on chess history, players, openings, and culture. Multiple choice, no time limit. Your best score is saved on this device. Question order is shuffled each time, so play it again and the patterns will be different.' },
+    { keywords: ['daily puzzle', 'puzzle of the day', 'today puzzle', 'how puzzle work'],
+      q: 'How does the Daily Puzzle work?',
+      a: 'Every visitor sees the <strong>same puzzle each day</strong>. You and a friend will see the same puzzle on the same day &mdash; perfect for friendly competition. Tomorrow it rotates automatically. We have a library of nearly 6 million puzzles, so you&rsquo;ll never run out.' },
+    { keywords: ['account', 'login', 'sign up', 'signup', 'register'],
+      q: 'Do I need an account?',
+      a: '<strong>No.</strong> Mind&rsquo;s Gambit Chess School works without any signup. Your puzzle streak, rating, name, and stats are saved on this device so they&rsquo;re waiting for you next time you visit. Nothing to remember, nothing to log in to.' },
+    { keywords: ['free', 'cost', 'price', 'how much'],
+      q: 'Is Mind\'s Gambit free?',
+      a: 'All the puzzle, engine, trivia, and analysis features are <strong>completely free</strong>. No ads, no subscriptions, no upsells. Only paid feature: one-on-one lessons with our titled coaches, which goes directly to the coach.' },
+    { keywords: ['coach', 'lesson', 'book', 'teacher', 'grandmaster'],
+      q: 'Can I book a lesson with a coach?',
+      a: 'Yes. Click <a href="/chess-school/grandmasters">Grandmasters</a> in the nav. Each coach has their own profile with hourly rate, languages, and a contact button. Currently featuring <strong>WGM Maryana Huda</strong> with more titled players joining soon.' },
+    { keywords: ['bug', 'report', 'error', 'broken', 'not working'],
+      q: 'Something is broken &mdash; how do I report it?',
+      a: 'Email <a href="mailto:mourad@mindsgambit.com">mourad@mindsgambit.com</a> with: (1) which page, (2) what device/browser, (3) what you expected, (4) what happened. Screenshots help a lot. We fix things fast.' },
+    { keywords: ['contact', 'email', 'reach out'],
+      q: 'How do I contact Mourad?',
+      a: 'Email <a href="mailto:mourad@mindsgambit.com">mourad@mindsgambit.com</a>. Or use the <a href="/#contact">Contact section</a> on the homepage.' },
+    { keywords: ['privacy', 'tracking', 'cookies', 'data'],
+      q: 'Does Mind\'s Gambit track me?',
+      a: '<strong>No tracking, no analytics, no ads.</strong> Your puzzle progress, trivia score, and rating live on <em>your</em> device &mdash; we never see them.' }
+  ];
+
+  var bubble = document.getElementById('mg-faq-bubble');
+  var panel = document.getElementById('mg-faq-panel');
+  var closeBtn = document.getElementById('mg-faq-close');
+  var form = document.getElementById('mg-faq-form');
+  var input = document.getElementById('mg-faq-input');
+  var messagesEl = document.getElementById('mg-faq-messages');
+  var suggestedEl = document.getElementById('mg-faq-suggested');
+  if (!bubble || !panel) return;
+
+  function openPanel() {
+    panel.removeAttribute('hidden');
+    panel.classList.add('mg-faq-open');
+    input.focus();
+    if (!messagesEl.children.length) greet();
+  }
+  function closePanel() {
+    panel.setAttribute('hidden', '');
+    panel.classList.remove('mg-faq-open');
+  }
+  bubble.addEventListener('click', function() {
+    if (panel.hasAttribute('hidden')) openPanel(); else closePanel();
+  });
+  closeBtn.addEventListener('click', closePanel);
+
+  function addMessage(text, sender) {
+    var div = document.createElement('div');
+    div.className = 'mg-faq-msg mg-faq-msg-' + sender;
+    div.innerHTML = text;
+    messagesEl.appendChild(div);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function score(query, keywords) {
+    var q = query.toLowerCase();
+    var s = 0;
+    for (var i = 0; i < keywords.length; i++) {
+      var k = keywords[i].toLowerCase();
+      if (q.indexOf(k) !== -1) s += k.length * 2;
+      var words = k.split(/\s+/);
+      for (var w = 0; w < words.length; w++) {
+        if (words[w].length >= 3 && q.indexOf(words[w]) !== -1) s += 1;
+      }
+    }
+    return s;
+  }
+
+  function answer(query) {
+    var best = null;
+    var bestScore = 0;
+    for (var i = 0; i < FAQ_DATA.length; i++) {
+      var s = score(query, FAQ_DATA[i].keywords);
+      if (s > bestScore) { bestScore = s; best = FAQ_DATA[i]; }
+    }
+    if (best && bestScore >= 3) return best.a;
+    return null;
+  }
+
+  function greet() {
+    addMessage('Hi &mdash; welcome to <strong>Mind&rsquo;s Gambit Help</strong>. Type a question or pick a suggestion below.', 'bot');
+    showSuggestions(['How does the Chess Trivia quiz work?', 'Do I need an account?', 'Is Mind’s Gambit free?', 'Can I book a lesson with a coach?']);
+  }
+
+  function showSuggestions(questions) {
+    suggestedEl.innerHTML = '';
+    for (var i = 0; i < questions.length; i++) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'mg-faq-suggest';
+      btn.textContent = questions[i];
+      (function(q) { btn.addEventListener('click', function() { handleQuery(q); }); })(questions[i]);
+      suggestedEl.appendChild(btn);
+    }
+  }
+
+  function handleQuery(query) {
+    suggestedEl.innerHTML = '';
+    addMessage(query, 'user');
+    var a = answer(query);
+    if (a) {
+      setTimeout(function() { addMessage(a, 'bot'); }, 200);
+    } else {
+      setTimeout(function() {
+        addMessage('I don&rsquo;t have a stock answer for that one yet. Email <a href="mailto:mourad@mindsgambit.com">mourad@mindsgambit.com</a> and Mourad will reply personally.', 'bot');
+      }, 200);
+    }
+  }
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var q = input.value.trim();
+    if (!q) return;
+    input.value = '';
+    handleQuery(q);
+  });
+})();
+</script>
+
+<style>
+#mg-faq-bubble { position: fixed; bottom: 20px; right: 20px; width: 86px; min-height: 88px; padding: 10px 8px 8px; border-radius: 18px; background: linear-gradient(135deg, #c9a84c, #d4b556); border: 0; cursor: pointer; box-shadow: 0 8px 22px rgba(201,168,76,0.45), 0 4px 10px rgba(0,0,0,0.3); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; z-index: 10000; transition: transform 0.2s, box-shadow 0.2s; font-family: 'EB Garamond', Georgia, serif; }
+#mg-faq-bubble:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(201,168,76,0.6), 0 6px 14px rgba(0,0,0,0.35); }
+.mg-faq-bubble-icon { font-size: 32px; color: #0f111c; line-height: 1; }
+.mg-faq-bubble-label { font-size: 0.78rem; font-weight: 700; color: #0f111c; letter-spacing: 0.02em; line-height: 1; white-space: nowrap; }
+.mg-faq-bubble-dot { position: absolute; top: 6px; right: 6px; width: 10px; height: 10px; background: #ef4444; border-radius: 50%; border: 2px solid #d4b556; }
+#mg-faq-panel { position: fixed; bottom: 122px; right: 20px; width: 360px; max-width: calc(100vw - 40px); height: 540px; max-height: calc(100vh - 160px); background: #0f111c; border: 1px solid rgba(201,168,76,0.4); border-radius: 16px; display: flex; flex-direction: column; box-shadow: 0 18px 50px rgba(0,0,0,0.55); z-index: 10000; font-family: 'EB Garamond', Georgia, serif; overflow: hidden; }
+#mg-faq-panel[hidden] { display: none !important; }
+.mg-faq-header { padding: 14px 18px; background: rgba(201,168,76,0.12); border-bottom: 1px solid rgba(201,168,76,0.25); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+.mg-faq-title { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1rem; font-weight: 700; letter-spacing: 0.05em; }
+.mg-faq-subtitle { color: rgba(232,224,208,0.55); font-size: 0.78rem; font-style: italic; margin-top: 2px; }
+#mg-faq-close { background: transparent; border: 0; color: rgba(232,224,208,0.7); font-size: 26px; line-height: 1; cursor: pointer; padding: 0 4px; }
+#mg-faq-close:hover { color: #c9a84c; }
+.mg-faq-messages { flex: 1 1 auto; min-height: 0; padding: 16px 14px; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; gap: 10px; background: rgba(15,17,28,0.95); scrollbar-width: thin; scrollbar-color: rgba(201,168,76,0.4) transparent; }
+.mg-faq-messages::-webkit-scrollbar { width: 8px; }
+.mg-faq-messages::-webkit-scrollbar-track { background: transparent; }
+.mg-faq-messages::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.35); border-radius: 4px; }
+.mg-faq-msg { padding: 10px 14px; border-radius: 12px; font-size: 0.92rem; line-height: 1.45; max-width: 88%; word-wrap: break-word; }
+.mg-faq-msg-bot { background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.22); color: rgba(232,224,208,0.92); align-self: flex-start; }
+.mg-faq-msg-user { background: #c9a84c; color: #0f111c; align-self: flex-end; }
+.mg-faq-msg-bot a { color: #c9a84c; text-decoration: underline; }
+.mg-faq-msg-bot strong { color: #c9a84c; }
+.mg-faq-msg-bot em { color: rgba(232,224,208,0.65); font-style: italic; }
+.mg-faq-form { display: flex; gap: 8px; padding: 12px 14px; border-top: 1px solid rgba(201,168,76,0.2); background: rgba(15,17,28,0.95); flex-shrink: 0; }
+#mg-faq-input { flex: 1; background: rgba(30,34,52,0.55); border: 1px solid rgba(201,168,76,0.25); border-radius: 8px; padding: 9px 12px; color: #e8e0d0; font-family: 'EB Garamond', Georgia, serif; font-size: 0.95rem; box-sizing: border-box; }
+#mg-faq-input:focus { outline: none; border-color: #c9a84c; }
+.mg-faq-form button[type="submit"] { background: #c9a84c; color: #0f111c; border: 0; width: 40px; height: 40px; border-radius: 8px; font-size: 18px; cursor: pointer; font-weight: 700; }
+.mg-faq-suggested { padding: 0 14px 12px; display: flex; flex-wrap: wrap; gap: 6px; background: rgba(15,17,28,0.95); flex-shrink: 0; max-height: 96px; overflow-y: auto; }
+.mg-faq-suggest { background: rgba(30,34,52,0.6); border: 1px solid rgba(201,168,76,0.25); color: #c9a84c; padding: 6px 10px; border-radius: 99px; font-size: 0.78rem; font-family: 'EB Garamond', Georgia, serif; cursor: pointer; transition: all 0.15s; }
+.mg-faq-suggest:hover { background: rgba(201,168,76,0.15); border-color: #c9a84c; }
+@media (max-width: 480px) {
+  #mg-faq-panel { width: calc(100vw - 24px); right: 12px; bottom: 108px; height: calc(100vh - 140px); }
+  #mg-faq-bubble { right: 14px; bottom: 14px; width: 74px; min-height: 78px; }
+  .mg-faq-bubble-icon { font-size: 28px; }
+  .mg-faq-bubble-label { font-size: 0.7rem; }
+}
+</style>
+
+</BaseLayout>

@@ -400,17 +400,17 @@ export const prerender = true;
       var classBadge = m.classification && m.classification.label ? '<span class="move-tag ' + m.classification.class + '">' + m.classification.label + '</span>' : '';
       var bestHint = m.classification && (m.classification.tag === 'blunder' || m.classification.tag === 'mistake' || m.classification.tag === 'inaccuracy') && m.bestMove ? '<span class="best-hint">(better: ' + m.bestMove + ')</span>' : '';
       // Explain button shows on Blunder/Mistake/Inaccuracy only — calls Claude for coach commentary
-      var explainBtn = m.classification && (m.classification.tag === 'blunder' || m.classification.tag === 'mistake' || m.classification.tag === 'inaccuracy')
-        ? '<button class="explain-btn" data-ply="' + (i + 1) + '" type="button" title="Get coach commentary">Explain &#8250;</button>' : '';
       var evalStr = evals[i + 1] ? formatScore({ cp: -evalToScore(evals[i + 1]), mate: evals[i + 1].mate ? -evals[i + 1].mate : null }) : '...';
       // Show from white's perspective
       var whitePovEval = evals[i + 1] ? formatScore({ cp: whitePovScore(evals[i + 1], i % 2 === 0 ? 'b' : 'w'), mate: null }) : '...';
+      // Wrap classification badge + best-move hint in a flex container so they don't overlap in the auto column
+      var extraCell = (classBadge || bestHint) ? '<span class="move-extra">' + classBadge + bestHint + '</span>' : '';
       row.innerHTML =
         '<span class="move-num">' + (i % 2 === 0 ? moveNum + '.' : '') + '</span>' +
         '<span class="move-color move-' + (i % 2 === 0 ? 'white' : 'black') + '">' + (i % 2 === 0 ? '♙' : '♟') + '</span>' +
         '<span class="move-san">' + m.san + '</span>' +
         '<span class="move-eval">' + whitePovEval + '</span>' +
-        classBadge + bestHint + explainBtn;
+        extraCell;
       row.addEventListener('click', function(ev) {
         // Don't navigate when the Explain button itself was clicked
         if (ev.target && ev.target.classList && ev.target.classList.contains('explain-btn')) return;
@@ -884,7 +884,10 @@ nav { background: rgba(15,17,28,0.95); border-bottom: 1px solid rgba(201,168,76,
 .info-label { color: #c9a84c; font-family: 'Playfair Display', Georgia, serif; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.16em; margin-bottom: 0.85rem; }
 .move-list { max-height: 540px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 0.9rem; }
 .move-placeholder { padding: 1rem; color: rgba(232,224,208,0.5); font-style: italic; text-align: center; }
-.move-row { display: grid; grid-template-columns: 2.2em 1.6em 4.5em 4em auto; gap: 0.4rem; padding: 0.35rem 0.45rem; align-items: center; cursor: pointer; border-radius: 6px; transition: background 0.15s; }
+.move-row { display: grid; grid-template-columns: 2.2em 1.6em 4.5em 4em minmax(0, 1fr); gap: 0.4rem; padding: 0.35rem 0.45rem; align-items: center; cursor: pointer; border-radius: 6px; transition: background 0.15s; }
+.move-extra { display: flex; gap: 0.55rem; align-items: center; flex-wrap: wrap; min-width: 0; overflow: hidden; }
+.move-extra .move-tag { flex-shrink: 0; }
+.move-extra .best-hint { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
 .move-row:hover { background: rgba(201,168,76,0.08); }
 .move-row-current { background: rgba(201,168,76,0.18); }
 .move-num { color: rgba(201,168,76,0.7); text-align: right; }

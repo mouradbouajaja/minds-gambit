@@ -1,0 +1,545 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export const prerender = true;
+---
+
+<BaseLayout title="Game Analysis — Mind's Gambit Chess School" description="Paste a PGN. Get a computer evaluation of every move. Find your blunders, mistakes, and the best move you missed. Powered by Stockfish 17 NNUE via the Lichess Cloud Eval API.">
+
+<link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" />
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><img src="/images/logo.jpg" alt="Mind's Gambit" style="height:55px;width:55px;border-radius:50%;object-fit:cover;border:2px solid #c8a84e;margin-left:10px;vertical-align:middle;" /></a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/chess-school">Chess School</a></li>
+      <li><a href="/chess-school/puzzles">Daily Puzzle</a></li>
+      <li><a href="/chess-school/train">Train Now</a></li>
+      <li><a href="/chess-school/tactics">Tactics</a></li>
+      <li><a href="/#contact" class="nav-btn">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="page">
+  <a href="/chess-school" class="back-link">&larr; Back to Chess School</a>
+  <span class="eyebrow">Mind's Gambit Chess School</span>
+  <h1>Game Analysis</h1>
+  <p class="lead">Paste a PGN of your game. Stockfish 17 evaluates every move. We mark the blunders, mistakes, and the moves you should have played. The truth-teller every chess player needs.</p>
+
+  <!-- INPUT STATE -->
+  <div id="input-panel" class="input-panel">
+    <label class="setup-label" for="pgn-input">Paste your PGN</label>
+    <textarea id="pgn-input" placeholder='[Event "Casual Game"]
+[Site "Mind&apos;s Gambit"]
+[Date "2026.05.27"]
+[White "You"]
+[Black "Opponent"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Be7
+6. Re1 b5 7. Bb3 d6 8. c3 O-O 9. h3 Nb8 10. d4 Nbd7
+...'></textarea>
+    <div class="input-actions">
+      <button class="ctrl-btn" id="btn-load-example" type="button">Load Example Game</button>
+      <button class="ctrl-btn ctrl-btn-primary" id="btn-analyze" type="button">Analyze Game &rarr;</button>
+    </div>
+    <p class="input-note">Tip: Most online platforms (Lichess, Chess.com, etc.) let you download a game as PGN. Drop the full text here.</p>
+  </div>
+
+  <!-- ANALYSIS STATE -->
+  <div id="analysis-panel" class="analysis-panel hidden">
+    <div class="analysis-header">
+      <div class="header-info">
+        <span class="header-eyebrow">Analyzing</span>
+        <h2 class="header-title" id="game-title">—</h2>
+      </div>
+      <button class="ctrl-btn ctrl-btn-secondary" id="btn-new-analysis" type="button">&larr; New Game</button>
+    </div>
+
+    <div class="progress-row" id="progress-row">
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+      <span class="progress-text" id="progress-text">Evaluating positions…</span>
+    </div>
+
+    <div class="summary-row" id="summary-row">
+      <div class="summary-card"><div class="summary-num" id="sum-blunders">0</div><div class="summary-label">Blunders</div></div>
+      <div class="summary-card"><div class="summary-num" id="sum-mistakes">0</div><div class="summary-label">Mistakes</div></div>
+      <div class="summary-card"><div class="summary-num" id="sum-inaccuracies">0</div><div class="summary-label">Inaccuracies</div></div>
+      <div class="summary-card summary-good"><div class="summary-num" id="sum-best">0</div><div class="summary-label">Best Moves</div></div>
+    </div>
+
+    <div class="analysis-area">
+      <div class="board-wrap">
+        <div id="analyze-board"></div>
+        <div class="eval-bar"><div class="eval-bar-fill" id="eval-bar-fill"></div></div>
+        <div class="board-controls">
+          <button class="nav-arrow" id="btn-first" type="button" title="First move">&laquo;</button>
+          <button class="nav-arrow" id="btn-prev" type="button" title="Previous move">&lsaquo;</button>
+          <span class="move-counter" id="move-counter">0 / 0</span>
+          <button class="nav-arrow" id="btn-next" type="button" title="Next move">&rsaquo;</button>
+          <button class="nav-arrow" id="btn-last" type="button" title="Last move">&raquo;</button>
+        </div>
+        <div class="current-eval" id="current-eval">Eval: —</div>
+      </div>
+
+      <aside class="move-list-panel">
+        <div class="info-label">Move-by-move analysis</div>
+        <div class="move-list" id="move-list">
+          <div class="move-placeholder">Loading game…</div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <p class="attribution">
+    Primary engine: <strong>Stockfish 17 NNUE</strong> via the <a href="https://lichess.org/api" target="_blank" rel="noopener">Lichess Cloud Eval API</a> — free, no account needed, world-class strength. Positions Lichess hasn&rsquo;t analyzed yet fall back to a local Stockfish in your browser. All open-source, all GPL v3. No tracking. No data leaves your browser except the position FENs sent to Lichess for evaluation.
+  </p>
+
+  <footer class="page-footer">
+    <p class="footer-credit">&copy; 2026 Mourad Bouajaja. Mind&rsquo;s Gambit Chess School is a production of &copy; MYB Studio LLC.</p>
+  </footer>
+</section>
+
+<script is:inline src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script is:inline src="https://cdn.jsdelivr.net/npm/chess.js@0.10.3/chess.min.js"></script>
+<script is:inline src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+
+<script is:inline>
+(function() {
+  'use strict';
+
+  // ----- DOM -----
+  var inputPanel = document.getElementById('input-panel');
+  var analysisPanel = document.getElementById('analysis-panel');
+  var pgnInput = document.getElementById('pgn-input');
+  var analyzeBtn = document.getElementById('btn-analyze');
+  var loadExampleBtn = document.getElementById('btn-load-example');
+  var newAnalysisBtn = document.getElementById('btn-new-analysis');
+  var gameTitle = document.getElementById('game-title');
+  var progressRow = document.getElementById('progress-row');
+  var progressFill = document.getElementById('progress-fill');
+  var progressText = document.getElementById('progress-text');
+  var sumBlunders = document.getElementById('sum-blunders');
+  var sumMistakes = document.getElementById('sum-mistakes');
+  var sumInaccuracies = document.getElementById('sum-inaccuracies');
+  var sumBest = document.getElementById('sum-best');
+  var moveListEl = document.getElementById('move-list');
+  var moveCounter = document.getElementById('move-counter');
+  var currentEvalEl = document.getElementById('current-eval');
+  var evalBarFill = document.getElementById('eval-bar-fill');
+
+  // ----- State -----
+  var board = null;
+  var fullGame = null;       // chess.js with the whole game loaded
+  var positions = [];        // FENs after each move (including start)
+  var moves = [];            // SAN moves
+  var evals = [];            // { cp, mate, bestMove, source, error? } per position
+  var currentPly = 0;
+  var fallbackEngine = null;
+  var fallbackReady = false;
+
+  // ----- Example game (a famous miniature) -----
+  var EXAMPLE_PGN = '[Event "Casual Game"]\n[Site "Vienna"]\n[Date "1899.??.??"]\n[White "Hamppe, Carl"]\n[Black "Meitner, Philipp"]\n[Result "1/2-1/2"]\n\n1. e4 e5 2. Nc3 Bc5 3. Na4 Bxf2+ 4. Kxf2 Qh4+ 5. Ke3 Qf4+ 6. Kd3 d5 7. Kc3 Qxe4 8. Kb3 Na6 9. a3 Qxa4+ 10. Kxa4 Nc5+ 11. Kb4 a5+ 12. Kxc5 Ne7 13. Bb5+ Kd8 14. Bc6 b6+ 15. Kb5 Nxc6 16. Kxc6 Bb7+ 17. Kb5 Ba6+ 18. Kc6 Bb7+ 1/2-1/2';
+
+  loadExampleBtn.addEventListener('click', function() { pgnInput.value = EXAMPLE_PGN; });
+
+  // ----- Start fallback engine in background -----
+  function initFallback() {
+    fetch('https://cdn.jsdelivr.net/gh/lichess-org/stockfish.js@master/stockfish.js')
+      .then(function(r) { return r.text(); })
+      .then(function(code) {
+        var blob = new Blob([code], { type: 'application/javascript' });
+        fallbackEngine = new Worker(URL.createObjectURL(blob));
+        fallbackEngine.onmessage = function(e) {
+          var msg = String(e.data || '');
+          if (msg.indexOf('readyok') !== -1) { fallbackReady = true; }
+          if (window.__currentFallbackResolve && msg.indexOf('bestmove') === 0) {
+            var resolve = window.__currentFallbackResolve;
+            window.__currentFallbackResolve = null;
+            resolve(window.__currentFallbackData);
+            window.__currentFallbackData = null;
+          } else if (window.__currentFallbackResolve && msg.indexOf('info') === 0 && msg.indexOf(' score ') !== -1) {
+            // parse "info ... score cp NN ..." or "score mate N"
+            var data = window.__currentFallbackData || { cp: null, mate: null, bestMove: null };
+            var cpMatch = msg.match(/score cp (-?\d+)/);
+            var mateMatch = msg.match(/score mate (-?\d+)/);
+            var pvMatch = msg.match(/ pv ([a-h][1-8][a-h][1-8][qrbn]?)/);
+            if (cpMatch) data.cp = parseInt(cpMatch[1], 10);
+            if (mateMatch) data.mate = parseInt(mateMatch[1], 10);
+            if (pvMatch) data.bestMove = pvMatch[1];
+            window.__currentFallbackData = data;
+          }
+        };
+        fallbackEngine.postMessage('uci');
+        fallbackEngine.postMessage('isready');
+      })
+      .catch(function() { /* fallback init failed silently — we'll just show N/A */ });
+  }
+  initFallback();
+
+  function fallbackEval(fen) {
+    return new Promise(function(resolve) {
+      if (!fallbackEngine || !fallbackReady) { resolve(null); return; }
+      window.__currentFallbackData = { cp: null, mate: null, bestMove: null };
+      window.__currentFallbackResolve = resolve;
+      fallbackEngine.postMessage('position fen ' + fen);
+      fallbackEngine.postMessage('go movetime 300');
+      // Safety timeout
+      setTimeout(function() {
+        if (window.__currentFallbackResolve === resolve) {
+          window.__currentFallbackResolve = null;
+          resolve(window.__currentFallbackData);
+        }
+      }, 1800);
+    });
+  }
+
+  // ----- Cloud eval (Lichess) -----
+  function cloudEval(fen) {
+    var url = 'https://lichess.org/api/cloud-eval?fen=' + encodeURIComponent(fen) + '&multiPv=1';
+    return fetch(url).then(function(r) {
+      if (!r.ok) return null;
+      return r.json();
+    }).then(function(data) {
+      if (!data || !data.pvs || !data.pvs.length) return null;
+      var pv = data.pvs[0];
+      var bestMove = (pv.moves || '').split(' ')[0] || null;
+      return { cp: typeof pv.cp === 'number' ? pv.cp : null, mate: typeof pv.mate === 'number' ? pv.mate : null, bestMove: bestMove, source: 'lichess' };
+    }).catch(function() { return null; });
+  }
+
+  async function evalPosition(fen) {
+    var r = await cloudEval(fen);
+    if (r) return r;
+    // Fallback to local engine
+    var local = await fallbackEval(fen);
+    if (local) return Object.assign({}, local, { source: 'browser' });
+    return { cp: null, mate: null, bestMove: null, source: 'error' };
+  }
+
+  // ----- Score formatting -----
+  function formatScore(eval_) {
+    if (!eval_) return '?';
+    if (typeof eval_.mate === 'number') {
+      return (eval_.mate > 0 ? '+M' : '-M') + Math.abs(eval_.mate);
+    }
+    if (typeof eval_.cp === 'number') {
+      var v = (eval_.cp / 100);
+      return (v >= 0 ? '+' : '') + v.toFixed(2);
+    }
+    return '?';
+  }
+
+  function evalToScore(eval_) {
+    // Convert eval to a single comparable number in centipawns; mate worth ±10000
+    if (!eval_) return 0;
+    if (typeof eval_.mate === 'number') return eval_.mate > 0 ? 10000 - eval_.mate : -10000 - eval_.mate;
+    if (typeof eval_.cp === 'number') return eval_.cp;
+    return 0;
+  }
+
+  // Flip eval so it's always from white's perspective for graphing
+  function whitePovScore(eval_, sideToMove) {
+    var s = evalToScore(eval_);
+    return sideToMove === 'w' ? s : -s;
+  }
+
+  // ----- Move classification -----
+  function classify(playedScore, bestScore) {
+    var loss = bestScore - playedScore; // how much worse player's move was vs best (in centipawns, from player's perspective)
+    if (loss >= 300) return { tag: 'blunder', label: '?? Blunder', class: 'tag-blunder' };
+    if (loss >= 150) return { tag: 'mistake', label: '? Mistake', class: 'tag-mistake' };
+    if (loss >= 75) return { tag: 'inaccuracy', label: '?! Inaccuracy', class: 'tag-inaccuracy' };
+    if (loss <= 5) return { tag: 'best', label: '! Best', class: 'tag-best' };
+    return { tag: 'ok', label: '', class: '' };
+  }
+
+  // ----- Main analyze flow -----
+  analyzeBtn.addEventListener('click', function() {
+    var pgn = pgnInput.value.trim();
+    if (!pgn) { alert('Paste a PGN first, or click "Load Example Game".'); return; }
+    runAnalysis(pgn);
+  });
+  newAnalysisBtn.addEventListener('click', function() {
+    inputPanel.classList.remove('hidden');
+    analysisPanel.classList.add('hidden');
+  });
+
+  async function runAnalysis(pgn) {
+    var tempGame = new Chess();
+    var loaded = tempGame.load_pgn(pgn, { sloppy: true });
+    if (!loaded) { alert('Could not parse that PGN. Check the format.'); return; }
+
+    fullGame = tempGame;
+    var headers = tempGame.header();
+    var white = headers.White || 'White';
+    var black = headers.Black || 'Black';
+    gameTitle.textContent = white + ' vs ' + black;
+
+    // Extract every position FEN
+    var hist = tempGame.history({ verbose: true });
+    moves = hist;
+    positions = [];
+
+    // Replay to capture FENs
+    var replay = new Chess();
+    positions.push(replay.fen()); // starting position
+    for (var i = 0; i < hist.length; i++) {
+      replay.move(hist[i].san);
+      positions.push(replay.fen());
+    }
+
+    evals = new Array(positions.length).fill(null);
+    currentPly = 0;
+
+    // Show analysis panel
+    inputPanel.classList.add('hidden');
+    analysisPanel.classList.remove('hidden');
+
+    // Initialize the board
+    if (board) { try { board.destroy && board.destroy(); } catch (e) {} }
+    board = Chessboard('analyze-board', {
+      position: positions[0],
+      orientation: 'white',
+      pieceTheme: 'https://cdn.jsdelivr.net/gh/oakmac/chessboardjs@v1.0.0/website/img/chesspieces/wikipedia/{piece}.png',
+      showNotation: true
+    });
+
+    // Render initial move list as placeholders
+    renderMoveList();
+    updateNav();
+
+    progressRow.style.display = 'flex';
+    progressFill.style.width = '0%';
+    progressText.textContent = 'Evaluating positions… 0 of ' + positions.length;
+
+    // Evaluate each position (1 by 1 to be nice to Lichess)
+    for (var p = 0; p < positions.length; p++) {
+      progressText.textContent = 'Evaluating position ' + (p + 1) + ' of ' + positions.length + (evals[p] && evals[p].source === 'lichess' ? '' : '…');
+      evals[p] = await evalPosition(positions[p]);
+      progressFill.style.width = Math.round((p + 1) / positions.length * 100) + '%';
+      // Brief pause to be polite to Lichess
+      if (p < positions.length - 1) await new Promise(function(r) { setTimeout(r, 90); });
+    }
+
+    progressText.textContent = 'Analysis complete.';
+    setTimeout(function() { progressRow.style.display = 'none'; }, 1500);
+
+    classifyAndRender();
+    showCurrentPosition();
+
+    window.addEventListener('resize', function() { if (board) board.resize(); });
+  }
+
+  function classifyAndRender() {
+    // For each move (i.e., each transition from positions[i] to positions[i+1])
+    // The player who just moved is the side that moved FROM positions[i].
+    // The "played score" is evals[i+1] flipped to that player's POV.
+    // The "best score" is evals[i] (the position before the move), which gives the eval if best move were played.
+    // Wait actually — Lichess cp is from the side-to-move's perspective at the queried FEN.
+    // After we play move M from position P1 to P2: in P2, side-to-move is the opposite color.
+    // Eval at P2 from new side-to-move's POV. To compare from the mover's POV: flip sign.
+
+    var counts = { blunder: 0, mistake: 0, inaccuracy: 0, best: 0, ok: 0 };
+
+    for (var i = 0; i < moves.length; i++) {
+      var preEval = evals[i];      // eval BEFORE the move (sideToMove = mover)
+      var postEval = evals[i + 1]; // eval AFTER the move (sideToMove = opponent)
+      if (!preEval || !postEval) { moves[i].classification = null; continue; }
+
+      // Score from mover's perspective:
+      // Best possible (if they'd played top move): evalToScore(preEval) — already from mover's POV
+      // Actual: -evalToScore(postEval) — postEval is from opponent's POV, flip
+      var bestScore = evalToScore(preEval);
+      var playedScore = -evalToScore(postEval);
+      var cls = classify(playedScore, bestScore);
+      moves[i].classification = cls;
+      moves[i].bestMove = preEval.bestMove;
+      moves[i].lossCp = bestScore - playedScore;
+      counts[cls.tag]++;
+    }
+
+    sumBlunders.textContent = counts.blunder;
+    sumMistakes.textContent = counts.mistake;
+    sumInaccuracies.textContent = counts.inaccuracy;
+    sumBest.textContent = counts.best;
+
+    renderMoveList();
+  }
+
+  function renderMoveList() {
+    moveListEl.innerHTML = '';
+    if (!moves.length) { moveListEl.innerHTML = '<div class="move-placeholder">No moves found.</div>'; return; }
+
+    for (var i = 0; i < moves.length; i++) {
+      var m = moves[i];
+      var ply = i + 1; // ply 1 = white's first move
+      var moveNum = Math.ceil(ply / 2);
+      var row = document.createElement('div');
+      row.className = 'move-row' + (currentPly === i + 1 ? ' move-row-current' : '');
+      row.setAttribute('data-ply', String(i + 1));
+      var classBadge = m.classification && m.classification.label ? '<span class="move-tag ' + m.classification.class + '">' + m.classification.label + '</span>' : '';
+      var bestHint = m.classification && (m.classification.tag === 'blunder' || m.classification.tag === 'mistake' || m.classification.tag === 'inaccuracy') && m.bestMove ? '<span class="best-hint">(better: ' + m.bestMove + ')</span>' : '';
+      var evalStr = evals[i + 1] ? formatScore({ cp: -evalToScore(evals[i + 1]), mate: evals[i + 1].mate ? -evals[i + 1].mate : null }) : '...';
+      // Show from white's perspective
+      var whitePovEval = evals[i + 1] ? formatScore({ cp: whitePovScore(evals[i + 1], i % 2 === 0 ? 'b' : 'w'), mate: null }) : '...';
+      row.innerHTML =
+        '<span class="move-num">' + (i % 2 === 0 ? moveNum + '.' : '') + '</span>' +
+        '<span class="move-color move-' + (i % 2 === 0 ? 'white' : 'black') + '">' + (i % 2 === 0 ? '♙' : '♟') + '</span>' +
+        '<span class="move-san">' + m.san + '</span>' +
+        '<span class="move-eval">' + whitePovEval + '</span>' +
+        classBadge + bestHint;
+      row.addEventListener('click', function(ev) {
+        var ply = parseInt(ev.currentTarget.getAttribute('data-ply'), 10);
+        currentPly = ply;
+        showCurrentPosition();
+      });
+      moveListEl.appendChild(row);
+    }
+  }
+
+  function showCurrentPosition() {
+    if (!board || !positions[currentPly]) return;
+    board.position(positions[currentPly]);
+    updateNav();
+    var ev = evals[currentPly];
+    var label = ev ? formatScore({ cp: whitePovScore(ev, (currentPly % 2 === 0) ? 'w' : 'b'), mate: null }) : '—';
+    currentEvalEl.textContent = 'Eval: ' + label;
+    // Eval bar
+    var s = ev ? whitePovScore(ev, (currentPly % 2 === 0) ? 'w' : 'b') : 0;
+    var pct = 50 + Math.max(-50, Math.min(50, s / 10));
+    evalBarFill.style.height = pct + '%';
+    // Highlight current move in list
+    Array.from(moveListEl.querySelectorAll('.move-row')).forEach(function(r) { r.classList.remove('move-row-current'); });
+    var currentRow = moveListEl.querySelector('.move-row[data-ply="' + currentPly + '"]');
+    if (currentRow) {
+      currentRow.classList.add('move-row-current');
+      currentRow.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+  }
+
+  function updateNav() {
+    moveCounter.textContent = currentPly + ' / ' + (positions.length - 1);
+  }
+
+  document.getElementById('btn-first').addEventListener('click', function() { currentPly = 0; showCurrentPosition(); });
+  document.getElementById('btn-prev').addEventListener('click', function() { if (currentPly > 0) { currentPly--; showCurrentPosition(); } });
+  document.getElementById('btn-next').addEventListener('click', function() { if (currentPly < positions.length - 1) { currentPly++; showCurrentPosition(); } });
+  document.getElementById('btn-last').addEventListener('click', function() { currentPly = positions.length - 1; showCurrentPosition(); });
+
+  // Keyboard nav
+  document.addEventListener('keydown', function(e) {
+    if (analysisPanel.classList.contains('hidden')) return;
+    if (e.key === 'ArrowLeft') { if (currentPly > 0) { currentPly--; showCurrentPosition(); } }
+    if (e.key === 'ArrowRight') { if (currentPly < positions.length - 1) { currentPly++; showCurrentPosition(); } }
+  });
+
+  // Boot
+  function whenLibsReady(cb) {
+    if (window.Chess && window.Chessboard && window.jQuery) cb();
+    else setTimeout(function() { whenLibsReady(cb); }, 50);
+  }
+  whenLibsReady(function() { /* libs ready, fallback engine init already started */ });
+})();
+</script>
+
+</BaseLayout>
+
+<style is:global>
+nav { background: rgba(15,17,28,0.95); border-bottom: 1px solid rgba(201,168,76,0.2); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
+.nav-inner { max-width: 1200px; margin: 0 auto; padding: 0.75rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+.nav-links { display: flex; gap: 2rem; list-style: none; margin: 0; padding: 0; align-items: center; }
+.nav-links a { color: #e8e0d0; text-decoration: none; font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; font-family: 'Playfair Display', Georgia, serif; transition: color 0.3s; }
+.nav-links a:hover { color: #c9a84c; }
+.nav-btn { background: #c9a84c !important; color: #0f111c !important; padding: 0.5rem 1.25rem; border-radius: 4px; font-weight: 600; }
+
+.page { max-width: 1300px; margin: 0 auto; padding: 3rem 1.5rem; }
+.back-link { color: #c9a84c; text-decoration: none; font-size: 0.9rem; letter-spacing: 0.05em; display: inline-block; margin-bottom: 2rem; transition: opacity 0.25s; }
+.back-link:hover { opacity: 0.7; transform: translateX(-3px); }
+.eyebrow { color: #c9a84c; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.25em; display: block; margin-bottom: 1rem; }
+.page h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 3rem; color: #e8e0d0; line-height: 1.1; margin: 0 0 1rem; }
+.lead { color: rgba(232,224,208,0.8); font-size: 1.18rem; font-family: 'EB Garamond', Georgia, serif; line-height: 1.55; max-width: 800px; margin: 0 0 2.5rem; }
+.hidden { display: none !important; }
+
+/* INPUT panel */
+.input-panel { background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(30,34,52,0.65)); border: 1px solid rgba(201,168,76,0.3); border-radius: 16px; padding: 2.25rem; max-width: 900px; margin: 0 auto; }
+.setup-label { display: block; color: #c9a84c; font-family: 'Playfair Display', Georgia, serif; font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.85rem; }
+#pgn-input { width: 100%; min-height: 220px; background: rgba(15,17,28,0.55); border: 1px solid rgba(201,168,76,0.25); border-radius: 10px; color: #e8e0d0; padding: 1rem 1.1rem; font-family: 'Courier New', monospace; font-size: 0.9rem; line-height: 1.55; box-sizing: border-box; resize: vertical; }
+#pgn-input:focus { outline: none; border-color: #c9a84c; box-shadow: 0 0 0 3px rgba(201,168,76,0.15); }
+.input-actions { display: flex; justify-content: space-between; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap; }
+.input-note { color: rgba(232,224,208,0.55); font-size: 0.85rem; margin: 1.1rem 0 0; font-style: italic; font-family: 'EB Garamond', Georgia, serif; }
+
+.ctrl-btn { background: transparent; border: 1px solid rgba(201,168,76,0.45); color: #c9a84c; padding: 0.7rem 1.4rem; border-radius: 8px; cursor: pointer; font-family: 'Playfair Display', Georgia, serif; font-size: 0.9rem; letter-spacing: 0.06em; transition: all 0.2s; }
+.ctrl-btn:hover { background: rgba(201,168,76,0.12); border-color: #c9a84c; transform: translateY(-1px); }
+.ctrl-btn-primary { background: #c9a84c; color: #0f111c; font-weight: 700; }
+.ctrl-btn-primary:hover { background: #d4b556; }
+.ctrl-btn-secondary { padding: 0.55rem 1rem; font-size: 0.82rem; }
+
+/* ANALYSIS panel */
+.analysis-panel { }
+.analysis-header { display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(201,168,76,0.15); }
+.header-eyebrow { color: rgba(201,168,76,0.7); font-family: 'Playfair Display', Georgia, serif; font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; display: block; margin-bottom: 0.35rem; }
+.header-title { font-family: 'Playfair Display', Georgia, serif; font-size: 1.6rem; color: #e8e0d0; margin: 0; }
+
+.progress-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding: 0.85rem 1.1rem; background: rgba(30,34,52,0.55); border: 1px solid rgba(201,168,76,0.2); border-radius: 10px; }
+.progress-bar { flex: 1; height: 6px; background: rgba(201,168,76,0.15); border-radius: 999px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, #c9a84c, #d4b556); transition: width 0.3s; width: 0%; }
+.progress-text { color: rgba(232,224,208,0.75); font-size: 0.85rem; font-family: 'EB Garamond', Georgia, serif; font-style: italic; }
+
+.summary-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1.75rem; }
+.summary-card { background: rgba(30,34,52,0.55); border: 1px solid rgba(201,168,76,0.2); border-radius: 10px; padding: 0.85rem; text-align: center; }
+.summary-card.summary-good { border-color: rgba(74,222,128,0.4); }
+.summary-num { color: #c9a84c; font-family: 'Playfair Display', Georgia, serif; font-size: 1.7rem; font-weight: 700; line-height: 1; }
+.summary-good .summary-num { color: #a7f3d0; }
+.summary-label { color: rgba(232,224,208,0.55); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.14em; margin-top: 0.25rem; font-family: 'Playfair Display', Georgia, serif; }
+
+.analysis-area { display: grid; grid-template-columns: minmax(0, 1fr) 420px; gap: 1.5rem; align-items: start; }
+.board-wrap { position: relative; }
+#analyze-board { width: 100%; max-width: 600px; margin: 0 auto; box-shadow: 0 18px 50px rgba(0,0,0,0.5); border-radius: 8px; overflow: hidden; }
+
+.eval-bar { position: absolute; left: -28px; top: 0; bottom: 80px; width: 18px; background: #0a0c14; border: 1px solid rgba(201,168,76,0.3); border-radius: 4px; overflow: hidden; }
+.eval-bar-fill { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(0deg, #ffffff, #f4f0e6); transition: height 0.35s ease; height: 50%; }
+
+.board-controls { display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 1rem; }
+.nav-arrow { background: transparent; border: 1px solid rgba(201,168,76,0.45); color: #c9a84c; width: 38px; height: 38px; border-radius: 8px; cursor: pointer; font-size: 1.2rem; font-family: serif; transition: all 0.2s; }
+.nav-arrow:hover { background: rgba(201,168,76,0.12); border-color: #c9a84c; }
+.move-counter { color: rgba(232,224,208,0.7); font-family: 'Playfair Display', Georgia, serif; font-size: 0.95rem; min-width: 80px; text-align: center; }
+.current-eval { text-align: center; margin-top: 0.75rem; color: #c9a84c; font-family: 'Playfair Display', Georgia, serif; font-size: 1.05rem; }
+
+.move-list-panel { background: linear-gradient(135deg, rgba(201,168,76,0.06), rgba(30,34,52,0.55)); border: 1px solid rgba(201,168,76,0.22); border-radius: 12px; padding: 1.25rem; }
+.info-label { color: #c9a84c; font-family: 'Playfair Display', Georgia, serif; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.16em; margin-bottom: 0.85rem; }
+.move-list { max-height: 540px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 0.9rem; }
+.move-placeholder { padding: 1rem; color: rgba(232,224,208,0.5); font-style: italic; text-align: center; }
+.move-row { display: grid; grid-template-columns: 2.2em 1.6em 4.5em 4em auto; gap: 0.4rem; padding: 0.35rem 0.45rem; align-items: center; cursor: pointer; border-radius: 6px; transition: background 0.15s; }
+.move-row:hover { background: rgba(201,168,76,0.08); }
+.move-row-current { background: rgba(201,168,76,0.18); }
+.move-num { color: rgba(201,168,76,0.7); text-align: right; }
+.move-color { font-size: 1.05em; }
+.move-white { color: #f8f4e8; }
+.move-black { color: #1a1a1a; text-shadow: 0 0 1px rgba(232,224,208,0.4); }
+.move-san { color: #e8e0d0; }
+.move-eval { color: rgba(232,224,208,0.65); font-size: 0.82em; text-align: right; }
+.move-tag { padding: 0.12rem 0.5rem; border-radius: 99px; font-size: 0.7rem; letter-spacing: 0.04em; font-family: 'Playfair Display', Georgia, serif; }
+.tag-blunder { background: rgba(248,113,113,0.18); color: #fecaca; border: 1px solid rgba(248,113,113,0.45); }
+.tag-mistake { background: rgba(251,146,60,0.18); color: #fed7aa; border: 1px solid rgba(251,146,60,0.45); }
+.tag-inaccuracy { background: rgba(251,191,36,0.15); color: #fde68a; border: 1px solid rgba(251,191,36,0.4); }
+.tag-best { background: rgba(74,222,128,0.15); color: #a7f3d0; border: 1px solid rgba(74,222,128,0.4); }
+.best-hint { color: rgba(201,168,76,0.7); font-size: 0.78em; font-style: italic; margin-left: 0.35rem; }
+
+.attribution { color: rgba(232,224,208,0.5); font-size: 0.82rem; font-family: 'EB Garamond', Georgia, serif; line-height: 1.6; margin: 3rem 0 1rem; font-style: italic; max-width: 900px; }
+.attribution a { color: #c9a84c; text-decoration: underline; }
+.attribution strong { color: #c9a84c; font-style: normal; }
+.page-footer { margin-top: 2rem; padding-top: 1.5rem; text-align: center; border-top: 1px solid rgba(201,168,76,0.1); }
+.footer-credit { color: rgba(232,224,208,0.4); font-size: 0.8rem; font-family: 'EB Garamond', Georgia, serif; }
+
+@media (max-width: 1024px) {
+  .analysis-area { grid-template-columns: 1fr; }
+  .move-list-panel { order: 2; }
+  .eval-bar { display: none; }
+  .page h1 { font-size: 2.25rem; }
+  .summary-row { grid-template-columns: repeat(2, 1fr); }
+  .analysis-header { flex-direction: column; align-items: flex-start; }
+}
+.board-b72b1 { box-sizing: border-box; }
+</style>

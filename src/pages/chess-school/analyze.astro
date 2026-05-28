@@ -71,6 +71,15 @@ export const prerender = true;
       <div class="summary-card summary-good"><div class="summary-num" id="sum-best">0</div><div class="summary-label">Best Moves</div></div>
     </div>
 
+    <div class="full-explain-bar" id="full-explain-bar">
+      <div class="full-explain-text">
+        <strong>Want a full coach explanation?</strong>
+        <span>Stockfish 17 shows you <em>what</em> went wrong. Click below to see <em>why</em>, in plain English. Free, one full-game explanation per day.</span>
+      </div>
+      <button id="btn-full-explain" type="button" class="btn-full-explain">Give Full Explanation &rarr;</button>
+      <div class="full-explain-status" id="full-explain-status"></div>
+    </div>
+
     <div class="analysis-area">
       <div class="board-wrap">
         <div id="analyze-board"></div>
@@ -496,6 +505,109 @@ export const prerender = true;
     });
   }
 
+  // ----- FULL-GAME EXPLANATION (one button, all notable moves, single API call) -----
+  function collectNotableMoves() {
+    var out = [];
+    for (var i = 0; i < moves.length; i++) {
+      var m = moves[i];
+      if (!m || !m.classification) continue;
+      var tag = m.classification.tag;
+      if (tag !== 'blunder' && tag !== 'mistake' && tag !== 'inaccuracy') continue;
+      if (!m.bestMove) continue;
+      out.push({
+        ply: i + 1,
+        fen: positions[i],
+        played: m.san,
+        best: m.bestMove,
+        severity: tag,
+        color: (i % 2 === 0) ? 'w' : 'b',
+        moveNumber: Math.ceil((i + 1) / 2)
+      });
+    }
+    return out;
+  }
+
+  function renderInlineExplanation(ply, text) {
+    var slot = moveListEl.querySelector('.coach-slot[data-ply="' + ply + '"]');
+    if (!slot) return;
+    slot.innerHTML = '<div class="coach-commentary coach-commentary-inline"><span class="coach-eyebrow">Coach</span><p>' + escapeHtml(text) + '</p></div>';
+    slot.classList.add('coach-slot-open');
+    slot.dataset.loaded = '1';
+  }
+
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function runFullExplanation() {
+    var btn = document.getElementById('btn-full-explain');
+    var status = document.getElementById('full-explain-status');
+    if (!btn || !status) return;
+
+    var notable = collectNotableMoves();
+    if (notable.length === 0) {
+      status.className = 'full-explain-status status-info';
+      status.textContent = 'No blunders, mistakes, or inaccuracies in this game. Well played!';
+      return;
+    }
+
+    btn.disabled = true;
+    var oldLabel = btn.innerHTML;
+    btn.innerHTML = '&#9203; Coach is reviewing your game&hellip;';
+    status.className = 'full-explain-status status-loading';
+    status.textContent = 'Reviewing ' + notable.length + ' move' + (notable.length === 1 ? '' : 's') + '. This usually takes 10-20 seconds.';
+
+    fetch('/api/explain-game', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ moves: notable })
+    }).then(function(r) {
+      return r.json().then(function(data) { return { status: r.status, data: data }; });
+    }).then(function(res) {
+      if (res.status === 429) {
+        btn.innerHTML = oldLabel;
+        btn.disabled = false;
+        status.className = 'full-explain-status status-rate-limited';
+        status.innerHTML = '<strong>Daily limit reached.</strong> ' + (res.data.message || 'One full-game explanation per day. Limit resets at midnight UTC.');
+        return;
+      }
+      if (res.status !== 200 || !res.data.explanations || res.data.explanations.length === 0) {
+        btn.innerHTML = oldLabel;
+        btn.disabled = false;
+        status.className = 'full-explain-status status-error';
+        status.textContent = 'Couldn\'t get coach commentary right now. ' + (res.data.error || 'Please try again in a moment.');
+        return;
+      }
+      // Render each explanation inline below its move row
+      res.data.explanations.forEach(function(e) {
+        if (typeof e.ply === 'number' && typeof e.text === 'string') {
+          renderInlineExplanation(e.ply, e.text);
+        }
+      });
+      btn.innerHTML = '&#10003; Full explanation delivered';
+      btn.classList.add('btn-full-explain-done');
+      status.className = 'full-explain-status status-success';
+      status.textContent = 'Scroll through the move list to read the coach\'s notes on each marked move.' +
+        (typeof res.data.remaining === 'number' ? ' (' + res.data.remaining + ' free left today.)' : '');
+    }).catch(function(err) {
+      btn.innerHTML = oldLabel;
+      btn.disabled = false;
+      status.className = 'full-explain-status status-error';
+      status.textContent = 'Network error reaching coach. Check your connection and try again.';
+    });
+  }
+
+  // Wire up button
+  (function() {
+    var btn = document.getElementById('btn-full-explain');
+    if (btn) btn.addEventListener('click', runFullExplanation);
+  })();
+
   function showCurrentPosition() {
     if (!board || !positions[currentPly]) return;
     board.position(positions[currentPly]);
@@ -884,6 +996,28 @@ nav { background: rgba(15,17,28,0.95); border-bottom: 1px solid rgba(201,168,76,
 .info-label { color: #c9a84c; font-family: 'Playfair Display', Georgia, serif; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.16em; margin-bottom: 0.85rem; }
 .move-list { max-height: 540px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 0.9rem; }
 .move-placeholder { padding: 1rem; color: rgba(232,224,208,0.5); font-style: italic; text-align: center; }
+/* ----- Full-game explanation bar ----- */
+.full-explain-bar { background: linear-gradient(135deg, rgba(201,168,76,0.10), rgba(91,133,195,0.12)); border: 1px solid rgba(201,168,76,0.32); border-radius: 12px; padding: 1.1rem 1.3rem; margin: 0 0 1.5rem; display: grid; grid-template-columns: 1fr auto; gap: 1rem 1.5rem; align-items: center; }
+.full-explain-text { color: rgba(232,224,208,0.88); font-family: 'EB Garamond', Georgia, serif; line-height: 1.5; }
+.full-explain-text strong { display: block; color: #c9a84c; font-family: 'Playfair Display', Georgia, serif; font-size: 1.05rem; margin-bottom: 0.2rem; }
+.full-explain-text span { font-size: 0.95rem; color: rgba(232,224,208,0.75); }
+.full-explain-text em { color: #c9a84c; font-style: italic; }
+.btn-full-explain { background: linear-gradient(135deg, #c9a84c, #d4b556); color: #0f111c; border: 0; padding: 0.85rem 1.5rem; border-radius: 10px; font-family: 'EB Garamond', Georgia, serif; font-weight: 700; font-size: 1rem; cursor: pointer; box-shadow: 0 6px 16px rgba(201,168,76,0.32); transition: all 0.18s; white-space: nowrap; }
+.btn-full-explain:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(201,168,76,0.48); }
+.btn-full-explain:disabled { background: rgba(232,224,208,0.15); color: rgba(232,224,208,0.5); cursor: not-allowed; box-shadow: none; transform: none; }
+.btn-full-explain-done { background: rgba(74,222,128,0.18) !important; color: #a7f3d0 !important; border: 1px solid rgba(74,222,128,0.4) !important; }
+.full-explain-status { grid-column: 1 / -1; font-size: 0.9rem; padding: 0; margin: 0; min-height: 0; }
+.full-explain-status:not(:empty) { padding: 0.55rem 0.8rem; border-radius: 8px; margin-top: 0.1rem; }
+.status-loading { background: rgba(91,133,195,0.12); border: 1px solid rgba(91,133,195,0.3); color: #93b8e8; }
+.status-success { background: rgba(74,222,128,0.10); border: 1px solid rgba(74,222,128,0.32); color: #a7f3d0; }
+.status-rate-limited { background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.35); color: #fbbf24; }
+.status-error { background: rgba(239,68,68,0.10); border: 1px solid rgba(239,68,68,0.32); color: #fca5a5; }
+.status-info { background: rgba(74,222,128,0.10); border: 1px solid rgba(74,222,128,0.32); color: #a7f3d0; }
+.coach-commentary-inline { display: block !important; }
+@media (max-width: 600px) {
+  .full-explain-bar { grid-template-columns: 1fr; }
+}
+
 .move-row { display: grid; grid-template-columns: 2.2em 1.6em 4.5em 4em minmax(0, 1fr); gap: 0.4rem; padding: 0.35rem 0.45rem; align-items: center; cursor: pointer; border-radius: 6px; transition: background 0.15s; }
 .move-extra { display: flex; gap: 0.55rem; align-items: center; flex-wrap: wrap; min-width: 0; overflow: hidden; }
 .move-extra .move-tag { flex-shrink: 0; }

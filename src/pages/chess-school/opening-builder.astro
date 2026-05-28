@@ -1,0 +1,443 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export const prerender = true;
+
+// ============================================================
+//  OPENING REPERTOIRE BUILDER — Catalog page (Phase 1)
+//  Phase 2 (coming): interactive drill mode with board + spaced repetition.
+//  Phase 3 (coming): custom repertoire builder (paste your own PGN lines).
+// ============================================================
+
+const WHITE_OPENINGS = [
+  {
+    id: 'ruy-lopez',
+    name: 'Ruy Lopez (Spanish Opening)',
+    eco: 'C60–C99',
+    moves: '1. e4 e5 2. Nf3 Nc6 3. Bb5',
+    style: 'Classical, strategic',
+    description: "The oldest fully-analyzed opening still in elite play. Pin the knight, fight for the center, build a long-game advantage. Magnus Carlsen's lifelong workhorse."
+  },
+  {
+    id: 'italian',
+    name: 'Italian Game',
+    eco: 'C50–C59',
+    moves: '1. e4 e5 2. Nf3 Nc6 3. Bc4',
+    style: 'Aggressive, attacking',
+    description: "Direct attack on f7. Modern Italian (Giuoco Pianissimo) is razor-sharp at top level — slow build-up that explodes when the moment is right."
+  },
+  {
+    id: 'queens-gambit',
+    name: "Queen's Gambit",
+    eco: 'D06–D69',
+    moves: '1. d4 d5 2. c4',
+    style: 'Classical, positional',
+    description: "Offer the c-pawn to seize central control. Most respected opening in chess history. Backbone of Karpov, Kramnik, Carlsen's repertoires."
+  },
+  {
+    id: 'english',
+    name: 'English Opening',
+    eco: 'A10–A39',
+    moves: '1. c4',
+    style: 'Flexible, positional',
+    description: "Flank opening that transposes into countless structures. Reversed Sicilian as a feature, not a bug. Favored by Botvinnik, Kasparov, and modern grinders."
+  },
+  {
+    id: 'london',
+    name: 'London System',
+    eco: 'D02 / A45',
+    moves: '1. d4 2. Bf4',
+    style: 'Solid, low-theory',
+    description: "Same setup against almost anything Black plays. Low-maintenance for the busy player; pet line of Magnus Carlsen at world-championship level."
+  },
+  {
+    id: 'kia',
+    name: "King's Indian Attack",
+    eco: 'A07–A08',
+    moves: '1. Nf3 2. g3 3. Bg2',
+    style: 'Flexible, attacking',
+    description: "A setup, not a forced line — reach this against any Black system. Bobby Fischer played it for years. Quiet kingside fianchetto before launching a thematic attack."
+  }
+];
+
+const BLACK_VS_E4 = [
+  {
+    id: 'sicilian',
+    name: 'Sicilian Defense',
+    eco: 'B20–B99',
+    moves: '1. e4 c5',
+    style: 'Sharp, fighting',
+    description: "The most popular and most scoring reply to 1.e4 at every level. Asymmetric from move one. Najdorf, Dragon, Sveshnikov — pick your sub-line and dig in."
+  },
+  {
+    id: 'french',
+    name: 'French Defense',
+    eco: 'C00–C19',
+    moves: '1. e4 e6',
+    style: 'Solid, strategic',
+    description: "Concede space, build a fortress, counterpunch. Beloved by Botvinnik, Korchnoi, and modern grinders. The pawn structure decides everything."
+  },
+  {
+    id: 'caro-kann',
+    name: 'Caro-Kann Defense',
+    eco: 'B10–B19',
+    moves: '1. e4 c6',
+    style: 'Solid, classical',
+    description: "Karpov's defense of choice. Build a solid structure with ...c6 and ...d5, no weaknesses, wait for the opponent to overextend."
+  },
+  {
+    id: 'berlin',
+    name: 'Berlin Defense',
+    eco: 'C65–C67',
+    moves: '1. e4 e5 2. Nf3 Nc6 3. Bb5 Nf6',
+    style: 'Solid, endgame-focused',
+    description: "Kramnik's weapon to defang Kasparov in 2000. Trade queens early, head straight to a slightly worse but tenacious endgame. Drawing weapon par excellence."
+  }
+];
+
+const BLACK_VS_D4 = [
+  {
+    id: 'kid',
+    name: "King's Indian Defense",
+    eco: 'E60–E99',
+    moves: '1. d4 Nf6 2. c4 g6',
+    style: 'Aggressive, kingside attack',
+    description: "Let White have the center, then storm the kingside with ...f5, ...g5, ...h5. Fischer and Kasparov's favorite. Win or lose — this is fighting chess."
+  },
+  {
+    id: 'qgd',
+    name: "Queen's Gambit Declined",
+    eco: 'D30–D69',
+    moves: '1. d4 d5 2. c4 e6',
+    style: 'Classical, solid',
+    description: "The most respected reply to 1.d4. Maintain the d5 pawn, develop classically, equalize patiently. Anand, Karpov, and a thousand world-class players' backbone."
+  },
+  {
+    id: 'slav',
+    name: 'Slav Defense',
+    eco: 'D10–D19',
+    moves: '1. d4 d5 2. c4 c6',
+    style: 'Solid, flexible',
+    description: "Protect d5 with the c-pawn instead of e-pawn — keeps the c8-bishop's diagonal open. Modern preference at top level. Sound and rich in possibilities."
+  },
+  {
+    id: 'nimzo',
+    name: 'Nimzo-Indian Defense',
+    eco: 'E20–E59',
+    moves: '1. d4 Nf6 2. c4 e6 3. Nc3 Bb4',
+    style: 'Strategic, positional',
+    description: "Aron Nimzowitsch's lasting gift to chess. Pin the knight, double White's pawns, fight for the dark squares. Often considered the most respectable defense to 1.d4."
+  }
+];
+---
+
+<BaseLayout title="Opening Repertoire Builder — Mind's Gambit Chess School" description="Build a chess opening repertoire. Pick your White and Black weapons, learn the main lines, drill until they're automatic. Free.">
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><img src="/images/logo.jpg" alt="Mind's Gambit" style="height:55px;width:55px;border-radius:50%;object-fit:cover;border:2px solid #c8a84e;margin-left:10px;vertical-align:middle;" /></a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/#book">The Book</a></li>
+      <li><a href="/watch">Documentary</a></li>
+      <li><a href="/blog">Blog</a></li>
+      <li><a href="/chess-school">Chess School</a></li>
+      <li><a href="/#about">About</a></li>
+      <li><a href="/#contact">Contact</a></li>
+      <li><a href="https://buymeacoffee.com/mouradbouajaja" target="_blank" rel="noopener" class="nav-btn">&#9749; Buy Me a Coffee</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="page">
+  <a href="/chess-school" class="back-link">&larr; Back to Chess School</a>
+  <span class="eyebrow">Mind&rsquo;s Gambit Chess School</span>
+  <h1>Opening Repertoire Builder</h1>
+  <p class="lead">Pick your weapons. Build a repertoire you can actually rely on &mdash; both as White and against the openings you&rsquo;ll see as Black. Below: the most important openings in chess, organized by color and structure. The interactive drill mode is launching shortly.</p>
+
+  <!-- Status banner -->
+  <div class="status-banner">
+    <span class="status-icon">&#9881;</span>
+    <div>
+      <strong>Phase 1 &mdash; Repertoire Catalog</strong>
+      <span>Browse the catalog of major openings. The interactive drill mode (board + spaced-repetition training) is launching soon. Bookmark this page.</span>
+    </div>
+  </div>
+
+  <!-- WHITE REPERTOIRE -->
+  <section class="repertoire-section">
+    <header class="repertoire-header">
+      <span class="rep-color-chip white-chip">&#9817; White Repertoire</span>
+      <h2>Openings to play as White</h2>
+      <p class="rep-intro">Choose one main weapon against 1.e4 e5, one against the Sicilian (or play 1.d4 to avoid it), and a system that suits your style. Most strong players have one solid mainline and one offbeat surprise.</p>
+    </header>
+    <div class="opening-grid">
+      {WHITE_OPENINGS.map((o) => (
+        <article class="opening-card">
+          <header class="opening-card-header">
+            <h3 class="opening-name">{o.name}</h3>
+            <span class="opening-eco">{o.eco}</span>
+          </header>
+          <div class="opening-moves">{o.moves}</div>
+          <span class="opening-style">{o.style}</span>
+          <p class="opening-description">{o.description}</p>
+          <span class="opening-cta-disabled">Drill mode coming soon</span>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- BLACK vs e4 -->
+  <section class="repertoire-section">
+    <header class="repertoire-header">
+      <span class="rep-color-chip black-chip">&#9823; Black vs 1.e4</span>
+      <h2>Defenses against 1. e4</h2>
+      <p class="rep-intro">When White opens 1.e4, you need a reply you understand deeply. Pick one mainline you can play in every game without thinking.</p>
+    </header>
+    <div class="opening-grid">
+      {BLACK_VS_E4.map((o) => (
+        <article class="opening-card">
+          <header class="opening-card-header">
+            <h3 class="opening-name">{o.name}</h3>
+            <span class="opening-eco">{o.eco}</span>
+          </header>
+          <div class="opening-moves">{o.moves}</div>
+          <span class="opening-style">{o.style}</span>
+          <p class="opening-description">{o.description}</p>
+          <span class="opening-cta-disabled">Drill mode coming soon</span>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- BLACK vs d4 -->
+  <section class="repertoire-section">
+    <header class="repertoire-header">
+      <span class="rep-color-chip black-chip">&#9823; Black vs 1.d4</span>
+      <h2>Defenses against 1. d4</h2>
+      <p class="rep-intro">Queen-pawn openings demand a different toolkit. Choose between solid (QGD, Slav) and dynamic (King&rsquo;s Indian, Nimzo) depending on your fighting temperament.</p>
+    </header>
+    <div class="opening-grid">
+      {BLACK_VS_D4.map((o) => (
+        <article class="opening-card">
+          <header class="opening-card-header">
+            <h3 class="opening-name">{o.name}</h3>
+            <span class="opening-eco">{o.eco}</span>
+          </header>
+          <div class="opening-moves">{o.moves}</div>
+          <span class="opening-style">{o.style}</span>
+          <p class="opening-description">{o.description}</p>
+          <span class="opening-cta-disabled">Drill mode coming soon</span>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- Roadmap -->
+  <section class="roadmap">
+    <h2>What&rsquo;s coming</h2>
+    <ul class="roadmap-list">
+      <li><strong>Phase 2 &middot; Drill mode</strong> &mdash; Click an opening, see the position on a board, the engine plays the opponent moves, you have to recall yours. Spaced repetition tracks your accuracy and resurfaces weak lines.</li>
+      <li><strong>Phase 3 &middot; Custom repertoire</strong> &mdash; Paste your own PGN lines (export from any chess platform) to build a repertoire from <em>your</em> games. Drill the lines you actually play.</li>
+      <li><strong>Phase 4 &middot; Coach integration</strong> &mdash; Share your repertoire with your Mind&rsquo;s Gambit coach for review. Your titled-coach can suggest improvements directly inside the page.</li>
+    </ul>
+    <p class="roadmap-note">Have a request or a favorite opening you want featured? Email <a href="mailto:mourad@mindsgambit.com">mourad@mindsgambit.com</a>.</p>
+  </section>
+
+  <footer class="page-footer">
+    <p class="footer-credit">&copy; 2026 Mourad Bouajaja. Mind&rsquo;s Gambit Chess School is a production of &copy; MYB Studio LLC.</p>
+  </footer>
+</section>
+
+<style>
+.eyebrow { display: block; font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.18em; margin-top: 1.5rem; }
+.page { max-width: 1150px; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+.back-link { display: inline-block; color: rgba(232,224,208,0.65); text-decoration: none; font-family: 'EB Garamond', Georgia, serif; font-size: 0.95rem; margin: 1rem 0 0; transition: color 0.18s; }
+.back-link:hover { color: #c9a84c; }
+.page h1 { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 2.6rem; margin: 0.6rem 0 0.7rem; letter-spacing: 0.01em; }
+.lead { color: rgba(232,224,208,0.82); font-family: 'EB Garamond', Georgia, serif; font-size: 1.12rem; line-height: 1.65; margin: 0 0 1.8rem; max-width: 780px; }
+
+.status-banner { display: flex; gap: 1rem; align-items: center; background: linear-gradient(135deg, rgba(91,133,195,0.12), rgba(201,168,76,0.08)); border: 1px solid rgba(91,133,195,0.35); border-radius: 12px; padding: 1rem 1.2rem; margin: 0 0 2.5rem; }
+.status-icon { font-size: 1.6rem; color: #93b8e8; flex-shrink: 0; }
+.status-banner strong { display: block; color: #93b8e8; font-family: 'Playfair Display', Georgia, serif; font-size: 1.02rem; margin-bottom: 0.15rem; }
+.status-banner span { color: rgba(232,224,208,0.78); font-family: 'EB Garamond', Georgia, serif; font-size: 0.95rem; line-height: 1.5; display: block; }
+
+.repertoire-section { margin: 0 0 3rem; }
+.repertoire-header { margin-bottom: 1.5rem; }
+.rep-color-chip { display: inline-block; font-family: 'Playfair Display', Georgia, serif; font-size: 0.78rem; padding: 4px 11px; border-radius: 99px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.6rem; }
+.white-chip { background: rgba(232,224,208,0.12); color: #e8e0d0; border: 1px solid rgba(232,224,208,0.32); }
+.black-chip { background: rgba(15,17,28,0.6); color: rgba(201,168,76,0.85); border: 1px solid rgba(201,168,76,0.32); }
+.repertoire-header h2 { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1.7rem; margin: 0 0 0.45rem; }
+.rep-intro { color: rgba(232,224,208,0.72); font-family: 'EB Garamond', Georgia, serif; font-size: 1rem; line-height: 1.55; margin: 0; max-width: 780px; font-style: italic; }
+
+.opening-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.1rem; }
+.opening-card { background: linear-gradient(135deg, rgba(201,168,76,0.07), rgba(30,34,52,0.6)); border: 1px solid rgba(201,168,76,0.25); border-radius: 12px; padding: 1.2rem 1.2rem 1rem; display: flex; flex-direction: column; transition: transform 0.18s, border-color 0.18s, box-shadow 0.18s; }
+.opening-card:hover { transform: translateY(-2px); border-color: rgba(201,168,76,0.5); box-shadow: 0 12px 26px rgba(0,0,0,0.4); }
+.opening-card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.6rem; margin-bottom: 0.5rem; }
+.opening-name { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1.18rem; margin: 0; line-height: 1.25; flex: 1; }
+.opening-eco { background: rgba(201,168,76,0.15); color: rgba(201,168,76,0.85); font-family: 'Courier New', monospace; font-size: 0.72rem; padding: 3px 7px; border-radius: 4px; white-space: nowrap; flex-shrink: 0; }
+.opening-moves { font-family: 'Courier New', monospace; color: #e8e0d0; background: rgba(15,17,28,0.55); padding: 7px 11px; border-radius: 6px; font-size: 0.92rem; margin: 0.3rem 0 0.7rem; border: 1px solid rgba(201,168,76,0.15); }
+.opening-style { display: inline-block; color: rgba(232,224,208,0.55); font-family: 'EB Garamond', Georgia, serif; font-size: 0.82rem; font-style: italic; margin-bottom: 0.55rem; }
+.opening-description { color: rgba(232,224,208,0.82); font-family: 'EB Garamond', Georgia, serif; font-size: 0.94rem; line-height: 1.55; flex: 1; margin: 0 0 0.95rem; }
+.opening-cta-disabled { display: inline-block; background: rgba(91,133,195,0.12); color: rgba(147,184,232,0.85); border: 1px solid rgba(91,133,195,0.3); padding: 7px 12px; border-radius: 8px; font-family: 'EB Garamond', Georgia, serif; font-size: 0.84rem; font-style: italic; text-align: center; align-self: flex-start; }
+
+.roadmap { background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(30,34,52,0.55)); border: 1px solid rgba(201,168,76,0.28); border-radius: 14px; padding: 1.8rem 1.8rem 1.5rem; margin: 3rem 0 2rem; }
+.roadmap h2 { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1.45rem; margin: 0 0 1rem; }
+.roadmap-list { list-style: none; padding: 0; margin: 0 0 1.2rem; display: flex; flex-direction: column; gap: 0.85rem; }
+.roadmap-list li { color: rgba(232,224,208,0.82); font-family: 'EB Garamond', Georgia, serif; font-size: 1rem; line-height: 1.6; padding-left: 1.2rem; position: relative; }
+.roadmap-list li::before { content: '\2192'; position: absolute; left: 0; color: #c9a84c; }
+.roadmap-list strong { color: #c9a84c; font-weight: 600; }
+.roadmap-list em { color: rgba(232,224,208,0.65); font-style: italic; }
+.roadmap-note { color: rgba(232,224,208,0.6); font-family: 'EB Garamond', Georgia, serif; font-size: 0.92rem; margin: 0; font-style: italic; }
+.roadmap-note a { color: #c9a84c; }
+
+.page-footer { margin-top: 2.5rem; padding: 1.5rem 1rem; text-align: center; border-top: 1px solid rgba(201,168,76,0.1); }
+.footer-credit { color: rgba(232,224,208,0.4); font-size: 0.82rem; font-family: 'EB Garamond', Georgia, serif; }
+
+@media (max-width: 600px) {
+  .page h1 { font-size: 2rem; }
+  .status-banner { flex-direction: column; align-items: flex-start; }
+  .repertoire-header h2 { font-size: 1.4rem; }
+}
+</style>
+
+<!-- ============================================================
+     MIND'S GAMBIT FAQ BOT
+============================================================ -->
+<button id="mg-faq-bubble" type="button" aria-label="Need help? Open Mind's Gambit Help" title="Click me for help">
+  <span class="mg-faq-bubble-icon">&#9819;</span>
+  <span class="mg-faq-bubble-label">Need help?</span>
+  <span class="mg-faq-bubble-dot"></span>
+</button>
+
+<div id="mg-faq-panel" hidden>
+  <header class="mg-faq-header">
+    <div>
+      <div class="mg-faq-title">Mind&rsquo;s Gambit Help</div>
+      <div class="mg-faq-subtitle">Ask anything &middot; instant answers</div>
+    </div>
+    <button id="mg-faq-close" type="button" aria-label="Close">&times;</button>
+  </header>
+  <div class="mg-faq-messages" id="mg-faq-messages"></div>
+  <form class="mg-faq-form" id="mg-faq-form" autocomplete="off">
+    <input type="text" id="mg-faq-input" placeholder="Type your question&hellip;" maxlength="200" autocomplete="off" />
+    <button type="submit" aria-label="Send">&#10142;</button>
+  </form>
+  <div class="mg-faq-suggested" id="mg-faq-suggested"></div>
+</div>
+
+<script is:inline>
+(function() {
+  'use strict';
+  var FAQ_DATA = [
+    { keywords: ['opening', 'repertoire', 'drill', 'opening builder'],
+      q: 'How does the Opening Repertoire Builder work?',
+      a: 'Right now (Phase 1), the page is a curated catalog of the most important openings in chess, organized by color. Phase 2 will add an interactive drill mode where you practice each opening against the engine. Phase 3 will let you paste your own PGN lines to build a custom repertoire.' },
+    { keywords: ['free', 'cost', 'price'],
+      q: 'Is Mind\'s Gambit free?',
+      a: 'All training, analysis, and content is <strong>completely free</strong>. No ads, no subscriptions.' },
+    { keywords: ['coach', 'lesson', 'grandmaster'],
+      q: 'Can I book a lesson with a coach?',
+      a: 'Yes. Click <a href="/chess-school/grandmasters">Grandmasters</a> in the nav.' },
+    { keywords: ['contact', 'email'],
+      q: 'How do I contact Mourad?',
+      a: 'Email <a href="mailto:mourad@mindsgambit.com">mourad@mindsgambit.com</a>.' }
+  ];
+  var bubble = document.getElementById('mg-faq-bubble');
+  var panel = document.getElementById('mg-faq-panel');
+  var closeBtn = document.getElementById('mg-faq-close');
+  var form = document.getElementById('mg-faq-form');
+  var input = document.getElementById('mg-faq-input');
+  var messagesEl = document.getElementById('mg-faq-messages');
+  var suggestedEl = document.getElementById('mg-faq-suggested');
+  if (!bubble || !panel) return;
+  function openPanel() { panel.removeAttribute('hidden'); input.focus(); if (!messagesEl.children.length) greet(); }
+  function closePanel() { panel.setAttribute('hidden', ''); }
+  bubble.addEventListener('click', function() { if (panel.hasAttribute('hidden')) openPanel(); else closePanel(); });
+  closeBtn.addEventListener('click', closePanel);
+  function addMessage(text, sender) {
+    var div = document.createElement('div');
+    div.className = 'mg-faq-msg mg-faq-msg-' + sender;
+    div.innerHTML = text;
+    messagesEl.appendChild(div);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+  function score(query, keywords) {
+    var q = query.toLowerCase();
+    var s = 0;
+    for (var i = 0; i < keywords.length; i++) {
+      var k = keywords[i].toLowerCase();
+      if (q.indexOf(k) !== -1) s += k.length * 2;
+      var words = k.split(/\s+/);
+      for (var w = 0; w < words.length; w++) {
+        if (words[w].length >= 3 && q.indexOf(words[w]) !== -1) s += 1;
+      }
+    }
+    return s;
+  }
+  function answer(query) {
+    var best = null;
+    var bestScore = 0;
+    for (var i = 0; i < FAQ_DATA.length; i++) {
+      var s = score(query, FAQ_DATA[i].keywords);
+      if (s > bestScore) { bestScore = s; best = FAQ_DATA[i]; }
+    }
+    if (best && bestScore >= 3) return best.a;
+    return null;
+  }
+  function greet() {
+    addMessage('Hi &mdash; welcome to <strong>Mind&rsquo;s Gambit Help</strong>. Type a question or pick a suggestion below.', 'bot');
+    showSuggestions(['How does the Opening Repertoire Builder work?', 'Is Mind\'s Gambit free?', 'Can I book a lesson?']);
+  }
+  function showSuggestions(questions) {
+    suggestedEl.innerHTML = '';
+    for (var i = 0; i < questions.length; i++) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'mg-faq-suggest';
+      btn.textContent = questions[i];
+      (function(q) { btn.addEventListener('click', function() { handleQuery(q); }); })(questions[i]);
+      suggestedEl.appendChild(btn);
+    }
+  }
+  function handleQuery(query) {
+    suggestedEl.innerHTML = '';
+    addMessage(query, 'user');
+    var a = answer(query);
+    if (a) setTimeout(function() { addMessage(a, 'bot'); }, 200);
+    else setTimeout(function() { addMessage('I don&rsquo;t have a stock answer for that yet. Email <a href="mailto:mourad@mindsgambit.com">mourad@mindsgambit.com</a>.', 'bot'); }, 200);
+  }
+  form.addEventListener('submit', function(e) { e.preventDefault(); var q = input.value.trim(); if (!q) return; input.value = ''; handleQuery(q); });
+})();
+</script>
+
+<style>
+#mg-faq-bubble { position: fixed; bottom: 20px; right: 20px; width: 86px; min-height: 88px; padding: 10px 8px 8px; border-radius: 18px; background: linear-gradient(135deg, #c9a84c, #d4b556); border: 0; cursor: pointer; box-shadow: 0 8px 22px rgba(201,168,76,0.45), 0 4px 10px rgba(0,0,0,0.3); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; z-index: 10000; transition: transform 0.2s, box-shadow 0.2s; font-family: 'EB Garamond', Georgia, serif; }
+#mg-faq-bubble:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(201,168,76,0.6), 0 6px 14px rgba(0,0,0,0.35); }
+.mg-faq-bubble-icon { font-size: 32px; color: #0f111c; line-height: 1; }
+.mg-faq-bubble-label { font-size: 0.78rem; font-weight: 700; color: #0f111c; line-height: 1; white-space: nowrap; }
+.mg-faq-bubble-dot { position: absolute; top: 6px; right: 6px; width: 10px; height: 10px; background: #ef4444; border-radius: 50%; border: 2px solid #d4b556; }
+#mg-faq-panel { position: fixed; bottom: 122px; right: 20px; width: 360px; max-width: calc(100vw - 40px); height: 540px; max-height: calc(100vh - 160px); background: #0f111c; border: 1px solid rgba(201,168,76,0.4); border-radius: 16px; display: flex; flex-direction: column; box-shadow: 0 18px 50px rgba(0,0,0,0.55); z-index: 10000; font-family: 'EB Garamond', Georgia, serif; overflow: hidden; }
+#mg-faq-panel[hidden] { display: none !important; }
+.mg-faq-header { padding: 14px 18px; background: rgba(201,168,76,0.12); border-bottom: 1px solid rgba(201,168,76,0.25); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+.mg-faq-title { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1rem; font-weight: 700; letter-spacing: 0.05em; }
+.mg-faq-subtitle { color: rgba(232,224,208,0.55); font-size: 0.78rem; font-style: italic; margin-top: 2px; }
+#mg-faq-close { background: transparent; border: 0; color: rgba(232,224,208,0.7); font-size: 26px; line-height: 1; cursor: pointer; padding: 0 4px; }
+.mg-faq-messages { flex: 1 1 auto; min-height: 0; padding: 16px 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: rgba(15,17,28,0.95); }
+.mg-faq-msg { padding: 10px 14px; border-radius: 12px; font-size: 0.92rem; line-height: 1.45; max-width: 88%; word-wrap: break-word; }
+.mg-faq-msg-bot { background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.22); color: rgba(232,224,208,0.92); align-self: flex-start; }
+.mg-faq-msg-user { background: #c9a84c; color: #0f111c; align-self: flex-end; }
+.mg-faq-msg-bot a { color: #c9a84c; text-decoration: underline; }
+.mg-faq-msg-bot strong { color: #c9a84c; }
+.mg-faq-form { display: flex; gap: 8px; padding: 12px 14px; border-top: 1px solid rgba(201,168,76,0.2); background: rgba(15,17,28,0.95); flex-shrink: 0; }
+#mg-faq-input { flex: 1; background: rgba(30,34,52,0.55); border: 1px solid rgba(201,168,76,0.25); border-radius: 8px; padding: 9px 12px; color: #e8e0d0; font-family: inherit; font-size: 0.95rem; box-sizing: border-box; }
+.mg-faq-form button[type="submit"] { background: #c9a84c; color: #0f111c; border: 0; width: 40px; height: 40px; border-radius: 8px; font-size: 18px; cursor: pointer; font-weight: 700; }
+.mg-faq-suggested { padding: 0 14px 12px; display: flex; flex-wrap: wrap; gap: 6px; background: rgba(15,17,28,0.95); flex-shrink: 0; max-height: 96px; overflow-y: auto; }
+.mg-faq-suggest { background: rgba(30,34,52,0.6); border: 1px solid rgba(201,168,76,0.25); color: #c9a84c; padding: 6px 10px; border-radius: 99px; font-size: 0.78rem; font-family: inherit; cursor: pointer; }
+@media (max-width: 480px) {
+  #mg-faq-panel { width: calc(100vw - 24px); right: 12px; bottom: 108px; height: calc(100vh - 140px); }
+  #mg-faq-bubble { right: 14px; bottom: 14px; width: 74px; min-height: 78px; }
+}
+</style>
+
+</BaseLayout>

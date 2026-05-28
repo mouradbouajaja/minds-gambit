@@ -56,7 +56,19 @@ const teachers = [
       <span class="eyebrow">Mind's Gambit Chess School</span>
       <h1>Learn from Grandmasters</h1>
       <p class="roster-lead">A curated roster of titled chess coaches who teach one-on-one. Every teacher featured here has been hand-selected for their expertise, their character, and their commitment to genuine student progress.</p>
+      <p class="roster-status"><span class="status-dot"></span> Roster growing &middot; titled players currently joining</p>
     </header>
+
+    <!-- Founding Coach offer banner -->
+    <aside class="founding-banner">
+      <div class="founding-icon">&#9819;</div>
+      <div class="founding-body">
+        <span class="founding-eyebrow">For Titled Players &middot; Apply Now</span>
+        <h2 class="founding-title">Free for 6 months. 100&#37; of your lesson fees. Keep your students.</h2>
+        <p class="founding-text">If you&rsquo;re a titled player (GM, IM, WGM, WIM, FM, WFM, NM, CM), Mind&rsquo;s Gambit is offering founding-coach status: zero platform fees for your first six months, you keep every euro of every lesson, and your students follow you here. No exclusivity required &mdash; we know you already teach on Lichess and Chess.com. We just want to be your home page.</p>
+        <a href="mailto:Mourad@mindsgambit.com?subject=Founding%20Coach%20%E2%80%94%20Mind%27s%20Gambit%20Chess%20School&body=Hello%20Mourad%2C%0A%0AI%27m%20interested%20in%20joining%20as%20a%20founding%20coach.%0A%0AName%3A%20%0ATitle%20(GM%2FIM%2FWGM%2Fetc)%3A%20%0AFederation%3A%20%0ALichess%2FChess.com%20username%3A%20%0AYears%20coaching%3A%20%0AHourly%20rate%3A%20%0A%0ABest%20way%20to%20reach%20me%3A%20" class="founding-cta">Apply as a Founding Coach &rarr;</a>
+      </div>
+    </aside>
 
     <div class="teachers-grid">
       {teachers.map(teacher => (
@@ -113,7 +125,25 @@ nav { background: rgba(15,17,28,0.95); border-bottom: 1px solid rgba(201,168,76,
 .roster-header .back-link { display: inline-block; margin-bottom: 2rem; }
 .eyebrow { color: #c9a84c; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.25em; display: block; margin-bottom: 1rem; }
 .roster-header h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 3rem; color: #e8e0d0; line-height: 1.1; margin: 0 0 1.25rem; }
-.roster-lead { color: rgba(232,224,208,0.75); font-size: 1.15rem; line-height: 1.6; font-family: 'EB Garamond', Georgia, serif; margin: 0; }
+.roster-lead { color: rgba(232,224,208,0.75); font-size: 1.15rem; line-height: 1.6; font-family: 'EB Garamond', Georgia, serif; margin: 0 0 1rem; }
+
+.roster-status { color: rgba(232,224,208,0.55); font-size: 0.88rem; font-style: italic; font-family: 'EB Garamond', Georgia, serif; margin: 0; display: inline-flex; align-items: center; gap: 0.5rem; }
+.status-dot { width: 8px; height: 8px; border-radius: 50%; background: #a7f3d0; box-shadow: 0 0 8px rgba(167,243,208,0.7); display: inline-block; animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+/* Founding Coach banner */
+.founding-banner { display: grid; grid-template-columns: auto 1fr; gap: 1.5rem; max-width: 1100px; margin: 0 auto 3.5rem; padding: 2rem 2.25rem; background: linear-gradient(135deg, rgba(201,168,76,0.18), rgba(20,22,32,0.9)); border: 1px solid rgba(201,168,76,0.5); border-radius: 18px; box-shadow: 0 18px 50px rgba(0,0,0,0.4); align-items: center; }
+.founding-icon { font-size: 4rem; color: #c9a84c; line-height: 1; opacity: 0.85; }
+.founding-eyebrow { color: #c9a84c; font-family: 'Playfair Display', Georgia, serif; font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; display: block; margin-bottom: 0.45rem; }
+.founding-title { font-family: 'Playfair Display', Georgia, serif; color: #e8e0d0; font-size: 1.45rem; margin: 0 0 0.75rem; line-height: 1.25; }
+.founding-text { color: rgba(232,224,208,0.82); font-size: 1rem; line-height: 1.55; margin: 0 0 1.1rem; font-family: 'EB Garamond', Georgia, serif; }
+.founding-cta { display: inline-block; background: #c9a84c; color: #0f111c; padding: 0.85rem 1.6rem; border-radius: 10px; font-family: 'Playfair Display', Georgia, serif; font-size: 0.95rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 8px 24px rgba(201,168,76,0.35); }
+.founding-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(201,168,76,0.5); }
+@media (max-width: 720px) {
+  .founding-banner { grid-template-columns: 1fr; text-align: center; padding: 1.5rem; }
+  .founding-icon { font-size: 3rem; }
+  .founding-title { font-size: 1.2rem; }
+}
 
 .teachers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; max-width: 1100px; margin: 0 auto; }
 

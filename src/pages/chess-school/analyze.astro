@@ -524,14 +524,13 @@ export const prerender = true;
   whenLibsReady(function() { /* libs ready, fallback engine init already started */ });
 })();
 </script>
-
-
 <!-- ============================================================
      MIND'S GAMBIT FAQ BOT — Static keyword-search bot.
      Free. No API calls. Edit the FAQ_DATA array below to add Q&As.
 ============================================================ -->
-<button id="mg-faq-bubble" type="button" aria-label="Help and FAQ">
+<button id="mg-faq-bubble" type="button" aria-label="Need help? Open Mind's Gambit Help" title="Click me for help &mdash; technical questions, engine issues, account, anything.">
   <span class="mg-faq-bubble-icon">&#9819;</span>
+  <span class="mg-faq-bubble-label">Need help?</span>
   <span class="mg-faq-bubble-dot"></span>
 </button>
 
@@ -630,6 +629,18 @@ export const prerender = true;
     { keywords: ['bug', 'report', 'error', 'broken', 'not working'],
       q: 'Something is broken — how do I report it?',
       a: 'Email <a href="mailto:mourad@mindsgambit.com">mourad@mindsgambit.com</a> with: (1) which page, (2) what device/browser, (3) what you expected, (4) what happened. Screenshots help a lot. We fix things fast.' },
+    { keywords: ['engine stall', 'engine stuck', 'engine not moving', 'engine freeze', 'stockfish stuck', 'stockfish not moving', 'engine slow', 'no engine move', 'engine took'],
+      q: 'The engine is stalling or not making a move',
+      a: 'On the Play page the engine runs entirely in your browser, so a stall usually means: (1) <strong>refresh the page</strong> &mdash; the Stockfish worker sometimes loses its thread on slow connections; (2) try a <strong>lower skill level</strong> &mdash; very high levels at long thinking times can take 10-20 seconds; (3) switch to a modern browser (Chrome, Edge, Firefox, Safari). If the problem keeps happening, email <a href="mailto:mourad@mindsgambit.com">mourad@mindsgambit.com</a> with your device + browser and we&rsquo;ll investigate.' },
+    { keywords: ['board not loading', 'board blank', 'board missing', 'pieces missing', 'board white', 'board empty'],
+      q: 'The chess board is not loading',
+      a: 'The board needs JavaScript and an open connection to <code>unpkg.com</code> (where chessboard.js is hosted). Try: (1) hard refresh (Ctrl+Shift+R or Cmd+Shift+R); (2) disable any ad-blocker/script-blocker on this site; (3) check that JavaScript is enabled. If it still doesn&rsquo;t load, email <a href="mailto:mourad@mindsgambit.com">mourad@mindsgambit.com</a> with a screenshot.' },
+    { keywords: ['puzzle stuck', 'puzzle not solving', 'puzzle frozen', 'cant solve', 'wrong answer'],
+      q: 'The puzzle is stuck or my answer was marked wrong',
+      a: 'Each puzzle has <strong>one specific solution sequence</strong> from the Lichess database &mdash; even if your move looks good, only the engine-validated line counts as solved. Hit <strong>Hint</strong> or <strong>Show Solution</strong> to see the intended line. If you believe the puzzle is genuinely broken (e.g. the solution is illegal), email <a href="mailto:mourad@mindsgambit.com">mourad@mindsgambit.com</a> with the puzzle ID and we&rsquo;ll review it.' },
+    { keywords: ['lost progress', 'rating reset', 'stats gone', 'lost streak'],
+      q: 'I lost my rating / streak / stats',
+      a: 'Your progress is stored in your browser&rsquo;s localStorage on this device only. It resets if you: (1) clear your browser data, (2) switch to a different browser or device, (3) open the site in private/incognito mode. We&rsquo;re working on optional cross-device sync as a future feature. For now, stick to the same browser on the same device to keep your progress.' },
     { keywords: ['contact', 'email', 'reach out'],
       q: 'How do I contact Mourad?',
       a: 'Email <a href="mailto:mourad@mindsgambit.com">mourad@mindsgambit.com</a>. Or use the <a href="/#contact">Contact section</a> on the homepage.' },
@@ -699,8 +710,8 @@ export const prerender = true;
   }
 
   function greet() {
-    addMessage('Hi! I’m the Mind’s Gambit help bot. Ask anything about the chess school — puzzles, the engine, coaches, your rating, anything. Or pick a suggested question below.', 'bot');
-    showSuggestions(['How does the Daily Puzzle work?', 'How does the ELO rating work?', 'Can I book a lesson with a coach?', 'Is Mind’s Gambit free?']);
+    addMessage('Hi &mdash; welcome to <strong>Mind&rsquo;s Gambit Help</strong>. I&rsquo;m here for <em>anything</em> you run into on the site:<br><br>&bull; <strong>Technical issues</strong> &mdash; engine stalling, board not loading, puzzle stuck, page broken<br>&bull; <strong>How things work</strong> &mdash; Daily Puzzle, ELO rating, Train Now, Tactics, Analysis<br>&bull; <strong>Account &amp; data</strong> &mdash; progress saving, switching devices, privacy<br>&bull; <strong>Coaches &amp; lessons</strong> &mdash; booking a titled coach, becoming a coach<br>&bull; <strong>Anything else</strong> &mdash; the book, documentary, contact Mourad<br><br>Type your question below, or pick one of these to get started:', 'bot');
+    showSuggestions(['Engine is stalling / not moving', 'How does the Daily Puzzle work?', 'How does the ELO rating work?', 'Can I book a lesson with a coach?', 'Is Mind&rsquo;s Gambit free?', 'Something is broken &mdash; how do I report it?']);
   }
 
   function showSuggestions(questions) {
@@ -748,34 +759,42 @@ export const prerender = true;
 </script>
 
 <style>
-#mg-faq-bubble { position: fixed; bottom: 20px; right: 20px; width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #c9a84c, #d4b556); border: 0; cursor: pointer; box-shadow: 0 8px 22px rgba(201,168,76,0.45), 0 4px 10px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; z-index: 10000; transition: transform 0.2s; }
-#mg-faq-bubble:hover { transform: scale(1.08); }
-.mg-faq-bubble-icon { font-size: 28px; color: #0f111c; line-height: 1; }
-.mg-faq-bubble-dot { position: absolute; top: 8px; right: 8px; width: 10px; height: 10px; background: #ef4444; border-radius: 50%; border: 2px solid #d4b556; }
+#mg-faq-bubble { position: fixed; bottom: 20px; right: 20px; width: 86px; min-height: 88px; padding: 10px 8px 8px; border-radius: 18px; background: linear-gradient(135deg, #c9a84c, #d4b556); border: 0; cursor: pointer; box-shadow: 0 8px 22px rgba(201,168,76,0.45), 0 4px 10px rgba(0,0,0,0.3); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; z-index: 10000; transition: transform 0.2s, box-shadow 0.2s; font-family: 'EB Garamond', Georgia, serif; }
+#mg-faq-bubble:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(201,168,76,0.6), 0 6px 14px rgba(0,0,0,0.35); }
+.mg-faq-bubble-icon { font-size: 32px; color: #0f111c; line-height: 1; }
+.mg-faq-bubble-label { font-size: 0.78rem; font-weight: 700; color: #0f111c; letter-spacing: 0.02em; line-height: 1; white-space: nowrap; }
+.mg-faq-bubble-dot { position: absolute; top: 6px; right: 6px; width: 10px; height: 10px; background: #ef4444; border-radius: 50%; border: 2px solid #d4b556; }
 #mg-faq-panel { position: fixed; bottom: 92px; right: 20px; width: 360px; max-width: calc(100vw - 40px); height: 540px; max-height: calc(100vh - 120px); background: #0f111c; border: 1px solid rgba(201,168,76,0.4); border-radius: 16px; display: flex; flex-direction: column; box-shadow: 0 18px 50px rgba(0,0,0,0.55); z-index: 10000; font-family: 'EB Garamond', Georgia, serif; overflow: hidden; }
-.mg-faq-header { padding: 14px 18px; background: rgba(201,168,76,0.12); border-bottom: 1px solid rgba(201,168,76,0.25); display: flex; justify-content: space-between; align-items: center; }
+#mg-faq-panel[hidden] { display: none !important; }
+.mg-faq-header { padding: 14px 18px; background: rgba(201,168,76,0.12); border-bottom: 1px solid rgba(201,168,76,0.25); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
 .mg-faq-title { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1rem; font-weight: 700; letter-spacing: 0.05em; }
 .mg-faq-subtitle { color: rgba(232,224,208,0.55); font-size: 0.78rem; font-style: italic; margin-top: 2px; }
 #mg-faq-close { background: transparent; border: 0; color: rgba(232,224,208,0.7); font-size: 26px; line-height: 1; cursor: pointer; padding: 0 4px; }
 #mg-faq-close:hover { color: #c9a84c; }
-.mg-faq-messages { flex: 1; padding: 16px 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: rgba(15,17,28,0.95); }
+.mg-faq-messages { flex: 1 1 auto; min-height: 0; padding: 16px 14px; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; gap: 10px; background: rgba(15,17,28,0.95); scrollbar-width: thin; scrollbar-color: rgba(201,168,76,0.4) transparent; }
+.mg-faq-messages::-webkit-scrollbar { width: 8px; }
+.mg-faq-messages::-webkit-scrollbar-track { background: transparent; }
+.mg-faq-messages::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.35); border-radius: 4px; }
+.mg-faq-messages::-webkit-scrollbar-thumb:hover { background: rgba(201,168,76,0.6); }
 .mg-faq-msg { padding: 10px 14px; border-radius: 12px; font-size: 0.92rem; line-height: 1.45; max-width: 88%; word-wrap: break-word; }
 .mg-faq-msg-bot { background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.22); color: rgba(232,224,208,0.92); align-self: flex-start; }
 .mg-faq-msg-user { background: #c9a84c; color: #0f111c; align-self: flex-end; }
 .mg-faq-msg-bot a { color: #c9a84c; text-decoration: underline; }
 .mg-faq-msg-bot strong { color: #c9a84c; }
 .mg-faq-msg-bot em { color: rgba(232,224,208,0.65); font-style: italic; }
-.mg-faq-form { display: flex; gap: 8px; padding: 12px 14px; border-top: 1px solid rgba(201,168,76,0.2); background: rgba(15,17,28,0.95); }
+.mg-faq-form { display: flex; gap: 8px; padding: 12px 14px; border-top: 1px solid rgba(201,168,76,0.2); background: rgba(15,17,28,0.95); flex-shrink: 0; }
 #mg-faq-input { flex: 1; background: rgba(30,34,52,0.55); border: 1px solid rgba(201,168,76,0.25); border-radius: 8px; padding: 9px 12px; color: #e8e0d0; font-family: 'EB Garamond', Georgia, serif; font-size: 0.95rem; box-sizing: border-box; }
 #mg-faq-input:focus { outline: none; border-color: #c9a84c; }
 .mg-faq-form button[type="submit"] { background: #c9a84c; color: #0f111c; border: 0; width: 40px; height: 40px; border-radius: 8px; font-size: 18px; cursor: pointer; font-weight: 700; }
 .mg-faq-form button[type="submit"]:hover { background: #d4b556; }
-.mg-faq-suggested { padding: 0 14px 12px; display: flex; flex-wrap: wrap; gap: 6px; background: rgba(15,17,28,0.95); }
+.mg-faq-suggested { padding: 0 14px 12px; display: flex; flex-wrap: wrap; gap: 6px; background: rgba(15,17,28,0.95); flex-shrink: 0; max-height: 96px; overflow-y: auto; }
 .mg-faq-suggest { background: rgba(30,34,52,0.6); border: 1px solid rgba(201,168,76,0.25); color: #c9a84c; padding: 6px 10px; border-radius: 99px; font-size: 0.78rem; font-family: 'EB Garamond', Georgia, serif; cursor: pointer; transition: all 0.15s; }
 .mg-faq-suggest:hover { background: rgba(201,168,76,0.15); border-color: #c9a84c; }
 @media (max-width: 480px) {
-  #mg-faq-panel { width: calc(100vw - 24px); right: 12px; bottom: 80px; }
-  #mg-faq-bubble { right: 14px; bottom: 14px; }
+  #mg-faq-panel { width: calc(100vw - 24px); right: 12px; bottom: 108px; height: calc(100vh - 140px); }
+  #mg-faq-bubble { right: 14px; bottom: 14px; width: 74px; min-height: 78px; }
+  .mg-faq-bubble-icon { font-size: 28px; }
+  .mg-faq-bubble-label { font-size: 0.7rem; }
 }
 </style>
 

@@ -382,7 +382,22 @@ export const prerender = true;
     if (window.Chess && window.Chessboard && window.jQuery) cb();
     else setTimeout(function() { whenReady(cb); }, 50);
   }
-  whenReady(loadThemes);
+  whenReady(function() {
+    // Check for ?theme=<key> URL param (used by entry points like Endgame Trainer)
+    var preselect = null;
+    try {
+      var params = new URLSearchParams(window.location.search);
+      preselect = params.get('theme');
+    } catch (e) {}
+    if (preselect) {
+      // Skip the picker; jump straight to the requested theme
+      startTheme(preselect);
+      // Still load themes manifest in background so "Change theme" works
+      loadThemes();
+    } else {
+      loadThemes();
+    }
+  });
 })();
 </script>
 <!-- ============================================================

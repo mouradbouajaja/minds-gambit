@@ -1,11 +1,21 @@
 ---
 /*
  watch.astro — The Mind's Gambit
- Fetches signed video URLs from the secure /api/feed endpoint
+ Fetches signed video URLs from the secure /api/feed endpoint.
+ Wrapped in try/catch so the page renders even if the API hiccups (Vercel
+ function-to-function calls can intermittently fail during cold starts).
 */
 const feedUrl = '/api/feed';
-const response = await fetch(new URL(feedUrl, Astro.url));
-const feed = await response.json();
+let feed: any = { title: "Mind's Gambit", description: "Watch — content loading", categories: [] };
+try {
+  const response = await fetch(new URL(feedUrl, Astro.url));
+  if (response.ok) {
+    feed = await response.json();
+  }
+} catch (err) {
+  console.error('watch.astro feed fetch failed:', err);
+  // Fall through to default empty feed so the page still renders.
+}
 ---
 <html lang="en">
 <head>

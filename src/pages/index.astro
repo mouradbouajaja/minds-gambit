@@ -30,6 +30,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </ul>
       </li>
       <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
       <li><a href="https://buymeacoffee.com/mouradbouajaja" target="_blank" rel="noopener" class="nav-btn">&#9749; Buy Me a Coffee</a></li>
     </ul>
   </div>
@@ -852,30 +853,28 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <div class="particles-container" id="particles"></div>
 
 <!-- NAV -->
-<nav id="navbar">
+<nav>
   <div class="nav-inner">
     <a href="#home" class="nav-logo"><img src="/images/logo.jpg" alt="Mind's Gambit" style="height:55px;width:55px;border-radius:50%;object-fit:cover;border:2px solid #c8a84e;margin-left:10px;vertical-align:middle;" /></a>
-    <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
     <ul class="nav-links">
       <li><a href="#home">Home</a></li>
-      <li><a href="#about">About</a></li>
       <li><a href="#book">The Book</a></li>
-      <li><a href="/blog">Blog</a></li>
       <li><a href="#documentary">Documentary</a></li>
-      <li><a href="#portfolio">Portfolio</a></li>
-      <li><a href="#services">Services</a></li>
-      <li class="has-dropdown">
-        <a href="/chess-school/grandmasters" class="dropdown-toggle">Chess School <span class="caret">&#9662;</span></a>
+      <li><a href="/blog">Blog</a></li>
+      <li class="dropdown"><a href="/chess-school" class="dropdown-toggle">Chess School &#9662;</a>
         <ul class="dropdown-menu">
-          <li><a href="/chess-school/grandmasters">Learn from Grandmasters</a></li>
-          <li><a href="/chess-school/resources">Chess Resources</a></li>
-          <li><a href="/chess-school/learn-to-play">Learn How to Play Chess</a></li>
+          <li><a href="/chess-school">Chess School Home</a></li>
+          <li><a href="/chess-school/puzzles">Daily Puzzle</a></li>
+          <li><a href="/chess-school/train">Train Now</a></li>
+          <li><a href="/chess-school/tactics">Tactics Trainer</a></li>
+          <li><a href="/chess-school/grandmasters">Grandmasters</a></li>
+          <li><a href="/chess-school/learn-to-play">Learn to Play</a></li>
+          <li><a href="/chess-school/resources">Resources</a></li>
         </ul>
       </li>
-      <li><a href="#donate">Donate</a></li>
+      <li><a href="#about">About</a></li>
       <li><a href="#contact">Contact</a></li>
+      <li><a href="https://buymeacoffee.com/mouradbouajaja" target="_blank" rel="noopener" class="nav-btn">&#9749; Buy Me a Coffee</a></li>
     </ul>
   </div>
 </nav>

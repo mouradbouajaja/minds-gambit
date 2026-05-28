@@ -10,31 +10,27 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <div class="particles-container" id="particles"></div>
 
 <!-- NAV -->
-<nav id="navbar">
+<nav>
   <div class="nav-inner">
     <a href="#home" class="nav-logo"><img src="/images/logo.jpg" alt="Mind's Gambit" style="height:55px;width:55px;border-radius:50%;object-fit:cover;border:2px solid #c8a84e;margin-left:10px;vertical-align:middle;" /></a>
-    <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
     <ul class="nav-links">
       <li><a href="#home">Home</a></li>
-      <li><a href="#about">About</a></li>
       <li><a href="#book">The Book</a></li>
-      <li><a href="/blog">Blog</a></li>
       <li><a href="#documentary">Documentary</a></li>
-      <li><a href="#portfolio">Portfolio</a></li>
-      <li><a href="#services">Services</a></li>
-      <li class="has-dropdown">
-        <a href="/chess-school/grandmasters" class="dropdown-toggle">Chess School <span class="caret">&#9662;</span></a>
+      <li><a href="/blog">Blog</a></li>
+      <li class="dropdown"><a href="/chess-school" class="dropdown-toggle">Chess School &#9662;</a>
         <ul class="dropdown-menu">
+          <li><a href="/chess-school">Chess School Home</a></li>
           <li><a href="/chess-school/puzzles">Daily Puzzle</a></li>
-          <li><a href="/chess-school/grandmasters">Learn from Grandmasters</a></li>
-          <li><a href="/chess-school/resources">Chess Resources</a></li>
-          <li><a href="/chess-school/learn-to-play">Learn How to Play Chess</a></li>
+          <li><a href="/chess-school/train">Train Now</a></li>
+          <li><a href="/chess-school/tactics">Tactics Trainer</a></li>
+          <li><a href="/chess-school/grandmasters">Grandmasters</a></li>
+          <li><a href="/chess-school/learn-to-play">Learn to Play</a></li>
+          <li><a href="/chess-school/resources">Resources</a></li>
         </ul>
       </li>
-      <li><a href="#donate">Donate</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="https://buymeacoffee.com/mouradbouajaja" target="_blank" rel="noopener" class="nav-btn">&#9749; Buy Me a Coffee</a></li>
     </ul>
   </div>
 </nav>
@@ -502,31 +498,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </section>
 
 <!-- BOOKS & PORTFOLIO -->
-<section id="portfolio" data-reveal>
-  <div class="section-inner">
-    <h2 class="section-title">Books &amp; Portfolio</h2>
-    <p class="section-subtitle">Published works, ongoing projects, and selected writing.</p>
-    <div class="portfolio-grid">
-      <div class="portfolio-card featured">
-        <div class="portfolio-badge">Upcoming Book</div>
-        <h3>The Mind's Gambit</h3>
-        <p>Chess, Madness, and the Battle for the Mind &#8212; a book in ten chapters exploring the intersection of competitive chess, child welfare, and mental health. Expected 2026.</p>
-      </div>
-      <div class="portfolio-card">
-        <div class="portfolio-badge">Blog Series</div>
-        <h3>Articles &amp; Essays</h3>
-        <p>Ongoing essays exploring chess culture, institutional accountability, and the psychology of competition from a social worker's perspective.</p>
-        <p class="coming-soon-blink">Coming Soon</p>
-      </div>
-      <div class="portfolio-card">
-        <div class="portfolio-badge">Research</div>
-        <h3>Academic &amp; Professional</h3>
-        <p>Selected research and professional writing on child protection policy, systemic reform, and the sociology of competitive youth sports.</p>
-        <p class="coming-soon-blink">Coming Soon</p>
-      </div>
-    </div>
-  </div>
-</section>
+
 
 <!-- RESOURCES & FREEBIES -->
 <section id="resources" data-reveal>
@@ -596,62 +568,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </section>
 
 <!-- SERVICES -->
-<section id="services" data-reveal>
-  <div class="section-inner">
-    <h2 class="section-title">Services</h2>
-    <p class="section-subtitle">Speaking, consulting, and collaboration opportunities.</p>
-    <div class="services-grid">
-      <div class="service-card">
-        <h3>Keynote Speaking</h3>
-        <p>Engaging talks on chess psychology, child protection in competitive sports, mental health advocacy, and systemic reform. Available for conferences, universities, and organizations.</p>
-      </div>
-      <div class="service-card">
-        <h3>Workshops</h3>
-        <p>Interactive workshops for chess organizations, schools, and youth sports programs on creating safer competitive environments and recognizing warning signs.</p>
-      </div>
-      <div class="service-card">
-        <h3>Consulting</h3>
-        <p>Advisory services for organizations looking to improve child safeguarding policies, mental health support systems, and ethical governance in competitive programs.</p>
-      </div>
-      <div class="service-card">
-        <h3>Documentary &amp; Media Appearances</h3>
-        <p>Available for interviews and guest appearances on documentary projects, audio programs, and panels covering chess, mental health, child welfare, sports psychology, and social justice topics.</p>
-      </div>
-    </div>
-  </div>
-</section>
+
 
 <!-- DONATE -->
-<section id="donate" data-reveal>
-  <div class="section-inner">
-    <h2 class="section-title">Support This Work</h2>
-    <p class="section-subtitle">Your generosity helps keep this research independent and this content free for everyone.</p>
-    <div class="donation-content">
-      <div class="donation-tiers">
-        <div class="donation-tier">
-          <h3>$5</h3>
-          <p class="tier-name">Coffee Fund</p>
-          <p>Help fuel the late-night writing sessions that make these chapters possible.</p>
-        </div>
-        <div class="donation-tier featured">
-          <h3>$25</h3>
-          <p class="tier-name">Chapter Sponsor</p>
-          <p>Support the research and writing of a full chapter. Your name will appear in the acknowledgements.</p>
-        </div>
-        <div class="donation-tier">
-          <h3>$100</h3>
-          <p class="tier-name">Patron</p>
-          <p>Receive early access to chapters, exclusive behind-the-scenes content, and a signed copy when published.</p>
-        </div>
-      </div>
-      <div class="donation-cta">
-        <p class="donation-appeal">Your donation will help support my work in bringing these important stories to light. Every contribution, no matter the size, makes a difference in keeping this research independent and accessible.</p>
-        <a href="https://www.buymeacoffee.com/mouradbouajaja" target="_blank" rel="noopener" class="cta-button">Support My Work</a>
-        <p class="donation-thanks">Thank you for believing in this project. Your support means the world to me and helps ensure these stories are told with the care and depth they deserve.</p>
-      </div>
-    </div>
-  </div>
-</section>
+
 
 <!-- DEDICATION -->
 <section id="dedication" data-reveal>
@@ -1423,31 +1343,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </section>
 
 <!-- BOOKS & PORTFOLIO -->
-<section id="portfolio" data-reveal>
-  <div class="section-inner">
-    <h2 class="section-title">Books &amp; Portfolio</h2>
-    <p class="section-subtitle">Published works, ongoing projects, and selected writing.</p>
-    <div class="portfolio-grid">
-      <div class="portfolio-card featured">
-        <div class="portfolio-badge">Upcoming Book</div>
-        <h3>The Mind's Gambit</h3>
-        <p>Chess, Madness, and the Battle for the Mind &#8212; a book in ten chapters exploring the intersection of competitive chess, child welfare, and mental health. Expected 2026.</p>
-      </div>
-      <div class="portfolio-card">
-        <div class="portfolio-badge">Blog Series</div>
-        <h3>Articles &amp; Essays</h3>
-        <p>Ongoing essays exploring chess culture, institutional accountability, and the psychology of competition from a social worker's perspective.</p>
-        <p class="coming-soon-blink">Coming Soon</p>
-      </div>
-      <div class="portfolio-card">
-        <div class="portfolio-badge">Research</div>
-        <h3>Academic &amp; Professional</h3>
-        <p>Selected research and professional writing on child protection policy, systemic reform, and the sociology of competitive youth sports.</p>
-        <p class="coming-soon-blink">Coming Soon</p>
-      </div>
-    </div>
-  </div>
-</section>
+
 
 <!-- RESOURCES & FREEBIES -->
 <section id="resources" data-reveal>
@@ -1517,62 +1413,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </section>
 
 <!-- SERVICES -->
-<section id="services" data-reveal>
-  <div class="section-inner">
-    <h2 class="section-title">Services</h2>
-    <p class="section-subtitle">Speaking, consulting, and collaboration opportunities.</p>
-    <div class="services-grid">
-      <div class="service-card">
-        <h3>Keynote Speaking</h3>
-        <p>Engaging talks on chess psychology, child protection in competitive sports, mental health advocacy, and systemic reform. Available for conferences, universities, and organizations.</p>
-      </div>
-      <div class="service-card">
-        <h3>Workshops</h3>
-        <p>Interactive workshops for chess organizations, schools, and youth sports programs on creating safer competitive environments and recognizing warning signs.</p>
-      </div>
-      <div class="service-card">
-        <h3>Consulting</h3>
-        <p>Advisory services for organizations looking to improve child safeguarding policies, mental health support systems, and ethical governance in competitive programs.</p>
-      </div>
-      <div class="service-card">
-        <h3>Documentary &amp; Media Appearances</h3>
-        <p>Available for interviews and guest appearances on documentary projects, audio programs, and panels covering chess, mental health, child welfare, sports psychology, and social justice topics.</p>
-      </div>
-    </div>
-  </div>
-</section>
+
 
 <!-- DONATE -->
-<section id="donate" data-reveal>
-  <div class="section-inner">
-    <h2 class="section-title">Support This Work</h2>
-    <p class="section-subtitle">Your generosity helps keep this research independent and this content free for everyone.</p>
-    <div class="donation-content">
-      <div class="donation-tiers">
-        <div class="donation-tier">
-          <h3>$5</h3>
-          <p class="tier-name">Coffee Fund</p>
-          <p>Help fuel the late-night writing sessions that make these chapters possible.</p>
-        </div>
-        <div class="donation-tier featured">
-          <h3>$25</h3>
-          <p class="tier-name">Chapter Sponsor</p>
-          <p>Support the research and writing of a full chapter. Your name will appear in the acknowledgements.</p>
-        </div>
-        <div class="donation-tier">
-          <h3>$100</h3>
-          <p class="tier-name">Patron</p>
-          <p>Receive early access to chapters, exclusive behind-the-scenes content, and a signed copy when published.</p>
-        </div>
-      </div>
-      <div class="donation-cta">
-        <p class="donation-appeal">Your donation will help support my work in bringing these important stories to light. Every contribution, no matter the size, makes a difference in keeping this research independent and accessible.</p>
-        <a href="https://www.buymeacoffee.com/mouradbouajaja" target="_blank" rel="noopener" class="cta-button">Support My Work</a>
-        <p class="donation-thanks">Thank you for believing in this project. Your support means the world to me and helps ensure these stories are told with the care and depth they deserve.</p>
-      </div>
-    </div>
-  </div>
-</section>
+
 
 <!-- DEDICATION -->
 <section id="dedication" data-reveal>

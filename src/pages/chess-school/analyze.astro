@@ -446,6 +446,260 @@ export const prerender = true;
 })();
 </script>
 
+
+<!-- ============================================================
+     MIND'S GAMBIT FAQ BOT — Static keyword-search bot.
+     Free. No API calls. Edit the FAQ_DATA array below to add Q&As.
+============================================================ -->
+<button id="mg-faq-bubble" type="button" aria-label="Help and FAQ">
+  <span class="mg-faq-bubble-icon">&#9819;</span>
+  <span class="mg-faq-bubble-dot"></span>
+</button>
+
+<div id="mg-faq-panel" hidden>
+  <header class="mg-faq-header">
+    <div>
+      <div class="mg-faq-title">Mind&rsquo;s Gambit Help</div>
+      <div class="mg-faq-subtitle">Ask anything &middot; instant answers</div>
+    </div>
+    <button id="mg-faq-close" type="button" aria-label="Close">&times;</button>
+  </header>
+  <div class="mg-faq-messages" id="mg-faq-messages"></div>
+  <form class="mg-faq-form" id="mg-faq-form" autocomplete="off">
+    <input type="text" id="mg-faq-input" placeholder="Type your question&hellip;" maxlength="200" autocomplete="off" />
+    <button type="submit" aria-label="Send">&#10142;</button>
+  </form>
+  <div class="mg-faq-suggested" id="mg-faq-suggested"></div>
+</div>
+
+<script is:inline>
+(function() {
+  'use strict';
+
+  // ----- FAQ DATABASE -----
+  // Edit this array to add/remove Q&As. Each entry has:
+  //   keywords: array of words/phrases that trigger this answer (lowercase)
+  //   q: short display question (shown in suggested list)
+  //   a: the answer (HTML allowed)
+  var FAQ_DATA = [
+    { keywords: ['daily puzzle', 'puzzle of the day', 'today puzzle', 'how puzzle work'],
+      q: 'How does the Daily Puzzle work?',
+      a: 'Every visitor sees the <strong>same puzzle each calendar day</strong>, drawn from 5.94 million puzzles in the Lichess Open Puzzle Database (CC0, public domain). The puzzle is picked deterministically by date, so you and a friend will see the same puzzle on the same day. Tomorrow it rotates automatically.' },
+    { keywords: ['account', 'login', 'sign up', 'signup', 'register'],
+      q: 'Do I need an account?',
+      a: '<strong>No.</strong> Mind&rsquo;s Gambit Chess School works without any signup. Your puzzle streak, ELO rating, display name, and game stats are saved in your browser&rsquo;s local storage. They persist between visits on the same device.' },
+    { keywords: ['elo', 'rating', 'how rating work'],
+      q: 'How does the ELO rating work?',
+      a: 'Your rating starts at <strong>1200</strong>. Each game vs the engine adjusts it using the standard ELO formula. Engine strength is mapped to ratings (skill 0 ≈ 800, skill 10 ≈ 1800, skill 20 ≈ 2800). Win a tougher engine = bigger rating jump. Lose to a weaker one = bigger drop. Your <strong>peak rating</strong> is tracked separately so you never lose it.' },
+    { keywords: ['stockfish', 'engine', 'what engine'],
+      q: 'What is Stockfish?',
+      a: '<strong>Stockfish</strong> is the world&rsquo;s leading open-source chess engine, developed by an international team since 2008. Mind&rsquo;s Gambit uses Stockfish under the hood: the older pure-JS version for the in-browser Play page, and the latest <strong>Stockfish 17 NNUE</strong> (via Lichess Cloud Eval) for Game Analysis. Free, open-source, GPL v3.' },
+    { keywords: ['progress', 'save', 'data', 'sync', 'devices'],
+      q: 'How is my progress saved?',
+      a: 'Everything is saved in your browser&rsquo;s <strong>localStorage</strong> on this device. No accounts. No backend. No tracking. Switching devices or clearing your browser data will reset your stats. This is the trade-off for "no signup required" — we&rsquo;re working on optional cross-device sync as a future feature.' },
+    { keywords: ['coach', 'lesson', 'book', 'teacher', 'grandmaster'],
+      q: 'Can I book a lesson with a coach?',
+      a: 'Yes. Click <a href="/chess-school/grandmasters">Grandmasters</a> in the nav (or the tile on the Chess School hub). Each coach has their own profile with hourly rate, languages, and a contact button. Currently featuring <strong>WGM Maryana Huda</strong> with more titled players joining soon.' },
+    { keywords: ['become coach', 'apply', 'titled', 'join roster'],
+      q: 'How do I become a coach on Mind\'s Gambit?',
+      a: 'If you’re a titled player (GM, IM, WGM, WIM, FM, WFM, NM, CM), visit the <a href="/chess-school/grandmasters">Grandmasters page</a> and click <strong>"Apply as a Founding Coach"</strong>. <strong>Free for 6 months</strong> — you keep 100% of your lesson fees, no exclusivity required.' },
+    { keywords: ['free', 'cost', 'price', 'how much'],
+      q: 'Is Mind\'s Gambit free?',
+      a: 'All the puzzle, engine, and analysis features are <strong>completely free</strong>. No ads, no subscriptions, no upsells. Only paid feature: one-on-one lessons with our titled coaches, which goes directly to the coach.' },
+    { keywords: ['tactics trainer', 'tactics by theme', 'pin fork', 'training'],
+      q: 'How does the Tactics Trainer work?',
+      a: 'Pick a tactical theme — pin, fork, mate-in-2, endgame, etc. — and grind puzzles tagged with that pattern. We have <strong>73 themes</strong> indexed across 5.94M puzzles. Your accuracy is tracked per session.' },
+    { keywords: ['train now', 'random puzzle', 'just train'],
+      q: 'What is Train Now?',
+      a: '<strong>Train Now</strong> is the fastest way to start practicing: one click, random puzzle loads, solve it, next puzzle auto-loads. No theme filter, no menus. Tracks your solved / attempted / accuracy stats per session.' },
+    { keywords: ['analysis', 'analyze game', 'pgn', 'review game'],
+      q: 'How does Game Analysis work?',
+      a: 'Paste your game in PGN format on the <a href="/chess-school/analyze">Analyze page</a>. We evaluate every move using <strong>Stockfish 17 NNUE</strong> via the Lichess Cloud Eval API. You’ll see Blunder / Mistake / Inaccuracy / Best Move tags, plus the best move you should have played.' },
+    { keywords: ['pgn', 'pgn format', 'where to get pgn'],
+      q: 'Where do I get a PGN file?',
+      a: 'Every chess platform lets you export games as PGN. On Lichess: open the game, click "Export PGN". On Chess.com: open the game, click the share icon, then "Download PGN". OTB games can be entered move by move in any analysis tool.' },
+    { keywords: ['streak', 'daily streak', 'streak count'],
+      q: 'How does the daily streak work?',
+      a: 'Solve the Daily Puzzle on consecutive calendar days to build a streak. Miss a day and the streak resets to 1 (not zero — not a punishment, just an honest signal). Your streak is saved in your browser.' },
+    { keywords: ['play another person', 'pass and play', 'two player', 'with friend'],
+      q: 'Can I play vs another person?',
+      a: '<strong>Coming soon.</strong> Pass &amp; Play (two players, one device) is on the roadmap. Online matchmaking against other Mind’s Gambit users is a longer-term build. For now, the Play page is vs the engine.' },
+    { keywords: ['mobile', 'phone', 'iphone', 'android'],
+      q: 'Does it work on mobile?',
+      a: 'Yes. All pages are responsive. The board is drag-and-drop on touch. Daily Puzzle, Train Now, Tactics, Play, and Analysis all work on phone. If anything looks broken on your device, please email mourad@mindsgambit.com.' },
+    { keywords: ['browser', 'safari', 'chrome', 'firefox'],
+      q: 'Which browser should I use?',
+      a: 'Any modern browser: Chrome, Edge, Firefox, Safari. JavaScript needs to be enabled. The chess engine runs entirely in your browser (no server-side processing), so older browsers may be slower.' },
+    { keywords: ['stockfish 17', 'latest stockfish', 'engine version'],
+      q: 'Which version of Stockfish do you use?',
+      a: 'The <strong>Play page</strong> uses Stockfish 7 (pure JavaScript, ~3300 Elo — strong enough to beat almost any human). The <strong>Analyze page</strong> uses <strong>Stockfish 17 NNUE</strong> via the Lichess Cloud Eval API (the latest, ~3700 Elo).' },
+    { keywords: ['lichess', 'chess.com', 'compare'],
+      q: 'How is this different from Lichess or Chess.com?',
+      a: 'Three things: (1) <strong>no ads, no upsells, no tracking</strong> — we have nothing to sell you; (2) <strong>integrated with The Mind’s Gambit</strong> book and documentary so chess sits alongside writing about chess; (3) we feature a <strong>curated roster of titled coaches</strong> rather than thousands of unverified profiles. We use both sites’ open data (Lichess puzzle DB, Stockfish engine).' },
+    { keywords: ['founder', 'who built', 'mourad', 'mourad bouajaja'],
+      q: 'Who built this?',
+      a: '<a href="/#about">Mourad Bouajaja</a> — author of <em>The Mind’s Gambit: Chess, Madness, and the Battle for the Mind</em>, documentary maker, chess player. Mind’s Gambit Chess School is a production of MYB Studio LLC.' },
+    { keywords: ['book', 'the book', 'where to buy'],
+      q: 'Where can I read The Mind\'s Gambit book?',
+      a: 'Visit <a href="/#book">The Book section</a> on the homepage for sample chapters and purchase links. The chess school is named after the book; the book is built on the documentary; everything connects.' },
+    { keywords: ['documentary', 'watch', 'episodes', 'video'],
+      q: 'How do I watch the documentary?',
+      a: 'Go to <a href="/watch">/watch</a> (Documentary). The Mind’s Gambit is a 10-episode documentary series chronicling the intellectual journey behind the book. Episodes are also available on YouTube.' },
+    { keywords: ['donate', 'support', 'buy coffee'],
+      q: 'How can I support Mind\'s Gambit?',
+      a: 'If any of this has helped you, you can <a href="https://buymeacoffee.com/mouradbouajaja" target="_blank" rel="noopener">buy us a coffee</a>. There’s also a tip jar in the top nav of every page (the gold button). Beyond money: tell a chess friend about us. Word of mouth is the only marketing we do.' },
+    { keywords: ['bug', 'report', 'error', 'broken', 'not working'],
+      q: 'Something is broken — how do I report it?',
+      a: 'Email <a href="mailto:mourad@mindsgambit.com">mourad@mindsgambit.com</a> with: (1) which page, (2) what device/browser, (3) what you expected, (4) what happened. Screenshots help a lot. We fix things fast.' },
+    { keywords: ['contact', 'email', 'reach out'],
+      q: 'How do I contact Mourad?',
+      a: 'Email <a href="mailto:mourad@mindsgambit.com">mourad@mindsgambit.com</a>. Or use the <a href="/#contact">Contact section</a> on the homepage.' },
+    { keywords: ['privacy', 'tracking', 'cookies', 'data'],
+      q: 'Does Mind\'s Gambit track me?',
+      a: '<strong>No tracking pixels, no third-party analytics, no ads.</strong> Your puzzle progress and ELO are saved in <em>your</em> browser’s localStorage — we never see it. The only data sent to a third party is the game position FEN sent to Lichess Cloud Eval API when you use Game Analysis (Lichess privacy policy applies).' }
+  ];
+
+  // ----- Bot logic -----
+  var bubble = document.getElementById('mg-faq-bubble');
+  var panel = document.getElementById('mg-faq-panel');
+  var closeBtn = document.getElementById('mg-faq-close');
+  var form = document.getElementById('mg-faq-form');
+  var input = document.getElementById('mg-faq-input');
+  var messagesEl = document.getElementById('mg-faq-messages');
+  var suggestedEl = document.getElementById('mg-faq-suggested');
+
+  if (!bubble || !panel) return;
+
+  function openPanel() {
+    panel.removeAttribute('hidden');
+    panel.classList.add('mg-faq-open');
+    input.focus();
+    if (!messagesEl.children.length) greet();
+  }
+  function closePanel() {
+    panel.setAttribute('hidden', '');
+    panel.classList.remove('mg-faq-open');
+  }
+  bubble.addEventListener('click', function() {
+    if (panel.hasAttribute('hidden')) openPanel(); else closePanel();
+  });
+  closeBtn.addEventListener('click', closePanel);
+
+  function addMessage(text, sender) {
+    var div = document.createElement('div');
+    div.className = 'mg-faq-msg mg-faq-msg-' + sender;
+    div.innerHTML = text;
+    messagesEl.appendChild(div);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function score(query, keywords) {
+    var q = query.toLowerCase();
+    var s = 0;
+    for (var i = 0; i < keywords.length; i++) {
+      var k = keywords[i].toLowerCase();
+      if (q.indexOf(k) !== -1) s += k.length * 2;
+      // Also score individual words
+      var words = k.split(/\s+/);
+      for (var w = 0; w < words.length; w++) {
+        if (words[w].length >= 3 && q.indexOf(words[w]) !== -1) s += 1;
+      }
+    }
+    return s;
+  }
+
+  function answer(query) {
+    var best = null;
+    var bestScore = 0;
+    for (var i = 0; i < FAQ_DATA.length; i++) {
+      var s = score(query, FAQ_DATA[i].keywords);
+      if (s > bestScore) { bestScore = s; best = FAQ_DATA[i]; }
+    }
+    if (best && bestScore >= 3) return best.a;
+    return null;
+  }
+
+  function greet() {
+    addMessage('Hi! I’m the Mind’s Gambit help bot. Ask anything about the chess school — puzzles, the engine, coaches, your rating, anything. Or pick a suggested question below.', 'bot');
+    showSuggestions(['How does the Daily Puzzle work?', 'How does the ELO rating work?', 'Can I book a lesson with a coach?', 'Is Mind’s Gambit free?']);
+  }
+
+  function showSuggestions(questions) {
+    suggestedEl.innerHTML = '';
+    for (var i = 0; i < questions.length; i++) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'mg-faq-suggest';
+      btn.textContent = questions[i];
+      (function(q) { btn.addEventListener('click', function() { handleQuery(q); }); })(questions[i]);
+      suggestedEl.appendChild(btn);
+    }
+  }
+
+  function handleQuery(query) {
+    suggestedEl.innerHTML = '';
+    addMessage(query, 'user');
+    var a = answer(query);
+    if (a) {
+      setTimeout(function() { addMessage(a, 'bot'); }, 200);
+    } else {
+      setTimeout(function() {
+        addMessage('I don’t have a stock answer for that one yet. Email <a href="mailto:mourad@mindsgambit.com">mourad@mindsgambit.com</a> and Mourad will reply personally — he usually answers within a day.', 'bot');
+        // Show 4 random other suggestions
+        var sample = [];
+        var pool = FAQ_DATA.slice();
+        for (var i = 0; i < 4 && pool.length; i++) {
+          var idx = Math.floor(Math.random() * pool.length);
+          sample.push(pool[idx].q);
+          pool.splice(idx, 1);
+        }
+        showSuggestions(sample);
+      }, 200);
+    }
+  }
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var q = input.value.trim();
+    if (!q) return;
+    input.value = '';
+    handleQuery(q);
+  });
+})();
+</script>
+
+<style>
+#mg-faq-bubble { position: fixed; bottom: 20px; right: 20px; width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #c9a84c, #d4b556); border: 0; cursor: pointer; box-shadow: 0 8px 22px rgba(201,168,76,0.45), 0 4px 10px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; z-index: 10000; transition: transform 0.2s; }
+#mg-faq-bubble:hover { transform: scale(1.08); }
+.mg-faq-bubble-icon { font-size: 28px; color: #0f111c; line-height: 1; }
+.mg-faq-bubble-dot { position: absolute; top: 8px; right: 8px; width: 10px; height: 10px; background: #ef4444; border-radius: 50%; border: 2px solid #d4b556; }
+#mg-faq-panel { position: fixed; bottom: 92px; right: 20px; width: 360px; max-width: calc(100vw - 40px); height: 540px; max-height: calc(100vh - 120px); background: #0f111c; border: 1px solid rgba(201,168,76,0.4); border-radius: 16px; display: flex; flex-direction: column; box-shadow: 0 18px 50px rgba(0,0,0,0.55); z-index: 10000; font-family: 'EB Garamond', Georgia, serif; overflow: hidden; }
+.mg-faq-header { padding: 14px 18px; background: rgba(201,168,76,0.12); border-bottom: 1px solid rgba(201,168,76,0.25); display: flex; justify-content: space-between; align-items: center; }
+.mg-faq-title { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1rem; font-weight: 700; letter-spacing: 0.05em; }
+.mg-faq-subtitle { color: rgba(232,224,208,0.55); font-size: 0.78rem; font-style: italic; margin-top: 2px; }
+#mg-faq-close { background: transparent; border: 0; color: rgba(232,224,208,0.7); font-size: 26px; line-height: 1; cursor: pointer; padding: 0 4px; }
+#mg-faq-close:hover { color: #c9a84c; }
+.mg-faq-messages { flex: 1; padding: 16px 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: rgba(15,17,28,0.95); }
+.mg-faq-msg { padding: 10px 14px; border-radius: 12px; font-size: 0.92rem; line-height: 1.45; max-width: 88%; word-wrap: break-word; }
+.mg-faq-msg-bot { background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.22); color: rgba(232,224,208,0.92); align-self: flex-start; }
+.mg-faq-msg-user { background: #c9a84c; color: #0f111c; align-self: flex-end; }
+.mg-faq-msg-bot a { color: #c9a84c; text-decoration: underline; }
+.mg-faq-msg-bot strong { color: #c9a84c; }
+.mg-faq-msg-bot em { color: rgba(232,224,208,0.65); font-style: italic; }
+.mg-faq-form { display: flex; gap: 8px; padding: 12px 14px; border-top: 1px solid rgba(201,168,76,0.2); background: rgba(15,17,28,0.95); }
+#mg-faq-input { flex: 1; background: rgba(30,34,52,0.55); border: 1px solid rgba(201,168,76,0.25); border-radius: 8px; padding: 9px 12px; color: #e8e0d0; font-family: 'EB Garamond', Georgia, serif; font-size: 0.95rem; box-sizing: border-box; }
+#mg-faq-input:focus { outline: none; border-color: #c9a84c; }
+.mg-faq-form button[type="submit"] { background: #c9a84c; color: #0f111c; border: 0; width: 40px; height: 40px; border-radius: 8px; font-size: 18px; cursor: pointer; font-weight: 700; }
+.mg-faq-form button[type="submit"]:hover { background: #d4b556; }
+.mg-faq-suggested { padding: 0 14px 12px; display: flex; flex-wrap: wrap; gap: 6px; background: rgba(15,17,28,0.95); }
+.mg-faq-suggest { background: rgba(30,34,52,0.6); border: 1px solid rgba(201,168,76,0.25); color: #c9a84c; padding: 6px 10px; border-radius: 99px; font-size: 0.78rem; font-family: 'EB Garamond', Georgia, serif; cursor: pointer; transition: all 0.15s; }
+.mg-faq-suggest:hover { background: rgba(201,168,76,0.15); border-color: #c9a84c; }
+@media (max-width: 480px) {
+  #mg-faq-panel { width: calc(100vw - 24px); right: 12px; bottom: 80px; }
+  #mg-faq-bubble { right: 14px; bottom: 14px; }
+}
+</style>
+
 </BaseLayout>
 
 <style is:global>

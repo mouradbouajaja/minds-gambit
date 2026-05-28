@@ -277,7 +277,7 @@ export const prerender = true;
       onDrop: onDrop,
       onSnapEnd: function() { board.position(game.fen()); },
       pieceTheme: 'https://cdn.jsdelivr.net/gh/oakmac/chessboardjs@v1.0.0/website/img/chesspieces/wikipedia/{piece}.png',
-      moveSpeed: 'slow',
+      moveSpeed: 200,
       snapbackSpeed: 250
     });
 
@@ -315,7 +315,7 @@ export const prerender = true;
     if (evaluateGameOver()) return;
     setStatus('Engine thinking…', '');
     updateTurn();
-    setTimeout(requestEngineMove, 350);
+    setTimeout(requestEngineMove, 120);
   }
 
   function requestEngineMove() {
@@ -323,7 +323,10 @@ export const prerender = true;
     enginePending = true;
     var fen = game.fen();
     // Time per move scales with skill — easier engine = quick move; harder = think longer
-    var movetime = 200 + skillLevel * 90; // 200ms (skill 0) up to 2000ms (skill 20)
+    // Snappy move-time curve: 100ms at skill 0, 900ms at skill 20.
+    // Engine still plays full strength at low levels (Stockfish 7 finds best moves in <100ms in most positions);
+    // longer think-time at high levels stops it blundering due to time pressure.
+    var movetime = 100 + skillLevel * 40;
     stockfish.postMessage('position fen ' + fen);
     stockfish.postMessage('go movetime ' + movetime);
   }

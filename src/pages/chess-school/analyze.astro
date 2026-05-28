@@ -146,6 +146,22 @@ export const prerender = true;
 
   loadExampleBtn.addEventListener('click', function() { pgnInput.value = EXAMPLE_PGN; });
 
+  // ----- Auto-load PGN handed off from /play "Analyze This Game" CTA -----
+  try {
+    var pendingPgn = localStorage.getItem('mg_pending_pgn');
+    var pendingTs = parseInt(localStorage.getItem('mg_pending_pgn_ts') || '0', 10);
+    if (pendingPgn && pendingTs && (Date.now() - pendingTs) < 5 * 60 * 1000) {
+      pgnInput.value = pendingPgn;
+      localStorage.removeItem('mg_pending_pgn');
+      localStorage.removeItem('mg_pending_pgn_ts');
+      var notice = document.createElement('div');
+      notice.style.cssText = 'background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.35);color:#a7f3d0;padding:10px 14px;border-radius:8px;margin:0 0 1rem;font-size:0.92rem;';
+      notice.innerHTML = '&#9989; <strong>Game loaded from your Play session.</strong> Starting analysis automatically&hellip;';
+      if (pgnInput.parentNode) pgnInput.parentNode.insertBefore(notice, pgnInput);
+      setTimeout(function() { if (analyzeBtn) analyzeBtn.click(); }, 800);
+    }
+  } catch (e) {}
+
   // ----- Start fallback engine in background -----
   function initFallback() {
     fetch('https://cdn.jsdelivr.net/gh/lichess-org/stockfish.js@master/stockfish.js')

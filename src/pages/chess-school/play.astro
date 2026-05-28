@@ -122,7 +122,10 @@ export const prerender = true;
           <div class="game-over-title" id="game-over-title">&mdash;</div>
           <div class="game-over-sub" id="game-over-sub">&mdash;</div>
           <div class="rating-delta" id="rating-delta"></div>
-          <button class="ctrl-btn ctrl-btn-primary" id="btn-rematch" type="button">Play Again</button>
+          <div class="game-over-actions">
+            <button class="ctrl-btn ctrl-btn-primary" id="btn-rematch" type="button">Play Again</button>
+            <button class="ctrl-btn ctrl-btn-analyze" id="btn-analyze-game" type="button">Analyze This Game &rarr;</button>
+          </div>
         </div>
       </aside>
     </div>
@@ -370,6 +373,7 @@ export const prerender = true;
     resultRecorded = false;
     refreshPlayerUI();
     game = new Chess();
+    try { window.game = game; } catch (e) {}
     playerColorEl.textContent = userColor === 'w' ? 'White' : 'Black';
     engineSkillEl.textContent = skillLevel + ' / 20';
     moveListEl.innerHTML = '';
@@ -569,6 +573,169 @@ export const prerender = true;
   whenLibsReady(initStockfish);
 })();
 </script>
+
+<!-- ============================================================
+     ANALYSIS PILL + MODAL — Left-side pill that expands into a
+     modal with game analysis pricing + "Analyze This Game" CTA.
+============================================================ -->
+<button id="mg-analyze-pill" type="button" aria-label="Open Game Analysis" title="Click to review your game with Stockfish 17">
+  <span class="mg-analyze-icon">&#9822;</span>
+  <span class="mg-analyze-label">Analyze<br>Game</span>
+  <span class="mg-analyze-dot"></span>
+</button>
+
+<div id="mg-analyze-modal" hidden>
+  <div class="mg-analyze-backdrop" id="mg-analyze-backdrop"></div>
+  <div class="mg-analyze-card" role="dialog" aria-labelledby="mg-analyze-title" aria-modal="true">
+    <button class="mg-analyze-close" id="mg-analyze-close" type="button" aria-label="Close">&times;</button>
+    <div class="mg-analyze-header">
+      <span class="mg-analyze-piece">&#9822;</span>
+      <h2 id="mg-analyze-title">Game Analysis</h2>
+      <p class="mg-analyze-tagline">Reviewed by the latest and strongest engine on the planet &mdash; <strong>Stockfish 17</strong>, the Mind&rsquo;s Gambit preferred engine.</p>
+    </div>
+
+    <div class="mg-analyze-features">
+      <div class="mg-analyze-feature">
+        <span class="mg-analyze-check">&#10003;</span>
+        <div>
+          <div class="mg-analyze-feature-title">Every move tagged</div>
+          <div class="mg-analyze-feature-sub">Blunder &middot; Mistake &middot; Inaccuracy &middot; Best Move</div>
+        </div>
+      </div>
+      <div class="mg-analyze-feature">
+        <span class="mg-analyze-check">&#10003;</span>
+        <div>
+          <div class="mg-analyze-feature-title">The better move</div>
+          <div class="mg-analyze-feature-sub">See what you should have played, every time</div>
+        </div>
+      </div>
+      <div class="mg-analyze-feature">
+        <span class="mg-analyze-check">&#10003;</span>
+        <div>
+          <div class="mg-analyze-feature-title">Plain-English coach commentary</div>
+          <div class="mg-analyze-feature-sub">Optional. Explains what you missed and why &mdash; in language you can follow.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mg-analyze-pricing">
+      <div class="mg-analyze-price-row">
+        <span class="mg-analyze-price-label">Full game analysis</span>
+        <span class="mg-analyze-price-value">Free &middot; unlimited</span>
+      </div>
+      <div class="mg-analyze-price-row">
+        <span class="mg-analyze-price-label">Coach commentary (Explain Move)</span>
+        <span class="mg-analyze-price-value">5 per day, per device</span>
+      </div>
+    </div>
+
+    <div class="mg-analyze-cta-row">
+      <button id="mg-analyze-this-game" class="mg-analyze-btn mg-analyze-btn-primary" type="button">Analyze This Game &rarr;</button>
+      <a href="/chess-school/analyze" class="mg-analyze-btn mg-analyze-btn-secondary">Paste a different game</a>
+    </div>
+    <p class="mg-analyze-note" id="mg-analyze-note">&nbsp;</p>
+  </div>
+</div>
+
+<style>
+#mg-analyze-pill { position: fixed; bottom: 20px; left: 20px; width: 86px; min-height: 88px; padding: 10px 8px 8px; border-radius: 18px; background: linear-gradient(135deg, #4a6fa5, #5b85c3); border: 0; cursor: pointer; box-shadow: 0 8px 22px rgba(91,133,195,0.45), 0 4px 10px rgba(0,0,0,0.3); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; z-index: 10000; transition: transform 0.2s, box-shadow 0.2s; font-family: 'EB Garamond', Georgia, serif; }
+#mg-analyze-pill:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(91,133,195,0.6), 0 6px 14px rgba(0,0,0,0.35); }
+.mg-analyze-icon { font-size: 30px; color: #fff; line-height: 1; }
+.mg-analyze-label { font-size: 0.74rem; font-weight: 700; color: #fff; letter-spacing: 0.02em; line-height: 1.05; text-align: center; }
+.mg-analyze-dot { position: absolute; top: 6px; right: 6px; width: 10px; height: 10px; background: #4ade80; border-radius: 50%; border: 2px solid #5b85c3; }
+#mg-analyze-modal { position: fixed; inset: 0; z-index: 10001; display: flex; align-items: center; justify-content: center; padding: 20px; }
+#mg-analyze-modal[hidden] { display: none !important; }
+.mg-analyze-backdrop { position: absolute; inset: 0; background: rgba(8,10,16,0.75); backdrop-filter: blur(4px); }
+.mg-analyze-card { position: relative; background: linear-gradient(180deg, #131726, #0f111c); border: 1px solid rgba(201,168,76,0.35); border-radius: 18px; max-width: 520px; width: 100%; max-height: calc(100vh - 40px); overflow-y: auto; padding: 28px 28px 22px; box-shadow: 0 22px 60px rgba(0,0,0,0.6); font-family: 'EB Garamond', Georgia, serif; color: #e8e0d0; }
+.mg-analyze-close { position: absolute; top: 12px; right: 14px; background: transparent; border: 0; color: rgba(232,224,208,0.65); font-size: 28px; line-height: 1; cursor: pointer; padding: 4px 8px; }
+.mg-analyze-close:hover { color: #c9a84c; }
+.mg-analyze-header { text-align: center; margin-bottom: 18px; }
+.mg-analyze-piece { font-size: 44px; color: #c9a84c; line-height: 1; display: block; margin-bottom: 6px; }
+#mg-analyze-title { font-family: 'Playfair Display', Georgia, serif; font-size: 1.6rem; color: #c9a84c; margin: 0 0 8px; letter-spacing: 0.02em; }
+.mg-analyze-tagline { color: rgba(232,224,208,0.85); font-size: 0.98rem; line-height: 1.5; margin: 0; }
+.mg-analyze-tagline strong { color: #c9a84c; }
+.mg-analyze-features { display: flex; flex-direction: column; gap: 12px; margin: 16px 0 18px; padding: 14px 0; border-top: 1px solid rgba(201,168,76,0.18); border-bottom: 1px solid rgba(201,168,76,0.18); }
+.mg-analyze-feature { display: flex; gap: 12px; align-items: flex-start; }
+.mg-analyze-check { color: #4ade80; font-size: 1.05rem; font-weight: 700; line-height: 1.4; flex-shrink: 0; }
+.mg-analyze-feature-title { color: #e8e0d0; font-weight: 600; font-size: 1rem; }
+.mg-analyze-feature-sub { color: rgba(232,224,208,0.65); font-size: 0.88rem; line-height: 1.4; margin-top: 2px; }
+.mg-analyze-pricing { display: flex; flex-direction: column; gap: 8px; margin: 0 0 18px; }
+.mg-analyze-price-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 12px; background: rgba(201,168,76,0.06); border: 1px solid rgba(201,168,76,0.15); border-radius: 8px; font-size: 0.92rem; }
+.mg-analyze-price-label { color: rgba(232,224,208,0.85); }
+.mg-analyze-price-value { color: #c9a84c; font-weight: 600; white-space: nowrap; }
+.mg-analyze-cta-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.mg-analyze-btn { flex: 1; min-width: 140px; padding: 12px 14px; border-radius: 10px; font-family: 'EB Garamond', Georgia, serif; font-size: 0.98rem; font-weight: 700; cursor: pointer; text-align: center; text-decoration: none; transition: all 0.18s; border: 0; }
+.mg-analyze-btn-primary { background: linear-gradient(135deg, #c9a84c, #d4b556); color: #0f111c; box-shadow: 0 6px 16px rgba(201,168,76,0.3); }
+.mg-analyze-btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(201,168,76,0.45); }
+.mg-analyze-btn-primary:disabled { background: rgba(232,224,208,0.15); color: rgba(232,224,208,0.4); cursor: not-allowed; box-shadow: none; transform: none; }
+.mg-analyze-btn-secondary { background: rgba(30,34,52,0.6); color: #c9a84c; border: 1px solid rgba(201,168,76,0.3); display: flex; align-items: center; justify-content: center; }
+.mg-analyze-btn-secondary:hover { background: rgba(201,168,76,0.12); border-color: #c9a84c; }
+.mg-analyze-note { color: rgba(232,224,208,0.55); font-size: 0.82rem; font-style: italic; margin: 10px 0 0; min-height: 1.2em; text-align: center; }
+.game-over-actions { display: flex; flex-direction: column; gap: 8px; align-items: stretch; }
+.ctrl-btn-analyze { background: rgba(91,133,195,0.18); color: #93b8e8; border: 1px solid rgba(91,133,195,0.4); }
+.ctrl-btn-analyze:hover { background: rgba(91,133,195,0.3); color: #c9a84c; border-color: #c9a84c; }
+@media (max-width: 480px) {
+  #mg-analyze-pill { left: 14px; bottom: 14px; width: 74px; min-height: 78px; }
+  .mg-analyze-icon { font-size: 26px; }
+  .mg-analyze-label { font-size: 0.68rem; }
+  .mg-analyze-card { padding: 22px 18px 18px; }
+  #mg-analyze-title { font-size: 1.35rem; }
+}
+</style>
+
+<script is:inline>
+(function() {
+  'use strict';
+  var pill = document.getElementById('mg-analyze-pill');
+  var modal = document.getElementById('mg-analyze-modal');
+  var backdrop = document.getElementById('mg-analyze-backdrop');
+  var closeBtn = document.getElementById('mg-analyze-close');
+  var analyzeBtn = document.getElementById('mg-analyze-this-game');
+  var noteEl = document.getElementById('mg-analyze-note');
+  var gameOverAnalyzeBtn = document.getElementById('btn-analyze-game');
+  if (!pill || !modal) return;
+  function getCurrentPgn() {
+    try {
+      if (window.game && typeof window.game.pgn === 'function') {
+        var pgn = window.game.pgn();
+        if (pgn && pgn.length > 0) return pgn;
+      }
+    } catch (e) {}
+    return null;
+  }
+  function refreshAnalyzeButton() {
+    var pgn = getCurrentPgn();
+    if (pgn) {
+      analyzeBtn.disabled = false;
+      noteEl.textContent = 'Your current game is ready to analyze.';
+    } else {
+      analyzeBtn.disabled = true;
+      noteEl.textContent = 'Play a few moves first, or paste a different game.';
+    }
+  }
+  function openModal() { modal.removeAttribute('hidden'); refreshAnalyzeButton(); }
+  function closeModal() { modal.setAttribute('hidden', ''); }
+  pill.addEventListener('click', openModal);
+  closeBtn.addEventListener('click', closeModal);
+  backdrop.addEventListener('click', closeModal);
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && !modal.hasAttribute('hidden')) closeModal();
+  });
+  analyzeBtn.addEventListener('click', function() {
+    var pgn = getCurrentPgn();
+    if (!pgn) return;
+    try {
+      localStorage.setItem('mg_pending_pgn', pgn);
+      localStorage.setItem('mg_pending_pgn_ts', String(Date.now()));
+    } catch (e) {}
+    window.location.href = '/chess-school/analyze';
+  });
+  if (gameOverAnalyzeBtn) {
+    gameOverAnalyzeBtn.addEventListener('click', openModal);
+  }
+})();
+</script>
+
 <!-- ============================================================
      MIND'S GAMBIT FAQ BOT — Static keyword-search bot.
      Free. No API calls. Edit the FAQ_DATA array below to add Q&As.

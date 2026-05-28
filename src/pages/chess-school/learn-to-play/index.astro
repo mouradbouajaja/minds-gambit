@@ -25,29 +25,39 @@ export const prerender = true;
 <a href="/" class="back-link">&larr; Back to Mind's Gambit</a>
 <span class="eyebrow">Mind's Gambit Chess School</span>
 <h1>Learn How to Play Chess</h1>
-<p class="lead">New to chess? Start here. The game's basic rules can be learned in an afternoon &mdash; and from there, an entire lifetime of depth opens up. Our recommendation for every step: Lichess. Free, open-source, ad-free, no upsells.</p>
+<p class="lead">New to chess? Start here. The game&rsquo;s basic rules can be learned in an afternoon &mdash; and from there, an entire lifetime of depth opens up. Everything you need is on this site, free, no signup required.</p>
 
 <div class="path-card">
 <h2>Step 1 &mdash; Learn the pieces and how they move</h2>
-<p>Six different pieces, each with its own movement pattern. Lichess Learn walks you through every piece interactively. Try the moves as you read.</p>
+<p>Six different pieces, each with its own pattern.</p>
+<ul class="piece-list">
+  <li><strong>&#9817; Pawn</strong> &mdash; moves one square forward (two on its first move). Captures one square diagonally. The only piece that can&rsquo;t move backward &mdash; but reach the opposite end and it transforms into any piece you want.</li>
+  <li><strong>&#9822; Knight</strong> &mdash; the L-shaped jumper. Moves two squares in one direction, then one square at a right angle. The only piece that leaps over others. Trickiest piece to visualize.</li>
+  <li><strong>&#9821; Bishop</strong> &mdash; moves any number of squares diagonally. Each player has two: one on light squares, one on dark. They never change color.</li>
+  <li><strong>&#9820; Rook</strong> &mdash; moves any number of squares horizontally or vertically. The heavy artillery of the back rank.</li>
+  <li><strong>&#9819; Queen</strong> &mdash; the most powerful piece. Combines rook and bishop: any number of squares in any straight line.</li>
+  <li><strong>&#9818; King</strong> &mdash; moves one square in any direction. Lose your king (checkmate) and the game ends. Your most important piece; also your slowest.</li>
+</ul>
+<p>Once you know how the pieces move, the next step is to start moving them.</p>
 <div class="path-actions">
-<a href="https://lichess.org/learn" target="_blank" rel="noopener" class="path-btn">Start with Lichess Learn &rarr;</a>
+<a href="/chess-school/play" class="path-btn">Try them on the board &rarr;</a>
 </div>
 </div>
 
 <div class="path-card">
 <h2>Step 2 &mdash; Play a lot of games</h2>
-<p>The fastest way to internalize the patterns is to play. Start with longer time controls (10 to 15 minutes) so you can actually think. Blitz comes later.</p>
+<p>The fastest way to internalize the patterns is to play. Start with the lowest engine strength (Just Learning) and longer time so you can actually think. As the moves become automatic, raise the difficulty. Blitz and rapid time controls come later.</p>
 <div class="path-actions">
-<a href="https://lichess.org/play" target="_blank" rel="noopener" class="path-btn">Play on Lichess &rarr;</a>
+<a href="/chess-school/play" class="path-btn">Play The Mind&rsquo;s Gambit &rarr;</a>
 </div>
 </div>
 
 <div class="path-card">
 <h2>Step 3 &mdash; Solve tactics every day</h2>
-<p>Tactics are short puzzles where there's a winning move to find. Doing five to ten a day, every day, will teach your brain the patterns faster than anything else. This is the single highest-return habit in chess.</p>
+<p>Tactics are short puzzles with a winning move to find. Doing five to ten a day, every day, will teach your brain the patterns faster than anything else. <strong>The single highest-return habit in chess.</strong> Our puzzle library has nearly 6 million positions, sorted into 73 themes &mdash; pin, fork, mate-in-2, endgame, and more.</p>
 <div class="path-actions">
-<a href="https://lichess.org/training" target="_blank" rel="noopener" class="path-btn">Daily Tactics on Lichess &rarr;</a>
+<a href="/chess-school/train" class="path-btn">Train Now &rarr;</a>
+<a href="/chess-school/puzzles" class="path-btn path-btn-secondary">Daily Puzzle &rarr;</a>
 </div>
 </div>
 
@@ -359,8 +369,13 @@ nav { background: rgba(15,17,28,0.95); border-bottom: 1px solid rgba(201,168,76,
 .path-card h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.5rem; color: #c9a84c; margin: 0 0 0.75rem; }
 .path-card p { color: #e0e0e0; font-size: 1.05rem; line-height: 1.6; margin: 0 0 1.25rem; }
 .path-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
-.path-btn { background: transparent; border: 1px solid #c9a84c; color: #c9a84c; padding: 0.65rem 1.25rem; border-radius: 6px; text-decoration: none; font-size: 0.9rem; letter-spacing: 0.05em; transition: all 0.25s; }
+.path-btn { display: inline-block; background: transparent; border: 1px solid #c9a84c; color: #c9a84c; padding: 0.65rem 1.25rem; border-radius: 6px; text-decoration: none; font-size: 0.9rem; letter-spacing: 0.05em; transition: all 0.25s; margin-right: 0.6rem; }
 .path-btn:hover { background: rgba(201,168,76,0.15); }
+.path-btn-secondary { border-color: rgba(201,168,76,0.4); color: rgba(232,224,208,0.85); }
+.path-btn-secondary:hover { background: rgba(201,168,76,0.1); border-color: #c9a84c; color: #c9a84c; }
+.piece-list { list-style: none; padding: 0; margin: 0 0 1.2rem; display: flex; flex-direction: column; gap: 0.65rem; }
+.piece-list li { color: #e0e0e0; font-size: 1rem; line-height: 1.55; padding: 0.55rem 0.9rem; background: rgba(15,17,28,0.45); border-left: 3px solid rgba(201,168,76,0.4); border-radius: 4px; }
+.piece-list strong { color: #c9a84c; font-size: 1.05rem; margin-right: 0.35rem; }
 
 .path-card-featured { background: linear-gradient(135deg, rgba(201,168,76,0.12) 0%, rgba(30,34,52,0.5) 100%); border-color: #c9a84c; }
 .path-btn-primary { display: inline-block; background: #c9a84c; color: #0f111c; padding: 0.85rem 1.75rem; border-radius: 6px; text-decoration: none; font-size: 1rem; font-weight: 700; letter-spacing: 0.05em; transition: all 0.25s; box-shadow: 0 4px 20px rgba(201,168,76,0.25); }

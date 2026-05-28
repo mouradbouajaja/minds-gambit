@@ -1,0 +1,502 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export const prerender = true;
+
+// ============================================================
+//  FEATURED GAMES — Curated annotated classics
+//  Each game has rock-solid moves verified against authoritative sources.
+//  Add more games to GAMES[] array. Each PGN must be valid chess.js input.
+// ============================================================
+const GAMES = [
+  {
+    id: 'morphy-opera',
+    title: 'The Opera Game',
+    white: 'Paul Morphy',
+    black: 'Duke of Brunswick & Count Isouard',
+    year: 1858,
+    event: 'Paris Opera House',
+    opening: "Philidor's Defense",
+    era: 'Romantic era',
+    significance: "The most famous teaching game in chess history. Morphy, age 21, played the Duke and Count while watching a performance of Norma. In just 17 moves he demonstrates the eternal principles of opening play: rapid development, central control, and decisive use of the king's exposed position. Every chess teacher in the world has shown this game.",
+    pgn: '1. e4 e5 2. Nf3 d6 3. d4 Bg4 4. dxe5 Bxf3 5. Qxf3 dxe5 6. Bc4 Nf6 7. Qb3 Qe7 8. Nc3 c6 9. Bg5 b5 10. Nxb5 cxb5 11. Bxb5+ Nbd7 12. O-O-O Rd8 13. Rxd7 Rxd7 14. Rd1 Qe6 15. Bxd7+ Nxd7 16. Qb8+ Nxb8 17. Rd8# 1-0'
+  },
+  {
+    id: 'anderssen-immortal',
+    title: 'The Immortal Game',
+    white: 'Adolf Anderssen',
+    black: 'Lionel Kieseritzky',
+    year: 1851,
+    event: 'London',
+    opening: "King's Gambit Accepted",
+    era: 'Romantic era',
+    significance: 'A casual game played during the London tournament of 1851 that became the symbol of Romantic chess. Anderssen sacrifices both rooks, a bishop, and his queen, then delivers mate with the three minor pieces he has left. Played without clocks, for honor, against the era’s tactical master.',
+    pgn: '1. e4 e5 2. f4 exf4 3. Bc4 Qh4+ 4. Kf1 b5 5. Bxb5 Nf6 6. Nf3 Qh6 7. d3 Nh5 8. Nh4 Qg5 9. Nf5 c6 10. g4 Nf6 11. Rg1 cxb5 12. h4 Qg6 13. h5 Qg5 14. Qf3 Ng8 15. Bxf4 Qf6 16. Nc3 Bc5 17. Nd5 Qxb2 18. Bd6 Bxg1 19. e5 Qxa1+ 20. Ke2 Na6 21. Nxg7+ Kd8 22. Qf6+ Nxf6 23. Be7# 1-0'
+  },
+  {
+    id: 'anderssen-evergreen',
+    title: 'The Evergreen Game',
+    white: 'Adolf Anderssen',
+    black: 'Jean Dufresne',
+    year: 1852,
+    event: 'Berlin',
+    opening: 'Evans Gambit',
+    era: 'Romantic era',
+    significance: 'Named "Evergreen" by Wilhelm Steinitz — a game whose beauty would never fade. Anderssen sacrifices his queen with 19.Rad1!! to set up an irresistible mating net. The companion piece to the Immortal Game, and proof that the same player could conjure brilliance twice.',
+    pgn: '1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. b4 Bxb4 5. c3 Ba5 6. d4 exd4 7. O-O d3 8. Qb3 Qf6 9. e5 Qg6 10. Re1 Nge7 11. Ba3 b5 12. Qxb5 Rb8 13. Qa4 Bb6 14. Nbd2 Bb7 15. Ne4 Qf5 16. Bxd3 Qh5 17. Nf6+ gxf6 18. exf6 Rg8 19. Rad1 Qxf3 20. Rxe7+ Nxe7 21. Qxd7+ Kxd7 22. Bf5+ Ke8 23. Bd7+ Kf8 24. Bxe7# 1-0'
+  }
+];
+---
+
+<BaseLayout title="Featured Games — Annotated Classics — Mind's Gambit Chess School" description="Hand-picked annotated games from chess history. Play through Morphy's Opera Game, Anderssen's Immortal, and the games that defined chess pedagogy.">
+
+<link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" />
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><img src="/images/logo.jpg" alt="Mind's Gambit" style="height:55px;width:55px;border-radius:50%;object-fit:cover;border:2px solid #c8a84e;margin-left:10px;vertical-align:middle;" /></a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/#book">The Book</a></li>
+      <li><a href="/watch">Documentary</a></li>
+      <li><a href="/blog">Blog</a></li>
+      <li><a href="/chess-school">Chess School</a></li>
+      <li><a href="/#about">About</a></li>
+      <li><a href="/#contact">Contact</a></li>
+      <li><a href="https://buymeacoffee.com/mouradbouajaja" target="_blank" rel="noopener" class="nav-btn">&#9749; Buy Me a Coffee</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="page">
+  <a href="/chess-school" class="back-link">&larr; Back to Chess School</a>
+  <span class="eyebrow">Mind&rsquo;s Gambit Chess School</span>
+  <h1>Featured Games</h1>
+  <p class="lead">Annotated classics from the games that taught the world to play. Click any game to play through move by move. Read the notes. Learn from masters who lived and died for these moves.</p>
+
+  <!-- GAME LIST -->
+  <div id="game-list" class="games-grid">
+    {GAMES.map((g) => (
+      <article class="game-card" data-game-id={g.id}>
+        <header class="game-card-header">
+          <span class="game-era">{g.era}</span>
+          <h2 class="game-title">{g.title}</h2>
+          <p class="game-players"><strong>{g.white}</strong> vs <strong>{g.black}</strong></p>
+          <p class="game-meta">{g.event} &middot; {g.year} &middot; {g.opening}</p>
+        </header>
+        <p class="game-significance">{g.significance}</p>
+        <button class="game-open-btn" type="button" data-open={g.id}>Play through this game &rarr;</button>
+      </article>
+    ))}
+  </div>
+
+  <p class="games-more">More annotated games coming. Have a favorite you&rsquo;d love to see here? Email <a href="mailto:mourad@mindsgambit.com">mourad@mindsgambit.com</a>.</p>
+
+  <!-- VIEWER (hidden until a game is opened) -->
+  <div id="game-viewer" class="game-viewer" hidden>
+    <button class="viewer-close" id="viewer-close" type="button" aria-label="Close viewer">&times; Close</button>
+    <header class="viewer-header">
+      <span class="viewer-era" id="viewer-era">&mdash;</span>
+      <h2 class="viewer-title" id="viewer-title">&mdash;</h2>
+      <p class="viewer-players" id="viewer-players">&mdash;</p>
+      <p class="viewer-meta" id="viewer-meta">&mdash;</p>
+    </header>
+    <div class="viewer-body">
+      <div class="viewer-board-wrap">
+        <div id="viewer-board"></div>
+        <div class="viewer-controls">
+          <button class="nav-arrow" id="btn-first" type="button" title="Starting position">&laquo;</button>
+          <button class="nav-arrow" id="btn-prev" type="button" title="Previous move">&lsaquo;</button>
+          <span class="move-counter" id="move-counter">0 / 0</span>
+          <button class="nav-arrow" id="btn-next" type="button" title="Next move">&rsaquo;</button>
+          <button class="nav-arrow" id="btn-last" type="button" title="Last move">&raquo;</button>
+        </div>
+        <p class="viewer-tip">Tip: use &larr; and &rarr; keys to step through moves.</p>
+      </div>
+      <aside class="viewer-side">
+        <h3 class="viewer-section-label">Why this game matters</h3>
+        <p class="viewer-significance" id="viewer-significance">&mdash;</p>
+        <h3 class="viewer-section-label">Moves</h3>
+        <div class="viewer-move-list" id="viewer-move-list"></div>
+      </aside>
+    </div>
+  </div>
+
+  <footer class="page-footer">
+    <p class="footer-credit">&copy; 2026 Mourad Bouajaja. Mind&rsquo;s Gambit Chess School is a production of &copy; MYB Studio LLC.</p>
+  </footer>
+</section>
+
+<script is:inline src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script is:inline src="https://cdn.jsdelivr.net/npm/chess.js@0.10.3/chess.min.js"></script>
+<script is:inline src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+
+<script is:inline define:vars={{ GAMES }}>
+(function() {
+  'use strict';
+
+  var board = null;
+  var game = null;
+  var moves = [];        // SAN move strings
+  var positions = [];    // FENs after each move; positions[0] = start
+  var currentMove = 0;
+  var currentGame = null;
+
+  var viewerEl = document.getElementById('game-viewer');
+  var listEl = document.getElementById('game-list');
+  var closeBtn = document.getElementById('viewer-close');
+  var eraEl = document.getElementById('viewer-era');
+  var titleEl = document.getElementById('viewer-title');
+  var playersEl = document.getElementById('viewer-players');
+  var metaEl = document.getElementById('viewer-meta');
+  var significanceEl = document.getElementById('viewer-significance');
+  var moveListEl = document.getElementById('viewer-move-list');
+  var moveCounterEl = document.getElementById('move-counter');
+
+  function findGame(id) {
+    for (var i = 0; i < GAMES.length; i++) if (GAMES[i].id === id) return GAMES[i];
+    return null;
+  }
+
+  function whenReady(cb) {
+    if (window.Chess && window.Chessboard && window.jQuery) cb();
+    else setTimeout(function() { whenReady(cb); }, 50);
+  }
+
+  function openGame(gameId) {
+    var g = findGame(gameId);
+    if (!g) return;
+    currentGame = g;
+
+    eraEl.textContent = g.era;
+    titleEl.textContent = g.title;
+    playersEl.innerHTML = '<strong>' + g.white + '</strong> vs <strong>' + g.black + '</strong>';
+    metaEl.textContent = g.event + ' · ' + g.year + ' · ' + g.opening;
+    significanceEl.textContent = g.significance;
+
+    viewerEl.removeAttribute('hidden');
+    window.scrollTo({ top: viewerEl.offsetTop - 60, behavior: 'smooth' });
+
+    whenReady(function() {
+      // Parse PGN with chess.js
+      game = new Chess();
+      var ok = game.load_pgn(g.pgn);
+      if (!ok) {
+        moveListEl.innerHTML = '<div class="viewer-error">Could not load this game. Please email mourad@mindsgambit.com.</div>';
+        return;
+      }
+      moves = game.history();         // SAN strings
+      // Build position list: replay through the game to capture FENs
+      var replay = new Chess();
+      positions = [replay.fen()];
+      for (var i = 0; i < moves.length; i++) {
+        replay.move(moves[i]);
+        positions.push(replay.fen());
+      }
+      currentMove = 0;
+      renderMoveList();
+
+      if (board) { try { board.destroy && board.destroy(); } catch (e) {} }
+      board = Chessboard('viewer-board', {
+        position: positions[0],
+        showNotation: true,
+        pieceTheme: 'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png'
+      });
+      updateView();
+    });
+  }
+
+  function closeViewer() {
+    viewerEl.setAttribute('hidden', '');
+    if (board) { try { board.destroy && board.destroy(); } catch (e) {} board = null; }
+  }
+
+  function renderMoveList() {
+    moveListEl.innerHTML = '';
+    for (var i = 0; i < moves.length; i++) {
+      var ply = i + 1;
+      var isWhite = (i % 2 === 0);
+      if (isWhite) {
+        var moveNum = document.createElement('span');
+        moveNum.className = 'viewer-move-num';
+        moveNum.textContent = Math.ceil(ply / 2) + '.';
+        moveListEl.appendChild(moveNum);
+      }
+      var moveBtn = document.createElement('button');
+      moveBtn.type = 'button';
+      moveBtn.className = 'viewer-move-btn';
+      moveBtn.setAttribute('data-ply', String(ply));
+      moveBtn.textContent = moves[i];
+      (function(p) {
+        moveBtn.addEventListener('click', function() { goToMove(p); });
+      })(ply);
+      moveListEl.appendChild(moveBtn);
+    }
+  }
+
+  function goToMove(ply) {
+    currentMove = Math.max(0, Math.min(moves.length, ply));
+    updateView();
+  }
+
+  function updateView() {
+    if (!board || !positions[currentMove]) return;
+    board.position(positions[currentMove]);
+    moveCounterEl.textContent = currentMove + ' / ' + moves.length;
+    // Highlight current move in list
+    var btns = moveListEl.querySelectorAll('.viewer-move-btn');
+    for (var i = 0; i < btns.length; i++) {
+      var ply = parseInt(btns[i].getAttribute('data-ply'), 10);
+      if (ply === currentMove) btns[i].classList.add('viewer-move-current');
+      else btns[i].classList.remove('viewer-move-current');
+    }
+    // Scroll current move into view
+    var current = moveListEl.querySelector('.viewer-move-current');
+    if (current && current.scrollIntoView) {
+      current.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+  }
+
+  // Wire up game cards
+  Array.from(document.querySelectorAll('[data-open]')).forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      openGame(btn.getAttribute('data-open'));
+    });
+  });
+
+  // Wire up viewer controls
+  closeBtn.addEventListener('click', closeViewer);
+  document.getElementById('btn-first').addEventListener('click', function() { goToMove(0); });
+  document.getElementById('btn-prev').addEventListener('click', function() { goToMove(currentMove - 1); });
+  document.getElementById('btn-next').addEventListener('click', function() { goToMove(currentMove + 1); });
+  document.getElementById('btn-last').addEventListener('click', function() { goToMove(moves.length); });
+
+  // Keyboard arrows
+  document.addEventListener('keydown', function(e) {
+    if (viewerEl.hasAttribute('hidden')) return;
+    if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+    if (e.key === 'ArrowLeft') { e.preventDefault(); goToMove(currentMove - 1); }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); goToMove(currentMove + 1); }
+    else if (e.key === 'Home') { e.preventDefault(); goToMove(0); }
+    else if (e.key === 'End') { e.preventDefault(); goToMove(moves.length); }
+    else if (e.key === 'Escape') { closeViewer(); }
+  });
+
+  window.addEventListener('resize', function() { if (board) board.resize(); });
+})();
+</script>
+
+<style>
+.eyebrow { display: block; font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.18em; margin-top: 1.5rem; }
+.page { max-width: 1100px; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+.back-link { display: inline-block; color: rgba(232,224,208,0.65); text-decoration: none; font-family: 'EB Garamond', Georgia, serif; font-size: 0.95rem; margin: 1rem 0 0; transition: color 0.18s; }
+.back-link:hover { color: #c9a84c; }
+.page h1 { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 2.6rem; margin: 0.6rem 0 0.7rem; letter-spacing: 0.01em; }
+.lead { color: rgba(232,224,208,0.82); font-family: 'EB Garamond', Georgia, serif; font-size: 1.12rem; line-height: 1.65; margin: 0 0 2rem; max-width: 760px; }
+
+.games-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.4rem; margin-bottom: 2rem; }
+.game-card { background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(30,34,52,0.65)); border: 1px solid rgba(201,168,76,0.28); border-radius: 14px; padding: 1.6rem 1.4rem; display: flex; flex-direction: column; transition: transform 0.18s, border-color 0.18s, box-shadow 0.18s; }
+.game-card:hover { transform: translateY(-3px); border-color: rgba(201,168,76,0.55); box-shadow: 0 14px 32px rgba(0,0,0,0.45); }
+.game-card-header { margin-bottom: 0.9rem; }
+.game-era { display: inline-block; background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.35); color: #c9a84c; font-size: 0.72rem; padding: 3px 9px; border-radius: 99px; letter-spacing: 0.08em; text-transform: uppercase; font-family: 'Playfair Display', Georgia, serif; margin-bottom: 0.55rem; }
+.game-title { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1.5rem; margin: 0 0 0.45rem; line-height: 1.2; }
+.game-players { color: #e8e0d0; font-family: 'EB Garamond', Georgia, serif; font-size: 1.05rem; margin: 0 0 0.2rem; line-height: 1.4; }
+.game-players strong { color: #e8e0d0; font-weight: 600; }
+.game-meta { color: rgba(232,224,208,0.6); font-family: 'EB Garamond', Georgia, serif; font-size: 0.88rem; font-style: italic; margin: 0; }
+.game-significance { color: rgba(232,224,208,0.78); font-family: 'EB Garamond', Georgia, serif; font-size: 0.96rem; line-height: 1.6; flex: 1; margin: 0 0 1.2rem; }
+.game-open-btn { background: linear-gradient(135deg, #c9a84c, #d4b556); color: #0f111c; border: 0; padding: 0.75rem 1.1rem; border-radius: 10px; font-family: 'EB Garamond', Georgia, serif; font-weight: 700; font-size: 0.98rem; cursor: pointer; transition: all 0.18s; box-shadow: 0 6px 16px rgba(201,168,76,0.28); align-self: flex-start; }
+.game-open-btn:hover { transform: translateY(-1px); box-shadow: 0 9px 22px rgba(201,168,76,0.45); }
+.games-more { color: rgba(232,224,208,0.6); font-family: 'EB Garamond', Georgia, serif; font-size: 0.95rem; font-style: italic; text-align: center; margin: 1.6rem 0 2.5rem; padding: 1.1rem 1rem; background: rgba(15,17,28,0.45); border: 1px dashed rgba(201,168,76,0.22); border-radius: 10px; }
+.games-more a { color: #c9a84c; }
+
+/* VIEWER */
+.game-viewer { background: linear-gradient(180deg, rgba(15,17,28,0.92), rgba(20,22,32,0.82)); border: 1px solid rgba(201,168,76,0.38); border-radius: 16px; padding: 1.8rem 1.6rem; margin: 1.5rem 0 2rem; position: relative; box-shadow: 0 22px 60px rgba(0,0,0,0.5); }
+.viewer-close { position: absolute; top: 14px; right: 16px; background: rgba(30,34,52,0.6); color: rgba(232,224,208,0.7); border: 1px solid rgba(201,168,76,0.22); padding: 6px 12px; border-radius: 8px; font-family: 'EB Garamond', Georgia, serif; font-size: 0.92rem; cursor: pointer; }
+.viewer-close:hover { background: rgba(201,168,76,0.12); color: #c9a84c; }
+.viewer-header { margin-bottom: 1.4rem; padding-right: 100px; }
+.viewer-era { display: inline-block; background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.35); color: #c9a84c; font-size: 0.72rem; padding: 3px 9px; border-radius: 99px; letter-spacing: 0.08em; text-transform: uppercase; font-family: 'Playfair Display', Georgia, serif; margin-bottom: 0.55rem; }
+.viewer-title { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1.8rem; margin: 0 0 0.4rem; }
+.viewer-players { color: #e8e0d0; font-family: 'EB Garamond', Georgia, serif; font-size: 1.1rem; margin: 0 0 0.2rem; }
+.viewer-players strong { font-weight: 600; }
+.viewer-meta { color: rgba(232,224,208,0.6); font-family: 'EB Garamond', Georgia, serif; font-size: 0.92rem; font-style: italic; margin: 0; }
+.viewer-body { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 1.6rem; align-items: start; }
+.viewer-board-wrap { min-width: 0; }
+#viewer-board { width: 100%; max-width: 480px; margin: 0 auto; }
+.viewer-controls { display: flex; align-items: center; justify-content: center; gap: 0.4rem; margin-top: 1rem; }
+.nav-arrow { background: rgba(30,34,52,0.6); border: 1px solid rgba(201,168,76,0.28); color: #e8e0d0; width: 38px; height: 38px; border-radius: 8px; font-size: 1.1rem; cursor: pointer; transition: all 0.15s; }
+.nav-arrow:hover { background: rgba(201,168,76,0.12); border-color: #c9a84c; color: #c9a84c; }
+.move-counter { color: rgba(232,224,208,0.7); font-family: 'Playfair Display', Georgia, serif; font-size: 0.95rem; min-width: 80px; text-align: center; }
+.viewer-tip { color: rgba(232,224,208,0.45); font-family: 'EB Garamond', Georgia, serif; font-size: 0.84rem; font-style: italic; text-align: center; margin: 0.6rem 0 0; }
+.viewer-side { background: rgba(15,17,28,0.5); border: 1px solid rgba(201,168,76,0.18); border-radius: 10px; padding: 1.2rem 1.2rem; min-width: 0; }
+.viewer-section-label { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.16em; margin: 0 0 0.6rem; font-weight: 600; }
+.viewer-section-label + .viewer-section-label { margin-top: 1.2rem; }
+.viewer-significance { color: rgba(232,224,208,0.85); font-family: 'EB Garamond', Georgia, serif; font-size: 0.96rem; line-height: 1.65; margin: 0 0 0.4rem; }
+.viewer-move-list { font-family: 'Courier New', monospace; font-size: 0.92rem; line-height: 1.9; max-height: 280px; overflow-y: auto; padding: 0.4rem 0 0; }
+.viewer-move-num { color: rgba(201,168,76,0.6); margin-right: 0.35rem; }
+.viewer-move-btn { background: transparent; border: 0; color: #e8e0d0; cursor: pointer; padding: 2px 6px; margin: 0 0.15rem 0 0; border-radius: 4px; font-family: inherit; font-size: inherit; transition: background 0.1s; }
+.viewer-move-btn:hover { background: rgba(201,168,76,0.12); color: #c9a84c; }
+.viewer-move-current { background: rgba(201,168,76,0.28) !important; color: #c9a84c !important; font-weight: 700; }
+.viewer-error { color: #fca5a5; font-family: 'EB Garamond', Georgia, serif; padding: 0.8rem; }
+
+.page-footer { margin-top: 3rem; padding: 1.5rem 1rem; text-align: center; border-top: 1px solid rgba(201,168,76,0.1); }
+.footer-credit { color: rgba(232,224,208,0.4); font-size: 0.82rem; font-family: 'EB Garamond', Georgia, serif; }
+
+@media (max-width: 800px) {
+  .viewer-body { grid-template-columns: 1fr; }
+  .viewer-header { padding-right: 70px; }
+  .viewer-title { font-size: 1.45rem; }
+  .page h1 { font-size: 2rem; }
+}
+</style>
+
+<!-- ============================================================
+     MIND'S GAMBIT FAQ BOT — Static keyword-search bot.
+============================================================ -->
+<button id="mg-faq-bubble" type="button" aria-label="Need help? Open Mind's Gambit Help" title="Click me for help &mdash; technical questions, engine issues, account, anything.">
+  <span class="mg-faq-bubble-icon">&#9819;</span>
+  <span class="mg-faq-bubble-label">Need help?</span>
+  <span class="mg-faq-bubble-dot"></span>
+</button>
+
+<div id="mg-faq-panel" hidden>
+  <header class="mg-faq-header">
+    <div>
+      <div class="mg-faq-title">Mind&rsquo;s Gambit Help</div>
+      <div class="mg-faq-subtitle">Ask anything &middot; instant answers</div>
+    </div>
+    <button id="mg-faq-close" type="button" aria-label="Close">&times;</button>
+  </header>
+  <div class="mg-faq-messages" id="mg-faq-messages"></div>
+  <form class="mg-faq-form" id="mg-faq-form" autocomplete="off">
+    <input type="text" id="mg-faq-input" placeholder="Type your question&hellip;" maxlength="200" autocomplete="off" />
+    <button type="submit" aria-label="Send">&#10142;</button>
+  </form>
+  <div class="mg-faq-suggested" id="mg-faq-suggested"></div>
+</div>
+
+<script is:inline>
+(function() {
+  'use strict';
+  var FAQ_DATA = [
+    { keywords: ['featured games', 'annotated', 'classic games', 'famous games'],
+      q: 'How does the Featured Games viewer work?',
+      a: 'Each game card shows the matchup, year, opening, and a brief note on why the game matters. Click "Play through this game" to open the interactive viewer. Use the arrows (or your keyboard left/right keys) to step through every move. Click any move in the list to jump to that position.' },
+    { keywords: ['daily puzzle', 'puzzle of the day'],
+      q: 'How does the Daily Puzzle work?',
+      a: 'Every visitor sees the <strong>same puzzle each day</strong>. You and a friend will see the same puzzle on the same day. Tomorrow it rotates automatically.' },
+    { keywords: ['account', 'login', 'sign up'],
+      q: 'Do I need an account?',
+      a: '<strong>No.</strong> Mind&rsquo;s Gambit Chess School works without any signup. Your stats are saved on this device.' },
+    { keywords: ['free', 'cost', 'price'],
+      q: 'Is Mind\'s Gambit free?',
+      a: 'All training, analysis, trivia, and game-viewing features are <strong>completely free</strong>. No ads, no subscriptions. Only paid feature: one-on-one lessons with our titled coaches.' },
+    { keywords: ['coach', 'lesson', 'grandmaster'],
+      q: 'Can I book a lesson with a coach?',
+      a: 'Yes. Click <a href="/chess-school/grandmasters">Grandmasters</a> in the nav. Each coach has their own profile with rates, languages, and a contact button.' },
+    { keywords: ['contact', 'email'],
+      q: 'How do I contact Mourad?',
+      a: 'Email <a href="mailto:mourad@mindsgambit.com">mourad@mindsgambit.com</a>.' }
+  ];
+
+  var bubble = document.getElementById('mg-faq-bubble');
+  var panel = document.getElementById('mg-faq-panel');
+  var closeBtn = document.getElementById('mg-faq-close');
+  var form = document.getElementById('mg-faq-form');
+  var input = document.getElementById('mg-faq-input');
+  var messagesEl = document.getElementById('mg-faq-messages');
+  var suggestedEl = document.getElementById('mg-faq-suggested');
+  if (!bubble || !panel) return;
+
+  function openPanel() { panel.removeAttribute('hidden'); input.focus(); if (!messagesEl.children.length) greet(); }
+  function closePanel() { panel.setAttribute('hidden', ''); }
+  bubble.addEventListener('click', function() { if (panel.hasAttribute('hidden')) openPanel(); else closePanel(); });
+  closeBtn.addEventListener('click', closePanel);
+
+  function addMessage(text, sender) {
+    var div = document.createElement('div');
+    div.className = 'mg-faq-msg mg-faq-msg-' + sender;
+    div.innerHTML = text;
+    messagesEl.appendChild(div);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+  function score(query, keywords) {
+    var q = query.toLowerCase();
+    var s = 0;
+    for (var i = 0; i < keywords.length; i++) {
+      var k = keywords[i].toLowerCase();
+      if (q.indexOf(k) !== -1) s += k.length * 2;
+      var words = k.split(/\s+/);
+      for (var w = 0; w < words.length; w++) {
+        if (words[w].length >= 3 && q.indexOf(words[w]) !== -1) s += 1;
+      }
+    }
+    return s;
+  }
+  function answer(query) {
+    var best = null;
+    var bestScore = 0;
+    for (var i = 0; i < FAQ_DATA.length; i++) {
+      var s = score(query, FAQ_DATA[i].keywords);
+      if (s > bestScore) { bestScore = s; best = FAQ_DATA[i]; }
+    }
+    if (best && bestScore >= 3) return best.a;
+    return null;
+  }
+  function greet() {
+    addMessage('Hi &mdash; welcome to <strong>Mind&rsquo;s Gambit Help</strong>. Type a question or pick a suggestion below.', 'bot');
+    showSuggestions(['How does the Featured Games viewer work?', 'Is Mind’s Gambit free?', 'Can I book a lesson with a coach?']);
+  }
+  function showSuggestions(questions) {
+    suggestedEl.innerHTML = '';
+    for (var i = 0; i < questions.length; i++) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'mg-faq-suggest';
+      btn.textContent = questions[i];
+      (function(q) { btn.addEventListener('click', function() { handleQuery(q); }); })(questions[i]);
+      suggestedEl.appendChild(btn);
+    }
+  }
+  function handleQuery(query) {
+    suggestedEl.innerHTML = '';
+    addMessage(query, 'user');
+    var a = answer(query);
+    if (a) setTimeout(function() { addMessage(a, 'bot'); }, 200);
+    else setTimeout(function() { addMessage('I don&rsquo;t have a stock answer for that yet. Email <a href="mailto:mourad@mindsgambit.com">mourad@mindsgambit.com</a>.', 'bot'); }, 200);
+  }
+  form.addEventListener('submit', function(e) { e.preventDefault(); var q = input.value.trim(); if (!q) return; input.value = ''; handleQuery(q); });
+})();
+</script>
+
+<style>
+#mg-faq-bubble { position: fixed; bottom: 20px; right: 20px; width: 86px; min-height: 88px; padding: 10px 8px 8px; border-radius: 18px; background: linear-gradient(135deg, #c9a84c, #d4b556); border: 0; cursor: pointer; box-shadow: 0 8px 22px rgba(201,168,76,0.45), 0 4px 10px rgba(0,0,0,0.3); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; z-index: 10000; transition: transform 0.2s, box-shadow 0.2s; font-family: 'EB Garamond', Georgia, serif; }
+#mg-faq-bubble:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(201,168,76,0.6), 0 6px 14px rgba(0,0,0,0.35); }
+.mg-faq-bubble-icon { font-size: 32px; color: #0f111c; line-height: 1; }
+.mg-faq-bubble-label { font-size: 0.78rem; font-weight: 700; color: #0f111c; letter-spacing: 0.02em; line-height: 1; white-space: nowrap; }
+.mg-faq-bubble-dot { position: absolute; top: 6px; right: 6px; width: 10px; height: 10px; background: #ef4444; border-radius: 50%; border: 2px solid #d4b556; }
+#mg-faq-panel { position: fixed; bottom: 122px; right: 20px; width: 360px; max-width: calc(100vw - 40px); height: 540px; max-height: calc(100vh - 160px); background: #0f111c; border: 1px solid rgba(201,168,76,0.4); border-radius: 16px; display: flex; flex-direction: column; box-shadow: 0 18px 50px rgba(0,0,0,0.55); z-index: 10000; font-family: 'EB Garamond', Georgia, serif; overflow: hidden; }
+#mg-faq-panel[hidden] { display: none !important; }
+.mg-faq-header { padding: 14px 18px; background: rgba(201,168,76,0.12); border-bottom: 1px solid rgba(201,168,76,0.25); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+.mg-faq-title { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1rem; font-weight: 700; letter-spacing: 0.05em; }
+.mg-faq-subtitle { color: rgba(232,224,208,0.55); font-size: 0.78rem; font-style: italic; margin-top: 2px; }
+#mg-faq-close { background: transparent; border: 0; color: rgba(232,224,208,0.7); font-size: 26px; line-height: 1; cursor: pointer; padding: 0 4px; }
+.mg-faq-messages { flex: 1 1 auto; min-height: 0; padding: 16px 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: rgba(15,17,28,0.95); }
+.mg-faq-messages::-webkit-scrollbar { width: 8px; }
+.mg-faq-messages::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.35); border-radius: 4px; }
+.mg-faq-msg { padding: 10px 14px; border-radius: 12px; font-size: 0.92rem; line-height: 1.45; max-width: 88%; word-wrap: break-word; }
+.mg-faq-msg-bot { background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.22); color: rgba(232,224,208,0.92); align-self: flex-start; }
+.mg-faq-msg-user { background: #c9a84c; color: #0f111c; align-self: flex-end; }
+.mg-faq-msg-bot a { color: #c9a84c; text-decoration: underline; }
+.mg-faq-msg-bot strong { color: #c9a84c; }
+.mg-faq-form { display: flex; gap: 8px; padding: 12px 14px; border-top: 1px solid rgba(201,168,76,0.2); background: rgba(15,17,28,0.95); flex-shrink: 0; }
+#mg-faq-input { flex: 1; background: rgba(30,34,52,0.55); border: 1px solid rgba(201,168,76,0.25); border-radius: 8px; padding: 9px 12px; color: #e8e0d0; font-family: inherit; font-size: 0.95rem; box-sizing: border-box; }
+.mg-faq-form button[type="submit"] { background: #c9a84c; color: #0f111c; border: 0; width: 40px; height: 40px; border-radius: 8px; font-size: 18px; cursor: pointer; font-weight: 700; }
+.mg-faq-suggested { padding: 0 14px 12px; display: flex; flex-wrap: wrap; gap: 6px; background: rgba(15,17,28,0.95); flex-shrink: 0; max-height: 96px; overflow-y: auto; }
+.mg-faq-suggest { background: rgba(30,34,52,0.6); border: 1px solid rgba(201,168,76,0.25); color: #c9a84c; padding: 6px 10px; border-radius: 99px; font-size: 0.78rem; font-family: inherit; cursor: pointer; }
+@media (max-width: 480px) {
+  #mg-faq-panel { width: calc(100vw - 24px); right: 12px; bottom: 108px; height: calc(100vh - 140px); }
+  #mg-faq-bubble { right: 14px; bottom: 14px; width: 74px; min-height: 78px; }
+}
+</style>
+
+</BaseLayout>

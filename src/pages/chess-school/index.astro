@@ -198,12 +198,16 @@ export const prerender = true;
 </section>
 
 <section class="manifesto">
-  <h2>Why Mind's Gambit Chess School?</h2>
-  <p>Because the existing chess platforms are loud, ad-saturated, and want your subscription before they want your improvement. Mind's Gambit is the opposite: free at the front, paid only where a human teacher's time is involved. Built on the open Lichess puzzle database, the open chess.js library, the open-source Stockfish engine, and a small CDN we own outright. No tracking. No accounts required to start playing.</p>
+  <h2>Why Mind&rsquo;s Gambit Chess School?</h2>
+  <p>Because the existing chess platforms are loud, ad-saturated, and want your subscription before they want your improvement. Mind&rsquo;s Gambit is the opposite: free at the front, paid only where a human teacher&rsquo;s time is involved.</p>
+  <p>Everything here is built around a single purpose &mdash; <strong>your chess improvement</strong>. The puzzles, the engine, the analysis, the lessons from titled players: all of it exists to make you a stronger player, not to keep you scrolling. Transparency isn&rsquo;t a tagline for us; it&rsquo;s the model itself. <strong>No ads. No tracking. No account required to start playing.</strong> Free now, free tomorrow, free for as long as we can keep it that way.</p>
+  <p class="manifesto-support">We&rsquo;re a small operation. The hosting, the engine compute, the puzzle library, the hours spent building and maintaining all of this &mdash; it adds up. If Mind&rsquo;s Gambit has helped your chess in any way, you can buy us a coffee. No obligation, no membership, no unlock &mdash; just a way to say thanks if you feel like it. Every coffee helps us keep the lights on and the doors open.</p>
+  <a href="https://buymeacoffee.com/mouradbouajaja" target="_blank" rel="noopener" class="manifesto-coffee-cta">&#9749; Buy Me a Coffee &rarr;</a>
 </section>
 
 <footer class="page-footer">
-  <p class="footer-credit">&copy; 2026 Mourad Bouajaja. Mind's Gambit Chess School is a production of &copy; MYB Studio LLC.</p>
+  <p class="footer-disclaimer">Mind&rsquo;s Gambit Chess School stands on the shoulders of the open chess community. The engine is <a href="https://stockfishchess.org/" target="_blank" rel="noopener">Stockfish</a> &mdash; the world&rsquo;s strongest &mdash; free under the GNU GPL v3 license. Puzzles come from the public-domain Lichess Open Puzzle Database (CC0). The board you play on uses the open-source chess.js and chessboard.js libraries. Optional coach commentary on the Analyze page is powered by Anthropic Claude. We&rsquo;re grateful to every contributor whose work makes this possible.</p>
+  <p class="footer-credit">&copy; 2026 Mourad Bouajaja. Mind&rsquo;s Gambit Chess School is a production of &copy; MYB Studio LLC.</p>
 </footer>
 <!-- ============================================================
      MIND'S GAMBIT FAQ BOT — Static keyword-search bot.
@@ -540,7 +544,14 @@ nav { background: rgba(15,17,28,0.95); border-bottom: 1px solid rgba(201,168,76,
 
 .manifesto { max-width: 900px; margin: 2.5rem auto 1.5rem; padding: 2.5rem 1.5rem; text-align: center; }
 .manifesto h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.85rem; color: #c9a84c; margin: 0 0 1rem; }
-.manifesto p { color: rgba(232,224,208,0.78); font-size: 1.08rem; font-family: 'EB Garamond', Georgia, serif; line-height: 1.7; }
+.manifesto p { color: rgba(232,224,208,0.82); font-size: 1.08rem; font-family: 'EB Garamond', Georgia, serif; line-height: 1.7; margin: 0 0 1.1rem; }
+.manifesto p strong { color: #c9a84c; font-weight: 600; }
+.manifesto-support { color: rgba(232,224,208,0.72) !important; font-size: 1.02rem !important; font-style: italic; padding-top: 0.6rem; border-top: 1px solid rgba(201,168,76,0.18); margin-top: 1.4rem !important; }
+.manifesto-coffee-cta { display: inline-block; margin-top: 0.6rem; background: linear-gradient(135deg, #c9a84c, #d4b556); color: #0f111c; padding: 0.85rem 1.6rem; border-radius: 10px; font-family: 'EB Garamond', Georgia, serif; font-weight: 700; font-size: 1.02rem; text-decoration: none; box-shadow: 0 8px 22px rgba(201,168,76,0.32); transition: transform 0.18s, box-shadow 0.18s; }
+.manifesto-coffee-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(201,168,76,0.48); }
+.footer-disclaimer { color: rgba(232,224,208,0.35); font-size: 0.78rem; font-family: 'EB Garamond', Georgia, serif; line-height: 1.55; max-width: 760px; margin: 0 auto 0.8rem; padding: 0 1rem; }
+.footer-disclaimer a { color: rgba(201,168,76,0.6); text-decoration: underline; }
+.footer-disclaimer a:hover { color: #c9a84c; }
 
 .page-footer { margin-top: 1rem; padding: 2rem 1.5rem; text-align: center; border-top: 1px solid rgba(201,168,76,0.1); }
 .footer-credit { color: rgba(232,224,208,0.4); font-size: 0.82rem; font-family: 'EB Garamond', Georgia, serif; }

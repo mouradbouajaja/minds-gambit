@@ -1,0 +1,489 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+
+export const prerender = true;
+
+// ============================================================
+//  FRENCH DEFENSE — Chapter detail page
+//  Route: /chess-school/opening-builder/french/chapter?id=<chapterId>
+//
+//  Reads ?id= from URL and renders the corresponding chapter
+//  from the embedded CHAPTERS object. Each chapter exposes
+//  its sub-variations, a strategic intro, and a "studied by"
+//  master list.
+// ============================================================
+---
+
+<BaseLayout
+  title="French Defense Chapter — Mind's Gambit"
+  description="A chapter of the Mind's Gambit French Defense complete repertoire. Mainline moves, strategic ideas, recommended masters."
+>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><img src="/images/logo.jpg" alt="Mind's Gambit" style="height:55px;width:55px;border-radius:50%;object-fit:cover;border:2px solid #c8a84e;margin-left:10px;vertical-align:middle;" /></a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/#book">The Book</a></li>
+      <li><a href="/watch">Documentary</a></li>
+      <li><a href="/blog">Blog</a></li>
+      <li><a href="/chess-school">Chess School</a></li>
+      <li><a href="/#about">About</a></li>
+      <li><a href="/#contact">Contact</a></li>
+      <li><a href="https://buymeacoffee.com/mouradbouajaja" target="_blank" rel="noopener" class="nav-btn">&#9749; Buy Me a Coffee</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="page">
+  <a href="/chess-school/opening-builder/french" class="back-link">&larr; Back to French Repertoire</a>
+  <span class="eyebrow" id="chapter-eyebrow">French Repertoire</span>
+  <h1 id="chapter-title">Loading chapter&hellip;</h1>
+  <p class="subtitle"><span id="chapter-eco">&mdash;</span> &middot; <span id="chapter-setup">&mdash;</span></p>
+
+  <div class="chapter-layout">
+    <div class="chapter-main">
+      <!-- Not-found fallback -->
+      <div id="not-found" class="not-found" hidden>
+        <h2>Chapter not found</h2>
+        <p>Pick a chapter from the French course landing page and try again.</p>
+        <a href="/chess-school/opening-builder/french" class="cta-primary">&larr; Back to the French course</a>
+      </div>
+
+      <!-- Full chapter content -->
+      <div id="chapter-content" hidden>
+        <!-- Strategic intro -->
+        <section class="study-section">
+          <h2>Strategic overview</h2>
+          <div id="chapter-intro"></div>
+        </section>
+
+        <!-- Sub-variations -->
+        <section class="study-section">
+          <h2>Sub-variations</h2>
+          <p class="section-intro">Each sub-variation below is a complete mainline you can drill independently. Drill them in order; once you know all three (or four), you&rsquo;re ready for any club opponent in this chapter.</p>
+          <ul class="subvariation-list" id="subvariation-list"></ul>
+        </section>
+
+        <!-- Master games placeholder -->
+        <section class="study-section">
+          <h2>Master games</h2>
+          <p class="section-intro">Master games for this chapter will be added in the next update. Recommended teachers for this variation:</p>
+          <ul class="studied-by" id="studied-by"></ul>
+        </section>
+
+        <!-- Chapter navigation footer -->
+        <nav class="chapter-nav">
+          <a id="prev-chapter" class="chapter-nav-btn chapter-nav-prev" href="#">&larr; Previous chapter</a>
+          <a class="chapter-nav-back" href="/chess-school/opening-builder/french">Back to course</a>
+          <a id="next-chapter" class="chapter-nav-btn chapter-nav-next" href="#">Next chapter &rarr;</a>
+        </nav>
+      </div>
+    </div>
+
+    <aside class="chapter-sidebar">
+      <div class="widget-card" id="progress-widget" hidden>
+        <h3 class="widget-title">Chapter progress</h3>
+        <div class="chapter-progress-bar"><div class="chapter-progress-fill" id="sidebar-progress-fill" style="width:0%"></div></div>
+        <p class="widget-body" id="sidebar-progress-label">Not started</p>
+        <button id="mark-complete" class="cta-secondary" type="button">Mark chapter as complete</button>
+      </div>
+
+      <div class="widget-card widget-help">
+        <h3 class="widget-title">If you get stuck</h3>
+        <p class="widget-body">Email <a href="mailto:Mourad@mindsgambit.com">Mourad@mindsgambit.com</a> with the line you&rsquo;re struggling with. He&rsquo;ll usually reply within a day with the strategic idea behind the move.</p>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="page-footer">
+    <p class="footer-credit">&copy; 2026 Mourad Bouajaja. Mind&rsquo;s Gambit Chess School is a production of &copy; MYB Studio LLC.</p>
+  </footer>
+</section>
+
+<!-- ============================================================
+     CHAPTER LOGIC
+============================================================ -->
+<script is:inline>
+(function() {
+  'use strict';
+
+  // ------------------------------------------------------------
+  // CHAPTER DATA — eight French Defense chapters, verbatim.
+  // ------------------------------------------------------------
+  var CHAPTERS = {
+    'exchange': {
+      num: 1,
+      title: 'The Exchange',
+      eco: 'C01',
+      firstMove: '3.exd5',
+      intro: '<p>The Exchange is the most direct White answer: trade pawns in the center, simplify into a symmetrical IQP-flavored middlegame. Often dismissed as drawish &mdash; and at master level it usually is &mdash; but at club level the resulting positions are strategically rich and full of subtle planning. White typically develops with Nf3, Bd3, O-O, c3. Black mirrors but watches for active piece play, the half-open e-file, and pawn-break ideas with &hellip;c5.</p><p>Strategic priority: equality is almost guaranteed if you know the typical plans. Your edge comes from understanding the symmetry better than your opponent does.</p>',
+      subVariations: [
+        { id: 'exchange-nf3', name: '4.Nf3 (mainline)', mainline: 'e4 e6 d4 d5 exd5 exd5 Nf3 Nf6 Bd3 Bd6 O-O O-O Re1', label: 'Standard development. Both sides race for the e-file.' },
+        { id: 'exchange-bd3', name: '4.Bd3', mainline: 'e4 e6 d4 d5 exd5 exd5 Bd3 Nc6 c3 Bd6 Nf3 Nge7 O-O', label: 'White develops the bishop first, prepares c3 to support the d4 break later.' },
+        { id: 'exchange-c4', name: '4.c4 (Panov-style)', mainline: 'e4 e6 d4 d5 exd5 exd5 c4 Nf6 Nc3 Be7 cxd5', label: 'White converts to an IQP fight, looking for active piece play against the isolated pawn.' },
+        { id: 'exchange-nc3', name: '4.Nc3', mainline: 'e4 e6 d4 d5 exd5 exd5 Nc3 Nf6 Bg5 Be7 Bd3 O-O', label: 'Develop the knight to support the e5 break; pin the f6 knight for pressure.' }
+      ],
+      studiedBy: [
+        { master: 'Anatoly Karpov', note: 'Treated the French Exchange as a positional masterclass — patient buildup, prophylaxis, then a decisive break.' },
+        { master: 'Vasyl Ivanchuk', note: 'Modern interpreter; shows the dynamic possibilities even in supposedly symmetrical positions.' }
+      ]
+    },
+    'advance': {
+      num: 2,
+      title: 'The Advance',
+      eco: 'C02',
+      firstMove: '3.e5',
+      intro: '<p>White locks the center on move 3 and plays for a classical kingside attack. Black hits the d4 pawn with &hellip;c5, pressures the queenside with &hellip;Qb6, and looks to activate the bad light-squared bishop with &hellip;Bd7-&hellip;Bb5. The Advance is dense theory &mdash; every move has been analyzed &mdash; but the strategic themes are clear: Black wants to break the d4 chain; White wants to maintain it and attack on the kingside.</p><p>Strategic priority: know the typical pawn breaks (&hellip;c5, &hellip;f6) and where the pieces want to go. The Advance rewards players who think in terms of plans, not just moves.</p>',
+      subVariations: [
+        { id: 'advance-mainline', name: '4.c3 Nc6 5.Nf3 Qb6 (mainline)', mainline: 'e4 e6 d4 d5 e5 c5 c3 Nc6 Nf3 Qb6 Bd3 cxd4 cxd4 Bd7 O-O', label: 'The canonical Advance setup. Black pressures b2 while White develops fluidly and plans Nbd2-Nf1-Ng3.' },
+        { id: 'advance-be2', name: '6.Be2 (avoiding pressure)', mainline: 'e4 e6 d4 d5 e5 c5 c3 Nc6 Nf3 Qb6 Be2 cxd4 cxd4 Nge7 Nc3 Nf5', label: 'White declines the …Qxb2 invitation and plays solidly. Black responds with …Nf5 to put pressure on d4.' },
+        { id: 'advance-a3', name: '6.a3 (Nimzowitsch Attack)', mainline: 'e4 e6 d4 d5 e5 c5 c3 Nc6 Nf3 Qb6 a3 c4 Nbd2 Na5', label: 'White prepares b4 to lock the queenside. Black answers with …c4 to fix the structure and aim for …Na5-…b5.' },
+        { id: 'advance-dxc5', name: '4.dxc5 (side line)', mainline: 'e4 e6 d4 d5 e5 c5 dxc5 Bxc5 Qg4 Ne7', label: "White trades the d-pawn for an attack on g7. Black accepts the activity for Black's pieces and equalizes." }
+      ],
+      studiedBy: [
+        { master: 'Alexei Shirov', note: 'Sharpest French practitioner; his Advance games show that even closed positions can be played dynamically.' },
+        { master: 'Wesley So', note: 'Modern elite player who handles the Advance with a clean, technical positional approach.' }
+      ]
+    },
+    'mccutcheon': {
+      num: 3,
+      title: 'The McCutcheon',
+      eco: 'C12',
+      firstMove: '3.Nc3 Nf6 4.Bg5 Bb4',
+      intro: "<p>The McCutcheon is the French's sharpest weapon against the Classical: pin White's c3-knight, force White to make uncomfortable decisions about the bishop pair vs the pawn structure. Heavy theory, but the strategic ideas are clear: Black wants the &hellip;Ne4 jump and structural damage to White's queenside; White wants the bishop pair plus open lines.</p><p>Strategic priority: this is one of the lines where deep preparation pays off most. Know the &hellip;Ne4 jump pattern and the typical endgames that arise.</p>",
+      subVariations: [
+        { id: 'mccutcheon-e5-h6', name: '5.e5 h6 (modern mainline)', mainline: 'e4 e6 d4 d5 Nc3 Nf6 Bg5 Bb4 e5 h6 Bd2 Bxc3 bxc3 Ne4 Qg4', label: "White trades the dark-squared bishop, gets the queen out to attack g7. Black's …Ne4 is the strategic point of the McCutcheon." },
+        { id: 'mccutcheon-exd5', name: '5.exd5 (Exchange line)', mainline: 'e4 e6 d4 d5 Nc3 Nf6 Bg5 Bb4 exd5 Qxd5 Bxf6 Bxc3+ bxc3 gxf6', label: "White simplifies and ruins Black's structure but Black gets the bishop pair plus a half-open g-file." },
+        { id: 'mccutcheon-bxf6', name: '5.Bxf6 (simple)', mainline: 'e4 e6 d4 d5 Nc3 Nf6 Bg5 Bb4 Bxf6 gxf6 e5 Nd7 a3 Bxc3+ bxc3', label: 'White trades pieces immediately. Black accepts doubled f-pawns for the half-open g-file and bishop pair.' }
+      ],
+      studiedBy: [
+        { master: 'Viswanathan Anand', note: 'Played the McCutcheon at world-championship level; his games are the best modern reference for the sharp lines.' },
+        { master: 'Mikhail Botvinnik (historical)', note: "Pioneer of the McCutcheon's strategic interpretation; his 1940s-1950s games are foundational." }
+      ]
+    },
+    'classical': {
+      num: 4,
+      title: 'The Classical (Burn & Steinitz)',
+      eco: 'C11',
+      firstMove: '3.Nc3 Nf6 4.Bg5',
+      intro: '<p>The traditional Classical answer to 3.Nc3 &mdash; Black plays &hellip;Be7 (Steinitz) or &hellip;dxe4 (Burn) instead of the sharper McCutcheon. Solid and strategically deep. The Burn (4&hellip;dxe4 5.Nxe4) leads to clean piece play with Black&rsquo;s typical &hellip;c5 break; the Steinitz (4&hellip;Be7 5.e5) heads to closed, maneuvering positions that suit patient players.</p><p>Strategic priority: choose your sub-line based on your style. Burn for those who prefer open piece play; Steinitz for those who like long maneuvering games.</p>',
+      subVariations: [
+        { id: 'classical-burn', name: 'Burn (4…dxe4 5.Nxe4)', mainline: 'e4 e6 d4 d5 Nc3 Nf6 Bg5 dxe4 Nxe4 Be7 Bxf6 Bxf6 Nf3 O-O Bd3', label: 'Trade pieces, complete development, look for …c5 to challenge the center. The pragmatic Classical answer.' },
+        { id: 'classical-steinitz', name: 'Steinitz (4…Be7 5.e5)', mainline: 'e4 e6 d4 d5 Nc3 Nf6 Bg5 Be7 e5 Nfd7 Bxe7 Qxe7 f4 a6 Nf3 c5', label: 'Closed center, Black plays …c5, then …Nc6 and …b5 for queenside expansion. Long maneuvering game.' },
+        { id: 'classical-rubinstein', name: 'Rubinstein (4…dxe4 5.Nxe4 Nbd7)', mainline: 'e4 e6 d4 d5 Nc3 Nf6 Bg5 dxe4 Nxe4 Nbd7 Nf3 Be7 Bxf6 Bxf6 Bd3', label: 'Quieter Burn-type setup with …Nbd7 instead of …Be7. Solid, low-theory alternative.' }
+      ],
+      studiedBy: [
+        { master: 'Artur Yusupov', note: 'His training manuals (Build Up Your Chess series) cover the Classical French structures with rare clarity. Recommended by Mourad personally.' },
+        { master: 'Jacob Aagaard', note: 'Modern Classical theory in his Grandmaster Repertoire series; rigorous coverage.' },
+        { master: 'Alexei Shirov', note: 'Sharpest French practitioner of the modern era; his Burn and Steinitz games demonstrate dynamic possibilities.' }
+      ]
+    },
+    'tarrasch': {
+      num: 5,
+      title: 'The Tarrasch',
+      eco: 'C03–C09',
+      firstMove: '3.Nd2',
+      intro: "<p>White's most popular system at club level. Flexible, safe, avoids the Winawer's ...Bb4 pin. Black has two main answers: the open Tarrasch (3&hellip;c5) leads to IQP positions with clean piece play; the closed Tarrasch (3&hellip;Nf6) heads to maneuvering games similar to the Advance.</p><p>Strategic priority: pick your reply based on your style. Open Tarrasch suits active players; closed Tarrasch rewards patience and prophylaxis.</p>",
+      subVariations: [
+        { id: 'tarrasch-open', name: 'Open Tarrasch (3…c5)', mainline: 'e4 e6 d4 d5 Nd2 c5 exd5 exd5 Ngf3 Nc6 Bb5 Bd6 dxc5 Bxc5 O-O', label: "Open lines, IQP, active piece play. Yusupov's recommended approach for intermediate players." },
+        { id: 'tarrasch-closed', name: 'Closed Tarrasch (3…Nf6)', mainline: 'e4 e6 d4 d5 Nd2 Nf6 e5 Nfd7 Bd3 c5 c3 Nc6 Ne2 cxd4 cxd4', label: 'Closed center, maneuvering positions, similar themes to the Advance.' },
+        { id: 'tarrasch-guimard', name: '3…Nc6 (Guimard)', mainline: 'e4 e6 d4 d5 Nd2 Nc6 Ngf3 Nf6 e5 Nd7 Bb5 a6 Bxc6 bxc6', label: 'Unusual third move; trades the c6 knight for active development and a strong center.' }
+      ],
+      studiedBy: [
+        { master: 'Artur Yusupov', note: "His Build Up Your Chess covers the Tarrasch as the recommended intermediate Black system. Mourad's primary reference." },
+        { master: 'Anatoly Karpov', note: 'Played the Tarrasch positionally at the highest level; his endgame technique in these structures is exemplary.' }
+      ]
+    },
+    'two-knights': {
+      num: 6,
+      title: 'The Two Knights / Anti-French',
+      eco: 'C00',
+      firstMove: '2.Nf3 or 2.Nc3',
+      intro: "<p>White avoids the immediate 2.d4 with 2.Nf3 or 2.Nc3, hoping to provoke Black into uncomfortable structures or prepare a quick e5 push. Most of these lines transpose back to mainstream French within a few moves; the rest can be neutralized with active development and a quick &hellip;d5.</p><p>Strategic priority: don't panic and don't let White dictate the structure. Play &hellip;d5 confidently and steer for familiar French positions.</p>",
+      subVariations: [
+        { id: 'two-knights-nf3', name: '2.Nf3 d5 3.Nc3', mainline: 'e4 e6 Nf3 d5 Nc3 Nf6 e5 Nfd7 d4 c5', label: 'Most common move order; transposes to the Steinitz Classical structure after d4.' },
+        { id: 'two-knights-nc3', name: '2.Nc3 d5 3.Nf3', mainline: 'e4 e6 Nc3 d5 Nf3 dxe4 Nxe4 Nc6 d4 Nf6', label: 'Black trades on e4 and equalizes immediately with active piece play.' },
+        { id: 'two-knights-nc3-d4', name: '2.Nc3 d5 3.d4 (transposition)', mainline: 'e4 e6 Nc3 d5 d4 Nf6 e5 Nfd7 f4 c5', label: 'Transposes directly to the Steinitz French; treat it exactly as you would the mainline.' }
+      ],
+      studiedBy: [
+        { master: 'Alexei Shirov', note: 'His French games demonstrate the right energy against move-order tricks: develop quickly and challenge the center.' },
+        { master: 'Wesley So', note: 'Modern technical handling of Anti-French move orders; clean equalization technique.' }
+      ]
+    },
+    'schlechter': {
+      num: 7,
+      title: 'The Schlechter',
+      eco: 'C00',
+      firstMove: '3.Bd3',
+      intro: "<p>White develops the bishop on move 3, keeping central tension instead of immediately exchanging or pushing pawns. Black's cleanest answer: 3&hellip;dxe4 4.Bxe4, which forces White to reposition the bishop and allows Black to develop with &hellip;Nf6, &hellip;c5, and active piece play.</p><p>Strategic priority: meet White's flexibility with concrete development. The Schlechter is a sideline and the player who knows the typical patterns equalizes comfortably.</p>",
+      subVariations: [
+        { id: 'schlechter-bd3-mainline', name: '3…dxe4 4.Bxe4 Nf6 5.Bd3', mainline: 'e4 e6 d4 d5 Bd3 dxe4 Bxe4 Nf6 Bd3 c5 Nf3 cxd4 Nxd4 e5 Nb3', label: 'Black grabs the e-pawn, kicks the bishop back to d3, and challenges the center with …c5 and …e5.' },
+        { id: 'schlechter-bf3', name: '5.Bf3 c5 6.c3', mainline: 'e4 e6 d4 d5 Bd3 dxe4 Bxe4 Nf6 Bf3 c5 c3 cxd4 cxd4 h6 Ne2', label: 'Bishop reroutes to f3, White prepares a slower IQP-type fight. Black plays …h6 and …Bd6 for harmonious development.' },
+        { id: 'schlechter-bg5', name: '5.Bg5 (sharp)', mainline: 'e4 e6 d4 d5 Bd3 dxe4 Bxe4 Nf6 Bg5 c5 Bxf6 gxf6 d5 f5 Bf3', label: 'White trades on f6 and pushes d5 aggressively. Black gets the bishop pair and an open g-file in compensation.' }
+      ],
+      studiedBy: [
+        { master: 'Carl Schlechter (historical)', note: "The variation's namesake. His early 1900s games show the original positional approach." },
+        { master: 'Vasyl Ivanchuk', note: 'Modern practitioner who handles unusual White systems with deep understanding of typical French patterns.' }
+      ]
+    },
+    'kia': {
+      num: 8,
+      title: "The King's Indian Attack",
+      eco: 'C00',
+      firstMove: '2.d3 / 3.Nd2',
+      intro: "<p>White avoids d4 entirely and builds a King's Indian Defense reversed: d3, Nd2, Ngf3, g3, Bg2, O-O, then a thematic kingside attack with e4-e5 and f4. Black's task is to play solidly, develop naturally, and exploit White's slow start with classical central play.</p><p>Strategic priority: don't panic at the unusual setup. Develop your pieces to good squares, play &hellip;c5, &hellip;Nc6, &hellip;d5, &hellip;Bd6, castle, and look for queenside expansion with &hellip;b5.</p>",
+      subVariations: [
+        { id: 'kia-mainline', name: 'KIA mainline', mainline: 'e4 e6 d3 d5 Nd2 Nf6 Ngf3 c5 g3 Nc6 Bg2 Be7 O-O O-O Re1', label: 'Solid Black development. White prepares the e5 push; Black answers with …b5 expansion and queenside play.' },
+        { id: 'kia-vs-c5', name: 'KIA vs Sicilian-style …c5', mainline: 'e4 e6 d3 c5 Nf3 Nc6 g3 d5 Nbd2 g6 Bg2 Bg7', label: 'Black fianchettoes the dark-squared bishop, plays for a hypermodern structure.' },
+        { id: 'kia-delayed', name: '2.Nf3 d5 3.d3 (delayed KIA)', mainline: 'e4 e6 Nf3 d5 d3 Nf6 Nbd2 c5 g3 Nc6 Bg2 Be7 O-O', label: 'Same KIA setup via a Nf3-first move order. Treat it the same way: classical development, queenside expansion.' }
+      ],
+      studiedBy: [
+        { master: 'Bobby Fischer', note: 'Played the KIA frequently as White; his Black games against it show clean equalizing technique.' },
+        { master: 'Viktor Korchnoi', note: "Defended against the KIA as a French player his entire career; the Black side's best modern reference." }
+      ]
+    }
+  };
+
+  // ------------------------------------------------------------
+  // Chapter order for prev/next navigation.
+  // ------------------------------------------------------------
+  var ORDER = ['exchange', 'advance', 'mccutcheon', 'classical', 'tarrasch', 'two-knights', 'schlechter', 'kia'];
+
+  // ------------------------------------------------------------
+  // Parse ?id= from URL.
+  // ------------------------------------------------------------
+  function getChapterId() {
+    var m = location.search.match(/[?&]id=([^&]+)/);
+    return m ? decodeURIComponent(m[1]).toLowerCase().trim() : null;
+  }
+
+  var chapterId = getChapterId();
+  var chapter = chapterId ? CHAPTERS[chapterId] : null;
+
+  if (!chapter) {
+    document.getElementById('chapter-title').textContent = 'Chapter not found';
+    document.getElementById('chapter-eco').textContent = '';
+    document.getElementById('chapter-setup').textContent = '';
+    document.getElementById('not-found').hidden = false;
+    return;
+  }
+
+  // ------------------------------------------------------------
+  // Render header.
+  // ------------------------------------------------------------
+  document.getElementById('chapter-title').textContent = chapter.title;
+  document.getElementById('chapter-eyebrow').innerHTML =
+    'French Repertoire &middot; Chapter ' + chapter.num + ' of 8';
+  document.getElementById('chapter-eco').textContent = 'ECO ' + chapter.eco;
+  document.getElementById('chapter-setup').textContent =
+    'Black against 1.e4 e6 2.d4 d5 3.' + chapter.firstMove.replace(/^3\./, '');
+  document.title = chapter.title + ' — French Repertoire — Mind\'s Gambit';
+
+  document.getElementById('chapter-content').hidden = false;
+
+  // Intro
+  document.getElementById('chapter-intro').innerHTML = chapter.intro;
+
+  // ------------------------------------------------------------
+  // Render sub-variations.
+  // ------------------------------------------------------------
+  var subList = document.getElementById('subvariation-list');
+  for (var i = 0; i < chapter.subVariations.length; i++) {
+    var sv = chapter.subVariations[i];
+    var li = document.createElement('li');
+    li.className = 'subvariation-card';
+
+    var header = document.createElement('div');
+    header.className = 'subvar-header';
+    var nameEl = document.createElement('h3');
+    nameEl.className = 'subvar-name';
+    nameEl.textContent = sv.name;
+    header.appendChild(nameEl);
+    li.appendChild(header);
+
+    var moves = document.createElement('div');
+    moves.className = 'subvar-mainline';
+    moves.textContent = sv.mainline;
+    li.appendChild(moves);
+
+    var label = document.createElement('p');
+    label.className = 'subvar-label';
+    label.textContent = sv.label;
+    li.appendChild(label);
+
+    var drillRow = document.createElement('div');
+    drillRow.className = 'subvar-cta-row';
+    var drillLink = document.createElement('a');
+    drillLink.className = 'cta-primary';
+    drillLink.href = '/chess-school/opening-builder/drill?id=' + encodeURIComponent(chapterId + '-' + sv.id.replace(/^[^-]+-/, ''));
+    drillLink.textContent = 'Drill this line →';
+    drillRow.appendChild(drillLink);
+    li.appendChild(drillRow);
+
+    subList.appendChild(li);
+  }
+
+  // ------------------------------------------------------------
+  // Render studied-by.
+  // ------------------------------------------------------------
+  var studiedList = document.getElementById('studied-by');
+  for (var j = 0; j < chapter.studiedBy.length; j++) {
+    var s = chapter.studiedBy[j];
+    var sli = document.createElement('li');
+    var nameEl2 = document.createElement('strong');
+    nameEl2.className = 'master';
+    nameEl2.textContent = s.master;
+    var snoteEl = document.createElement('span');
+    snoteEl.className = 'note';
+    snoteEl.textContent = s.note;
+    sli.appendChild(nameEl2);
+    sli.appendChild(document.createTextNode(' '));
+    sli.appendChild(snoteEl);
+    studiedList.appendChild(sli);
+  }
+
+  // ------------------------------------------------------------
+  // Prev / Next chapter navigation.
+  // ------------------------------------------------------------
+  var idx = ORDER.indexOf(chapterId);
+  var prev = document.getElementById('prev-chapter');
+  var next = document.getElementById('next-chapter');
+  if (idx > 0) {
+    prev.href = '/chess-school/opening-builder/french/chapter?id=' + ORDER[idx - 1];
+    prev.textContent = '← ' + CHAPTERS[ORDER[idx - 1]].title;
+  } else {
+    prev.classList.add('disabled');
+    prev.removeAttribute('href');
+    prev.textContent = '← First chapter';
+  }
+  if (idx < ORDER.length - 1) {
+    next.href = '/chess-school/opening-builder/french/chapter?id=' + ORDER[idx + 1];
+    next.textContent = CHAPTERS[ORDER[idx + 1]].title + ' →';
+  } else {
+    next.classList.add('disabled');
+    next.removeAttribute('href');
+    next.textContent = 'Last chapter →';
+  }
+
+  // ------------------------------------------------------------
+  // Progress widget (localStorage mg_french_progress).
+  // ------------------------------------------------------------
+  function loadProgress() {
+    try {
+      var raw = localStorage.getItem('mg_french_progress');
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) { return {}; }
+  }
+  function saveProgress(p) {
+    try { localStorage.setItem('mg_french_progress', JSON.stringify(p)); } catch (e) {}
+  }
+  var progress = loadProgress();
+  if (!progress[chapterId]) progress[chapterId] = { started: true, completed: false, percent: 15 };
+  else progress[chapterId].started = true;
+  saveProgress(progress);
+
+  var widget = document.getElementById('progress-widget');
+  widget.hidden = false;
+  var fill = document.getElementById('sidebar-progress-fill');
+  var label2 = document.getElementById('sidebar-progress-label');
+  function renderProgress() {
+    var p = progress[chapterId] || {};
+    var pct = typeof p.percent === 'number' ? Math.max(0, Math.min(100, p.percent)) : (p.completed ? 100 : 15);
+    fill.style.width = pct + '%';
+    label2.textContent = p.completed ? 'Chapter complete.' : 'Reading in progress (' + pct + '%)';
+  }
+  renderProgress();
+
+  var btn = document.getElementById('mark-complete');
+  btn.addEventListener('click', function() {
+    progress[chapterId].completed = !progress[chapterId].completed;
+    progress[chapterId].percent = progress[chapterId].completed ? 100 : 25;
+    saveProgress(progress);
+    renderProgress();
+    btn.textContent = progress[chapterId].completed ? 'Mark as not complete' : 'Mark chapter as complete';
+  });
+})();
+</script>
+
+<style>
+.eyebrow { display: block; font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.18em; margin-top: 1.5rem; }
+.page { max-width: 1200px; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+.back-link { display: inline-block; color: rgba(232,224,208,0.65); text-decoration: none; font-family: 'EB Garamond', Georgia, serif; font-size: 0.95rem; margin: 1rem 0 0; transition: color 0.18s; }
+.back-link:hover { color: #c9a84c; }
+.page h1 { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 2.4rem; margin: 0.6rem 0 0.4rem; letter-spacing: 0.01em; }
+.subtitle { color: rgba(232,224,208,0.72); font-family: 'EB Garamond', Georgia, serif; font-size: 1.02rem; margin: 0 0 1.5rem; font-style: italic; }
+
+/* Layout */
+.chapter-layout { display: grid; grid-template-columns: 1fr 300px; gap: 2rem; margin-top: 1rem; align-items: start; }
+@media (max-width: 900px) { .chapter-layout { grid-template-columns: 1fr; } }
+
+/* Not-found */
+.not-found { background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(30,34,52,0.55)); border: 1px solid rgba(201,168,76,0.28); border-radius: 12px; padding: 2rem 1.5rem; text-align: center; margin: 2rem 0; }
+.not-found h2 { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1.6rem; margin: 0 0 0.6rem; }
+.not-found p { color: rgba(232,224,208,0.78); font-family: 'EB Garamond', Georgia, serif; margin: 0 0 1.4rem; }
+
+/* Section headings */
+.study-section { margin: 0 0 2.4rem; padding-bottom: 1.4rem; border-bottom: 1px solid rgba(201,168,76,0.12); }
+.study-section:last-of-type { border-bottom: 0; }
+.study-section h2 { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1.5rem; margin: 0 0 0.5rem; padding-bottom: 0.3rem; border-bottom: 2px solid rgba(201,168,76,0.35); display: inline-block; }
+.section-intro { color: rgba(232,224,208,0.65); font-family: 'EB Garamond', Georgia, serif; font-size: 0.96rem; font-style: italic; margin: 0.8rem 0 1rem; max-width: 780px; }
+
+/* Intro prose */
+#chapter-intro p { color: rgba(232,224,208,0.85); font-family: 'EB Garamond', Georgia, serif; font-size: 1.05rem; line-height: 1.7; margin: 0.8rem 0 0; max-width: 820px; }
+#chapter-intro p:first-child { margin-top: 0.6rem; }
+
+/* Sub-variation cards */
+.subvariation-list { list-style: none; padding: 0; margin: 0.5rem 0 0; display: flex; flex-direction: column; gap: 0.9rem; }
+.subvariation-card { background: linear-gradient(135deg, rgba(201,168,76,0.07), rgba(30,34,52,0.6)); border: 1px solid rgba(201,168,76,0.25); border-radius: 10px; padding: 1rem 1.1rem 1rem; transition: border-color 0.18s; }
+.subvariation-card:hover { border-color: rgba(201,168,76,0.5); }
+.subvar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+.subvar-name { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1.1rem; margin: 0; line-height: 1.3; }
+.subvar-mainline { font-family: 'Courier New', monospace; color: #e8e0d0; background: rgba(15,17,28,0.6); padding: 7px 11px; border-radius: 6px; font-size: 0.9rem; border: 1px solid rgba(201,168,76,0.15); margin: 0 0 0.6rem; word-break: break-word; line-height: 1.5; }
+.subvar-label { color: rgba(232,224,208,0.78); font-family: 'EB Garamond', Georgia, serif; font-size: 0.95rem; line-height: 1.55; margin: 0 0 0.75rem; font-style: italic; }
+.subvar-cta-row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+/* Studied by */
+.studied-by { list-style: none; padding: 0; margin: 0.5rem 0 0; display: flex; flex-direction: column; gap: 0.7rem; }
+.studied-by li { padding: 0.85rem 1rem; background: linear-gradient(135deg, rgba(201,168,76,0.06), rgba(30,34,52,0.55)); border: 1px solid rgba(201,168,76,0.18); border-radius: 8px; color: rgba(232,224,208,0.82); font-family: 'EB Garamond', Georgia, serif; font-size: 1rem; line-height: 1.6; }
+.studied-by .master { display: block; font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.2rem; }
+.studied-by .note { color: rgba(232,224,208,0.82); }
+
+/* Chapter nav footer */
+.chapter-nav { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin: 2rem 0 1rem; padding: 1.2rem 0; border-top: 1px solid rgba(201,168,76,0.18); border-bottom: 1px solid rgba(201,168,76,0.18); flex-wrap: wrap; }
+.chapter-nav-btn { background: rgba(201,168,76,0.1); color: #c9a84c; padding: 9px 14px; border-radius: 7px; border: 1px solid rgba(201,168,76,0.35); font-family: 'EB Garamond', Georgia, serif; font-size: 0.95rem; text-decoration: none; transition: background 0.15s, border-color 0.15s; flex: 1 1 auto; max-width: 40%; text-align: center; }
+.chapter-nav-btn:hover { background: rgba(201,168,76,0.2); border-color: rgba(201,168,76,0.6); }
+.chapter-nav-btn.disabled { opacity: 0.35; cursor: not-allowed; pointer-events: none; }
+.chapter-nav-back { color: rgba(232,224,208,0.65); font-family: 'EB Garamond', Georgia, serif; font-size: 0.9rem; text-decoration: underline; text-decoration-color: rgba(201,168,76,0.4); }
+.chapter-nav-back:hover { color: #c9a84c; }
+
+/* CTAs */
+.cta-primary { display: inline-block; background: #c9a84c; color: #0f111c; border: 0; padding: 9px 17px; border-radius: 7px; font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: 0.92rem; letter-spacing: 0.02em; text-align: center; text-decoration: none; cursor: pointer; transition: transform 0.14s, box-shadow 0.18s; }
+.cta-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 18px rgba(201,168,76,0.4); }
+.cta-secondary { display: inline-block; background: transparent; color: #c9a84c; padding: 9px 14px; border-radius: 7px; border: 1px solid rgba(201,168,76,0.5); font-family: 'EB Garamond', Georgia, serif; font-size: 0.92rem; text-decoration: none; cursor: pointer; transition: background 0.15s; margin-top: 0.7rem; width: 100%; box-sizing: border-box; }
+.cta-secondary:hover { background: rgba(201,168,76,0.12); }
+
+/* Sidebar */
+.chapter-sidebar { display: flex; flex-direction: column; gap: 1rem; position: sticky; top: 1rem; }
+@media (max-width: 900px) { .chapter-sidebar { position: static; } }
+.widget-card { background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(30,34,52,0.55)); border: 1px solid rgba(201,168,76,0.25); border-radius: 12px; padding: 1.1rem 1.1rem 1rem; }
+.widget-title { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1.05rem; margin: 0 0 0.7rem; letter-spacing: 0.04em; }
+.widget-body { color: rgba(232,224,208,0.78); font-family: 'EB Garamond', Georgia, serif; font-size: 0.92rem; line-height: 1.55; margin: 0; }
+.widget-body a { color: #c9a84c; }
+.widget-help { background: linear-gradient(135deg, rgba(91,133,195,0.10), rgba(30,34,52,0.55)); border-color: rgba(91,133,195,0.32); }
+
+.chapter-progress-bar { width: 100%; height: 6px; background: rgba(15,17,28,0.7); border: 1px solid rgba(201,168,76,0.18); border-radius: 99px; overflow: hidden; margin-bottom: 0.5rem; }
+.chapter-progress-fill { height: 100%; background: linear-gradient(90deg, #c9a84c, #d4b556); border-radius: 99px; transition: width 0.3s; }
+
+.page-footer { margin-top: 2.5rem; padding: 1.5rem 1rem; text-align: center; border-top: 1px solid rgba(201,168,76,0.1); }
+.footer-credit { color: rgba(232,224,208,0.4); font-size: 0.82rem; font-family: 'EB Garamond', Georgia, serif; }
+
+@media (max-width: 600px) {
+  .page h1 { font-size: 1.85rem; }
+  .study-section h2 { font-size: 1.3rem; }
+  .chapter-nav-btn { max-width: 100%; flex: 1 1 100%; }
+  .subvar-mainline { font-size: 0.82rem; }
+}
+</style>
+
+</BaseLayout>

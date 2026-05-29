@@ -271,6 +271,7 @@ const BLACK_VS_D4 = [
       {BLACK_VS_E4.map((o) => (
         <article class="opening-card" data-id={o.id}>
           {o.recommended && <span class="mg-rec-badge">&#10038; MG Recommended</span>}
+          {o.id === 'french' && <span class="mg-new-badge">MG French Complete &middot; NEW</span>}
           <header class="opening-card-header">
             <h3 class="opening-name">{o.name}</h3>
             <span class="opening-eco">{o.eco}</span>
@@ -278,10 +279,18 @@ const BLACK_VS_D4 = [
           <div class="opening-moves">{o.moves}</div>
           <span class="opening-style">{o.style}</span>
           <p class="opening-description">{o.description}</p>
-          <div class="opening-cta-row">
-            <a class="opening-cta-primary" href={`/chess-school/opening-builder/study?id=${o.id}`}>Study Guide</a>
-            <a class="opening-cta-secondary" href={`/chess-school/opening-builder/drill?id=${o.id}`}>Drill &rarr;</a>
-          </div>
+          {o.id === 'french' ? (
+            <div class="opening-cta-row opening-cta-row-three">
+              <a class="opening-cta-primary opening-cta-flagship" href="/chess-school/opening-builder/french">Complete Repertoire</a>
+              <a class="opening-cta-secondary" href={`/chess-school/opening-builder/study?id=${o.id}`}>Study Guide</a>
+              <a class="opening-cta-secondary" href={`/chess-school/opening-builder/drill?id=${o.id}`}>Drill</a>
+            </div>
+          ) : (
+            <div class="opening-cta-row">
+              <a class="opening-cta-primary" href={`/chess-school/opening-builder/study?id=${o.id}`}>Study Guide</a>
+              <a class="opening-cta-secondary" href={`/chess-school/opening-builder/drill?id=${o.id}`}>Drill &rarr;</a>
+            </div>
+          )}
         </article>
       ))}
     </div>
@@ -351,6 +360,9 @@ const BLACK_VS_D4 = [
 
 .mg-rec-badge { display: inline-block; font-family: 'Playfair Display', Georgia, serif; font-size: 0.66rem; padding: 3px 8px; border-radius: 99px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.55rem; background: rgba(201,168,76,0.22); color: #c9a84c; border: 1px solid rgba(201,168,76,0.45); align-self: flex-start; font-weight: 600; }
 
+/* Golden NEW pill for the French complete repertoire. */
+.mg-new-badge { display: inline-block; font-family: 'Playfair Display', Georgia, serif; font-size: 0.65rem; padding: 3px 9px; border-radius: 99px; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 0.55rem 0.4rem; background: linear-gradient(135deg, #c9a84c, #d4b556); color: #0f111c; border: 1px solid rgba(201,168,76,0.7); align-self: flex-start; font-weight: 700; box-shadow: 0 0 0 2px rgba(201,168,76,0.15); }
+
 .repertoire-section { margin: 0 0 3rem; }
 .repertoire-header { margin-bottom: 1.5rem; }
 .rep-color-chip { display: inline-block; font-family: 'Playfair Display', Georgia, serif; font-size: 0.78rem; padding: 4px 11px; border-radius: 99px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.6rem; }
@@ -379,8 +391,12 @@ const BLACK_VS_D4 = [
 
 /* Phase 2.5 study + drill two-button row. */
 .opening-cta-row { display: flex; gap: 0.5rem; flex-wrap: wrap; align-self: flex-start; }
+.opening-cta-row-three { width: 100%; }
 .opening-cta-primary { display: inline-block; background: #c9a84c; color: #0f111c; padding: 7px 13px; border-radius: 7px; font-family: 'Playfair Display', Georgia, serif; font-size: 0.85rem; font-weight: 700; text-decoration: none; letter-spacing: 0.02em; transition: transform 0.15s, box-shadow 0.15s; }
 .opening-cta-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(201,168,76,0.35); }
+/* The French "Complete Repertoire" CTA gets a slight glow to flag it as the flagship link. */
+.opening-cta-flagship { box-shadow: 0 0 0 2px rgba(201,168,76,0.25); }
+.opening-cta-flagship:hover { box-shadow: 0 6px 14px rgba(201,168,76,0.45), 0 0 0 2px rgba(201,168,76,0.4); }
 .opening-cta-secondary { display: inline-block; background: transparent; color: #c9a84c; padding: 7px 13px; border-radius: 7px; border: 1px solid rgba(201,168,76,0.5); font-family: 'EB Garamond', Georgia, serif; font-size: 0.88rem; text-decoration: none; transition: background 0.15s; }
 .opening-cta-secondary:hover { background: rgba(201,168,76,0.12); }
 
@@ -511,6 +527,9 @@ const BLACK_VS_D4 = [
     { keywords: ['opening', 'repertoire', 'drill', 'opening builder'],
       q: 'How does the Opening Repertoire Builder work?',
       a: 'Click &lsquo;Drill mode&rsquo; on any opening card. You play the mainline against the engine, get instant feedback, and your score saves locally so you can track progress. Phase 3 (your own PGN lines) is next.' },
+    { keywords: ['french', 'french defense', 'complete repertoire'],
+      q: 'What is the new French Complete Repertoire?',
+      a: 'Click <strong>Complete Repertoire</strong> on the French card. Eight chapters cover every White system: Exchange, Advance, McCutcheon, Classical, Tarrasch, Anti-French, Schlechter, and KIA.' },
     { keywords: ['free', 'cost', 'price'],
       q: 'Is Mind\'s Gambit free?',
       a: 'All training, analysis, and content is <strong>completely free</strong>. No ads, no subscriptions.' },
@@ -565,7 +584,7 @@ const BLACK_VS_D4 = [
   }
   function greet() {
     addMessage('Hi &mdash; welcome to <strong>Mind&rsquo;s Gambit Help</strong>. Type a question or pick a suggestion below.', 'bot');
-    showSuggestions(['How does the Opening Repertoire Builder work?', 'Is Mind\'s Gambit free?', 'Can I book a lesson?']);
+    showSuggestions(['How does the Opening Repertoire Builder work?', 'What is the new French Complete Repertoire?', 'Is Mind\'s Gambit free?']);
   }
   function showSuggestions(questions) {
     suggestedEl.innerHTML = '';

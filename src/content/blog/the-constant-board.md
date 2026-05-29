@@ -27,7 +27,6 @@ This book is about what chess teaches us when we stop trying to win and start tr
 
 The board is constant. Everything else is in play.
 
-
 ## My Journey From Mégrine to Manhattan
 
 My journey began in the vibrant pulse of Tunisia, where I was raised amidst the evolving landscape of the capital. In 1978, as the world's eyes were fixed on the World Cup, my family relocated to Mégrine, a southern suburb that would become the backdrop of my early social education. In Mégrine, life centered around the local coffee house—a quintessential sociological microcosm. At "Uncle Mohamed's," the air was thick with tobacco smoke and the clatter of dominoes; it was a sanctuary where the employed, the academic, and the jobless sat as equals. While elders engaged in heated political discourse, I found myself drawn to the quiet intensity of the chess tables. My father had taught me the fundamental moves during the long, expectant afternoons of Ramadan, but our matches ended the day I finally overcame him, and he gracefully retired from our private board.
@@ -45,34 +44,3 @@ Bill. He was hard to miss—a big guy, quiet, always had this clerical collar on
 After that, our breakfasts felt different. Bill opened up about Bobby in a way that I do not think he did with many people. There was warmth in it, but also something heavier. He would describe Bobby's photographic memory, how the kid could chew through master games like other people read newspapers. Bobby would see winning sequences that took other grandmasters hours to figure out. But then Bill would go quiet for a moment and start talking about loneliness. He told me once, stirring his coffee, that Bobby was like a son to him. When they stopped speaking something in him broke. He still held out some hope of seeing Bobby again, but you could tell he did not really believe it.
 
 Across all these places and people, the chessboard has remained the one constant—a familiar surface connecting my childhood in Tunisia, my years in Manhattan, and every encounter in between. I often wonder how many others, in distant cities and quiet parks, have found in chess not just a game but a bridge: a way to reach across cultures, to break through isolation, and to ease loneliness. For me, and perhaps for countless others, those sixty-four squares have offered a space for inclusion, conversation, and connection that transcends borders and circumstance.
-
-
-<section class="article-feedback">
-  <div class="feedback-divider"></div>
-    <p class="feedback-label">Contact</p>
-      <h2 class="feedback-title">Join the Conversation</h2>
-        <p class="feedback-intro">This book is being written in dialogue with its readers. If you're a chess player, a researcher, a mental health professional, a parent of a young player, or simply someone who cares about how institutions treat the people they're meant to serve—I want to hear from you. Your perspective might change a chapter.</p>
-          <form class="feedback-form" name="contact" method="POST" action="https://formsubmit.co/Mourad@mindsgambit.com">
-              <input type="hidden" name="form-name" value="contact" />
-                  <input type="text" name="name" placeholder="Your Name" required />
-                      <input type="email" name="email" placeholder="Your Email" required />
-                          <input type="text" name="chapter" placeholder="Which chapter are you responding to?" value="The Constant Board" />
-                              <textarea name="message" placeholder="Your thoughts, feedback, or questions..." required></textarea>
-                                  <button type="submit">Send Feedback</button>
-          </form>
-</section>
-
-<style>
-    .article-feedback { margin-top: 3rem; text-align: center; }
-    .article-feedback .feedback-divider { width: 60px; height: 1px; background: rgba(201,168,76,0.4); margin: 0 auto 2rem; }
-    .article-feedback .feedback-label { color: #c9a84c; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; margin: 0 0 0.5rem; }
-    .article-feedback .feedback-title { font-family: 'Playfair Display', Georgia, serif; font-size: 1.9rem; color: #c9a84c; margin: 0 0 1.5rem; }
-    .article-feedback .feedback-intro { color: rgba(232,224,208,0.75); font-size: 1.05rem; line-height: 1.7; max-width: 560px; margin: 0 auto 2rem; }
-    .article-feedback .feedback-form { max-width: 520px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; text-align: left; }
-    .article-feedback .feedback-form input, .article-feedback .feedback-form textarea { background: rgba(30,33,48,0.9); border: 1px solid rgba(201,168,76,0.25); border-radius: 6px; padding: 0.85rem 1rem; color: #e8e0d0; font-size: 1rem; font-family: 'EB Garamond', Georgia, serif; }
-    .article-feedback .feedback-form input::placeholder, .article-feedback .feedback-form textarea::placeholder { color: rgba(232,224,208,0.45); }
-    .article-feedback .feedback-form input:focus, .article-feedback .feedback-form textarea:focus { outline: none; border-color: #c9a84c; }
-    .article-feedback .feedback-form textarea { min-height: 140px; resize: vertical; }
-    .article-feedback .feedback-form button { background: #c9a84c; color: #0f111c; border: none; border-radius: 6px; padding: 0.85rem 1.5rem; font-size: 0.95rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer; transition: opacity 0.3s; align-self: flex-start; }
-    .article-feedback .feedback-form button:hover { opacity: 0.85; }
-  </style>

@@ -7,68 +7,67 @@ const sortedPosts = allPosts.sort((a, b) => new Date(b.data.date).valueOf() - ne
 ---
 
 <BaseLayout title="Blog &mdash; The Mind's Gambit">
-<nav>
-<div class="nav-inner">
-<a href="/" class="nav-logo"><img src="/images/logo.jpg" alt="Mind's Gambit" style="height:55px;width:55px;border-radius:50%;object-fit:cover;border:2px solid #c8a84e;margin-left:10px;vertical-align:middle;" /></a>
-<ul class="nav-links">
-<li><a href="/">Home</a></li>
-<li><a href="/blog" class="active">Blog</a></li>
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo"><img src="/images/logo.jpg" alt="Mind's Gambit" style="height:55px;width:55px;border-radius:50%;object-fit:cover;border:2px solid #c8a84e;margin-left:10px;vertical-align:middle;" /></a>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/blog" class="active">Blog</a></li>
+        <li><a href="/#documentary" class="nav-btn">Documentary</a></li>
+      </ul>
+    </div>
+  </nav>
 
-</ul>
-</div>
-</nav>
+  <main class="blog-page">
+    <section class="blog-hero">
+      <h1>The Mind's Gambit</h1>
+      <p class="blog-subtitle">Chapters in Progress</p>
+      <p class="blog-intro-text">Each article below is a draft chapter from <em>The Mind's Gambit</em>, published here to invite conversation before the book goes to print. Read them, challenge them, and help me sharpen the arguments. For a deeper dive, each chapter has a companion episode in the <a href="/#documentary">documentary series</a>.</p>
+    </section>
 
-<main class="blog-page">
-<section class="blog-hero">
-<h1>The Mind's Gambit</h1>
-<p class="blog-subtitle">Chapters in Progress</p>
-<p class="blog-intro-text">Each article below is a draft chapter from <em>The Mind's Gambit</em>, published here to invite conversation before the book goes to print. Read them, challenge them, and help me sharpen the arguments. For a deeper dive, each chapter has a companion episode on the .</p>
-</section>
+    <section class="chapters-section">
+      <h2 class="section-heading">Dive In &mdash; Read, Challenge, Discuss</h2>
+      <p style="text-align:center;color:#a0a0a0;font-size:0.95rem;font-style:italic;margin:-0.5rem 0 1.5rem;letter-spacing:0.02em;">Choose a chapter below to read, react, and share your thoughts.</p>
+      <div class="featured-grid">
+        <a href="/blog/the-constant-board" class="chapter-card featured">
+          <div class="chapter-card-img">
+            <img src="/images/A_cinematic_realistic_scene_in_a_mgrine_____tunisi_delpmaspu.png" alt="The Constant Board cover" />
+          </div>
+          <div class="chapter-card-body">
+            <span class="chapter-badge">Chapter 1</span>
+            <h3>The Constant Board: From M&eacute;grine to Manhattan</h3>
+            <p>A personal journey through the coffee houses of Tunisia and across the Atlantic&mdash;how a vinyl board, a humbling defeat, and a father&rsquo;s quiet faith shaped a lifelong relationship with chess.</p>
+            <div class="chapter-meta"><span>February 2026</span><span>12 min read</span><span>Personal Essay</span></div>
+          </div>
+        </a>
+        <a href="/blog/the-number" class="chapter-card featured">
+          <div class="chapter-card-img">
+            <img src="/images/For%20Website%20The%20Number.png" alt="The Number cover" />
+          </div>
+          <div class="chapter-card-body">
+            <span class="chapter-badge">Chapter 2</span>
+            <h3>The Number: Elo Ratings, Identity and the Sociology of Competitive Chess</h3>
+            <p>How a statistical tool designed for neutral measurement became one of the most powerful psychological forces in the game, and what that tells us about the systems we build to measure human worth.</p>
+            <div class="chapter-meta"><span>February 2026</span><span>18 min read</span><span>Academic Essay</span></div>
+          </div>
+        </a>
+      </div>
+    </section>
 
-<section class="chapters-section">
-<h2 class="section-heading">Dive In &mdash; Read, Challenge, Discuss</h2>
-<p style="text-align:center;color:#a0a0a0;font-size:0.95rem;font-style:italic;margin:-0.5rem 0 1.5rem;letter-spacing:0.02em;">Choose a chapter below to read, react, and share your thoughts.</p>
-<div class="featured-grid">
-<a href="/blog/the-constant-board" class="chapter-card featured">
-<div class="chapter-card-img">
-<img src="/images/A_cinematic_realistic_scene_in_a_mgrine_____tunisi_delpmaspu.png" alt="The Constant Board cover" />
-</div>
-<div class="chapter-card-body">
-<span class="chapter-badge">Chapter 1</span>
-<h3>The Constant Board: From M&eacute;grine to Manhattan</h3>
-<p>A personal journey through the coffee houses of Tunisia and across the Atlantic&mdash;how a vinyl board, a humbling defeat, and a father&rsquo;s quiet faith shaped a lifelong relationship with chess.</p>
-<div class="chapter-meta"><span>February 2026</span><span>12 min read</span><span>Personal Essay</span></div>
-</div>
-</a>
-<a href="/blog/the-number" class="chapter-card featured">
-<div class="chapter-card-img">
-<img src="/images/For%20Website%20The%20Number.png" alt="The Number cover" />
-</div>
-<div class="chapter-card-body">
-<span class="chapter-badge">Chapter 2</span>
-<h3>The Number: Elo Ratings, Identity and the Sociology of Competitive Chess</h3>
-<p>How a statistical tool designed for neutral measurement became one of the most powerful psychological forces in the game, and what that tells us about the systems we build to measure human worth.</p>
-<div class="chapter-meta"><span>February 2026</span><span>18 min read</span><span>Academic Essay</span></div>
-</div>
-</a>
-</div>
-</section>
-
-<section class="chapters-section">
-<h2 class="section-heading">Upcoming Chapters</h2>
-<div class="upcoming-grid">
-<div class="upcoming-card"><div class="upcoming-number">3</div><div class="upcoming-body"><span class="upcoming-date">Coming June 2026</span><h3>Brilliance That Bleeds</h3><p>The myth of the mad chess genius&mdash;from Morphy to Fischer, and who the story actually serves.</p></div></div>
-<div class="upcoming-card"><div class="upcoming-number">4</div><div class="upcoming-body"><span class="upcoming-date">Coming July 2026</span><h3>The Queen's Burden</h3><p>Women, hostility, and the mental health cost of playing in a man's world.</p></div></div>
-<div class="upcoming-card"><div class="upcoming-number">5</div><div class="upcoming-body"><span class="upcoming-date">Coming August 2026</span><h3>The Youngest Pawns</h3><p>Ratings, parents, burnout, and the question of childhood in chess.</p></div></div>
-<div class="upcoming-card"><div class="upcoming-number">6</div><div class="upcoming-body"><span class="upcoming-date">Coming September 2026</span><h3>The Pattern Seekers</h3><p>Chess and neurodivergence&mdash;a game built for different minds.</p></div></div>
-<div class="upcoming-card"><div class="upcoming-number">7</div><div class="upcoming-body"><span class="upcoming-date">Coming October 2026</span><h3>Medicine on 64 Squares</h3><p>From ninth-century Baghdad to modern prisons&mdash;chess as therapy.</p></div></div>
-<div class="upcoming-card"><div class="upcoming-number">8</div><div class="upcoming-body"><span class="upcoming-date">Coming November 2026</span><h3>One More Game</h3><p>Digital chess, compulsive play, and the architecture of addiction&mdash;the body and the screen.</p></div></div>
-<div class="upcoming-card"><div class="upcoming-number">9</div><div class="upcoming-body"><span class="upcoming-date">Coming December 2026</span><h3>The Ghost in the Machine</h3><p>Chess in the age of artificial intelligence.</p></div></div>
-<div class="upcoming-card"><div class="upcoming-number">10</div><div class="upcoming-body"><span class="upcoming-date">Coming January 2027</span><h3>The Mind's Gambit Empirical Study</h3><p>Survey findings&mdash;what chess players told us about the mental health cost of the game.</p></div></div>
-</div>
-</section>
-
-<section class </main>
+    <section class="chapters-section">
+      <h2 class="section-heading">Upcoming Chapters</h2>
+      <div class="upcoming-grid">
+        <div class="upcoming-card"><div class="upcoming-number">3</div><div class="upcoming-body"><span class="upcoming-date">Coming June 2026</span><h3>Brilliance That Bleeds</h3><p>The myth of the mad chess genius&mdash;from Morphy to Fischer, and who the story actually serves.</p></div></div>
+        <div class="upcoming-card"><div class="upcoming-number">4</div><div class="upcoming-body"><span class="upcoming-date">Coming July 2026</span><h3>The Queen's Burden</h3><p>Women, hostility, and the mental health cost of playing in a man's world.</p></div></div>
+        <div class="upcoming-card"><div class="upcoming-number">5</div><div class="upcoming-body"><span class="upcoming-date">Coming August 2026</span><h3>The Youngest Pawns</h3><p>Ratings, parents, burnout, and the question of childhood in chess.</p></div></div>
+        <div class="upcoming-card"><div class="upcoming-number">6</div><div class="upcoming-body"><span class="upcoming-date">Coming September 2026</span><h3>The Pattern Seekers</h3><p>Chess and neurodivergence&mdash;a game built for different minds.</p></div></div>
+        <div class="upcoming-card"><div class="upcoming-number">7</div><div class="upcoming-body"><span class="upcoming-date">Coming October 2026</span><h3>Medicine on 64 Squares</h3><p>From ninth-century Baghdad to modern prisons&mdash;chess as therapy.</p></div></div>
+        <div class="upcoming-card"><div class="upcoming-number">8</div><div class="upcoming-body"><span class="upcoming-date">Coming November 2026</span><h3>One More Game</h3><p>Digital chess, compulsive play, and the architecture of addiction&mdash;the body and the screen.</p></div></div>
+        <div class="upcoming-card"><div class="upcoming-number">9</div><div class="upcoming-body"><span class="upcoming-date">Coming December 2026</span><h3>The Ghost in the Machine</h3><p>Chess in the age of artificial intelligence.</p></div></div>
+        <div class="upcoming-card"><div class="upcoming-number">10</div><div class="upcoming-body"><span class="upcoming-date">Coming January 2027</span><h3>The Mind's Gambit Empirical Study</h3><p>Survey findings&mdash;what chess players told us about the mental health cost of the game.</p></div></div>
+      </div>
+    </section>
+  </main>
 </BaseLayout>
 <style>
 .blog-page, .blog-page * { opacity: 1 !important; }
@@ -77,7 +76,8 @@ const sortedPosts = allPosts.sort((a, b) => new Date(b.data.date).valueOf() - ne
 .blog-hero h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 3rem; color: #c9a84c; margin-bottom: 0.5rem; }
 .blog-subtitle { font-size: 1.3rem; color: #f0ece4; opacity: 0.8 !important; margin-bottom: 1.5rem; font-style: italic; }
 .blog-intro-text { font-size: 1rem; color: #a0a0a0; line-height: 1.7; max-width: 650px; margin: 0 auto; }
-.chapters-section,
+.blog-intro-text a { color: #c9a84c; text-decoration: underline; text-underline-offset: 3px; }
+.chapters-section { max-width: 1000px; margin: 0 auto 4rem; padding: 0 2rem; }
 .section-heading { font-family: 'Playfair Display', Georgia, serif; font-size: 1.6rem; color: #c9a84c; margin-bottom: 2rem; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(201,168,76,0.2); }
 .featured-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
 .chapter-card.featured { display: grid; grid-template-columns: 360px 1fr; background: rgba(30,33,48,0.9); border: 1px solid rgba(201,168,76,0.15); border-radius: 12px; overflow: hidden; text-decoration: none; color: inherit; transition: border-color 0.3s, transform 0.2s; }
@@ -97,7 +97,6 @@ const sortedPosts = allPosts.sort((a, b) => new Date(b.data.date).valueOf() - ne
 .upcoming-date { font-size: 0.7rem; color: #c9a84c; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 0.5rem; }
 .upcoming-body h3 { font-family: 'Playfair Display', Georgia, serif; font-size: 1rem; color: #f0ece4; margin-bottom: 0.5rem; line-height: 1.3; }
 .upcoming-body p { font-size: 0.8rem; color: #777; line-height: 1.5; }
-.discussion-section { padding-bottom: 5rem; }
 
 nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15,17,28,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(201,168,76,0.1); }
 .nav-inner { max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }

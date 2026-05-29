@@ -1,38 +1,25 @@
-// MIND'S GAMBIT SERVICE WORKER — KILL SWITCH
-// Replaces previous SW. On activation, unregisters itself and reloads all clients.
-// After this, no SW is registered for mindsgambit.com.
-// Date: 2026-05-29
+// MIND'S GAMBIT SERVICE WORKER — SILENT UNREGISTER
+// Replaces previous SWs. Unregisters itself on activation.
+// Does NOT navigate clients (which previously caused an infinite reload loop).
+// Date: 2026-05-29 v2
 
 self.addEventListener('install', (event) => {
-  // Activate this SW immediately, skip the "waiting" state
   self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
   event.waitUntil((async () => {
-    // Take control of all open clients
     await self.clients.claim();
-    // Delete every cache
     const cacheNames = await caches.keys();
     await Promise.all(cacheNames.map(name => caches.delete(name)));
-    // Unregister this service worker
     await self.registration.unregister();
-    // Tell every open client to reload — fetches will go through fresh, no SW
-    const clientList = await self.clients.matchAll({ type: 'window' });
-    for (const client of clientList) {
-      // Use navigate() with the same URL to force a full reload
-      try {
-        if (client.url && 'navigate' in client) {
-          await client.navigate(client.url);
-        }
-      } catch (e) {
-        // navigate() can fail for cross-origin; ignore
-      }
-    }
+    // Intentionally do NOT call client.navigate() — that creates a reload loop
+    // because BaseLayout body re-registers /sw.js on every page load. We're
+    // removing that registration in a separate file edit; once both ship, the
+    // SW stays unregistered for good.
   })());
 });
 
 self.addEventListener('fetch', (event) => {
-  // Don't intercept anything — pass through to network
   return;
 });

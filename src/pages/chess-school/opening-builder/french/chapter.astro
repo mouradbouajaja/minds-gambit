@@ -316,7 +316,7 @@ export const prerender = true;
     drillRow.className = 'subvar-cta-row';
     var drillLink = document.createElement('a');
     drillLink.className = 'cta-primary';
-    drillLink.href = '/chess-school/opening-builder/drill?id=' + encodeURIComponent(chapterId + '-' + sv.id.replace(/^[^-]+-/, ''));
+    drillLink.href = '/chess-school/opening-builder/drill?mainline=' + encodeURIComponent(sv.mainline) + '&name=' + encodeURIComponent(chapter.title + ' · ' + sv.name) + '&side=black&parent=' + encodeURIComponent(chapterId);
     drillLink.textContent = 'Drill this line →';
     drillRow.appendChild(drillLink);
     li.appendChild(drillRow);

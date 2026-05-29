@@ -5,8 +5,9 @@ dist/
 node_modules/
 
 # environment variables
-.env
-.env.production
+.env*
+.vercel/
+.astro/
 
 # macOS
 .DS_Store

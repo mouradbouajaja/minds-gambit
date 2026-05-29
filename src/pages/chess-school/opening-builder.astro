@@ -30,7 +30,8 @@ const WHITE_OPENINGS = [
     moves: '1. e4 e5 2. Nf3 Nc6 3. Bc4',
     style: 'Aggressive, attacking',
     description: "Direct attack on f7. Modern Italian (Giuoco Pianissimo) is razor-sharp at top level  slow build-up that explodes when the moment is right.",
-    mainLine: 'e4 e5 Nf3 Nc6 Bc4 Bc5 c3 Nf6 d3 d6 O-O O-O Re1 a6 h3'
+    mainLine: 'e4 e5 Nf3 Nc6 Bc4 Bc5 c3 Nf6 d3 d6 O-O O-O Re1 a6 h3',
+    recommended: true
   },
   {
     id: 'queens-gambit',
@@ -39,7 +40,8 @@ const WHITE_OPENINGS = [
     moves: '1. d4 d5 2. c4',
     style: 'Classical, positional',
     description: "Offer the c-pawn to seize central control. Most respected opening in chess history. Backbone of Karpov, Kramnik, Carlsen's repertoires.",
-    mainLine: 'd4 d5 c4 e6 Nc3 Nf6 cxd5 exd5 Bg5 Be7 e3 c6 Bd3 O-O Nf3'
+    mainLine: 'd4 d5 c4 e6 Nc3 Nf6 cxd5 exd5 Bg5 Be7 e3 c6 Bd3 O-O Nf3',
+    recommended: true
   },
   {
     id: 'english',
@@ -87,7 +89,8 @@ const BLACK_VS_E4 = [
     moves: '1. e4 e6',
     style: 'Solid, strategic',
     description: "Concede space, build a fortress, counterpunch. Beloved by Botvinnik, Korchnoi, and modern grinders. The pawn structure decides everything.",
-    mainLine: 'e4 e6 d4 d5 Nd2 c5 exd5 exd5 Ngf3 Nc6 Bb5 Bd6 dxc5 Bxc5 O-O'
+    mainLine: 'e4 e6 d4 d5 Nd2 c5 exd5 exd5 Ngf3 Nc6 Bb5 Bd6 dxc5 Bxc5 O-O',
+    recommended: true
   },
   {
     id: 'caro-kann',
@@ -96,7 +99,8 @@ const BLACK_VS_E4 = [
     moves: '1. e4 c6',
     style: 'Solid, classical',
     description: "Karpov's defense of choice. Build a solid structure with ...c6 and ...d5, no weaknesses, wait for the opponent to overextend.",
-    mainLine: 'e4 c6 d4 d5 Nc3 dxe4 Nxe4 Bf5 Ng3 Bg6 h4 h6 Nf3 Nd7 h5 Bh7'
+    mainLine: 'e4 c6 d4 d5 Nc3 dxe4 Nxe4 Bf5 Ng3 Bg6 h4 h6 Nf3 Nd7 h5 Bh7',
+    recommended: true
   },
   {
     id: 'berlin',
@@ -106,6 +110,15 @@ const BLACK_VS_E4 = [
     style: 'Solid, endgame-focused',
     description: "Kramnik's weapon to defang Kasparov in 2000. Trade queens early, head straight to a slightly worse but tenacious endgame. Drawing weapon par excellence.",
     mainLine: 'e4 e5 Nf3 Nc6 Bb5 Nf6 O-O Nxe4 d4 Nd6 Bxc6 dxc6 dxe5 Nf5'
+  },
+  {
+    id: 'scandinavian',
+    name: 'Scandinavian Defense',
+    eco: 'B01',
+    moves: '1. e4 d5',
+    style: 'Solid, low-theory',
+    description: "Black plays ...d5 on move 1  immediate central challenge with no theory race. Pick a recapture (Qd5 or ...Nf6 gambit style) and play sound positional chess. Anand has used it at world-class level.",
+    mainLine: 'e4 d5 exd5 Qxd5 Nc3 Qa5 d4 Nf6 Nf3 c6 Bc4 Bf5 Bd2 e6 Nd5'
   }
 ];
 
@@ -144,7 +157,27 @@ const BLACK_VS_D4 = [
     moves: '1. d4 Nf6 2. c4 e6 3. Nc3 Bb4',
     style: 'Strategic, positional',
     description: "Aron Nimzowitsch's lasting gift to chess. Pin the knight, double White's pawns, fight for the dark squares. Often considered the most respectable defense to 1.d4.",
-    mainLine: 'd4 Nf6 c4 e6 Nc3 Bb4 e3 O-O Bd3 d5 Nf3 c5 O-O Nc6 a3 Bxc3'
+    mainLine: 'd4 Nf6 c4 e6 Nc3 Bb4 e3 O-O Bd3 d5 Nf3 c5 O-O Nc6 a3 Bxc3',
+    recommended: true
+  },
+  {
+    id: 'queens-indian',
+    name: "Queen's Indian Defense",
+    eco: 'E12E19',
+    moves: '1. d4 Nf6 2. c4 e6 3. Nf3 b6',
+    style: 'Hypermodern, flexible',
+    description: "Fianchetto the queen's bishop to b7 and contest the long diagonal. Pairs naturally with the Nimzo (Black plays QID when White avoids 3.Nc3). Karpov's lifelong weapon  a complete repertoire when combined with the Nimzo.",
+    mainLine: 'd4 Nf6 c4 e6 Nf3 b6 g3 Ba6 b3 Bb4+ Bd2 Be7 Bg2 c6 O-O d5',
+    recommended: true
+  },
+  {
+    id: 'bogo-indian',
+    name: 'Bogo-Indian Defense',
+    eco: 'E11',
+    moves: '1. d4 Nf6 2. c4 e6 3. Nf3 Bb4+',
+    style: 'Solid, principled',
+    description: "Bishop check on b4  same Nimzo idea, but against 3.Nf3 instead of 3.Nc3. Quieter, less theory-heavy, easier to learn. A good Indian system when you want fewer surprises than the Nimzo proper.",
+    mainLine: 'd4 Nf6 c4 e6 Nf3 Bb4+ Bd2 a5 Nc3 O-O e3 d5 a3 Bxc3 Bxc3 dxc4'
   }
 ];
 ---
@@ -171,7 +204,7 @@ const BLACK_VS_D4 = [
   <a href="/chess-school" class="back-link">&larr; Back to Chess School</a>
   <span class="eyebrow">Mind&rsquo;s Gambit Chess School</span>
   <h1>Opening Repertoire Builder</h1>
-  <p class="lead">Pick your weapons. Build a repertoire you can actually rely on &mdash; both as White and against the openings you&rsquo;ll see as Black. Click &lsquo;Drill mode&rsquo; on any opening to practice the mainline against the engine.</p>
+  <p class="lead">Pick your weapons. Build a repertoire you can actually rely on &mdash; both as White and against the openings you&rsquo;ll see as Black. Below: a curated catalog of <strong>17 sound, strategic openings</strong>, with 6 flagged as a complete intermediate repertoire. Click <em>&ldquo;Drill mode&rdquo;</em> on any opening to practice the mainline against the engine; your accuracy saves locally so you can track progress.</p>
 
   <!-- Status banner -->
   <div class="status-banner">
@@ -181,6 +214,13 @@ const BLACK_VS_D4 = [
       <span>Click &lsquo;Drill mode&rsquo; on any opening below to practice the mainline against the engine. Your scores save automatically &mdash; come back to see your progress. Phase 3 (custom PGN repertoire) is next.</span>
     </div>
   </div>
+
+  <!-- MG Recommendations editorial block -->
+  <section class="mg-recs">
+    <span class="mg-recs-chip">Mind&rsquo;s Gambit Recommendations</span>
+    <h2 class="mg-recs-title">A complete repertoire for intermediate players</h2>
+    <p class="mg-recs-body">We curate sound, strategic openings &mdash; not trap-based gambits or fringe lines that fall apart once your opponent knows the refutation. Every opening here survives accurate play and teaches real principles. The six openings marked <strong class="mg-rec-inline">&#10038; MG Recommended</strong> below form a complete intermediate repertoire: pick one White system, one Black answer to 1.e4, and a Nimzo/Queen&rsquo;s Indian pair against 1.d4. Drill those six and you can sit down across from almost anyone and know what you&rsquo;re doing.</p>
+  </section>
 
   <!-- WHITE REPERTOIRE -->
   <section class="repertoire-section">
@@ -192,6 +232,7 @@ const BLACK_VS_D4 = [
     <div class="opening-grid">
       {WHITE_OPENINGS.map((o) => (
         <article class="opening-card" data-id={o.id}>
+          {o.recommended && <span class="mg-rec-badge">&#10038; MG Recommended</span>}
           <header class="opening-card-header">
             <h3 class="opening-name">{o.name}</h3>
             <span class="opening-eco">{o.eco}</span>
@@ -215,6 +256,7 @@ const BLACK_VS_D4 = [
     <div class="opening-grid">
       {BLACK_VS_E4.map((o) => (
         <article class="opening-card" data-id={o.id}>
+          {o.recommended && <span class="mg-rec-badge">&#10038; MG Recommended</span>}
           <header class="opening-card-header">
             <h3 class="opening-name">{o.name}</h3>
             <span class="opening-eco">{o.eco}</span>
@@ -238,6 +280,7 @@ const BLACK_VS_D4 = [
     <div class="opening-grid">
       {BLACK_VS_D4.map((o) => (
         <article class="opening-card" data-id={o.id}>
+          {o.recommended && <span class="mg-rec-badge">&#10038; MG Recommended</span>}
           <header class="opening-card-header">
             <h3 class="opening-name">{o.name}</h3>
             <span class="opening-eco">{o.eco}</span>
@@ -279,6 +322,14 @@ const BLACK_VS_D4 = [
 .status-icon { font-size: 1.6rem; color: #93b8e8; flex-shrink: 0; }
 .status-banner strong { display: block; color: #93b8e8; font-family: 'Playfair Display', Georgia, serif; font-size: 1.02rem; margin-bottom: 0.15rem; }
 .status-banner span { color: rgba(232,224,208,0.78); font-family: 'EB Garamond', Georgia, serif; font-size: 0.95rem; line-height: 1.5; display: block; }
+
+.mg-recs { background: linear-gradient(135deg, rgba(201,168,76,0.10), rgba(91,133,195,0.05)); border: 1px solid rgba(201,168,76,0.35); border-radius: 14px; padding: 1.4rem 1.6rem 1.5rem; margin: 0 0 2.5rem; }
+.mg-recs-chip { display: inline-block; font-family: 'Playfair Display', Georgia, serif; font-size: 0.75rem; padding: 4px 11px; border-radius: 99px; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.7rem; background: rgba(201,168,76,0.18); color: #c9a84c; border: 1px solid rgba(201,168,76,0.4); }
+.mg-recs-title { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1.45rem; margin: 0 0 0.6rem; }
+.mg-recs-body { color: rgba(232,224,208,0.82); font-family: 'EB Garamond', Georgia, serif; font-size: 1rem; line-height: 1.6; margin: 0; max-width: 880px; }
+.mg-rec-inline { color: #c9a84c; font-weight: 600; white-space: nowrap; }
+
+.mg-rec-badge { display: inline-block; font-family: 'Playfair Display', Georgia, serif; font-size: 0.66rem; padding: 3px 8px; border-radius: 99px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.55rem; background: rgba(201,168,76,0.22); color: #c9a84c; border: 1px solid rgba(201,168,76,0.45); align-self: flex-start; font-weight: 600; }
 
 .repertoire-section { margin: 0 0 3rem; }
 .repertoire-header { margin-bottom: 1.5rem; }

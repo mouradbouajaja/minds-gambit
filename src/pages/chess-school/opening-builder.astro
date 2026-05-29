@@ -59,7 +59,18 @@ const WHITE_OPENINGS = [
     moves: '1. d4 2. Bf4',
     style: 'Solid, low-theory',
     description: "Same setup against almost anything Black plays. Low-maintenance for the busy player; pet line of Magnus Carlsen at world-championship level.",
-    mainLine: 'd4 d5 Bf4 Nf6 e3 e6 Nf3 Bd6 Bg3 O-O Bd3 c5 c3 Nc6 Nbd2'
+    mainLine: 'd4 d5 Bf4 Nf6 e3 e6 Nf3 Bd6 Bg3 O-O Bd3 c5 c3 Nc6 Nbd2',
+    recommended: true
+  },
+  {
+    id: 'colle-zukertort',
+    name: 'Colle-Zukertort',
+    eco: 'D04D05',
+    moves: '1. d4 d5 2. Nf3 Nf6 3. e3',
+    style: 'Solid, low-theory',
+    description: "The London's cousin: same one-system-vs-anything philosophy, but with the queen's bishop fianchettoed on b2 instead of f4. Pressures the long diagonal — especially after a future e4 break. Edgar Colle's 1920s creation, refined by Zukertort. Perfect for the busy player who wants to think in plans, not memorize moves.",
+    mainLine: 'd4 d5 Nf3 Nf6 e3 e6 Bd3 c5 b3 Nc6 Bb2 Bd6 O-O O-O Nbd2 b6',
+    recommended: true
   },
   {
     id: 'kia',
@@ -204,7 +215,7 @@ const BLACK_VS_D4 = [
   <a href="/chess-school" class="back-link">&larr; Back to Chess School</a>
   <span class="eyebrow">Mind&rsquo;s Gambit Chess School</span>
   <h1>Opening Repertoire Builder</h1>
-  <p class="lead">Pick your weapons. Build a repertoire you can actually rely on &mdash; both as White and against the openings you&rsquo;ll see as Black. Below: a curated catalog of <strong>17 sound, strategic openings</strong>, with 6 flagged as a complete intermediate repertoire. Click <em>&ldquo;Drill mode&rdquo;</em> on any opening to practice the mainline against the engine; your accuracy saves locally so you can track progress.</p>
+  <p class="lead">Pick your weapons. Build a repertoire you can actually rely on &mdash; both as White and against the openings you&rsquo;ll see as Black. Below: a curated catalog of <strong>18 sound, strategic openings</strong>, with 8 flagged as a complete intermediate repertoire. Click <em>&ldquo;Drill mode&rdquo;</em> on any opening to practice the mainline against the engine; your accuracy saves locally so you can track progress.</p>
 
   <!-- Status banner -->
   <div class="status-banner">
@@ -219,7 +230,7 @@ const BLACK_VS_D4 = [
   <section class="mg-recs">
     <span class="mg-recs-chip">Mind&rsquo;s Gambit Recommendations</span>
     <h2 class="mg-recs-title">A complete repertoire for intermediate players</h2>
-    <p class="mg-recs-body">We curate sound, strategic openings &mdash; not trap-based gambits or fringe lines that fall apart once your opponent knows the refutation. Every opening here survives accurate play and teaches real principles. The six openings marked <strong class="mg-rec-inline">&#10038; MG Recommended</strong> below form a complete intermediate repertoire: pick one White system, one Black answer to 1.e4, and a Nimzo/Queen&rsquo;s Indian pair against 1.d4. Drill those six and you can sit down across from almost anyone and know what you&rsquo;re doing.</p>
+    <p class="mg-recs-body">We curate sound, strategic openings &mdash; not trap-based gambits or fringe lines that fall apart once your opponent knows the refutation. Every opening here survives accurate play and teaches real principles. The eight openings marked <strong class="mg-rec-inline">&#10038; MG Recommended</strong> below form a complete intermediate repertoire: Pick one White system (or play the London/Colle if you want minimal theory), one Black answer to 1.e4 (French or Caro-Kann), and a Nimzo/Queen&rsquo;s Indian pair against 1.d4.</p>
   </section>
 
   <!-- WHITE REPERTOIRE -->
@@ -240,7 +251,10 @@ const BLACK_VS_D4 = [
           <div class="opening-moves">{o.moves}</div>
           <span class="opening-style">{o.style}</span>
           <p class="opening-description">{o.description}</p>
-          <a class="opening-cta" href={`/chess-school/opening-builder/drill?id=${o.id}`}>Drill mode &rarr;</a>
+          <div class="opening-cta-row">
+            <a class="opening-cta-primary" href={`/chess-school/opening-builder/study?id=${o.id}`}>Study Guide</a>
+            <a class="opening-cta-secondary" href={`/chess-school/opening-builder/drill?id=${o.id}`}>Drill &rarr;</a>
+          </div>
         </article>
       ))}
     </div>
@@ -264,7 +278,10 @@ const BLACK_VS_D4 = [
           <div class="opening-moves">{o.moves}</div>
           <span class="opening-style">{o.style}</span>
           <p class="opening-description">{o.description}</p>
-          <a class="opening-cta" href={`/chess-school/opening-builder/drill?id=${o.id}`}>Drill mode &rarr;</a>
+          <div class="opening-cta-row">
+            <a class="opening-cta-primary" href={`/chess-school/opening-builder/study?id=${o.id}`}>Study Guide</a>
+            <a class="opening-cta-secondary" href={`/chess-school/opening-builder/drill?id=${o.id}`}>Drill &rarr;</a>
+          </div>
         </article>
       ))}
     </div>
@@ -288,7 +305,10 @@ const BLACK_VS_D4 = [
           <div class="opening-moves">{o.moves}</div>
           <span class="opening-style">{o.style}</span>
           <p class="opening-description">{o.description}</p>
-          <a class="opening-cta" href={`/chess-school/opening-builder/drill?id=${o.id}`}>Drill mode &rarr;</a>
+          <div class="opening-cta-row">
+            <a class="opening-cta-primary" href={`/chess-school/opening-builder/study?id=${o.id}`}>Study Guide</a>
+            <a class="opening-cta-secondary" href={`/chess-school/opening-builder/drill?id=${o.id}`}>Drill &rarr;</a>
+          </div>
         </article>
       ))}
     </div>
@@ -352,10 +372,17 @@ const BLACK_VS_D4 = [
 /* Legacy disabled-CTA pill (kept for any future reuse). */
 .opening-cta-disabled { display: inline-block; background: rgba(91,133,195,0.12); color: rgba(147,184,232,0.85); border: 1px solid rgba(91,133,195,0.3); padding: 7px 12px; border-radius: 8px; font-family: 'EB Garamond', Georgia, serif; font-size: 0.84rem; font-style: italic; text-align: center; align-self: flex-start; }
 
-/* Phase 2 "Drill mode" pill  gold, prominent, slight lift on hover. */
+/* Phase 2 "Drill mode" pill  gold, prominent, slight lift on hover. (legacy, kept for any future reuse) */
 .opening-cta { display: inline-block; background: #c9a84c; color: #0f111c; border: 1px solid #c9a84c; padding: 8px 14px; border-radius: 8px; font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: 0.88rem; letter-spacing: 0.02em; text-decoration: none; text-align: center; align-self: flex-start; transition: transform 0.14s, box-shadow 0.18s, background 0.18s; }
 .opening-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(201,168,76,0.35); background: #d4b556; }
 .opening-cta:active { transform: translateY(0); }
+
+/* Phase 2.5 study + drill two-button row. */
+.opening-cta-row { display: flex; gap: 0.5rem; flex-wrap: wrap; align-self: flex-start; }
+.opening-cta-primary { display: inline-block; background: #c9a84c; color: #0f111c; padding: 7px 13px; border-radius: 7px; font-family: 'Playfair Display', Georgia, serif; font-size: 0.85rem; font-weight: 700; text-decoration: none; letter-spacing: 0.02em; transition: transform 0.15s, box-shadow 0.15s; }
+.opening-cta-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(201,168,76,0.35); }
+.opening-cta-secondary { display: inline-block; background: transparent; color: #c9a84c; padding: 7px 13px; border-radius: 7px; border: 1px solid rgba(201,168,76,0.5); font-family: 'EB Garamond', Georgia, serif; font-size: 0.88rem; text-decoration: none; transition: background 0.15s; }
+.opening-cta-secondary:hover { background: rgba(201,168,76,0.12); }
 
 /* Small "last drilled" badge injected by JS above the CTA. */
 .drill-badge { display: inline-block; color: rgba(232,224,208,0.55); font-family: 'EB Garamond', Georgia, serif; font-size: 0.78rem; font-style: italic; margin: 0 0 0.4rem; }
@@ -434,8 +461,8 @@ const BLACK_VS_D4 = [
       var when = formatRelative(s.lastDrilled);
       badge.textContent = scorePart + (when ? ' · ' + when : '') + (dueForReview ? ' · Due for review' : '');
 
-      // Insert badge just before the CTA link.
-      var cta = card.querySelector('.opening-cta');
+      // Insert badge just before the CTA row.
+      var cta = card.querySelector('.opening-cta-row') || card.querySelector('.opening-cta');
       if (cta && cta.parentNode === card) {
         card.insertBefore(badge, cta);
       } else {

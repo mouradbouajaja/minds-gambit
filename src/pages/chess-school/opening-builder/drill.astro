@@ -41,7 +41,7 @@ export const prerender = true;
 <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" />
 
 <section class="page">
-  <a href="/chess-school/opening-builder" class="back-link">&larr; Back to Repertoire Catalog</a>
+  <a href="/chess-school/opening-builder" class="back-link" id="back-link">&larr; Back to Repertoire Catalog</a>
   <span class="eyebrow">Mind&rsquo;s Gambit Chess School &middot; Drill Mode</span>
   <h1 id="opening-title">Loading opening&hellip;</h1>
   <p class="subtitle"><span id="opening-eco">&mdash;</span> &middot; <span id="opening-side">&mdash;</span></p>
@@ -86,7 +86,7 @@ export const prerender = true;
       <!-- Completion controls (hidden until drill is finished) -->
       <div id="completion" class="completion" hidden>
         <button type="button" id="btn-again" class="cta-primary">Drill again</button>
-        <a href="/chess-school/opening-builder" class="cta-secondary">Back to repertoire</a>
+        <a href="/chess-school/opening-builder" class="cta-secondary" id="completion-back">Back to repertoire</a>
       </div>
     </aside>
   </div>
@@ -151,16 +151,85 @@ export const prerender = true;
                        mainLine: 'd4 Nf6 c4 e6 Nf3 Bb4+ Bd2 a5 Nc3 O-O e3 d5 a3 Bxc3 Bxc3 dxc4', recommended: false }
   };
 
+  // French chapter slugs that are valid back-link targets.
+  var FRENCH_CHAPTERS = {
+    'exchange': 1, 'advance': 1, 'mccutcheon': 1, 'classical': 1,
+    'tarrasch': 1, 'two-knights': 1, 'schlechter': 1, 'kia': 1
+  };
+
   // ------------------------------------------------------------
-  // Parse ?id= from URL and look up opening.
+  // Parse ALL URL params we care about. Values returned URL-decoded.
+  // Supports:
+  //   id        opening id lookup key
+  //   mainline  space-separated SAN moves (overrides opening mainLine)
+  //   name      display name (overrides)
+  //   side      'white' | 'black' (overrides)
+  //   eco       ECO code (overrides)
+  //   parent    chapter id for back-link routing
   // ------------------------------------------------------------
-  function getOpeningId() {
-    var m = location.search.match(/[?&]id=([^&]+)/);
-    return m ? decodeURIComponent(m[1]).toLowerCase().trim() : null;
+  function getParam(key) {
+    var re = new RegExp('[?&]' + key + '=([^&]+)');
+    var m = location.search.match(re);
+    if (!m) return null;
+    try { return decodeURIComponent(m[1].replace(/\+/g, ' ')); }
+    catch (e) { return m[1]; }
   }
 
-  var openingId = getOpeningId();
-  var opening = openingId ? OPENINGS[openingId] : null;
+  var openingId   = getParam('id');
+  if (openingId) openingId = openingId.toLowerCase().trim();
+
+  var paramMainline = getParam('mainline');
+  var paramName     = getParam('name');
+  var paramSide     = getParam('side');
+  var paramEco      = getParam('eco');
+  var paramParent   = getParam('parent');
+  if (paramSide) paramSide = paramSide.toLowerCase().trim();
+  if (paramParent) paramParent = paramParent.toLowerCase().trim();
+
+  // 1. Start from OPENINGS lookup if id is present.
+  var opening = (openingId && OPENINGS[openingId])
+    ? {
+        name: OPENINGS[openingId].name,
+        eco: OPENINGS[openingId].eco,
+        side: OPENINGS[openingId].side,
+        mainLine: OPENINGS[openingId].mainLine,
+        recommended: OPENINGS[openingId].recommended
+      }
+    : null;
+
+  // 2. Apply overrides from URL params if present.
+  if (opening) {
+    if (paramMainline) opening.mainLine = paramMainline;
+    if (paramName)     opening.name     = paramName;
+    if (paramSide === 'white' || paramSide === 'black') opening.side = paramSide;
+    if (paramEco)      opening.eco      = paramEco;
+  } else if (paramMainline && paramName && (paramSide === 'white' || paramSide === 'black')) {
+    // 3. Synthetic opening built entirely from URL params.
+    opening = {
+      name:     paramName,
+      eco:      paramEco || '',
+      side:     paramSide,
+      mainLine: paramMainline,
+      recommended: false
+    };
+  }
+
+  // ------------------------------------------------------------
+  // Update back-link routing if a valid French chapter parent is given.
+  // ------------------------------------------------------------
+  if (paramParent && FRENCH_CHAPTERS[paramParent]) {
+    var chapterHref = '/chess-school/opening-builder/french/chapter?id=' + encodeURIComponent(paramParent);
+    var backEl = document.getElementById('back-link');
+    if (backEl) {
+      backEl.setAttribute('href', chapterHref);
+      backEl.innerHTML = '&larr; Back to chapter';
+    }
+    var completionBackEl = document.getElementById('completion-back');
+    if (completionBackEl) {
+      completionBackEl.setAttribute('href', chapterHref);
+      completionBackEl.textContent = 'Back to chapter';
+    }
+  }
 
   if (!opening) {
     document.getElementById('opening-title').textContent = 'Opening not found';
@@ -174,7 +243,7 @@ export const prerender = true;
   // Render header.
   // ------------------------------------------------------------
   document.getElementById('opening-title').textContent = opening.name;
-  document.getElementById('opening-eco').textContent = 'ECO ' + opening.eco;
+  document.getElementById('opening-eco').textContent = opening.eco ? ('ECO ' + opening.eco) : '';
   document.getElementById('opening-side').textContent =
     opening.side === 'white' ? 'You play White' : 'You play Black';
   document.getElementById('drill-workspace').hidden = false;
@@ -207,6 +276,9 @@ export const prerender = true;
   var $statusMsg   = document.getElementById('status-msg');
   var $completion  = document.getElementById('completion');
   var $boardEl     = document.getElementById('board');
+
+  // Stats key: use openingId when available, otherwise a synthetic slug from the name.
+  var statsKey = openingId || ('custom:' + String(opening.name).toLowerCase().replace(/\s+/g, '-'));
 
   // ------------------------------------------------------------
   // Helpers.
@@ -278,8 +350,8 @@ export const prerender = true;
     try {
       var raw = localStorage.getItem('mg_drill_stats');
       var stats = raw ? JSON.parse(raw) : {};
-      var prev = stats[openingId] || {};
-      stats[openingId] = {
+      var prev = stats[statsKey] || {};
+      stats[statsKey] = {
         side: opening.side,
         lastDrilled: Date.now(),
         lastScoreCorrect: userCorrectFirstTry,

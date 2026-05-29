@@ -1,0 +1,524 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+export const prerender = true;
+
+// ============================================================
+//  OPENING REPERTOIRE BUILDER  Drill Mode (Phase 2)
+//  Route: /chess-school/opening-builder/drill?id=<openingId>
+//
+//  This page renders a chessboard and lets the user practice
+//  the canonical mainline of a chosen opening against a simple
+//  bot (the bot just replays the mainline back at the user).
+//
+//  All openings data is embedded inline below so the page can
+//  switch openings purely from the ?id= query param  no API.
+// ============================================================
+---
+
+<BaseLayout
+  title="Drill Mode  Opening Repertoire Builder  Mind's Gambit"
+  description="Drill the mainlines of the most important chess openings. Free, interactive board training with instant feedback."
+>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><img src="/images/logo.jpg" alt="Mind's Gambit" style="height:55px;width:55px;border-radius:50%;object-fit:cover;border:2px solid #c8a84e;margin-left:10px;vertical-align:middle;" /></a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/#book">The Book</a></li>
+      <li><a href="/watch">Documentary</a></li>
+      <li><a href="/blog">Blog</a></li>
+      <li><a href="/chess-school">Chess School</a></li>
+      <li><a href="/#about">About</a></li>
+      <li><a href="/#contact">Contact</a></li>
+      <li><a href="https://buymeacoffee.com/mouradbouajaja" target="_blank" rel="noopener" class="nav-btn">&#9749; Buy Me a Coffee</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- chessboard.js CSS (matches existing chess pages on the site) -->
+<link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" />
+
+<section class="page">
+  <a href="/chess-school/opening-builder" class="back-link">&larr; Back to Repertoire Catalog</a>
+  <span class="eyebrow">Mind&rsquo;s Gambit Chess School &middot; Drill Mode</span>
+  <h1 id="opening-title">Loading opening&hellip;</h1>
+  <p class="subtitle"><span id="opening-eco">&mdash;</span> &middot; <span id="opening-side">&mdash;</span></p>
+
+  <!-- "Opening not found" fallback -->
+  <div id="not-found" class="not-found" hidden>
+    <h2>Opening not found</h2>
+    <p>That opening id isn&rsquo;t in our catalog. Pick one from the repertoire builder and try again.</p>
+    <a href="/chess-school/opening-builder" class="cta-primary">&larr; Back to the Repertoire Catalog</a>
+  </div>
+
+  <!-- Drill workspace: board on the left, status panel on the right -->
+  <div id="drill-workspace" class="drill-workspace" hidden>
+    <div class="board-column">
+      <div id="board" style="width:400px;max-width:100%;"></div>
+      <div class="board-actions">
+        <button type="button" id="btn-hint" class="pill-btn">Hint</button>
+        <button type="button" id="btn-reset" class="pill-btn">Reset</button>
+        <button type="button" id="btn-flip" class="pill-btn">Flip board</button>
+      </div>
+    </div>
+
+    <aside class="status-panel">
+      <div class="status-row">
+        <span class="status-label">Progress</span>
+        <span class="status-value" id="move-counter">Move 0 of 0</span>
+      </div>
+      <div class="status-row">
+        <span class="status-label">To move</span>
+        <span class="status-value" id="to-move">&mdash;</span>
+      </div>
+      <div class="status-row">
+        <span class="status-label">Score (first try)</span>
+        <span class="status-value" id="score">0 / 0</span>
+      </div>
+      <div class="status-row">
+        <span class="status-label">Last bot move</span>
+        <span class="status-value mono" id="last-bot">&mdash;</span>
+      </div>
+      <div class="status-msg" id="status-msg">Make your move on the board.</div>
+
+      <!-- Completion controls (hidden until drill is finished) -->
+      <div id="completion" class="completion" hidden>
+        <button type="button" id="btn-again" class="cta-primary">Drill again</button>
+        <a href="/chess-school/opening-builder" class="cta-secondary">Back to repertoire</a>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="page-footer">
+    <p class="footer-credit">&copy; 2026 Mourad Bouajaja. Mind&rsquo;s Gambit Chess School is a production of &copy; MYB Studio LLC.</p>
+  </footer>
+</section>
+
+<!-- CDN libraries (versions match the rest of the site) -->
+<script is:inline src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script is:inline src="https://cdn.jsdelivr.net/npm/chess.js@0.10.3/chess.min.js"></script>
+<script is:inline src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+
+<!-- ============================================================
+     DRILL LOGIC
+============================================================ -->
+<script is:inline>
+(function() {
+  'use strict';
+
+  // ------------------------------------------------------------
+  // Openings catalog (mirrors the mainLine list in the catalog).
+  // Each entry: id, name, eco, side ('white' | 'black'), mainLine (SAN, space-separated).
+  // ------------------------------------------------------------
+  var OPENINGS = {
+    'ruy-lopez':     { name: 'Ruy Lopez (Spanish Opening)', eco: 'C60C99', side: 'white',
+                       mainLine: 'e4 e5 Nf3 Nc6 Bb5 a6 Ba4 Nf6 O-O Be7 Re1 b5 Bb3 d6 c3' },
+    'italian':       { name: 'Italian Game', eco: 'C50C59', side: 'white',
+                       mainLine: 'e4 e5 Nf3 Nc6 Bc4 Bc5 c3 Nf6 d3 d6 O-O O-O Re1 a6 h3' },
+    'queens-gambit': { name: "Queen's Gambit", eco: 'D06D69', side: 'white',
+                       mainLine: 'd4 d5 c4 e6 Nc3 Nf6 cxd5 exd5 Bg5 Be7 e3 c6 Bd3 O-O Nf3' },
+    'english':       { name: 'English Opening', eco: 'A10A39', side: 'white',
+                       mainLine: 'c4 e5 Nc3 Nf6 Nf3 Nc6 g3 d5 cxd5 Nxd5 Bg2 Nb6 O-O Be7 d3' },
+    'london':        { name: 'London System', eco: 'D02 / A45', side: 'white',
+                       mainLine: 'd4 d5 Bf4 Nf6 e3 e6 Nf3 Bd6 Bg3 O-O Bd3 c5 c3 Nc6 Nbd2' },
+    'kia':           { name: "King's Indian Attack", eco: 'A07A08', side: 'white',
+                       mainLine: 'Nf3 d5 g3 Nf6 Bg2 c5 O-O Nc6 d3 e6 Nbd2 Be7 e4 O-O Re1' },
+    'sicilian':      { name: 'Sicilian Defense', eco: 'B20B99', side: 'black',
+                       mainLine: 'e4 c5 Nf3 d6 d4 cxd4 Nxd4 Nf6 Nc3 a6 Be2 e5 Nb3 Be7 O-O' },
+    'french':        { name: 'French Defense', eco: 'C00C19', side: 'black',
+                       mainLine: 'e4 e6 d4 d5 Nd2 c5 exd5 exd5 Ngf3 Nc6 Bb5 Bd6 dxc5 Bxc5 O-O' },
+    'caro-kann':     { name: 'Caro-Kann Defense', eco: 'B10B19', side: 'black',
+                       mainLine: 'e4 c6 d4 d5 Nc3 dxe4 Nxe4 Bf5 Ng3 Bg6 h4 h6 Nf3 Nd7 h5 Bh7' },
+    'berlin':        { name: 'Berlin Defense', eco: 'C65C67', side: 'black',
+                       mainLine: 'e4 e5 Nf3 Nc6 Bb5 Nf6 O-O Nxe4 d4 Nd6 Bxc6 dxc6 dxe5 Nf5' },
+    'kid':           { name: "King's Indian Defense", eco: 'E60E99', side: 'black',
+                       mainLine: 'd4 Nf6 c4 g6 Nc3 Bg7 e4 d6 Nf3 O-O Be2 e5 O-O Nc6 d5 Ne7' },
+    'qgd':           { name: "Queen's Gambit Declined", eco: 'D30D69', side: 'black',
+                       mainLine: 'd4 d5 c4 e6 Nc3 Nf6 Bg5 Be7 e3 O-O Nf3 Nbd7 Rc1 c6 Bd3 dxc4' },
+    'slav':          { name: 'Slav Defense', eco: 'D10D19', side: 'black',
+                       mainLine: 'd4 d5 c4 c6 Nf3 Nf6 Nc3 dxc4 a4 Bf5 e3 e6 Bxc4 Bb4 O-O' },
+    'nimzo':         { name: 'Nimzo-Indian Defense', eco: 'E20E59', side: 'black',
+                       mainLine: 'd4 Nf6 c4 e6 Nc3 Bb4 e3 O-O Bd3 d5 Nf3 c5 O-O Nc6 a3 Bxc3' }
+  };
+
+  // ------------------------------------------------------------
+  // Parse ?id= from URL and look up opening.
+  // ------------------------------------------------------------
+  function getOpeningId() {
+    var m = location.search.match(/[?&]id=([^&]+)/);
+    return m ? decodeURIComponent(m[1]).toLowerCase().trim() : null;
+  }
+
+  var openingId = getOpeningId();
+  var opening = openingId ? OPENINGS[openingId] : null;
+
+  if (!opening) {
+    document.getElementById('opening-title').textContent = 'Opening not found';
+    document.getElementById('opening-eco').textContent = '';
+    document.getElementById('opening-side').textContent = '';
+    document.getElementById('not-found').hidden = false;
+    return;
+  }
+
+  // ------------------------------------------------------------
+  // Render header.
+  // ------------------------------------------------------------
+  document.getElementById('opening-title').textContent = opening.name;
+  document.getElementById('opening-eco').textContent = 'ECO ' + opening.eco;
+  document.getElementById('opening-side').textContent =
+    opening.side === 'white' ? 'You play White' : 'You play Black';
+  document.getElementById('drill-workspace').hidden = false;
+
+  // ------------------------------------------------------------
+  // Drill state.
+  // ------------------------------------------------------------
+  var mainLine = opening.mainLine.split(/\s+/).filter(Boolean);
+  var totalPlies = mainLine.length;
+
+  // Approx total moves the user will play (every other ply, starting from index 0 or 1).
+  var userPliesTotal = 0;
+  for (var i = (opening.side === 'white' ? 0 : 1); i < totalPlies; i += 2) userPliesTotal++;
+
+  var chess;            // chess.js instance
+  var board;            // chessboardjs instance
+  var currentMoveIndex; // index into mainLine of the NEXT expected ply
+  var wrongAttempts;    // wrong attempts on the current user move
+  var userCorrectFirstTry; // counter for scoring
+  var userMovesTotal;   // counter for scoring (user moves made/revealed)
+  var finished;         // true after the line is complete
+  var hintGiven;        // true if user clicked Hint on the current move (don't count as first-try)
+  var revealed;         // true if the current user move was auto-revealed
+
+  // DOM handles.
+  var $moveCounter = document.getElementById('move-counter');
+  var $toMove      = document.getElementById('to-move');
+  var $score       = document.getElementById('score');
+  var $lastBot     = document.getElementById('last-bot');
+  var $statusMsg   = document.getElementById('status-msg');
+  var $completion  = document.getElementById('completion');
+  var $boardEl     = document.getElementById('board');
+
+  // ------------------------------------------------------------
+  // Helpers.
+  // ------------------------------------------------------------
+  function updateStatus(msg) {
+    if (typeof msg === 'string') $statusMsg.textContent = msg;
+    $moveCounter.textContent = 'Move ' + Math.min(currentMoveIndex, totalPlies) + ' of ' + totalPlies;
+    $score.textContent = userCorrectFirstTry + ' / ' + userPliesTotal;
+    if (finished) {
+      $toMove.textContent = 'Done';
+    } else {
+      $toMove.textContent = chess.turn() === 'w' ? 'White' : 'Black';
+    }
+  }
+
+  function flashBoard(cls) {
+    $boardEl.classList.add(cls);
+    setTimeout(function() { $boardEl.classList.remove(cls); }, 380);
+  }
+
+  // True if it's the user's turn to play mainLine[currentMoveIndex].
+  function isUserTurnNow() {
+    if (finished) return false;
+    var ply = currentMoveIndex;
+    // White plays even-indexed plies (0,2,4...), Black plays odd-indexed.
+    var sideToMove = (ply % 2 === 0) ? 'white' : 'black';
+    return sideToMove === opening.side;
+  }
+
+  // ------------------------------------------------------------
+  // Bot plays the next mainline move (used when user side is Black at start,
+  // and after every correct user move when the line continues).
+  // ------------------------------------------------------------
+  function playBotMove() {
+    if (finished) return;
+    if (currentMoveIndex >= totalPlies) { complete(); return; }
+
+    var san = mainLine[currentMoveIndex];
+    var mv = chess.move(san);
+    if (!mv) {
+      // This means the mainLine has an illegal move for the current position.
+      // Shouldn't happen with vetted data, but fail gracefully.
+      $statusMsg.textContent = 'Internal error: mainline move ' + san + ' is illegal here.';
+      return;
+    }
+    $lastBot.textContent = san;
+    board.position(chess.fen());
+    currentMoveIndex++;
+
+    if (currentMoveIndex >= totalPlies) {
+      complete();
+    } else {
+      updateStatus('Your move. The mainline expects you to respond.');
+    }
+  }
+
+  // ------------------------------------------------------------
+  // Drill complete: persist stats and show completion panel.
+  // ------------------------------------------------------------
+  function complete() {
+    finished = true;
+    var emoji = '🎉'; //
+    $statusMsg.textContent = 'Mainline complete! ' + emoji +
+      ' You got ' + userCorrectFirstTry + '/' + userPliesTotal + ' on first try.';
+    $completion.hidden = false;
+    updateStatus();
+
+    // Persist to localStorage.
+    try {
+      var raw = localStorage.getItem('mg_drill_stats');
+      var stats = raw ? JSON.parse(raw) : {};
+      var prev = stats[openingId] || {};
+      stats[openingId] = {
+        side: opening.side,
+        lastDrilled: Date.now(),
+        lastScoreCorrect: userCorrectFirstTry,
+        lastScoreTotal: userPliesTotal,
+        totalRuns: (prev.totalRuns || 0) + 1
+      };
+      localStorage.setItem('mg_drill_stats', JSON.stringify(stats));
+    } catch (e) {
+      // localStorage may be disabled in private mode; that's fine, just skip.
+    }
+  }
+
+  // ------------------------------------------------------------
+  // chessboard.js drag handlers.
+  // ------------------------------------------------------------
+  function onDragStart(source, piece) {
+    if (finished) return false;
+    // Only let user move their own pieces.
+    var isWhitePiece = piece.search(/^w/) !== -1;
+    if (opening.side === 'white' && !isWhitePiece) return false;
+    if (opening.side === 'black' &&  isWhitePiece) return false;
+    // And only when it's their turn (chess.js side).
+    if ((chess.turn() === 'w' && opening.side !== 'white') ||
+        (chess.turn() === 'b' && opening.side !== 'black')) return false;
+    return true;
+  }
+
+  function onDrop(source, target) {
+    if (finished) return 'snapback';
+    if (!isUserTurnNow()) return 'snapback';
+
+    // Try the move on chess.js. Always promote to queen for simplicity
+    // (none of our mainlines actually promote in the first 15 plies).
+    var move = chess.move({ from: source, to: target, promotion: 'q' });
+    if (move === null) return 'snapback';
+
+    var expected = mainLine[currentMoveIndex];
+    if (movesMatch(move.san, expected)) {
+      // Correct move.
+      if (!hintGiven && !revealed && wrongAttempts === 0) {
+        userCorrectFirstTry++;
+      }
+      userMovesTotal++;
+      currentMoveIndex++;
+      wrongAttempts = 0;
+      hintGiven = false;
+      revealed = false;
+      flashBoard('flash-green');
+      updateStatus('Correct: ' + move.san + '. ');
+
+      if (currentMoveIndex >= totalPlies) {
+        complete();
+      } else {
+        // Bot replies after a short pause.
+        setTimeout(playBotMove, 600);
+      }
+    } else {
+      // Wrong move  undo, snapback, increment counter.
+      chess.undo();
+      wrongAttempts++;
+      flashBoard('flash-red');
+      if (wrongAttempts >= 2) {
+        // Auto-reveal the correct move and play it.
+        revealed = true;
+        userMovesTotal++;
+        $statusMsg.textContent = 'Hint: the mainline plays ' + expected + '. Playing it for you';
+        setTimeout(function() {
+          var revealMove = chess.move(expected);
+          if (revealMove) {
+            currentMoveIndex++;
+            wrongAttempts = 0;
+            board.position(chess.fen());
+            updateStatus('Revealed: ' + expected + '. Now keep going.');
+            if (currentMoveIndex >= totalPlies) {
+              complete();
+            } else {
+              setTimeout(playBotMove, 600);
+            }
+          }
+        }, 700);
+      } else {
+        updateStatus('Not the mainline. Try again.');
+      }
+      return 'snapback';
+    }
+  }
+
+  function onSnapEnd() {
+    // After the user piece snaps into place, sync the board to chess.js
+    // so castling rook movement and en-passant captures render correctly.
+    board.position(chess.fen());
+  }
+
+  // Compare SAN robustly: strip check/mate marks and any "+", "#", "?!", "!?" etc.
+  function movesMatch(a, b) {
+    return normSan(a) === normSan(b);
+  }
+  function normSan(s) {
+    return String(s).replace(/[+#?!]/g, '').replace(/0-0/g, 'O-O').trim();
+  }
+
+  // ------------------------------------------------------------
+  // Init / reset.
+  // ------------------------------------------------------------
+  function init() {
+    chess = new Chess();
+    currentMoveIndex = 0;
+    wrongAttempts = 0;
+    userCorrectFirstTry = 0;
+    userMovesTotal = 0;
+    finished = false;
+    hintGiven = false;
+    revealed = false;
+    $completion.hidden = true;
+    $lastBot.textContent = '';
+
+    var cfg = {
+      draggable: true,
+      position: 'start',
+      orientation: opening.side,
+      pieceTheme: 'https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/website/img/chesspieces/wikipedia/{piece}.png',
+      onDragStart: onDragStart,
+      onDrop: onDrop,
+      onSnapEnd: onSnapEnd
+    };
+
+    if (board && typeof board.destroy === 'function') {
+      try { board.destroy(); } catch (e) { /* ignore */ }
+    }
+    board = ChessBoard('board', cfg);
+
+    updateStatus('Make your move on the board.');
+
+    // If user is Black, bot plays first move after a small delay.
+    if (opening.side === 'black') {
+      setTimeout(playBotMove, 600);
+    }
+  }
+
+  // ------------------------------------------------------------
+  // Button wiring.
+  // ------------------------------------------------------------
+  document.getElementById('btn-reset').addEventListener('click', function() {
+    if (!finished && currentMoveIndex > 0) {
+      if (!confirm('Reset the drill? Your current progress will be lost.')) return;
+    }
+    init();
+  });
+
+  document.getElementById('btn-hint').addEventListener('click', function() {
+    if (finished) return;
+    if (!isUserTurnNow()) {
+      $statusMsg.textContent = 'Wait for the bot to move.';
+      return;
+    }
+    var expected = mainLine[currentMoveIndex];
+    hintGiven = true;
+    $statusMsg.textContent = 'Correct move: ' + expected + '. (Still make it on the board to advance.)';
+  });
+
+  document.getElementById('btn-flip').addEventListener('click', function() {
+    if (board && typeof board.flip === 'function') board.flip();
+  });
+
+  document.getElementById('btn-again').addEventListener('click', init);
+
+  // Re-fit board on resize (chessboard.js needs this).
+  window.addEventListener('resize', function() {
+    if (board && typeof board.resize === 'function') board.resize();
+  });
+
+  // Wait for the DOM + libraries, then start.
+  function start() {
+    if (typeof Chess === 'undefined' || typeof ChessBoard === 'undefined' || !window.jQuery) {
+      // Try again shortly  CDN may not be ready yet.
+      setTimeout(start, 80);
+      return;
+    }
+    init();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    start();
+  }
+})();
+</script>
+
+<style>
+/* ---------- page chrome ---------- */
+.eyebrow { display: block; font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.18em; margin-top: 1.5rem; }
+.page { max-width: 1150px; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+.back-link { display: inline-block; color: rgba(232,224,208,0.65); text-decoration: none; font-family: 'EB Garamond', Georgia, serif; font-size: 0.95rem; margin: 1rem 0 0; transition: color 0.18s; }
+.back-link:hover { color: #c9a84c; }
+.page h1 { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 2.4rem; margin: 0.6rem 0 0.4rem; letter-spacing: 0.01em; }
+.subtitle { color: rgba(232,224,208,0.72); font-family: 'EB Garamond', Georgia, serif; font-size: 1.02rem; margin: 0 0 1.5rem; font-style: italic; }
+
+/* ---------- not-found fallback ---------- */
+.not-found { background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(30,34,52,0.55)); border: 1px solid rgba(201,168,76,0.28); border-radius: 12px; padding: 2rem 1.5rem; text-align: center; margin: 2rem 0; }
+.not-found h2 { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1.6rem; margin: 0 0 0.6rem; }
+.not-found p { color: rgba(232,224,208,0.78); font-family: 'EB Garamond', Georgia, serif; margin: 0 0 1.4rem; }
+
+/* ---------- drill workspace layout ---------- */
+.drill-workspace { display: grid; grid-template-columns: minmax(320px, 440px) 1fr; gap: 1.8rem; align-items: flex-start; margin: 1rem 0 2rem; }
+
+/* board column */
+.board-column { display: flex; flex-direction: column; gap: 0.9rem; align-items: center; }
+#board { box-shadow: 0 12px 30px rgba(0,0,0,0.45); border: 1px solid rgba(201,168,76,0.35); border-radius: 6px; transition: box-shadow 0.18s; }
+
+/* flash animations for correct / wrong */
+.flash-red    { box-shadow: 0 0 0 4px rgba(220, 70, 70, 0.7), 0 12px 30px rgba(0,0,0,0.45) !important; }
+.flash-green  { box-shadow: 0 0 0 4px rgba(120, 190, 120, 0.7), 0 12px 30px rgba(0,0,0,0.45) !important; }
+
+/* action buttons under board */
+.board-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; justify-content: center; }
+.pill-btn { background: transparent; border: 1px solid rgba(201,168,76,0.55); color: #c9a84c; padding: 7px 16px; border-radius: 99px; font-family: 'EB Garamond', Georgia, serif; font-size: 0.92rem; cursor: pointer; transition: background 0.18s, color 0.18s, transform 0.12s; }
+.pill-btn:hover { background: rgba(201,168,76,0.15); transform: translateY(-1px); }
+.pill-btn:active { transform: translateY(0); }
+
+/* status panel */
+.status-panel { background: linear-gradient(135deg, rgba(201,168,76,0.07), rgba(30,34,52,0.6)); border: 1px solid rgba(201,168,76,0.28); border-radius: 12px; padding: 1.2rem 1.3rem; display: flex; flex-direction: column; gap: 0.6rem; min-width: 260px; }
+.status-row { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: 0.25rem 0; border-bottom: 1px dashed rgba(201,168,76,0.15); }
+.status-row:last-of-type { border-bottom: 0; }
+.status-label { font-family: 'EB Garamond', Georgia, serif; color: rgba(232,224,208,0.6); font-size: 0.88rem; text-transform: uppercase; letter-spacing: 0.08em; }
+.status-value { font-family: 'Playfair Display', Georgia, serif; color: #e8e0d0; font-size: 1.05rem; }
+.status-value.mono { font-family: 'Courier New', monospace; color: #c9a84c; }
+.status-msg { margin-top: 0.6rem; padding: 0.8rem 0.95rem; background: rgba(15,17,28,0.55); border: 1px solid rgba(201,168,76,0.22); border-radius: 8px; color: #e8e0d0; font-family: 'EB Garamond', Georgia, serif; font-size: 0.98rem; line-height: 1.5; min-height: 2.4em; }
+
+/* completion block */
+.completion { margin-top: 0.8rem; display: flex; flex-direction: column; gap: 0.6rem; }
+.cta-primary { display: inline-block; background: #c9a84c; color: #0f111c; border: 0; padding: 10px 18px; border-radius: 8px; font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: 1rem; text-align: center; text-decoration: none; cursor: pointer; transition: transform 0.12s, box-shadow 0.18s; }
+.cta-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 18px rgba(201,168,76,0.35); }
+.cta-secondary { display: inline-block; color: rgba(232,224,208,0.78); border: 1px solid rgba(201,168,76,0.4); padding: 9px 16px; border-radius: 8px; text-decoration: none; font-family: 'EB Garamond', Georgia, serif; font-size: 0.95rem; text-align: center; }
+.cta-secondary:hover { color: #c9a84c; border-color: #c9a84c; }
+
+.page-footer { margin-top: 2.5rem; padding: 1.5rem 1rem; text-align: center; border-top: 1px solid rgba(201,168,76,0.1); }
+.footer-credit { color: rgba(232,224,208,0.4); font-size: 0.82rem; font-family: 'EB Garamond', Georgia, serif; }
+
+/* ---------- mobile: stack panel under board ---------- */
+@media (max-width: 800px) {
+  .drill-workspace { grid-template-columns: 1fr; }
+  .status-panel { width: 100%; }
+  .page h1 { font-size: 1.9rem; }
+}
+@media (max-width: 480px) {
+  #board { width: 100% !important; max-width: 360px; }
+}
+</style>
+
+</BaseLayout>

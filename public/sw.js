@@ -1,82 +1,38 @@
-const CACHE_NAME = 'minds-gambit-v1';
-const OFFLINE_URL = '/';
+// MIND'S GAMBIT SERVICE WORKER — KILL SWITCH
+// Replaces previous SW. On activation, unregisters itself and reloads all clients.
+// After this, no SW is registered for mindsgambit.com.
+// Date: 2026-05-29
 
-// Assets to cache immediately on install
-const PRECACHE_ASSETS = [
-  '/',
-  '/styles/global.css',
-  '/images/icon-192x192.png',
-  '/images/icon-512x512.png',
-  '/manifest.json'
-];
-
-// Install: cache core assets
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(PRECACHE_ASSETS);
-    })
-  );
+  // Activate this SW immediately, skip the "waiting" state
   self.skipWaiting();
 });
 
-// Activate: clean up old caches
 self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames
-          .filter((name) => name !== CACHE_NAME)
-          .map((name) => caches.delete(name))
-      );
-    })
-  );
-  self.clients.claim();
+  event.waitUntil((async () => {
+    // Take control of all open clients
+    await self.clients.claim();
+    // Delete every cache
+    const cacheNames = await caches.keys();
+    await Promise.all(cacheNames.map(name => caches.delete(name)));
+    // Unregister this service worker
+    await self.registration.unregister();
+    // Tell every open client to reload — fetches will go through fresh, no SW
+    const clientList = await self.clients.matchAll({ type: 'window' });
+    for (const client of clientList) {
+      // Use navigate() with the same URL to force a full reload
+      try {
+        if (client.url && 'navigate' in client) {
+          await client.navigate(client.url);
+        }
+      } catch (e) {
+        // navigate() can fail for cross-origin; ignore
+      }
+    }
+  })());
 });
 
-// Fetch: network-first for pages, cache-first for static assets
 self.addEventListener('fetch', (event) => {
-  const { request } = event;
-
-  // Skip non-GET requests and cross-origin requests
-  if (request.method !== 'GET' || !request.url.startsWith(self.location.origin)) {
-    return;
-  }
-
-  // Skip Clerk authentication requests
-  if (request.url.includes('clerk')) {
-    return;
-  }
-
-  // For HTML pages: network-first strategy
-  if (request.headers.get('accept')?.includes('text/html')) {
-    event.respondWith(
-      fetch(request)
-        .then((response) => {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
-          return response;
-        })
-        .catch(() => caches.match(request).then((cached) => cached || caches.match(OFFLINE_URL)))
-    );
-    return;
-  }
-
-  // For static assets (CSS, JS, images, fonts): cache-first strategy
-  event.respondWith(
-    caches.match(request).then((cached) => {
-      if (cached) {
-        // Return cached version, but also update cache in background
-        fetch(request).then((response) => {
-          caches.open(CACHE_NAME).then((cache) => cache.put(request, response));
-        }).catch(() => {});
-        return cached;
-      }
-      return fetch(request).then((response) => {
-        const clone = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
-        return response;
-      });
-    })
-  );
+  // Don't intercept anything — pass through to network
+  return;
 });

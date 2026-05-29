@@ -41,47 +41,61 @@ export const prerender = true;
   <h1 id="opening-title">Loading study guide&hellip;</h1>
   <p class="subtitle"><span id="opening-eco">&mdash;</span> &middot; <span id="opening-side">&mdash;</span></p>
 
-  <!-- "Opening not found" fallback -->
-  <div id="not-found" class="not-found" hidden>
-    <h2>Opening not found</h2>
-    <p>Pick one from the repertoire builder and try again.</p>
-    <a href="/chess-school/opening-builder" class="cta-primary">&larr; Back to the Repertoire Catalog</a>
-  </div>
+  <div class="study-layout">
+    <!-- Variations sidebar (populated by JS when an entry exists) -->
+    <aside class="variations-sidebar" id="variations-sidebar" hidden>
+      <div class="variations-header">
+        <h2>Main Variations</h2>
+        <p class="variations-intro" id="variations-intro"></p>
+      </div>
+      <ul class="variations-list" id="variations-list"></ul>
+      <p class="variations-footer">Sub-variations are beyond the scope of this section. Mind&rsquo;s Gambit may add a full exhaustive opening database in a future update.</p>
+    </aside>
 
-  <!-- Full study content (rendered when STUDY_GUIDES has an entry) -->
-  <div id="study-content" hidden>
-    <!-- Strategic overview -->
-    <section class="study-section">
-      <h2>Strategic overview</h2>
-      <div id="overview-text"></div>
-    </section>
+    <div class="study-main">
+      <!-- "Opening not found" fallback -->
+      <div id="not-found" class="not-found" hidden>
+        <h2>Opening not found</h2>
+        <p>Pick one from the repertoire builder and try again.</p>
+        <a href="/chess-school/opening-builder" class="cta-primary">&larr; Back to the Repertoire Catalog</a>
+      </div>
 
-    <!-- Annotated mainline -->
-    <section class="study-section">
-      <h2>Annotated mainline</h2>
-      <p class="section-intro">The canonical mainline with the strategic <em>why</em> behind each move.</p>
-      <ol class="annotated-moves" id="annotated-moves"></ol>
-    </section>
+      <!-- Full study content (rendered when STUDY_GUIDES has an entry) -->
+      <div id="study-content" hidden>
+        <!-- Strategic overview -->
+        <section class="study-section">
+          <h2>Strategic overview</h2>
+          <div id="overview-text"></div>
+        </section>
 
-    <!-- Studied by (masters) -->
-    <section class="study-section">
-      <h2>Studied by</h2>
-      <p class="section-intro">Players whose games &amp; books are worth your time on this opening.</p>
-      <ul class="studied-by" id="studied-by"></ul>
-    </section>
+        <!-- Annotated mainline -->
+        <section class="study-section">
+          <h2>Annotated mainline</h2>
+          <p class="section-intro">The canonical mainline with the strategic <em>why</em> behind each move.</p>
+          <ol class="annotated-moves" id="annotated-moves"></ol>
+        </section>
 
-    <!-- CTA -->
-    <div class="cta-block">
-      <p class="cta-prompt">Read the overview, studied the mainline, looked at the masters? Time to drill.</p>
-      <a id="drill-link" class="cta-primary" href="#">Start drilling &rarr;</a>
+        <!-- Studied by (masters) -->
+        <section class="study-section">
+          <h2>Studied by</h2>
+          <p class="section-intro">Players whose games &amp; books are worth your time on this opening.</p>
+          <ul class="studied-by" id="studied-by"></ul>
+        </section>
+
+        <!-- CTA -->
+        <div class="cta-block">
+          <p class="cta-prompt">Read the overview, studied the mainline, looked at the masters? Time to drill.</p>
+          <a id="drill-link" class="cta-primary" href="#">Start drilling &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Placeholder for openings without a full study guide yet -->
+      <div id="placeholder" class="placeholder" hidden>
+        <p class="placeholder-msg">The full study guide for this opening is being prepared. Strategic ideas, annotated moves, and recommended masters are coming in the next update.</p>
+        <p class="placeholder-msg">Meanwhile you can drill the mainline now:</p>
+        <a id="drill-link-placeholder" class="cta-primary" href="#">Drill mainline &rarr;</a>
+      </div>
     </div>
-  </div>
-
-  <!-- Placeholder for openings without a full study guide yet -->
-  <div id="placeholder" class="placeholder" hidden>
-    <p class="placeholder-msg">The full study guide for this opening is being prepared. Strategic ideas, annotated moves, and recommended masters are coming in the next update.</p>
-    <p class="placeholder-msg">Meanwhile you can drill the mainline now:</p>
-    <a id="drill-link-placeholder" class="cta-primary" href="#">Drill mainline &rarr;</a>
   </div>
 
   <footer class="page-footer">
@@ -358,6 +372,92 @@ export const prerender = true;
   };
 
   // ------------------------------------------------------------
+  // VARIATIONS sidebar data — alternative move-orders / sub-lines
+  // shown beside the main study guide. Keys match openingId.
+  // ------------------------------------------------------------
+  var VARIATIONS = {
+    'italian': {
+      note: '3...Bc5 leads to the mainlines featured in the study guide. The variations below are alternative third moves Black may try.',
+      items: [
+        { name: 'Giuoco Piano', move: '3...Bc5' },
+        { name: 'Two Knights Defense', move: '3...Nf6' },
+        { name: 'Hungarian Defense', move: '3...Be7' },
+        { name: 'Evans Gambit', move: '4.b4' },
+        { name: 'Italian Gambit', move: '4.d4' }
+      ]
+    },
+    'queens-gambit': {
+      note: 'Black has several second-move replies. The Exchange Variation in the study guide arises from the QGD with Nc3-cxd5 structure.',
+      items: [
+        { name: 'Queen’s Gambit Accepted (QGA)', move: '2...dxc4' },
+        { name: 'QGD Orthodox', move: '2...e6 3.Nc3 Nf6' },
+        { name: 'Slav Defense', move: '2...c6' },
+        { name: 'Semi-Slav', move: '2...e6 3.Nc3 c6' },
+        { name: 'Tarrasch Defense', move: '2...e6 3.Nc3 c5' },
+        { name: 'Albin Counter-Gambit', move: '2...e5' }
+      ]
+    },
+    'london': {
+      note: 'The London is a setup, not a forced sequence. These are the most common modern interpretations.',
+      items: [
+        { name: 'Classical London with c4', move: '3.e3 ... c4 later' },
+        { name: 'London with Nb3 (Capablanca)', move: '3.Nb3 setup' },
+        { name: 'Pereyra Attack', move: '3.e3 ... h4 aggressive' },
+        { name: 'Anti-King’s Indian London', move: 'system vs ...g6' }
+      ]
+    },
+    'colle-zukertort': {
+      note: 'The Colle family. The Zukertort fianchetto (b3, Bb2) is the modern preference; the Koltanowski (c3) is the classical Colle.',
+      items: [
+        { name: 'Zukertort Main', move: '5.b3 then 6.Bb2' },
+        { name: 'Colle-Koltanowski', move: '5.c3 instead of 5.b3' },
+        { name: 'Phoenix Attack', move: 'Bxh7+ sacrifice ideas' },
+        { name: 'Anti-Indian Colle', move: 'system vs ...Nf6/...g6' }
+      ]
+    },
+    'french': {
+      note: 'White’s third move defines the entire game. The Tarrasch (in the study guide) is the most common at club level; the Winawer is the sharpest, the Advance the most closed.',
+      items: [
+        { name: 'Advance Variation', move: '3.e5' },
+        { name: 'Tarrasch', move: '3.Nd2' },
+        { name: 'Classical', move: '3.Nc3 Nf6' },
+        { name: 'Winawer', move: '3.Nc3 Bb4' },
+        { name: 'Exchange', move: '3.exd5 exd5' }
+      ]
+    },
+    'caro-kann': {
+      note: 'The Classical (in the study guide) is the mainline. The Advance closes the structure; the Panov-Botvinnik leads to an IQP fight.',
+      items: [
+        { name: 'Classical', move: '3.Nc3 dxe4 4.Nxe4 Bf5' },
+        { name: 'Advance Variation', move: '3.e5' },
+        { name: 'Exchange', move: '3.exd5 cxd5' },
+        { name: 'Panov-Botvinnik Attack', move: '3.exd5 cxd5 4.c4' },
+        { name: 'Two Knights', move: '3.Nc3 dxe4 4.Nxe4 Nf6' },
+        { name: 'Karpov Variation', move: '4...Nd7' }
+      ]
+    },
+    'nimzo': {
+      note: 'White’s fourth move defines the system. The Rubinstein (in the study guide) is most common at club level; the Classássical Qc2 is favored at top level.',
+      items: [
+        { name: 'Rubinstein', move: '4.e3' },
+        { name: 'Sämisch', move: '4.a3 Bxc3+ 5.bxc3' },
+        { name: 'Classical', move: '4.Qc2' },
+        { name: 'Three Knights', move: '4.Nf3' },
+        { name: 'Leningrad', move: '4.Bg5' }
+      ]
+    },
+    'queens-indian': {
+      note: 'Black chooses between two main bishop deployments. The Kasparov …Ba6 (in the study guide) is sharp; the Classical …Bb7 is solid.',
+      items: [
+        { name: 'Kasparov / Petrosian', move: '4...Ba6' },
+        { name: 'Classical', move: '4...Bb7' },
+        { name: 'Petrosian System (White)', move: '4.a3' },
+        { name: 'Nimzo Transposition', move: '3.Nc3 Bb4 territory' }
+      ]
+    }
+  };
+
+  // ------------------------------------------------------------
   // Parse ?id= from URL.
   // ------------------------------------------------------------
   function getOpeningId() {
@@ -389,6 +489,41 @@ export const prerender = true;
 
   var guide = STUDY_GUIDES[openingId];
   var drillHref = '/chess-school/opening-builder/drill?id=' + encodeURIComponent(openingId);
+
+  // ------------------------------------------------------------
+  // Render variations sidebar (if data exists for this opening).
+  // ------------------------------------------------------------
+  var variationsBox = document.getElementById('variations-sidebar');
+  var variationsIntro = document.getElementById('variations-intro');
+  var variationsList = document.getElementById('variations-list');
+  var variationsData = VARIATIONS[openingId];
+
+  if (variationsBox && variationsData) {
+    variationsIntro.innerHTML = variationsData.note;
+    variationsList.innerHTML = '';
+    variationsData.items.forEach(function(item) {
+      var li = document.createElement('li');
+      li.className = 'variation-item';
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'variation-toggle';
+      btn.setAttribute('aria-expanded', 'false');
+      btn.innerHTML = '<span class="variation-name">' + item.name + '</span><span class="variation-chevron">&rsaquo;</span>';
+      var moveBox = document.createElement('div');
+      moveBox.className = 'variation-move';
+      moveBox.hidden = true;
+      moveBox.textContent = item.move;
+      btn.addEventListener('click', function() {
+        var expanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+        moveBox.hidden = expanded;
+      });
+      li.appendChild(btn);
+      li.appendChild(moveBox);
+      variationsList.appendChild(li);
+    });
+    variationsBox.hidden = false;
+  }
 
   // ------------------------------------------------------------
   // No full guide yet? Show placeholder.
@@ -456,6 +591,31 @@ export const prerender = true;
 .back-link:hover { color: #c9a84c; }
 .page h1 { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 2.4rem; margin: 0.6rem 0 0.4rem; letter-spacing: 0.01em; }
 .subtitle { color: rgba(232,224,208,0.72); font-family: 'EB Garamond', Georgia, serif; font-size: 1.02rem; margin: 0 0 1.5rem; font-style: italic; }
+
+/* ---------- two-column layout (sidebar + content). Stacks on mobile. ---------- */
+.study-layout { display: grid; grid-template-columns: 260px 1fr; gap: 2rem; margin-top: 1.5rem; }
+@media (max-width: 900px) { .study-layout { grid-template-columns: 1fr; } }
+
+/* ---------- variations sidebar ---------- */
+.variations-sidebar { background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(30,34,52,0.55)); border: 1px solid rgba(201,168,76,0.25); border-radius: 12px; padding: 1.1rem 1rem 1rem; align-self: start; position: sticky; top: 1rem; }
+.variations-header { margin-bottom: 0.8rem; }
+.variations-header h2 { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1.05rem; margin: 0 0 0.4rem; letter-spacing: 0.04em; }
+.variations-intro { color: rgba(232,224,208,0.7); font-family: 'EB Garamond', Georgia, serif; font-size: 0.84rem; line-height: 1.5; margin: 0; font-style: italic; }
+.variations-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.35rem; }
+.variation-item {}
+.variation-toggle { width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(15,17,28,0.6); border: 1px solid rgba(201,168,76,0.22); color: #e8e0d0; padding: 0.55rem 0.7rem; border-radius: 8px; cursor: pointer; font-family: 'EB Garamond', Georgia, serif; font-size: 0.92rem; transition: background 0.15s, border-color 0.15s; }
+.variation-toggle:hover { background: rgba(201,168,76,0.12); border-color: rgba(201,168,76,0.45); }
+.variation-toggle[aria-expanded="true"] { background: rgba(201,168,76,0.15); border-color: rgba(201,168,76,0.55); color: #c9a84c; }
+.variation-name { flex: 1; text-align: left; }
+.variation-chevron { color: rgba(201,168,76,0.7); font-weight: 700; transition: transform 0.2s; transform: rotate(0deg); display: inline-block; }
+.variation-toggle[aria-expanded="true"] .variation-chevron { transform: rotate(90deg); color: #c9a84c; }
+.variation-move { padding: 0.45rem 0.7rem 0.65rem; color: #c9a84c; font-family: 'Courier New', monospace; font-size: 0.95rem; font-weight: 600; }
+.variations-footer { margin: 0.9rem 0 0; padding-top: 0.7rem; border-top: 1px solid rgba(201,168,76,0.15); color: rgba(232,224,208,0.5); font-family: 'EB Garamond', Georgia, serif; font-size: 0.78rem; font-style: italic; line-height: 1.5; }
+
+/* On mobile, sidebar above content and not sticky */
+@media (max-width: 900px) {
+  .variations-sidebar { position: static; }
+}
 
 /* ---------- not-found fallback ---------- */
 .not-found { background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(30,34,52,0.55)); border: 1px solid rgba(201,168,76,0.28); border-radius: 12px; padding: 2rem 1.5rem; text-align: center; margin: 2rem 0; }

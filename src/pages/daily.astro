@@ -1,22 +1,44 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
 
 const today = new Date();
 const dateLine = today.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+// Pull all published Daily Gambit stories, newest first.
+const all = (await getCollection('daily', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const SECTION_LABELS = {
+  world: 'World Chess',
+  tournaments: 'Tournaments',
+  players: 'Players',
+  openings: 'Openings',
+  local: 'Local',
+  opinion: 'Opinion',
+  puzzle: 'Puzzle',
+};
+
+// Lead story: an explicit lead flag wins, otherwise the newest non-local story.
+const lead = all.find((s) => s.data.lead) || all.find((s) => s.data.section !== 'local') || all[0] || null;
+// Secondary column: non-local stories that are not the lead (max 4).
+const secondary = all.filter((s) => s.data.section !== 'local' && s.id !== (lead && lead.id)).slice(0, 4);
+// Local section: Pittsburgh & Pennsylvania stories (max 4).
+const local = all.filter((s) => s.data.section === 'local').slice(0, 4);
+
+const hasStories = all.length > 0;
 ---
 
 <BaseLayout title="The Daily Gambit — Chess News, Results & Analysis" description="The Daily Gambit: your morning briefing from the chess world. Tournament results, player news, opening theory, puzzles, local Pittsburgh & Pennsylvania chess, and analysis — gathered fresh every day.">
   <div class="tdg-paper">
     <div class="tdg-sheet">
 
-      <!-- PRE-HEADER STRIP -->
       <div class="tdg-strip">
         <span>Vol. 1 — No. 1</span>
         <span>The Mind's Gambit</span>
         <span>Price: Free</span>
       </div>
 
-      <!-- MASTHEAD -->
       <header class="tdg-masthead">
         <div class="tdg-mast-side tdg-mast-left">
           <span>{dateLine}</span>
@@ -32,7 +54,6 @@ const dateLine = today.toLocaleDateString('en-US', { weekday: 'long', year: 'num
         </div>
       </header>
 
-      <!-- SECTION BAR -->
       <nav class="tdg-sectionbar">
         <a href="#">Tournaments</a>
         <a href="#">Players</a>
@@ -43,47 +64,62 @@ const dateLine = today.toLocaleDateString('en-US', { weekday: 'long', year: 'num
         <a href="#">World Chess</a>
       </nav>
 
-      <!-- PREVIEW BANNER -->
-      <div class="tdg-banner">
-        <span class="tdg-dot"></span>
-        Preview edition — a sample of what The Daily Gambit will look like. Live coverage launching soon.
-      </div>
+      {!hasStories && (
+        <div class="tdg-banner">
+          <span class="tdg-dot"></span>
+          Preview edition — a sample of what The Daily Gambit will look like. Live coverage launching soon.
+        </div>
+      )}
 
-      <!-- FRONT PAGE GRID -->
       <main class="tdg-frontpage">
 
-        <!-- LEAD STORY -->
         <article class="tdg-lead">
-          <p class="tdg-kicker">World Championship</p>
-          <h2 class="tdg-leadhead">A New Era Begins on the 64 Squares</h2>
-          <p class="tdg-subhead">After a fortnight of grueling classical play, the title match heads to its decisive final games — and the chess world holds its breath.</p>
-          <p class="tdg-byline">By The Daily Gambit Desk · <span class="tdg-dateline">CITY</span></p>
-          <p class="tdg-body tdg-dropcap">This is placeholder text for the lead story. When The Daily Gambit goes live, our automated newsroom will gather the day's biggest chess headlines, synthesize them from trusted sources, and present them here in clean, readable prose. The lead slot is reserved for the single most important story of the day — a championship result, a major upset, or a defining moment for the game.</p>
-          <p class="tdg-body">Each report will summarize the essentials and link out to the original coverage, so readers get a fast, trustworthy briefing without leaving the page. Columns are justified, headlines are bold, and the typography is built to feel like the morning paper.</p>
+          {lead ? (
+            <>
+              <p class="tdg-kicker">{lead.data.kicker || SECTION_LABELS[lead.data.section]}</p>
+              <h2 class="tdg-leadhead">{lead.data.headline}</h2>
+              {lead.data.subhead && <p class="tdg-subhead">{lead.data.subhead}</p>}
+              <p class="tdg-byline">By The Daily Gambit Desk{lead.data.sourceName ? ' · ' : ''}{lead.data.sourceName && <span class="tdg-dateline">{lead.data.sourceName}</span>}</p>
+              <p class="tdg-body tdg-dropcap">{lead.data.summary}</p>
+              {lead.data.sourceUrl && (
+                <p class="tdg-readmore"><a href={lead.data.sourceUrl} target="_blank" rel="noopener">Read the full story →</a></p>
+              )}
+            </>
+          ) : (
+            <>
+              <p class="tdg-kicker">World Championship</p>
+              <h2 class="tdg-leadhead">A New Era Begins on the 64 Squares</h2>
+              <p class="tdg-subhead">After a fortnight of grueling classical play, the title match heads to its decisive final games — and the chess world holds its breath.</p>
+              <p class="tdg-byline">By The Daily Gambit Desk · <span class="tdg-dateline">CITY</span></p>
+              <p class="tdg-body tdg-dropcap">This is placeholder text for the lead story. When The Daily Gambit goes live, the day's biggest chess headline will appear here, summarized in clean prose with a link to the original coverage.</p>
+            </>
+          )}
         </article>
 
-        <!-- SECONDARY COLUMN -->
         <section class="tdg-secondary">
-          <article class="tdg-story">
-            <p class="tdg-kicker">Tournaments</p>
-            <h3 class="tdg-storyhead">Super-Tournament Field Set for the Season Finale</h3>
-            <p class="tdg-body">Placeholder summary. The latest standings, pairings, and storylines from the elite circuit will appear here — updated daily.</p>
-          </article>
-          <div class="tdg-rule"></div>
-          <article class="tdg-story">
-            <p class="tdg-kicker">Players</p>
-            <h3 class="tdg-storyhead">Rising Star Crosses a Historic Rating Mark</h3>
-            <p class="tdg-body">Placeholder summary. Profiles, interviews, and milestones from across the rating spectrum — from prodigies to veterans.</p>
-          </article>
-          <div class="tdg-rule"></div>
-          <article class="tdg-story">
-            <p class="tdg-kicker">Openings</p>
-            <h3 class="tdg-storyhead">The Line Everyone Is Suddenly Playing</h3>
-            <p class="tdg-body">Placeholder summary. A daily look at the theory shaping top-level play — what's hot, what's refuted, and why it matters.</p>
-          </article>
+          {secondary.length > 0 ? secondary.map((s, i) => (
+            <>
+              {i > 0 && <div class="tdg-rule"></div>}
+              <article class="tdg-story">
+                <p class="tdg-kicker">{s.data.kicker || SECTION_LABELS[s.data.section]}</p>
+                <h3 class="tdg-storyhead">{s.data.headline}</h3>
+                <p class="tdg-body">{s.data.summary}</p>
+                {s.data.sourceUrl && (
+                  <p class="tdg-readmore"><a href={s.data.sourceUrl} target="_blank" rel="noopener">Read more →</a></p>
+                )}
+              </article>
+            </>
+          )) : (
+            <>
+              <article class="tdg-story">
+                <p class="tdg-kicker">Tournaments</p>
+                <h3 class="tdg-storyhead">More Stories Coming Soon</h3>
+                <p class="tdg-body">As editions are published, the day's tournament results, player news, and opening theory will fill this column.</p>
+              </article>
+            </>
+          )}
         </section>
 
-        <!-- SIDEBAR RAIL -->
         <aside class="tdg-rail">
           <div class="tdg-box">
             <h4 class="tdg-boxtitle">Puzzle of the Day</h4>
@@ -108,7 +144,6 @@ const dateLine = today.toLocaleDateString('en-US', { weekday: 'long', year: 'num
 
       </main>
 
-      <!-- LOCAL NEWS BAND -->
       <section class="tdg-local" id="tdg-local">
         <div class="tdg-localhead">
           <span class="tdg-pin">♟</span>
@@ -117,188 +152,90 @@ const dateLine = today.toLocaleDateString('en-US', { weekday: 'long', year: 'num
         </div>
         <p class="tdg-localintro">Coverage close to home — club nights, scholastic results, and tournaments across the Steel City and the Commonwealth. From the Pittsburgh Chess Club to the Pennsylvania State Championship, this is where local players make headlines.</p>
         <div class="tdg-localgrid">
-          <article class="tdg-localstory">
-            <p class="tdg-kicker">Pittsburgh Chess League</p>
-            <h3 class="tdg-storyhead">Steel City Clubs Open the Fall Season</h3>
-            <p class="tdg-body">Placeholder summary. Standings, match reports, and results from Pittsburgh's club circuit will be tracked here week to week.</p>
-          </article>
-          <article class="tdg-localstory">
-            <p class="tdg-kicker">Scholastic</p>
-            <h3 class="tdg-storyhead">Pennsylvania Scholastic Championship Draws Record Field</h3>
-            <p class="tdg-body">Placeholder summary. K–12 results, rising young talent, and coverage of school and college chess across the state.</p>
-          </article>
-          <article class="tdg-localstory">
-            <p class="tdg-kicker">State Championship</p>
-            <h3 class="tdg-storyhead">Pennsylvania State Championship Heads to the Wire</h3>
-            <p class="tdg-body">Placeholder summary. Round-by-round coverage of the PA State Championship and major opens held across the Commonwealth.</p>
-          </article>
-          <article class="tdg-localstory">
-            <p class="tdg-kicker">Community</p>
-            <h3 class="tdg-storyhead">University of Pittsburgh Club Hosts Open House</h3>
-            <p class="tdg-body">Placeholder summary. Local clubs, college teams, casual meetups, and the people growing chess in Western Pennsylvania.</p>
-          </article>
+          {local.length > 0 ? local.map((s) => (
+            <article class="tdg-localstory">
+              <p class="tdg-kicker">{s.data.kicker || 'Local'}</p>
+              <h3 class="tdg-storyhead">{s.data.headline}</h3>
+              <p class="tdg-body">{s.data.summary}</p>
+              {s.data.sourceUrl && (
+                <p class="tdg-readmore"><a href={s.data.sourceUrl} target="_blank" rel="noopener">Read more →</a></p>
+              )}
+            </article>
+          )) : (
+            <>
+              <article class="tdg-localstory">
+                <p class="tdg-kicker">Pittsburgh Chess League</p>
+                <h3 class="tdg-storyhead">Local Coverage Coming Soon</h3>
+                <p class="tdg-body">Standings, scholastic results, and club news from Pittsburgh and across Pennsylvania will appear here.</p>
+              </article>
+              <article class="tdg-localstory">
+                <p class="tdg-kicker">Scholastic</p>
+                <h3 class="tdg-storyhead">Pennsylvania Scholastic Scene</h3>
+                <p class="tdg-body">K–12 results, rising young talent, and coverage of school and college chess across the state.</p>
+              </article>
+              <article class="tdg-localstory">
+                <p class="tdg-kicker">State Championship</p>
+                <h3 class="tdg-storyhead">PA State Championship</h3>
+                <p class="tdg-body">Round-by-round coverage of the PA State Championship and major opens across the Commonwealth.</p>
+              </article>
+              <article class="tdg-localstory">
+                <p class="tdg-kicker">Community</p>
+                <h3 class="tdg-storyhead">Clubs &amp; Colleges</h3>
+                <p class="tdg-body">Local clubs, college teams, casual meetups, and the people growing chess in Western Pennsylvania.</p>
+              </article>
+            </>
+          )}
         </div>
       </section>
 
-      <!-- FOOTER RULE -->
       <footer class="tdg-foot">
         <div class="tdg-rulebold"></div>
-        <p>The Daily Gambit is published by The Mind's Gambit. Coverage will summarize and link to original reporting from across the chess world. <a href="/">Return to The Mind's Gambit →</a></p>
+        <p>The Daily Gambit is published by The Mind's Gambit. Coverage summarizes and links to original reporting from across the chess world. <a href="/">Return to The Mind's Gambit →</a></p>
       </footer>
 
     </div>
   </div>
 
   <style>
-    /* Defensive reset: prevent any global pseudo-elements from bleeding into the paper */
     .tdg-sheet *::before, .tdg-sheet *::after { background-image: none; }
 
-    .tdg-paper {
-      background: #14141a;
-      padding: 2.5rem 1rem 4rem;
-      display: flex;
-      justify-content: center;
-    }
-    .tdg-sheet {
-      position: relative;
-      background: #f5f1e6;
-      color: #1a1a1a;
-      width: 100%;
-      max-width: 1080px;
-      padding: 2.2rem 2.6rem 2.8rem;
-      box-shadow: 0 24px 60px rgba(0,0,0,0.5);
-      font-family: Georgia, 'Times New Roman', Times, serif;
-    }
-    .tdg-strip {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.72rem;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: #4a4a4a;
-      border-bottom: 1px solid #1a1a1a;
-      padding-bottom: 0.4rem;
-    }
-    .tdg-masthead {
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items: center;
-      gap: 1rem;
-      padding: 1.1rem 0 0.6rem;
-    }
-    .tdg-mast-side {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-      font-size: 0.74rem;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: #3a3a3a;
-    }
+    .tdg-paper { background: #14141a; padding: 2.5rem 1rem 4rem; display: flex; justify-content: center; }
+    .tdg-sheet { position: relative; background: #f5f1e6; color: #1a1a1a; width: 100%; max-width: 1080px; padding: 2.2rem 2.6rem 2.8rem; box-shadow: 0 24px 60px rgba(0,0,0,0.5); font-family: Georgia, 'Times New Roman', Times, serif; }
+    .tdg-strip { display: flex; justify-content: space-between; font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; color: #4a4a4a; border-bottom: 1px solid #1a1a1a; padding-bottom: 0.4rem; }
+    .tdg-masthead { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 1rem; padding: 1.1rem 0 0.6rem; }
+    .tdg-mast-side { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.74rem; letter-spacing: 0.04em; text-transform: uppercase; color: #3a3a3a; }
     .tdg-mast-right { text-align: right; }
     .tdg-mast-edition { font-style: italic; text-transform: none; color: #6a6a6a; }
     .tdg-mast-center { text-align: center; }
-    .tdg-nameplate {
-      font-family: 'Times New Roman', Times, Georgia, serif;
-      font-weight: 800;
-      font-size: clamp(2.4rem, 6vw, 4.6rem);
-      line-height: 0.95;
-      margin: 0;
-      letter-spacing: -0.01em;
-      color: #111;
-    }
-    .tdg-motto {
-      font-style: italic;
-      font-size: 0.92rem;
-      color: #555;
-      margin: 0.4rem 0 0;
-    }
-    .tdg-sectionbar {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 0.2rem 1.6rem;
-      border-top: 3px solid #1a1a1a;
-      border-bottom: 1px solid #1a1a1a;
-      padding: 0.5rem 0;
-      margin-top: 0.6rem;
-    }
-    .tdg-sectionbar a {
-      color: #1a1a1a;
-      text-decoration: none;
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
+    .tdg-nameplate { font-family: 'Times New Roman', Times, Georgia, serif; font-weight: 800; font-size: clamp(2.4rem, 6vw, 4.6rem); line-height: 0.95; margin: 0; letter-spacing: -0.01em; color: #111; }
+    .tdg-motto { font-style: italic; font-size: 0.92rem; color: #555; margin: 0.4rem 0 0; }
+    .tdg-sectionbar { display: flex; justify-content: center; flex-wrap: wrap; gap: 0.2rem 1.6rem; border-top: 3px solid #1a1a1a; border-bottom: 1px solid #1a1a1a; padding: 0.5rem 0; margin-top: 0.6rem; margin-bottom: 1.4rem; }
+    .tdg-sectionbar a { color: #1a1a1a; text-decoration: none; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
     .tdg-sectionbar a:hover { color: #8a6d1d; }
-    .tdg-banner {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      justify-content: center;
-      font-style: italic;
-      font-size: 0.85rem;
-      color: #5a4a1d;
-      background: #efe7cf;
-      border: 1px solid #d8cba0;
-      padding: 0.5rem 1rem;
-      margin: 1rem 0 1.4rem;
-    }
-    .tdg-dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: #b8902a; flex: none;
-      animation: tdgPulse 1.8s ease-in-out infinite;
-    }
+    .tdg-banner { display: flex; align-items: center; gap: 0.6rem; justify-content: center; font-style: italic; font-size: 0.85rem; color: #5a4a1d; background: #efe7cf; border: 1px solid #d8cba0; padding: 0.5rem 1rem; margin: 0 0 1.4rem; }
+    .tdg-dot { width: 8px; height: 8px; border-radius: 50%; background: #b8902a; flex: none; animation: tdgPulse 1.8s ease-in-out infinite; }
     @keyframes tdgPulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
-    .tdg-frontpage {
-      display: grid;
-      grid-template-columns: 2.1fr 1.3fr 1fr;
-      gap: 0;
-    }
+    .tdg-frontpage { display: grid; grid-template-columns: 2.1fr 1.3fr 1fr; gap: 0; }
     .tdg-frontpage > * { padding: 0 1.4rem; background: #f5f1e6; }
     .tdg-frontpage > .tdg-lead { padding-left: 0; border-right: 1px solid #c9c0a4; }
     .tdg-secondary { border-right: 1px solid #c9c0a4; }
     .tdg-rail { padding-right: 0; }
-    .tdg-kicker {
-      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
-      text-transform: uppercase; color: #8a6d1d; margin: 0 0 0.3rem;
-    }
-    .tdg-leadhead {
-      font-size: clamp(1.8rem, 3.4vw, 2.7rem);
-      line-height: 1.05; font-weight: 800; margin: 0 0 0.5rem; color: #111;
-    }
-    .tdg-subhead {
-      font-style: italic; font-size: 1.05rem; line-height: 1.4;
-      color: #333; margin: 0 0 0.7rem;
-    }
+    .tdg-kicker { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #8a6d1d; margin: 0 0 0.3rem; }
+    .tdg-leadhead { font-size: clamp(1.8rem, 3.4vw, 2.7rem); line-height: 1.05; font-weight: 800; margin: 0 0 0.5rem; color: #111; }
+    .tdg-subhead { font-style: italic; font-size: 1.05rem; line-height: 1.4; color: #333; margin: 0 0 0.7rem; }
     .tdg-byline { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; color: #555; margin: 0 0 0.8rem; border-top: 1px solid #c9c0a4; border-bottom: 1px solid #c9c0a4; padding: 0.35rem 0; }
     .tdg-dateline { font-weight: 700; color: #222; }
-    .tdg-body { font-size: 0.96rem; line-height: 1.6; text-align: justify; margin: 0 0 0.8rem; color: #1f1f1f; }
-    .tdg-dropcap::first-letter {
-      float: left; font-size: 3.2rem; line-height: 0.8;
-      font-weight: 800; padding: 0.1rem 0.5rem 0 0; color: #111;
-    }
+    .tdg-body { font-size: 0.96rem; line-height: 1.6; text-align: justify; margin: 0 0 0.6rem; color: #1f1f1f; }
+    .tdg-dropcap::first-letter { float: left; font-size: 3.2rem; line-height: 0.8; font-weight: 800; padding: 0.1rem 0.5rem 0 0; color: #111; }
+    .tdg-readmore { margin: 0 0 0.8rem; }
+    .tdg-readmore a { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #8a6d1d; text-decoration: none; }
+    .tdg-readmore a:hover { text-decoration: underline; }
     .tdg-storyhead { font-size: 1.18rem; line-height: 1.15; font-weight: 800; margin: 0 0 0.4rem; color: #111; }
     .tdg-story { margin-bottom: 0.4rem; }
     .tdg-rule { height: 1px; background: #c9c0a4; margin: 0.9rem 0; }
     .tdg-box { border: 1px solid #1a1a1a; padding: 0.9rem; margin-bottom: 1.2rem; background: #f5f1e6; }
-    .tdg-boxtitle {
-      font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em;
-      font-weight: 800; margin: 0 0 0.6rem; text-align: center;
-      border-bottom: 2px solid #1a1a1a; padding-bottom: 0.4rem;
-    }
-    .tdg-board {
-      width: 100%; aspect-ratio: 1 / 1; margin: 0 auto 0.6rem;
-      background-image:
-        linear-gradient(45deg, #1a1a1a 25%, transparent 25%),
-        linear-gradient(-45deg, #1a1a1a 25%, transparent 25%),
-        linear-gradient(45deg, transparent 75%, #1a1a1a 75%),
-        linear-gradient(-45deg, transparent 75%, #1a1a1a 75%);
-      background-size: 25% 25%;
-      background-position: 0 0, 0 12.5%, 12.5% -12.5%, -12.5% 0;
-      border: 2px solid #1a1a1a;
-    }
+    .tdg-boxtitle { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 800; margin: 0 0 0.6rem; text-align: center; border-bottom: 2px solid #1a1a1a; padding-bottom: 0.4rem; }
+    .tdg-board { width: 100%; aspect-ratio: 1 / 1; margin: 0 auto 0.6rem; background-image: linear-gradient(45deg, #1a1a1a 25%, transparent 25%), linear-gradient(-45deg, #1a1a1a 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #1a1a1a 75%), linear-gradient(-45deg, transparent 75%, #1a1a1a 75%); background-size: 25% 25%; background-position: 0 0, 0 12.5%, 12.5% -12.5%, -12.5% 0; border: 2px solid #1a1a1a; }
     .tdg-boxtext { font-size: 0.82rem; line-height: 1.45; margin: 0; color: #2a2a2a; }
     .tdg-results { list-style: none; margin: 0 0 0.5rem; padding: 0; font-size: 0.86rem; }
     .tdg-results li { display: flex; justify-content: space-between; padding: 0.28rem 0; border-bottom: 1px dotted #b5ab8a; }
@@ -307,8 +244,6 @@ const dateLine = today.toLocaleDateString('en-US', { weekday: 'long', year: 'num
     .tdg-quotebox { text-align: center; background: #efe7cf; }
     .tdg-quote { font-style: italic; font-size: 1rem; line-height: 1.4; margin: 0 0 0.4rem; color: #2a2a2a; }
     .tdg-quoteattr { font-size: 0.78rem; letter-spacing: 0.05em; text-transform: uppercase; color: #6a6a6a; margin: 0; }
-
-    /* LOCAL NEWS */
     .tdg-local { margin-top: 1.8rem; border-top: 3px double #1a1a1a; padding-top: 1.2rem; }
     .tdg-localhead { display: flex; align-items: center; gap: 0.7rem; }
     .tdg-pin { font-size: 1.3rem; color: #8a6d1d; }
@@ -319,7 +254,6 @@ const dateLine = today.toLocaleDateString('en-US', { weekday: 'long', year: 'num
     .tdg-localstory { padding: 0 1.2rem; border-right: 1px solid #c9c0a4; }
     .tdg-localstory:first-child { padding-left: 0; }
     .tdg-localstory:last-child { border-right: none; padding-right: 0; }
-
     .tdg-foot { margin-top: 1.8rem; }
     .tdg-rulebold { height: 3px; background: #1a1a1a; margin-bottom: 0.7rem; }
     .tdg-foot p { font-size: 0.8rem; color: #444; text-align: center; margin: 0; }

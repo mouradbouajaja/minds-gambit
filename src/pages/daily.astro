@@ -127,6 +127,28 @@ const hasStories = all.length > 0;
                 <p class="tdg-kicker">{s.data.kicker || SECTION_LABELS[s.data.section]}</p>
                 <h3 class="tdg-storyhead">{s.data.headline}</h3>
                 <p class="tdg-body">{s.data.summary}</p>
+                {s.data.standings && s.data.standings.length > 0 && (
+                  <div class="tdg-standings">
+                    <p class="tdg-standings-title">{s.data.standingsTitle || 'Standings'}</p>
+                    <table class="tdg-standings-table">
+                      <tbody>
+                        {s.data.standings.map((row, i) => (
+                          <tr>
+                            <td class="tdg-standings-rank">{i + 1}</td>
+                            <td class="tdg-standings-player">{row.player}</td>
+                            <td class="tdg-standings-score">{row.score}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+                {s.data.pgn && (
+                  <div class="tdg-moves">
+                    <p class="tdg-moves-title">{s.data.pgnLabel || 'Moves'}</p>
+                    <pre class="tdg-moves-pre">{s.data.pgn}</pre>
+                  </div>
+                )}
                 {s.data.sourceUrl && (
                   <p class="tdg-readmore"><a href={s.data.sourceUrl} target="_blank" rel="noopener">Read more →</a></p>
                 )}

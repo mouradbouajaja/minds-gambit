@@ -386,7 +386,7 @@ const hasStories = all.length > 0;
     .tdg-rule { height: 1px; background: #c9c0a4; margin: 0.9rem 0; }
     .tdg-box { border: 1px solid #1a1a1a; padding: 0.9rem; margin-bottom: 1.2rem; background: #f5f1e6; }
     .tdg-boxtitle { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 800; margin: 0 0 0.6rem; text-align: center; border-bottom: 2px solid #1a1a1a; padding-bottom: 0.4rem; }
-    .tdg-board { width: 100%; max-width: 240px; aspect-ratio: 1 / 1; margin: 0 auto 0.6rem; display: grid; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(8, 1fr); border: 2px solid #111; }
+    .tdg-board { width: 100%; max-width: 240px; aspect-ratio: 1 / 1; margin: 0 auto 0.6rem; display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); grid-template-rows: repeat(8, minmax(0, 1fr)); border: 2px solid #111; }
     .tdg-sq { display: flex; align-items: center; justify-content: center; }
     .tdg-lt { background: #f4f4f4; }
     .tdg-dk { background: #777; }

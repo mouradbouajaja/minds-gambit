@@ -82,6 +82,28 @@ const hasStories = all.length > 0;
               {lead.data.subhead && <p class="tdg-subhead">{lead.data.subhead}</p>}
               <p class="tdg-byline">By The Daily Gambit Desk{lead.data.sourceName ? ' · ' : ''}{lead.data.sourceName && <span class="tdg-dateline">{lead.data.sourceName}</span>}</p>
               <p class="tdg-body tdg-dropcap">{lead.data.summary}</p>
+              {lead.data.standings && lead.data.standings.length > 0 && (
+                <div class="tdg-standings">
+                  <p class="tdg-standings-title">{lead.data.standingsTitle || 'Standings'}</p>
+                  <table class="tdg-standings-table">
+                    <tbody>
+                      {lead.data.standings.map((row, i) => (
+                        <tr>
+                          <td class="tdg-standings-rank">{i + 1}</td>
+                          <td class="tdg-standings-player">{row.player}</td>
+                          <td class="tdg-standings-score">{row.score}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+              {lead.data.pgn && (
+                <div class="tdg-moves">
+                  <p class="tdg-moves-title">{lead.data.pgnLabel || 'Moves'}</p>
+                  <pre class="tdg-moves-pre">{lead.data.pgn}</pre>
+                </div>
+              )}
               {lead.data.sourceUrl && (
                 <p class="tdg-readmore"><a href={lead.data.sourceUrl} target="_blank" rel="noopener">Read the full story →</a></p>
               )}
@@ -296,6 +318,17 @@ const hasStories = all.length > 0;
     .tdg-archive-more { margin: 1rem 0 0; }
     .tdg-archive-more a { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #8a6d1d; text-decoration: none; }
     .tdg-archive-more a:hover { text-decoration: underline; }
+        .tdg-standings { margin: 1.2rem 0; border-top: 2px solid #1a1a1a; border-bottom: 2px solid #1a1a1a; padding: 0.6rem 0; }
+        .tdg-standings-title { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #8a6d1d; margin: 0 0 0.4rem; }
+        .tdg-standings-table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+        .tdg-standings-table td { padding: 0.22rem 0; border-bottom: 1px dotted #b5ab8a; }
+        .tdg-standings-table tr:last-child td { border-bottom: none; }
+        .tdg-standings-rank { width: 1.6rem; color: #8a6d1d; font-weight: 700; }
+        .tdg-standings-player { font-weight: 600; color: #1a1a1a; }
+        .tdg-standings-score { text-align: right; font-weight: 700; color: #1a1a1a; white-space: nowrap; }
+        .tdg-moves { margin: 1.2rem 0; }
+        .tdg-moves-title { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #8a6d1d; margin: 0 0 0.4rem; }
+        .tdg-moves-pre { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-size: 0.82rem; line-height: 1.6; color: #2a2a2a; background: #f5f1e6; border: 1px solid #d8cfb4; border-radius: 3px; padding: 0.7rem 0.85rem; margin: 0; white-space: pre-wrap; word-break: break-word; overflow-x: auto; }
     @media (max-width: 860px) {
       .tdg-sheet { padding: 1.5rem 1.2rem 2rem; }
       .tdg-masthead { grid-template-columns: 1fr; gap: 0.5rem; text-align: center; }

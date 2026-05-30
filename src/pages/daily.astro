@@ -168,8 +168,78 @@ const hasStories = all.length > 0;
         <aside class="tdg-rail">
           <div class="tdg-box">
             <h4 class="tdg-boxtitle">Puzzle of the Day</h4>
-            <div class="tdg-board" aria-hidden="true"></div>
-            <p class="tdg-boxtext"><strong>White to move and win.</strong> A fresh tactic every morning — sharpen your eye before your coffee gets cold.</p>
+            <div class="tdg-board" role="img" aria-label="Chess puzzle position, White to move and mate in two">
+              <div class="tdg-sq tdg-lt"></div>
+              <div class="tdg-sq tdg-dk"></div>
+              <div class="tdg-sq tdg-lt"></div>
+              <div class="tdg-sq tdg-dk"></div>
+              <div class="tdg-sq tdg-lt"></div>
+              <div class="tdg-sq tdg-dk"></div>
+              <div class="tdg-sq tdg-lt"></div>
+              <div class="tdg-sq tdg-dk"><span class="tdg-pc tdg-bp">♚</span></div>
+              <div class="tdg-sq tdg-dk"></div>
+              <div class="tdg-sq tdg-lt"><span class="tdg-pc tdg-bp">♟</span></div>
+              <div class="tdg-sq tdg-dk"></div>
+              <div class="tdg-sq tdg-lt"></div>
+              <div class="tdg-sq tdg-dk"><span class="tdg-pc tdg-bp">♝</span></div>
+              <div class="tdg-sq tdg-lt"></div>
+              <div class="tdg-sq tdg-dk"><span class="tdg-pc tdg-bp">♟</span></div>
+              <div class="tdg-sq tdg-lt"></div>
+              <div class="tdg-sq tdg-lt"></div>
+              <div class="tdg-sq tdg-dk"></div>
+              <div class="tdg-sq tdg-lt"></div>
+              <div class="tdg-sq tdg-dk"></div>
+              <div class="tdg-sq tdg-lt"><span class="tdg-pc tdg-wp">♙</span></div>
+              <div class="tdg-sq tdg-dk"></div>
+              <div class="tdg-sq tdg-lt"><span class="tdg-pc tdg-wp">♙</span></div>
+              <div class="tdg-sq tdg-dk"><span class="tdg-pc tdg-bp">♟</span></div>
+              <div class="tdg-sq tdg-dk"></div>
+              <div class="tdg-sq tdg-lt"></div>
+              <div class="tdg-sq tdg-dk"></div>
+              <div class="tdg-sq tdg-lt"><span class="tdg-pc tdg-wp">♘</span></div>
+              <div class="tdg-sq tdg-dk"></div>
+              <div class="tdg-sq tdg-lt"></div>
+              <div class="tdg-sq tdg-dk"></div>
+              <div class="tdg-sq tdg-lt"><span class="tdg-pc tdg-wp">♙</span></div>
+              <div class="tdg-sq tdg-lt"></div>
+              <div class="tdg-sq tdg-dk"></div>
+              <div class="tdg-sq tdg-lt"></div>
+              <div class="tdg-sq tdg-dk"><span class="tdg-pc tdg-wp">♙</span></div>
+              <div class="tdg-sq tdg-lt"></div>
+              <div class="tdg-sq tdg-dk"></div>
+              <div class="tdg-sq tdg-lt"></div>
+              <div class="tdg-sq tdg-dk"></div>
+              <div class="tdg-sq tdg-dk"><span class="tdg-pc tdg-bp">♟</span></div>
+              <div class="tdg-sq tdg-lt"><span class="tdg-pc tdg-wp">♙</span></div>
+              <div class="tdg-sq tdg-dk"></div>
+              <div class="tdg-sq tdg-lt"></div>
+              <div class="tdg-sq tdg-dk"></div>
+              <div class="tdg-sq tdg-lt"></div>
+              <div class="tdg-sq tdg-dk"></div>
+              <div class="tdg-sq tdg-lt"></div>
+              <div class="tdg-sq tdg-lt"><span class="tdg-pc tdg-wp">♙</span></div>
+              <div class="tdg-sq tdg-dk"></div>
+              <div class="tdg-sq tdg-lt"></div>
+              <div class="tdg-sq tdg-dk"></div>
+              <div class="tdg-sq tdg-lt"></div>
+              <div class="tdg-sq tdg-dk"></div>
+              <div class="tdg-sq tdg-lt"></div>
+              <div class="tdg-sq tdg-dk"><span class="tdg-pc tdg-bp">♛</span></div>
+              <div class="tdg-sq tdg-dk"></div>
+              <div class="tdg-sq tdg-lt"><span class="tdg-pc tdg-wp">♔</span></div>
+              <div class="tdg-sq tdg-dk"><span class="tdg-pc tdg-wp">♖</span></div>
+              <div class="tdg-sq tdg-lt"></div>
+              <div class="tdg-sq tdg-dk"></div>
+              <div class="tdg-sq tdg-lt"></div>
+              <div class="tdg-sq tdg-dk"></div>
+              <div class="tdg-sq tdg-lt"></div>
+            </div>
+            <p class="tdg-boxtext"><strong>White to move, mate in 2.</strong> A fresh tactic to sharpen your eye before your coffee gets cold.</p>
+            <details class="tdg-solution">
+              <summary>Show solution</summary>
+              <p class="tdg-soltext">1. Rc8+ Bd8 (or 1… Bf8) 2. Rxd8# (2. Rxf8#) — the rook check forces the bishop to block on the back rank, and capturing it delivers mate with the black king boxed in by its own pawns.</p>
+              <p class="tdg-solnote">Theme: Mate in 2 · from the <a href="/chess-school/tactics">Tactics Trainer</a>.</p>
+            </details>
           </div>
           <div class="tdg-box">
             <h4 class="tdg-boxtitle">Results at a Glance</h4>
@@ -316,7 +386,18 @@ const hasStories = all.length > 0;
     .tdg-rule { height: 1px; background: #c9c0a4; margin: 0.9rem 0; }
     .tdg-box { border: 1px solid #1a1a1a; padding: 0.9rem; margin-bottom: 1.2rem; background: #f5f1e6; }
     .tdg-boxtitle { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 800; margin: 0 0 0.6rem; text-align: center; border-bottom: 2px solid #1a1a1a; padding-bottom: 0.4rem; }
-    .tdg-board { width: 100%; aspect-ratio: 1 / 1; margin: 0 auto 0.6rem; background-image: linear-gradient(45deg, #1a1a1a 25%, transparent 25%), linear-gradient(-45deg, #1a1a1a 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #1a1a1a 75%), linear-gradient(-45deg, transparent 75%, #1a1a1a 75%); background-size: 25% 25%; background-position: 0 0, 0 12.5%, 12.5% -12.5%, -12.5% 0; border: 2px solid #1a1a1a; }
+    .tdg-board { width: 100%; max-width: 240px; aspect-ratio: 1 / 1; margin: 0 auto 0.6rem; display: grid; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(8, 1fr); border: 2px solid #1a1a1a; }
+    .tdg-sq { display: flex; align-items: center; justify-content: center; }
+    .tdg-lt { background: #efe7cf; }
+    .tdg-dk { background: #b58863; }
+    .tdg-pc { font-size: 1.15rem; line-height: 1; }
+    .tdg-wp { color: #fafafa; text-shadow: 0 0 1px #000, 0 0 1px #000; }
+    .tdg-bp { color: #161616; }
+    .tdg-solution { margin-top: 0.5rem; font-size: 0.8rem; }
+    .tdg-solution summary { cursor: pointer; font-weight: 700; color: #8a6d1d; list-style: revert; }
+    .tdg-soltext { margin: 0.4rem 0 0; line-height: 1.45; color: #2a2a2a; }
+    .tdg-solnote { margin: 0.35rem 0 0; font-size: 0.72rem; font-style: italic; color: #777; }
+    .tdg-solnote a { color: #8a6d1d; }
     .tdg-boxtext { font-size: 0.82rem; line-height: 1.45; margin: 0; color: #2a2a2a; }
     .tdg-results-event { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #8a6d1d; margin: 0.6rem 0 0.3rem; }
     .tdg-results { list-style: none; margin: 0 0 0.5rem; padding: 0; font-size: 0.86rem; }

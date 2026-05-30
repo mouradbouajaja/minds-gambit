@@ -188,6 +188,26 @@ const hasStories = all.length > 0;
         </div>
       </section>
 
+      {hasStories && (
+        <section class="tdg-archive" id="tdg-archive">
+          <h4 class="tdg-archive-title">Edition Archive</h4>
+          <p class="tdg-archive-intro">Every story published in The Daily Gambit, newest first.</p>
+          <ul class="tdg-archive-list">
+            {all.map((s) => (
+              <li class="tdg-archive-item">
+                <span class="tdg-archive-date">{s.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+                <span class="tdg-archive-sec">{SECTION_LABELS[s.data.section]}</span>
+                {s.data.sourceUrl ? (
+                  <a class="tdg-archive-link" href={s.data.sourceUrl} target="_blank" rel="noopener">{s.data.headline}</a>
+                ) : (
+                  <span class="tdg-archive-link">{s.data.headline}</span>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       <footer class="tdg-foot">
         <div class="tdg-rulebold"></div>
         <p>The Daily Gambit is published by The Mind's Gambit. Coverage summarizes and links to original reporting from across the chess world. <a href="/">Return to The Mind's Gambit →</a></p>
@@ -258,6 +278,15 @@ const hasStories = all.length > 0;
     .tdg-rulebold { height: 3px; background: #1a1a1a; margin-bottom: 0.7rem; }
     .tdg-foot p { font-size: 0.8rem; color: #444; text-align: center; margin: 0; }
     .tdg-foot a { color: #8a6d1d; text-decoration: none; font-weight: 700; }
+    .tdg-archive { margin-top: 1.8rem; border-top: 3px double #1a1a1a; padding-top: 1.2rem; }
+    .tdg-archive-title { font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 800; margin: 0; color: #111; }
+    .tdg-archive-intro { font-style: italic; font-size: 0.92rem; color: #555; margin: 0.2rem 0 1rem; }
+    .tdg-archive-list { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 2.4rem; }
+    .tdg-archive-item { display: block; break-inside: avoid; padding: 0.55rem 0; border-bottom: 1px dotted #b5ab8a; }
+    .tdg-archive-date { display: inline-block; min-width: 6.2rem; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #8a6d1d; }
+    .tdg-archive-sec { display: inline-block; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #f5f1e6; background: #1a1a1a; padding: 0.1rem 0.4rem; margin-right: 0.4rem; }
+    .tdg-archive-link { font-size: 0.92rem; color: #1a1a1a; text-decoration: none; font-weight: 600; }
+    a.tdg-archive-link:hover { text-decoration: underline; color: #8a6d1d; }
     @media (max-width: 860px) {
       .tdg-sheet { padding: 1.5rem 1.2rem 2rem; }
       .tdg-masthead { grid-template-columns: 1fr; gap: 0.5rem; text-align: center; }
@@ -270,6 +299,7 @@ const hasStories = all.length > 0;
       .tdg-localgrid { grid-template-columns: 1fr; gap: 1rem; }
       .tdg-localstory { padding: 0 0 1rem; border-right: none; border-bottom: 1px solid #c9c0a4; }
       .tdg-localstory:last-child { border-bottom: none; }
+      .tdg-archive-list { columns: 1; }
     }
   </style>
 </BaseLayout>

@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Mind's Gambit Daily — Coming Soon" description="The Mind's Gambit Daily: chess tournament results, live events, and curated news from across the chess world. Launching soon.">
+  <section class="daily-coming">
+    <div class="daily-inner">
+      <p class="daily-kicker">The Mind's Gambit</p>
+      <h1 class="daily-masthead">Daily</h1>
+      <div class="daily-rule"></div>
+      <p class="daily-tagline">Your morning briefing from the chess world.</p>
+      <p class="daily-desc">
+        Tournament results, live events, player news, and curated highlights from
+        across the game — gathered and written fresh every day. We're building it now.
+      </p>
+      <span class="daily-badge"><span class="daily-dot"></span> Coming Soon</span>
+      <p class="daily-foot">Want to be notified at launch? Use the newsletter signup at the bottom of any page.</p>
+    </div>
+  </section>
+
+  <style>
+    .daily-coming {
+      min-height: 70vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 1.5rem;
+    }
+    .daily-inner {
+      max-width: 640px;
+      text-align: center;
+    }
+    .daily-kicker {
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      font-size: 0.8rem;
+      color: var(--gold, #c8a84e);
+      margin: 0 0 0.4rem;
+    }
+    .daily-masthead {
+      font-family: var(--font-display, Georgia, 'Times New Roman', serif);
+      font-size: clamp(3rem, 10vw, 5.5rem);
+      line-height: 1;
+      margin: 0;
+      color: var(--text-primary, #f5f5f0);
+      letter-spacing: 0.02em;
+    }
+    .daily-rule {
+      width: 120px;
+      height: 2px;
+      background: var(--gold, #c8a84e);
+      margin: 1.4rem auto;
+    }
+    .daily-tagline {
+      font-family: var(--font-display, Georgia, serif);
+      font-style: italic;
+      font-size: 1.2rem;
+      color: var(--text-secondary, #b8b8b8);
+      margin: 0 0 1.2rem;
+    }
+    .daily-desc {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--text-secondary, #b8b8b8);
+      margin: 0 auto 1.8rem;
+      max-width: 520px;
+    }
+    .daily-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1.1rem;
+      border: 1px solid var(--border, #2a2a33);
+      border-radius: 999px;
+      color: var(--text-primary, #f5f5f0);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .daily-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--gold, #c8a84e);
+      animation: dailyPulse 1.8s ease-in-out infinite;
+    }
+    @keyframes dailyPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+    .daily-foot {
+      margin: 1.6rem 0 0;
+      font-size: 0.85rem;
+      color: var(--text-muted, #8a8a8a);
+    }
+  </style>
+</BaseLayout>
+

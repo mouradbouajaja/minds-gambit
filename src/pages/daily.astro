@@ -193,7 +193,7 @@ const hasStories = all.length > 0;
           <h4 class="tdg-archive-title">Edition Archive</h4>
           <p class="tdg-archive-intro">Every story published in The Daily Gambit, newest first.</p>
           <ul class="tdg-archive-list">
-            {all.map((s) => (
+                        {all.slice(0, 6).map((s) => (
               <li class="tdg-archive-item">
                 <span class="tdg-archive-date">{s.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
                 <span class="tdg-archive-sec">{SECTION_LABELS[s.data.section]}</span>
@@ -205,6 +205,9 @@ const hasStories = all.length > 0;
               </li>
             ))}
           </ul>
+          {all.length > 6 && (
+            <p class="tdg-archive-more"><a href="/daily/archive">View the full archive ({all.length} editions) &rarr;</a></p>
+          )}
         </section>
       )}
 
@@ -287,6 +290,9 @@ const hasStories = all.length > 0;
     .tdg-archive-sec { display: inline-block; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #f5f1e6; background: #1a1a1a; padding: 0.1rem 0.4rem; margin-right: 0.4rem; }
     .tdg-archive-link { font-size: 0.92rem; color: #1a1a1a; text-decoration: none; font-weight: 600; }
     a.tdg-archive-link:hover { text-decoration: underline; color: #8a6d1d; }
+    .tdg-archive-more { margin: 1rem 0 0; }
+    .tdg-archive-more a { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #8a6d1d; text-decoration: none; }
+    .tdg-archive-more a:hover { text-decoration: underline; }
     @media (max-width: 860px) {
       .tdg-sheet { padding: 1.5rem 1.2rem 2rem; }
       .tdg-masthead { grid-template-columns: 1fr; gap: 0.5rem; text-align: center; }

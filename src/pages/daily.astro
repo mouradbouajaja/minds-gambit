@@ -62,6 +62,7 @@ const hasStories = all.length > 0;
         <a href="#">Puzzles</a>
         <a href="#">Opinion</a>
         <a href="#">World Chess</a>
+        <a href="/daily/archive" class="tdg-sectionbar-archive">Archive</a>
       </nav>
 
       {!hasStories && (
@@ -235,6 +236,8 @@ const hasStories = all.length > 0;
     .tdg-sectionbar { display: flex; justify-content: center; flex-wrap: wrap; gap: 0.2rem 1.6rem; border-top: 3px solid #1a1a1a; border-bottom: 1px solid #1a1a1a; padding: 0.5rem 0; margin-top: 0.6rem; margin-bottom: 1.4rem; }
     .tdg-sectionbar a { color: #1a1a1a; text-decoration: none; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
     .tdg-sectionbar a:hover { color: #8a6d1d; }
+    .tdg-sectionbar a.tdg-sectionbar-archive { color: #8a6d1d; }
+    .tdg-sectionbar a.tdg-sectionbar-archive:hover { color: #1a1a1a; text-decoration: underline; }
     .tdg-banner { display: flex; align-items: center; gap: 0.6rem; justify-content: center; font-style: italic; font-size: 0.85rem; color: #5a4a1d; background: #efe7cf; border: 1px solid #d8cba0; padding: 0.5rem 1rem; margin: 0 0 1.4rem; }
     .tdg-dot { width: 8px; height: 8px; border-radius: 50%; background: #b8902a; flex: none; animation: tdgPulse 1.8s ease-in-out infinite; }
     @keyframes tdgPulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }

@@ -42,6 +42,13 @@ const daily = defineCollection({
     lead: z.boolean().default(false),
     pinned: z.boolean().default(false),
     draft: z.boolean().default(false),
+    // Optional clean move list (no annotations) shown in a "Moves" box on the lead story.
+    pgn: z.string().optional(),
+    // Optional label above the moves box, e.g. the game heading.
+    pgnLabel: z.string().optional(),
+    // Optional standings table: a heading plus rows of { player, score }.
+    standingsTitle: z.string().optional(),
+    standings: z.array(z.object({ player: z.string(), score: z.string() })).optional(),
   }),
 });
 

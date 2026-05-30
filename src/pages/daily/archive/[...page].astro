@@ -1,0 +1,110 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+export const prerender = true;
+
+const SECTION_LABELS = {
+  world: 'World Chess',
+  tournaments: 'Tournaments',
+  players: 'Players',
+  openings: 'Openings',
+  local: 'Local',
+  opinion: 'Opinion',
+  puzzle: 'Puzzle',
+};
+
+export async function getStaticPaths({ paginate }) {
+  const all = (await getCollection('daily', ({ data }) => !data.draft))
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  return paginate(all, { pageSize: 12 });
+}
+
+const { page } = Astro.props;
+---
+
+<BaseLayout title="Edition Archive — The Daily Gambit" description="Browse every edition of The Daily Gambit, the morning chess paper from The Mind's Gambit.">
+  <div class="tdg-sheet-wrap">
+    <div class="tdg-arch-sheet">
+      <header class="tdg-arch-head">
+        <p class="tdg-arch-eyebrow"><a href="/daily">The Daily Gambit</a></p>
+        <h1 class="tdg-arch-h1">Edition Archive</h1>
+        <p class="tdg-arch-sub">Every story we've published, newest first &middot; Page {page.currentPage} of {page.lastPage}</p>
+      </header>
+
+      <ul class="tdg-arch-list">
+        {page.data.map((s) => (
+          <li class="tdg-arch-item">
+            <span class="tdg-arch-date">{s.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+            <span class="tdg-arch-sec">{SECTION_LABELS[s.data.section]}</span>
+            <span class="tdg-arch-main">
+              {s.data.sourceUrl ? (
+                <a class="tdg-arch-link" href={s.data.sourceUrl} target="_blank" rel="noopener">{s.data.headline}</a>
+              ) : (
+                <span class="tdg-arch-link">{s.data.headline}</span>
+              )}
+              {s.data.subhead && <span class="tdg-arch-sub2">{s.data.subhead}</span>}
+            </span>
+          </li>
+        ))}
+      </ul>
+
+      {page.data.length === 0 && (
+        <p class="tdg-arch-empty">No editions have been published yet. Check back soon.</p>
+      )}
+
+      <nav class="tdg-arch-nav">
+        {page.url.prev ? (
+          <a class="tdg-arch-navlink" href={page.url.prev}>&larr; Newer</a>
+        ) : (
+          <span class="tdg-arch-navlink tdg-arch-disabled">&larr; Newer</span>
+        )}
+        <span class="tdg-arch-navcount">{page.currentPage} / {page.lastPage}</span>
+        {page.url.next ? (
+          <a class="tdg-arch-navlink" href={page.url.next}>Older &rarr;</a>
+        ) : (
+          <span class="tdg-arch-navlink tdg-arch-disabled">Older &rarr;</span>
+        )}
+      </nav>
+
+      <footer class="tdg-arch-foot">
+        <div class="tdg-arch-rule"></div>
+        <p><a href="/daily">&larr; Back to today's front page</a></p>
+      </footer>
+    </div>
+  </div>
+
+  <style>
+    .tdg-sheet-wrap { background: #14141a; padding: 2.5rem 1rem 4rem; display: flex; justify-content: center; }
+    .tdg-arch-sheet { background: #f5f1e6; color: #1a1a1a; width: 100%; max-width: 820px; padding: 2.4rem 2.6rem 2.8rem; box-shadow: 0 24px 60px rgba(0,0,0,0.5); font-family: Georgia, 'Times New Roman', Times, serif; }
+    .tdg-arch-head { border-bottom: 3px double #1a1a1a; padding-bottom: 1rem; margin-bottom: 1.4rem; }
+    .tdg-arch-eyebrow { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #8a6d1d; margin: 0 0 0.4rem; }
+    .tdg-arch-eyebrow a { color: #8a6d1d; text-decoration: none; }
+    .tdg-arch-eyebrow a:hover { text-decoration: underline; }
+    .tdg-arch-h1 { font-family: 'Times New Roman', Times, Georgia, serif; font-weight: 800; font-size: clamp(2rem, 5vw, 3rem); line-height: 1; margin: 0; color: #111; }
+    .tdg-arch-sub { font-style: italic; font-size: 0.9rem; color: #555; margin: 0.5rem 0 0; }
+    .tdg-arch-list { list-style: none; margin: 0; padding: 0; }
+    .tdg-arch-item { display: flex; align-items: baseline; gap: 0.7rem; flex-wrap: wrap; padding: 0.7rem 0; border-bottom: 1px dotted #b5ab8a; }
+    .tdg-arch-date { flex: none; min-width: 6.4rem; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #8a6d1d; }
+    .tdg-arch-sec { flex: none; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #f5f1e6; background: #1a1a1a; padding: 0.12rem 0.42rem; }
+    .tdg-arch-main { flex: 1 1 14rem; }
+    .tdg-arch-link { font-size: 1rem; color: #1a1a1a; text-decoration: none; font-weight: 700; }
+    a.tdg-arch-link:hover { text-decoration: underline; color: #8a6d1d; }
+    .tdg-arch-sub2 { display: block; font-style: italic; font-size: 0.85rem; color: #555; margin-top: 0.15rem; }
+    .tdg-arch-empty { font-style: italic; color: #555; padding: 1.2rem 0; }
+    .tdg-arch-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 1.6rem; padding-top: 1rem; border-top: 1px solid #1a1a1a; }
+    .tdg-arch-navlink { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #8a6d1d; text-decoration: none; }
+    a.tdg-arch-navlink:hover { text-decoration: underline; }
+    .tdg-arch-disabled { color: #b5ab8a; pointer-events: none; }
+    .tdg-arch-navcount { font-size: 0.78rem; color: #555; }
+    .tdg-arch-foot { margin-top: 1.8rem; }
+    .tdg-arch-rule { height: 3px; background: #1a1a1a; margin-bottom: 0.7rem; }
+    .tdg-arch-foot p { font-size: 0.8rem; margin: 0; }
+    .tdg-arch-foot a { color: #8a6d1d; text-decoration: none; font-weight: 700; }
+    .tdg-arch-foot a:hover { text-decoration: underline; }
+    @media (max-width: 600px) {
+      .tdg-arch-sheet { padding: 1.6rem 1.3rem 2rem; }
+      .tdg-arch-date { min-width: 100%; }
+    }
+  </style>
+</BaseLayout>

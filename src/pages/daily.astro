@@ -5,7 +5,7 @@ const today = new Date();
 const dateLine = today.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 ---
 
-<BaseLayout title="The Daily Gambit — Chess News, Results & Analysis" description="The Daily Gambit: your morning briefing from the chess world. Tournament results, player news, opening theory, puzzles, and analysis — gathered fresh every day.">
+<BaseLayout title="The Daily Gambit — Chess News, Results & Analysis" description="The Daily Gambit: your morning briefing from the chess world. Tournament results, player news, opening theory, puzzles, local Pittsburgh & Pennsylvania chess, and analysis — gathered fresh every day.">
   <div class="paper">
     <div class="paper-sheet">
 
@@ -37,6 +37,7 @@ const dateLine = today.toLocaleDateString('en-US', { weekday: 'long', year: 'num
         <a href="#">Tournaments</a>
         <a href="#">Players</a>
         <a href="#">Openings</a>
+        <a href="#local">Local</a>
         <a href="#">Puzzles</a>
         <a href="#">Opinion</a>
         <a href="#">World Chess</a>
@@ -106,6 +107,38 @@ const dateLine = today.toLocaleDateString('en-US', { weekday: 'long', year: 'num
         </aside>
 
       </main>
+
+      <!-- LOCAL NEWS BAND -->
+      <section class="local" id="local">
+        <div class="local-head">
+          <span class="local-pin">♟</span>
+          <h2 class="local-title">Pittsburgh &amp; Pennsylvania</h2>
+          <span class="local-tag">Local Chess</span>
+        </div>
+        <p class="local-intro">Coverage close to home — club nights, scholastic results, and tournaments across the Steel City and the Commonwealth. From the Pittsburgh Chess Club to the Pennsylvania State Championship, this is where local players make headlines.</p>
+        <div class="local-grid">
+          <article class="local-story">
+            <p class="kicker">Pittsburgh Chess League</p>
+            <h3 class="story-head">Steel City Clubs Open the Fall Season</h3>
+            <p class="body">Placeholder summary. Standings, match reports, and results from Pittsburgh's club circuit will be tracked here week to week.</p>
+          </article>
+          <article class="local-story">
+            <p class="kicker">Scholastic</p>
+            <h3 class="story-head">Pennsylvania Scholastic Championship Draws Record Field</h3>
+            <p class="body">Placeholder summary. K–12 results, rising young talent, and coverage of school and college chess across the state.</p>
+          </article>
+          <article class="local-story">
+            <p class="kicker">State Championship</p>
+            <h3 class="story-head">Pennsylvania State Championship Heads to the Wire</h3>
+            <p class="body">Placeholder summary. Round-by-round coverage of the PA State Championship and major opens held across the Commonwealth.</p>
+          </article>
+          <article class="local-story">
+            <p class="kicker">Community</p>
+            <h3 class="story-head">University of Pittsburgh Club Hosts Open House</h3>
+            <p class="body">Placeholder summary. Local clubs, college teams, casual meetups, and the people growing chess in Western Pennsylvania.</p>
+          </article>
+        </div>
+      </section>
 
       <!-- FOOTER RULE -->
       <footer class="paper-foot">
@@ -270,7 +303,20 @@ const dateLine = today.toLocaleDateString('en-US', { weekday: 'long', year: 'num
     .rail-quote { text-align: center; background: #efe7cf; }
     .quote-text { font-style: italic; font-size: 1rem; line-height: 1.4; margin: 0 0 0.4rem; color: #2a2a2a; }
     .quote-attr { font-size: 0.78rem; letter-spacing: 0.05em; text-transform: uppercase; color: #6a6a6a; margin: 0; }
-    .paper-foot { margin-top: 1.6rem; }
+
+    /* LOCAL NEWS */
+    .local { margin-top: 1.8rem; border-top: 3px double #1a1a1a; padding-top: 1.2rem; }
+    .local-head { display: flex; align-items: center; gap: 0.7rem; }
+    .local-pin { font-size: 1.3rem; color: #8a6d1d; }
+    .local-title { font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 800; margin: 0; color: #111; }
+    .local-tag { margin-left: auto; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #f5f1e6; background: #8a6d1d; padding: 0.25rem 0.6rem; }
+    .local-intro { font-style: italic; font-size: 0.96rem; line-height: 1.5; color: #3a3a3a; margin: 0.6rem 0 1.2rem; max-width: 760px; }
+    .local-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+    .local-story { padding: 0 1.2rem; border-right: 1px solid #c9c0a4; }
+    .local-story:first-child { padding-left: 0; }
+    .local-story:last-child { border-right: none; padding-right: 0; }
+
+    .paper-foot { margin-top: 1.8rem; }
     .rule-bold { height: 3px; background: #1a1a1a; margin-bottom: 0.7rem; }
     .paper-foot p { font-size: 0.8rem; color: #444; text-align: center; margin: 0; }
     .paper-foot a { color: #8a6d1d; text-decoration: none; font-weight: 700; }
@@ -283,6 +329,9 @@ const dateLine = today.toLocaleDateString('en-US', { weekday: 'long', year: 'num
       .frontpage > *, .frontpage > .lead { padding: 0; border-right: none; }
       .lead { border-bottom: 2px solid #1a1a1a; padding-bottom: 1rem; margin-bottom: 1.2rem; }
       .secondary { border-right: none; border-bottom: 2px solid #1a1a1a; padding-bottom: 1rem; margin-bottom: 1.2rem; }
+      .local-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .local-story { padding: 0 0 1rem; border-right: none; border-bottom: 1px solid #c9c0a4; }
+      .local-story:last-child { border-bottom: none; }
     }
   </style>
 </BaseLayout>

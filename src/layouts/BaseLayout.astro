@@ -71,6 +71,43 @@ const { title = "Mourad Bouajaja — The Mind's Gambit", description = "Chess, M
   <slot />
   <!-- Service worker registration removed 2026-05-29: legacy SW caused stale routing + reload loop. New visitors get no SW. -->
 
+    <!-- Newsletter Signup (site-wide) -->
+    <section class="newsletter-band" id="newsletter" aria-labelledby="newsletter-heading">
+      <div class="newsletter-inner">
+        <div class="newsletter-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+            <path d="m2 6 10 7 10-7"></path>
+          </svg>
+        </div>
+        <h2 id="newsletter-heading">Stay in the Loop</h2>
+        <p class="newsletter-sub">Get occasional updates on new chapters, the documentary, and fresh content on the site. Weekly at most — only if you want them.</p>
+        <form class="newsletter-form" action="https://formsubmit.co/Mourad@mindsgambit.com" method="POST">
+          <input type="hidden" name="_subject" value="New newsletter signup" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="hidden" name="_template" value="table" />
+          <input type="email" name="email" placeholder="you@example.com" required aria-label="Email address" />
+          <button type="submit">Subscribe</button>
+        </form>
+        <p class="newsletter-privacy">Your email is shared voluntarily and used only to send you site updates. We never sell or share your information, and you can unsubscribe anytime.</p>
+      </div>
+    </section>
+
+    <style>
+      .newsletter-band { background: var(--bg-card, #16161c); border-top: 1px solid var(--border, #2a2a33); padding: 3.5rem 1.5rem; }
+      .newsletter-inner { max-width: 560px; margin: 0 auto; text-align: center; }
+      .newsletter-icon { color: var(--gold, #c8a84e); display: flex; justify-content: center; margin-bottom: 1rem; }
+      .newsletter-band h2 { font-family: var(--font-display, Georgia, serif); font-size: 1.6rem; color: var(--text-primary, #f5f5f0); margin: 0 0 0.6rem; }
+      .newsletter-sub { color: var(--text-secondary, #b8b8b8); font-size: 0.98rem; line-height: 1.6; margin: 0 0 1.4rem; }
+      .newsletter-form { display: flex; gap: 0.5rem; max-width: 420px; margin: 0 auto 1rem; }
+      .newsletter-form input[type=email] { flex: 1; padding: 0.7rem 0.9rem; border-radius: 8px; border: 1px solid var(--border, #2a2a33); background: var(--bg-primary, #0f0f17); color: var(--text-primary, #f5f5f0); font-size: 0.95rem; }
+      .newsletter-form input[type=email]:focus { outline: none; border-color: var(--gold, #c8a84e); }
+      .newsletter-form button { padding: 0.7rem 1.3rem; border-radius: 8px; border: none; background: var(--gold, #c8a84e); color: var(--bg-primary, #0f0f17); font-weight: 600; cursor: pointer; white-space: nowrap; transition: opacity 0.2s; }
+      .newsletter-form button:hover { opacity: 0.88; }
+      .newsletter-privacy { color: var(--text-muted, #8a8a8a); font-size: 0.8rem; line-height: 1.5; margin: 0; }
+      @media (max-width: 480px) { .newsletter-form { flex-direction: column; } }
+    </style>
+
   <!-- Google Translate Widget -->
   <div id="gt-wrapper" style="position:fixed;top:27px;right:10px;z-index:10000;">
     <div id="google_translate_element"></div>

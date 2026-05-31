@@ -9,7 +9,7 @@ sourceName: "The Mind's Gambit"
 sourceUrl: "https://mindsgambit.com/daily"
 lead: false
 pinned: false
-draft: false
+draft: true
 ---
 
 For most of the last fifty years, American chess has lived in a long shadow. Bobby Fischer's 1972 victory over Boris Spassky in Reykjavik was the high-water mark — and almost as quickly, the country lost him to silence and exile. The decades that followed produced strong players, dedicated coaches, scholastic programs in nearly every city. But the top table of world chess was somewhere else: Moscow, then Beijing, then Chennai.

@@ -9,6 +9,20 @@ sourceName: "Chess.com"
 sourceUrl: "https://www.chess.com/news/view/2026-norway-chess-round-5"
 lead: true
 draft: false
+resultsTitle: "Open · Round 5 Results"
+results:
+  - white: "Magnus Carlsen"
+    black: "Wesley So"
+    score: "0–1"
+    note: "classical"
+  - white: "Praggnanandhaa R."
+    black: "Gukesh Dommaraju"
+    score: "0–1"
+    note: "classical"
+  - white: "Alireza Firouzja"
+    black: "Vincent Keymer"
+    score: "1½–1"
+    note: "drew classical, Firouzja won Armageddon"                    
 standingsTitle: "Open · Standings after Round 5"
 standings:
   - player: "Alireza Firouzja"

@@ -9,6 +9,20 @@ sourceName: "Chess.com"
 sourceUrl: "https://www.chess.com/news/view/2026-norway-chess-round-5"
 lead: false
 draft: false
+resultsTitle: "Women · Round 5 Results"
+results:
+  - white: "Zhu Jiner"
+    black: "Divya Deshmukh"
+    score: "0–1"
+    note: "classical"
+  - white: "Anna Muzychuk"
+    black: "Bibisara Assaubayeva"
+    score: "1½–1"
+    note: "drew classical, Muzychuk won Armageddon"
+  - white: "Ju Wenjun"
+    black: "Koneru Humpy"
+    score: "1–1½"
+    note: "drew classical, Humpy won Armageddon"
 standingsTitle: "Women · Standings after Round 5"
 standings:
   - player: "Divya Deshmukh"

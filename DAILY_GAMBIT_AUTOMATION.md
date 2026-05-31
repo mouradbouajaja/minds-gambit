@@ -144,3 +144,36 @@ Local (Pittsburgh / Pennsylvania) — keep SEMI-MANUAL at first, feeds are unrel
 - One file per story; exactly one lead per edition.
 - Summaries original; sourceUrl present.
 - Local section reviewed by a human until feeds are trusted.
+
+
+## Editorial voice — assume the reader doesn't know the names
+
+The Daily Gambit's primary audience is American chess players — most are not
+elite-rated and do not follow the European or Asian tour closely. Names like
+Murzin, Hnatyshyn, Keymer, Divya, Praggnanandhaa, or Firouzja may not be
+instantly recognized. The editorial voice should be warmly educational, never
+assuming knowledge it shouldn't.
+
+When a player appears in a story for the first time, briefly introduce them:
+country, current rating range (if notable), one signature achievement, and
+age when relevant.
+
+Examples:
+- "Russian GM Volodar Murzin, the 18-year-old who stunned chess by winning
+-   the 2024 World Rapid Championship..."
+-   - "Ukrainian WGM Anastasiia Hnatyshyn, a rising 2400+ talent..."
+    - - "Indian GM Divya Deshmukh, 19, the 2024 Women's World Cup champion..."
+      - - "American GM Wesley So, the 2017 U.S. Champion and former world top-5..."
+       
+        - Repeat introductions are unnecessary inside the same edition. A name
+        - introduced in one story can be referenced by surname in another.
+       
+        - Names that do NOT need introduction in any chess context: Magnus Carlsen,
+        - Hikaru Nakamura, Fabiano Caruana, Gukesh Dommaraju, Garry Kasparov, Bobby
+        - Fischer, Vladimir Kramnik, Anatoly Karpov. Their current world position or
+        - signature title can still be reinforced for emphasis.
+       
+        - When introducing a tournament or opening, the same rule applies: one
+        - sentence of orientation — who plays it, when it started, why it matters —
+        - before diving in.
+        - 

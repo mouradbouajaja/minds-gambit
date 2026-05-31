@@ -16,7 +16,7 @@ For most of the last fifty years, American chess has lived in a long shadow. Bob
 
 That is no longer true.
 
-Hikaru Nakamura and Fabiano Caruana enter this Candidates cycle as the top two seeds. Wesley So, a naturalized American who joined the U.S. Federation in 2014, beat world number one Magnus Carlsen in a classical game this week. American GM Sam Sevian, the 2680-rated 2018 U.S. Junior Champion who has broken into elite tournament fields this cycle, is climbing steadily. The American Cup in Saint Louis has become a fixture of the elite calendar. The U.S. Championship runs every year with a budget and a broadcast.
+Hikaru Nakamura and Fabiano Caruana enter this Candidates cycle as the top two seeds. Wesley So, a naturalized American who joined the U.S. Federation in 2014, beat world number one Magnus Carlsen in a classical game this week. American GM Sam Sevian, 25 and rated 2680 — who became the youngest American grandmaster at the time when he earned the title at age 13 in late 2014 — has begun showing up in elite tournament fields too. The American Cup in Saint Louis has become a fixture of the elite calendar. The U.S. Championship runs every year with a budget and a broadcast.
 
 None of this guarantees a world champion. The Candidates is brutal in ways the rating list cannot predict. Caruana lost a 12-game match for the title in 2018, in a tiebreak that still haunts him. Nakamura has spent his career as the player who is always close, never crowned.
 

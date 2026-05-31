@@ -1,7 +1,7 @@
 ---
 headline: "Assaubayeva Stretches Her Lead at Norway Chess Women"
 subhead: "The Kazakh grandmaster draws Ju Wenjun in classical, then wins the Armageddon to move 1½ points clear."
-summary: "Bibisara Assaubayeva took a 1½-point lead into the rest day at Norway Chess Women, drawing her classical game against women's world champion Ju Wenjun and then taking the Armageddon decider. For the third round running, all three classical games were drawn, leaving Assaubayeva's round-one win as the event's only decisive classical result so far. Anna Muzychuk and Zhu Jiner also prevailed in their Armageddon tiebreaks against Divya Deshmukh and Humpy Koneru respectively."
+summary: "Bibisara Assaubayeva took a 1½-point lead into the rest day at Norway Chess Women. The 2516-rated grandmaster from Kazakhstan, in Central Asia, the world's largest landlocked country, drew her classical game against women's world champion Ju Wenjun, then took the Armageddon decider. For the third round running, all three classical games were drawn, leaving Assaubayeva's round-one win as the event's only decisive classical result so far. Anna Muzychuk and Zhu Jiner also prevailed in their Armageddon tiebreaks against Divya Deshmukh and Humpy Koneru respectively."
 section: "world"
 kicker: "Norway Chess Women 2026"
 date: 2026-05-29

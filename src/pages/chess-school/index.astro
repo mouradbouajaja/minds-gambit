@@ -4,7 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 export const prerender = true;
 ---
 
-<BaseLayout title="Chess School — Mind's Gambit" description="Train, play, learn, and analyze. Free, ad-free, open-source-powered. Daily tactical puzzles, lessons with grandmasters, and 5.94 million puzzles to grind.">
+<BaseLayout title="Chess School — Mind's Gambit" description="Train, play, learn, and analyze. Free, ad-free, open-source-powered. Daily tactical puzzles, lessons with grandmasters, 5.94 million puzzles to grind, and our games library of 14.8 million master games.">
 
 <nav>
   <div class="nav-inner">
@@ -151,13 +151,13 @@ export const prerender = true;
       <p>Brand new? Start here. Piece movement, basic rules, first principles of attack and defense.</p>
       <span class="tile-cta">Start learning &rarr;</span>
     </a>
-    <div class="tile tile-soon">
-      <span class="badge badge-soon">Soon</span>
+    <a href="/chess-school/games" class="tile">
+      <span class="badge badge-new">New</span>
       <div class="tile-icon">&#128214;</div>
-      <h3>Opening Encyclopedia</h3>
-      <p>Search by name or by moves. Typical plans for both sides, mainlines and sidelines.</p>
-      <span class="tile-cta">In development</span>
-    </div>
+      <h3>Our Games Library</h3>
+      <p>Almost 15 million chess games organized like a ChessBase opening tree &mdash; from the oldest games on record to last week&rsquo;s grandmaster tournaments. Click any opening code and play through the games on the board.</p>
+      <span class="tile-cta">Open the library &rarr;</span>
+    </a>
     <div class="tile tile-soon tile-faded">
       <div class="tile-icon">&#9203;</div>
       <h3>Lesson Library</h3>
@@ -239,15 +239,13 @@ export const prerender = true;
 (function() {
   'use strict';
 
-  // ----- FAQ DATABASE -----
-  // Edit this array to add/remove Q&As. Each entry has:
-  //   keywords: array of words/phrases that trigger this answer (lowercase)
-  //   q: short display question (shown in suggested list)
-  //   a: the answer (HTML allowed)
   var FAQ_DATA = [
     { keywords: ['daily puzzle', 'puzzle of the day', 'today puzzle', 'how puzzle work'],
       q: 'How does the Daily Puzzle work?',
       a: 'Every visitor sees the <strong>same puzzle each day</strong>. You and a friend will see the same puzzle on the same day &mdash; perfect for friendly competition. Tomorrow it rotates automatically. We have a library of nearly 6 million puzzles, so you&rsquo;ll never run out.' },
+    { keywords: ['games library', 'opening tree', 'browse games', 'master games', '15 million games', 'historical games', 'play through games', 'pgn library'],
+      q: 'What is Our Games Library?',
+      a: '<strong>Our Games Library</strong> is the network&rsquo;s collection of 14.8 million chess games &mdash; from the oldest games on record (1485) to last week&rsquo;s grandmaster tournaments &mdash; organized like a ChessBase opening tree. Open any opening code (A00 to E99) and play through the games on the board, right here. No downloads, no signup. Find it under <a href="/chess-school/games">Chess School &rarr; Our Games Library</a> or in the 03 Learn section of this hub.' },
     { keywords: ['account', 'login', 'sign up', 'signup', 'register'],
       q: 'Do I need an account?',
       a: '<strong>No.</strong> Mind&rsquo;s Gambit Chess School works without any signup. Your puzzle streak, rating, name, and stats are saved on this device so they&rsquo;re waiting for you next time you visit. Nothing to remember, nothing to log in to.' },
@@ -337,7 +335,6 @@ export const prerender = true;
       a: '<strong>No tracking, no analytics, no ads.</strong> Your puzzle progress and rating live on <em>your</em> device &mdash; we never see them. When you use Game Analysis, the chess position is sent to the engine so it can compute the review &mdash; nothing about you personally is sent or stored.' }
   ];
 
-  // ----- Bot logic -----
   var bubble = document.getElementById('mg-faq-bubble');
   var panel = document.getElementById('mg-faq-panel');
   var closeBtn = document.getElementById('mg-faq-close');
@@ -377,7 +374,6 @@ export const prerender = true;
     for (var i = 0; i < keywords.length; i++) {
       var k = keywords[i].toLowerCase();
       if (q.indexOf(k) !== -1) s += k.length * 2;
-      // Also score individual words
       var words = k.split(/\s+/);
       for (var w = 0; w < words.length; w++) {
         if (words[w].length >= 3 && q.indexOf(words[w]) !== -1) s += 1;
@@ -423,7 +419,6 @@ export const prerender = true;
     } else {
       setTimeout(function() {
         addMessage('I don’t have a stock answer for that one yet. Email <a href="mailto:mourad@mindsgambit.com">mourad@mindsgambit.com</a> and Mourad will reply personally — he usually answers within a day.', 'bot');
-        // Show 4 random other suggestions
         var sample = [];
         var pool = FAQ_DATA.slice();
         for (var i = 0; i < 4 && pool.length; i++) {

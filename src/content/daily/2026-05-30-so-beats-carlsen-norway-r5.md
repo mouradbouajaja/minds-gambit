@@ -9,4 +9,18 @@ sourceName: "Chess.com"
 sourceUrl: "https://www.chess.com/news/view/2026-norway-chess-round-5"
 lead: true
 draft: false
+standingsTitle: "Open · Standings after Round 5"
+standings:
+  - player: "Alireza Firouzja"
+    score: "10"
+  - player: "Wesley So"
+    score: "8½"
+  - player: "Gukesh Dommaraju"
+    score: "6½"
+  - player: "Praggnanandhaa R."
+    score: "6"
+  - player: "Vincent Keymer"
+    score: "5"
+  - player: "Magnus Carlsen"
+    score: "4½"
 ---

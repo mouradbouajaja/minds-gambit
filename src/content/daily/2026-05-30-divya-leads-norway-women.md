@@ -9,4 +9,18 @@ sourceName: "Chess.com"
 sourceUrl: "https://www.chess.com/news/view/2026-norway-chess-round-5"
 lead: false
 draft: false
----
+standingsTitle: "Women · Standings after Round 5"
+standings:
+  - player: "Divya Deshmukh"
+    score: "8½"
+  - player: "Bibisara Assaubayeva"
+    score: "8"
+  - player: "Anna Muzychuk"
+    score: "7"
+  - player: "Zhu Jiner"
+    score: "5½"
+  - player: "Ju Wenjun"
+    score: "5"
+  - player: "Koneru Humpy"
+    score: "4½"
+---   

@@ -94,7 +94,22 @@ const hasStories = all.length > 0;
               {lead.data.subhead && <p class="tdg-subhead">{lead.data.subhead}</p>}
               <p class="tdg-byline">By The Daily Gambit Desk{lead.data.sourceName ? ' · ' : ''}{lead.data.sourceName && <span class="tdg-dateline">{lead.data.sourceName}</span>}</p>
               <p class="tdg-body tdg-dropcap">{lead.data.summary}</p>
-              {lead.data.standings && lead.data.standings.length > 0 && (
+              {lead.data.results && lead.data.results.length > 0 && (
+<div class="tdg-standings">
+<p class="tdg-standings-title">{lead.data.resultsTitle || 'Results'}</p>
+<table class="tdg-standings-table">
+<tbody>
+{lead.data.results.map((g) => (
+<tr>
+<td class="tdg-standings-player">{g.white} – {g.black}</td>
+<td class="tdg-standings-score">{g.score}</td>
+</tr>
+))}
+</tbody>
+</table>
+</div>
+)}
+{lead.data.standings && lead.data.standings.length > 0 && (
                 <div class="tdg-standings">
                   <p class="tdg-standings-title">{lead.data.standingsTitle || 'Standings'}</p>
                   <table class="tdg-standings-table">
@@ -139,7 +154,22 @@ const hasStories = all.length > 0;
                 <p class="tdg-kicker">{s.data.kicker || SECTION_LABELS[s.data.section]}</p>
                 <h3 class="tdg-storyhead">{s.data.headline}</h3>
                 <p class="tdg-body">{s.data.summary}</p>
-                {s.data.standings && s.data.standings.length > 0 && (
+                {s.data.results && s.data.results.length > 0 && (
+<div class="tdg-standings">
+<p class="tdg-standings-title">{s.data.resultsTitle || 'Results'}</p>
+<table class="tdg-standings-table">
+<tbody>
+{s.data.results.map((g) => (
+<tr>
+<td class="tdg-standings-player">{g.white} – {g.black}</td>
+<td class="tdg-standings-score">{g.score}</td>
+</tr>
+))}
+</tbody>
+</table>
+</div>
+)}
+{s.data.standings && s.data.standings.length > 0 && (
                   <div class="tdg-standings">
                     <p class="tdg-standings-title">{s.data.standingsTitle || 'Standings'}</p>
                     <table class="tdg-standings-table">
@@ -255,17 +285,17 @@ const hasStories = all.length > 0;
           </div>
           <div class="tdg-box">
             <h4 class="tdg-boxtitle">Results at a Glance</h4>
-            <p class="tdg-results-event">Open · Round 4</p>
+            <p class="tdg-results-event">Open · Round 5</p>
             <ul class="tdg-results">
-              <li><span>Gukesh – Carlsen</span><span>0–3</span></li>
-              <li><span>So – Firouzja</span><span>1½–1</span></li>
-              <li><span>Keymer – Praggnanandhaa</span><span>1–1½</span></li>
+              <li><span>Carlsen – So</span><span>0–1</span></li>
+              <li><span>Praggnanandhaa – Gukesh</span><span>0–1</span></li>
+              <li><span>Firouzja – Keymer</span><span>1½–1</span></li>
             </ul>
-            <p class="tdg-results-event">Women · Round 4</p>
+            <p class="tdg-results-event">Women · Round 5</p>
             <ul class="tdg-results">
-              <li><span>Assaubayeva – Ju Wenjun</span><span>1½–1</span></li>
-              <li><span>Koneru – Zhu Jiner</span><span>1–1½</span></li>
-              <li><span>Deshmukh – Muzychuk</span><span>1–1½</span></li>
+              <li><span>Zhu Jiner – Deshmukh</span><span>0–1</span></li>
+              <li><span>Muzychuk – Assaubayeva</span><span>1½–1</span></li>
+              <li><span>Ju Wenjun – Koneru</span><span>1–1½</span></li>
             </ul>
             <p class="tdg-boxnote">Norway Chess 2026. Drawn classical games are decided by an Armageddon tiebreak, so a player can score 1½–1 without winning the main game — see the explainer below.</p>
           </div>

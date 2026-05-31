@@ -48,6 +48,8 @@ const daily = defineCollection({
     pgnLabel: z.string().optional(),
     // Optional standings table: a heading plus rows of { player, score }.
     standingsTitle: z.string().optional(),
+    resultsTitle: z.string().optional(),
+    results: z.array(z.object({ white: z.string(), black: z.string(), score: z.string(), note: z.string().optional() })).optional(),
     standings: z.array(z.object({ player: z.string(), score: z.string() })).optional(),
   }),
 });

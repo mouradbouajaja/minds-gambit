@@ -4,6 +4,7 @@ import { getCollection } from 'astro:content';
 
 const today = new Date();
 const dateLine = today.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+import ChessBoard from '../components/daily/ChessBoard.astro';
 
 // Quote of the Day: one chess quote per weekday (0 = Sunday ... 6 = Saturday).
 const QUOTES = [
@@ -89,73 +90,8 @@ const hasStories = all.length > 0;
         <aside class="tdg-rail">
           <div class="tdg-box">
             <h4 class="tdg-boxtitle">Puzzle of the Day</h4>
-            <div class="tdg-board" role="img" aria-label="Chess puzzle position, White to move and mate in two">
-              <div class="tdg-sq tdg-lt"></div>
-              <div class="tdg-sq tdg-dk"></div>
-              <div class="tdg-sq tdg-lt"></div>
-              <div class="tdg-sq tdg-dk"></div>
-              <div class="tdg-sq tdg-lt"></div>
-              <div class="tdg-sq tdg-dk"></div>
-              <div class="tdg-sq tdg-lt"></div>
-              <div class="tdg-sq tdg-dk"><span class="tdg-pc tdg-bp">♚</span></div>
-              <div class="tdg-sq tdg-dk"></div>
-              <div class="tdg-sq tdg-lt"><span class="tdg-pc tdg-bp">♟</span></div>
-              <div class="tdg-sq tdg-dk"></div>
-              <div class="tdg-sq tdg-lt"></div>
-              <div class="tdg-sq tdg-dk"><span class="tdg-pc tdg-bp">♝</span></div>
-              <div class="tdg-sq tdg-lt"></div>
-              <div class="tdg-sq tdg-dk"><span class="tdg-pc tdg-bp">♟</span></div>
-              <div class="tdg-sq tdg-lt"></div>
-              <div class="tdg-sq tdg-lt"></div>
-              <div class="tdg-sq tdg-dk"></div>
-              <div class="tdg-sq tdg-lt"></div>
-              <div class="tdg-sq tdg-dk"></div>
-              <div class="tdg-sq tdg-lt"><span class="tdg-pc tdg-wp">♟</span></div>
-              <div class="tdg-sq tdg-dk"></div>
-              <div class="tdg-sq tdg-lt"><span class="tdg-pc tdg-wp">♟</span></div>
-              <div class="tdg-sq tdg-dk"><span class="tdg-pc tdg-bp">♟</span></div>
-              <div class="tdg-sq tdg-dk"></div>
-              <div class="tdg-sq tdg-lt"></div>
-              <div class="tdg-sq tdg-dk"></div>
-              <div class="tdg-sq tdg-lt"><span class="tdg-pc tdg-wp">♞</span></div>
-              <div class="tdg-sq tdg-dk"></div>
-              <div class="tdg-sq tdg-lt"></div>
-              <div class="tdg-sq tdg-dk"></div>
-              <div class="tdg-sq tdg-lt"><span class="tdg-pc tdg-wp">♟</span></div>
-              <div class="tdg-sq tdg-lt"></div>
-              <div class="tdg-sq tdg-dk"></div>
-              <div class="tdg-sq tdg-lt"></div>
-              <div class="tdg-sq tdg-dk"><span class="tdg-pc tdg-wp">♟</span></div>
-              <div class="tdg-sq tdg-lt"></div>
-              <div class="tdg-sq tdg-dk"></div>
-              <div class="tdg-sq tdg-lt"></div>
-              <div class="tdg-sq tdg-dk"></div>
-              <div class="tdg-sq tdg-dk"><span class="tdg-pc tdg-bp">♟</span></div>
-              <div class="tdg-sq tdg-lt"><span class="tdg-pc tdg-wp">♟</span></div>
-              <div class="tdg-sq tdg-dk"></div>
-              <div class="tdg-sq tdg-lt"></div>
-              <div class="tdg-sq tdg-dk"></div>
-              <div class="tdg-sq tdg-lt"></div>
-              <div class="tdg-sq tdg-dk"></div>
-              <div class="tdg-sq tdg-lt"></div>
-              <div class="tdg-sq tdg-lt"><span class="tdg-pc tdg-wp">♟</span></div>
-              <div class="tdg-sq tdg-dk"></div>
-              <div class="tdg-sq tdg-lt"></div>
-              <div class="tdg-sq tdg-dk"></div>
-              <div class="tdg-sq tdg-lt"></div>
-              <div class="tdg-sq tdg-dk"></div>
-              <div class="tdg-sq tdg-lt"></div>
-              <div class="tdg-sq tdg-dk"><span class="tdg-pc tdg-bp">♛</span></div>
-              <div class="tdg-sq tdg-dk"></div>
-              <div class="tdg-sq tdg-lt"><span class="tdg-pc tdg-wp">♚</span></div>
-              <div class="tdg-sq tdg-dk"><span class="tdg-pc tdg-wp">♜</span></div>
-              <div class="tdg-sq tdg-lt"></div>
-              <div class="tdg-sq tdg-dk"></div>
-              <div class="tdg-sq tdg-lt"></div>
-              <div class="tdg-sq tdg-dk"></div>
-              <div class="tdg-sq tdg-lt"></div>
-            </div>
-            <p class="tdg-boxtext"><strong>White to move, mate in 2.</strong> A fresh tactic to sharpen your eye before your coffee gets cold.</p>
+                <ChessBoard fen="7k/1p2b1p1/4P1Pp/8/8/2N5/PP3P2/4qK1R w" caption="Today's position — White to move." />
+                    <p class="tdg-boxtext"><strong>White to move, mate in 2.</strong> A fresh tactic to sharpen your eye before your coffee gets cold.</p>
             <details class="tdg-solution">
               <summary>Show solution</summary>
               <p class="tdg-soltext">1. Rc8+ Bd8 (or 1… Bf8) 2. Rxd8# (2. Rxf8#) — the rook check forces the bishop to block on the back rank, and capturing it delivers mate with the black king boxed in by its own pawns.</p>
@@ -307,7 +243,7 @@ const hasStories = all.length > 0;
               </article>
             </>
           )}
-          <div class="tdg-rule"></div><article class="tdg-story"><p class="tdg-kicker">Opening Spotlight</p><h3 class="tdg-storyhead">The Sicilian Defence</h3><p class="tdg-body">Begun with 1.e4 c5, the Sicilian is the most popular and most analysed reply to White&rsquo;s king-pawn opening, favoured at every level from club play to the World Championship. Instead of mirroring White symmetrically, Black strikes at the centre from the side, accepting an unbalanced position in return for active, fighting chances. The resulting positions are sharp and double-edged, which is exactly why ambitious players reach for it when they need to win with the black pieces.</p><p class="tdg-body">Its many branches &mdash; the Najdorf, the Dragon, the Scheveningen, the Sveshnikov, and the Taimanov among them &mdash; each carry their own deep body of theory and their own devotees. Bobby Fischer and Garry Kasparov both leaned on the Najdorf in their title runs, and the opening remains a proving ground where preparation and nerve are tested in equal measure.</p></article>
+          <div class="tdg-rule"></div><article class="tdg-story"><p class="tdg-kicker">Opening Spotlight</p><h3 class="tdg-storyhead">The Sicilian Defence</h3><p class="tdg-body">Begun with 1.e4 c5, the Sicilian is the most popular and most analysed reply to White&rsquo;s king-pawn opening, favoured at every level from club play to the World Championship. Instead of mirroring White symmetrically, Black strikes at the centre from the side, accepting an unbalanced position in return for active, fighting chances. The resulting positions are sharp and double-edged, which is exactly why ambitious players reach for it when they need to win with the black pieces.</p><p class="tdg-body">Its many branches &mdash; the Najdorf, the Dragon, the Scheveningen, the Sveshnikov, and the Taimanov among them &mdash; each carry their own deep body of theory and their own devotees. Bobby Fischer and Garry Kasparov both leaned on the Najdorf in their title runs, and the opening remains a proving ground where preparation and nerve
         </section>
 
 

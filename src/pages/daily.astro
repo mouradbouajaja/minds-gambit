@@ -5,6 +5,18 @@ import { getCollection } from 'astro:content';
 const today = new Date();
 const dateLine = today.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
+// Quote of the Day: one chess quote per weekday (0 = Sunday ... 6 = Saturday).
+const QUOTES = [
+  { text: '"All that matters on the chessboard is good moves."', author: '— Bobby Fischer' },
+  { text: '"There are two types of sacrifices: correct ones and mine."', author: '— Mikhail Tal' },
+  { text: '"A good player is always lucky."', author: '— Jose Raul Capablanca' },
+  { text: '"The blunders are all there on the board, waiting to be made."', author: '— Savielly Tartakower' },
+  { text: '"Chess is the art which expresses the science of logic."', author: '— Mikhail Botvinnik' },
+  { text: "\"You need to be focused on the most important things, and let go of the things that you can't control.\"", author: '— Magnus Carlsen' },
+  { text: '"When you see a good move, look for a better one."', author: '— Emanuel Lasker' },
+];
+const todaysQuote = QUOTES[today.getDay()];
+
 // Pull all published Daily Gambit stories, newest first.
 const all = (await getCollection('daily', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
@@ -263,8 +275,8 @@ const hasStories = all.length > 0;
             <p class="tdg-cta"><a href="/chess-school/learn-to-play">Want to learn how to play? →</a></p>
           </div>
           <div class="tdg-box tdg-quotebox">
-            <p class="tdg-quote">"Chess is the art which expresses the science of logic."</p>
-            <p class="tdg-quoteattr">— Mikhail Botvinnik (Soviet World Champion 1948-63 and founder of the great Soviet chess school.)</p>
+            <p class="tdg-quote">{todaysQuote.text}</p>
+            <p class="tdg-quoteattr">{todaysQuote.author}</p>
           </div>
         </aside>
 

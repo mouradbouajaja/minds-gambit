@@ -3,8 +3,140 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const BUNNY = 'https://mindsgambitgames.b-cdn.net';
 
-// Curated player list — direct downloads. Files hosted from pgnmentor.com snapshot.
-// Filename = LastName.pgn (case-sensitive on the CDN).
+// Fetch the ECO + historical manifests at BUILD TIME (server-side, no CORS).
+type EcoEntry = { name?: string; gameCount?: number; games?: number; fileSize?: number; sizeKB?: number };
+type EcoManifest = { totalGames?: number; ecos?: Record<string, EcoEntry> };
+
+async function safeFetchJson(url: string): Promise<EcoManifest | null> {
+  try {
+    const r = await fetch(url);
+    if (!r.ok) return null;
+    return await r.json() as EcoManifest;
+  } catch {
+    return null;
+  }
+}
+
+const ecoManifest = (await safeFetchJson(`${BUNNY}/eco/eco-index.json`)) || { ecos: {} };
+const histManifest = (await safeFetchJson(`${BUNNY}/historical/eco-index.json`)) || { ecos: {} };
+
+type NormEntry = { code: string; name: string; games: number; bytes: number };
+
+const ecoEntries: NormEntry[] = Object.entries(ecoManifest.ecos || {})
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([code, e]) => ({
+    code, name: e.name || '',
+    games: e.gameCount || 0,
+    bytes: e.fileSize || 0,
+  }));
+
+const histEntries: NormEntry[] = Object.entries(histManifest.ecos || {})
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([code, e]) => ({
+    code, name: e.name || '',
+    games: e.games || 0,
+    bytes: (e.sizeKB || 0) * 1024,
+  }));
+
+const totalEcoGames = ecoManifest.totalGames || ecoEntries.reduce((s, e) => s + e.games, 0);
+const totalHistGames = histManifest.totalGames || histEntries.reduce((s, e) => s + e.games, 0);
+
+// Map: code -> NormEntry (modern) for quick lookup when rendering the tree.
+const ecoByCode = new Map<string, NormEntry>(ecoEntries.map((e) => [e.code, e]));
+
+// Generate a range of ECO codes like ['A00', 'A01', ... 'A09']
+function ecoRange(start: string, end: string): string[] {
+  const out: string[] = [];
+  const letter = start[0];
+  const sn = parseInt(start.slice(1));
+  const en = parseInt(end.slice(1));
+  for (let n = sn; n <= en; n++) out.push(letter + String(n).padStart(2, '0'));
+  return out;
+}
+
+// Hierarchical tree of opening families, the way most coaches and chess books
+// organize them. Each node has either a `codes` array (leaf) OR `children` (branch).
+type TreeNode = { label: string; help?: string; codes?: string[]; children?: TreeNode[] };
+
+const ecoTree: TreeNode[] = [
+  {
+    label: 'Flank Openings &mdash; White does not push a center pawn two squares',
+    help: 'Games that begin with a quiet first move like 1.c4 (the English) or 1.b3, 1.Nf3, 1.g3.',
+    children: [
+      { label: 'Irregular Openings (1.b3, 1.b4, 1.f4, 1.Nc3, etc.)', codes: ecoRange('A00', 'A09') },
+      { label: 'The English Opening (1.c4) &mdash; classical lines', codes: ecoRange('A10', 'A19') },
+      { label: 'The English Opening &mdash; with 1...e5', codes: ecoRange('A20', 'A29') },
+      { label: 'The English Opening &mdash; symmetrical', codes: ecoRange('A30', 'A39') },
+    ],
+  },
+  {
+    label: 'Replies to 1.d4 without an early ...d5',
+    help: 'Black answers 1.d4 with knights and pieces rather than ...d5. Includes the Indian families and the Dutch.',
+    children: [
+      { label: 'Old Benoni, Modern Defenses, atypical Black setups', codes: ecoRange('A40', 'A49') },
+      { label: 'Old Indian, Benoni, Benko Gambit', codes: ecoRange('A50', 'A79') },
+      { label: 'Dutch Defense (1.d4 f5)', codes: ecoRange('A80', 'A99') },
+    ],
+  },
+  {
+    label: 'Semi-Open Games &mdash; 1.e4 with Black NOT replying 1...e5',
+    help: 'When White plays 1.e4 and Black answers with anything except a pawn to e5 (so: 1...c5, 1...e6, 1...c6, 1...d6, etc.).',
+    children: [
+      { label: 'Owen, Pirc, Modern, Robatsch (1.e4 various)', codes: ecoRange('B00', 'B09') },
+      { label: 'Caro-Kann Defense (1.e4 c6)', codes: ecoRange('B10', 'B19') },
+      { label: 'Sicilian Defense (1.e4 c5)', codes: ecoRange('B20', 'B99') },
+    ],
+  },
+  {
+    label: 'French Defense (1.e4 e6)',
+    help: 'Black answers 1.e4 with 1...e6, planning ...d5 next move.',
+    codes: ecoRange('C00', 'C19'),
+  },
+  {
+    label: 'Open Games &mdash; 1.e4 e5',
+    help: 'The oldest and most classical battlefield in chess: both sides advance a center pawn two squares with the first move.',
+    children: [
+      { label: 'King\'s Pawn miscellaneous lines', codes: ecoRange('C20', 'C29') },
+      { label: 'King\'s Gambit (1.e4 e5 2.f4)', codes: ecoRange('C30', 'C39') },
+      { label: 'Russian Game / Petroff Defense', codes: ecoRange('C40', 'C49') },
+      { label: 'Italian Game, Two Knights, Scotch', codes: ecoRange('C50', 'C59') },
+      { label: 'Ruy L&oacute;pez (Spanish Opening)', codes: ecoRange('C60', 'C99') },
+    ],
+  },
+  {
+    label: 'Closed Games (1.d4 d5)',
+    help: 'Both sides push the queen\'s pawn two squares. The Queen\'s Gambit, the Slav, the Tarrasch, and many more.',
+    codes: ecoRange('D00', 'D69'),
+  },
+  {
+    label: 'Gr&uuml;nfeld Defense (1.d4 Nf6 with an early ...d5)',
+    help: 'Black lets White build a big center, then strikes it down with pieces. A favorite of fighting players.',
+    codes: ecoRange('D70', 'D99'),
+  },
+  {
+    label: 'Indian Defenses (1.d4 Nf6 without ...d5)',
+    help: 'Black develops knights and bishops first, fighting for the center from a distance. Includes the Nimzo-Indian, King\'s Indian, Queen\'s Indian, and Catalan.',
+    children: [
+      { label: 'Catalan (1.d4 Nf6 2.c4 e6 3.g3)', codes: ecoRange('E00', 'E09') },
+      { label: 'Queen\'s Indian Defense', codes: ecoRange('E10', 'E19') },
+      { label: 'Nimzo-Indian Defense', codes: ecoRange('E20', 'E59') },
+      { label: 'King\'s Indian Defense', codes: ecoRange('E60', 'E99') },
+    ],
+  },
+];
+
+function bytesToHuman(n: number): string {
+  if (!n || n < 1024) return (n || 0) + ' B';
+  if (n < 1024 * 1024) return (n / 1024).toFixed(1) + ' KB';
+  if (n < 1024 * 1024 * 1024) return (n / 1024 / 1024).toFixed(1) + ' MB';
+  return (n / 1024 / 1024 / 1024).toFixed(2) + ' GB';
+}
+
+function fmtCount(n: number): string {
+  return new Intl.NumberFormat('en-US').format(n || 0);
+}
+
+// Curated player collections — all hosted on Bunny CDN at /players/<file>.pgn.
 const playersModern = [
   { name: 'Magnus Carlsen', file: 'Carlsen' },
   { name: 'Hikaru Nakamura', file: 'Nakamura' },
@@ -48,7 +180,7 @@ const playersClassical = [
 ];
 ---
 
-<BaseLayout title="Games Database | Mind's Gambit" description="Browse and download 14.8 million chess games — TWIC (2012-present), Lumbra Gigabase (1485-2026), and player collections. Free, free to download, hosted on the Mind's Gambit network.">
+<BaseLayout title="Our Games Library | Mind's Gambit" description="Play through 14.8 million chess games on the board, right here. Modern tournaments, historical masters, and every great player from Morphy to Carlsen. Free, on the Mind's Gambit network, no downloads required.">
 
 <style>
 :root {
@@ -61,464 +193,379 @@ const playersClassical = [
   --text-2: rgba(232, 224, 208, 0.7);
   --text-3: rgba(232, 224, 208, 0.45);
   --border: rgba(201, 168, 76, 0.2);
+  --light-sq: #f5ead6;
+  --dark-sq: #c9a87a;
+  --board-border: #2a2a35;
 }
 
-.games-page {
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  padding: 4rem 1.5rem 6rem;
-  font-family: 'Inter', system-ui, sans-serif;
-}
+.games-page { background: var(--bg); color: var(--text); min-height: 100vh; padding: 4rem 1.5rem 6rem; font-family: 'Inter', system-ui, sans-serif; }
+.games-inner { max-width: 1200px; margin: 0 auto; }
+.games-hero { text-align: center; margin-bottom: 3rem; }
+.games-eyebrow { display: inline-block; color: var(--gold); font-family: 'Playfair Display', Georgia, serif; font-size: 0.8rem; letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 0.6rem; }
+.games-title { font-family: 'Playfair Display', Georgia, serif; font-size: 3rem; margin: 0 0 0.7rem; color: var(--text); }
+.games-sub { color: var(--text-2); font-size: 1.05rem; max-width: 720px; margin: 0 auto; line-height: 1.6; }
+.games-stats { display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap; margin: 2rem 0 0; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+.games-stat { text-align: center; }
+.games-stat-num { font-family: 'Playfair Display', Georgia, serif; font-size: 1.8rem; color: var(--gold); display: block; }
+.games-stat-label { font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); margin-top: 0.2rem; display: block; }
 
-.games-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-}
+.tab-bar { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+.tab-btn { background: var(--bg-2); border: 1px solid var(--border); color: var(--text-2); padding: 0.7rem 1.4rem; border-radius: 999px; font-size: 0.9rem; font-family: inherit; cursor: pointer; transition: all 0.2s; letter-spacing: 0.04em; }
+.tab-btn:hover { border-color: var(--gold-dim); color: var(--text); }
+.tab-btn.active { background: var(--gold); border-color: var(--gold); color: var(--bg); font-weight: 600; }
 
-.games-hero {
-  text-align: center;
-  margin-bottom: 3rem;
-}
-
-.games-eyebrow {
-  display: inline-block;
-  color: var(--gold);
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 0.8rem;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  margin-bottom: 0.6rem;
-}
-
-.games-title {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 3rem;
-  margin: 0 0 0.7rem;
-  color: var(--text);
-}
-
-.games-sub {
-  color: var(--text-2);
-  font-size: 1.05rem;
-  max-width: 720px;
-  margin: 0 auto;
-  line-height: 1.6;
-}
-
-.games-stats {
-  display: flex;
-  justify-content: center;
-  gap: 2.5rem;
-  flex-wrap: wrap;
-  margin: 2rem 0 0;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--border);
-}
-
-.games-stat {
-  text-align: center;
-}
-
-.games-stat-num {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 1.8rem;
-  color: var(--gold);
-  display: block;
-}
-
-.games-stat-label {
-  font-size: 0.78rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-3);
-  margin-top: 0.2rem;
-  display: block;
-}
-
-/* Tabs */
-.tab-bar {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-bottom: 2rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid var(--border);
-}
-
-.tab-btn {
-  background: var(--bg-2);
-  border: 1px solid var(--border);
-  color: var(--text-2);
-  padding: 0.7rem 1.4rem;
-  border-radius: 999px;
-  font-size: 0.9rem;
-  font-family: inherit;
-  cursor: pointer;
-  transition: all 0.2s;
-  letter-spacing: 0.04em;
-}
-
-.tab-btn:hover {
-  border-color: var(--gold-dim);
-  color: var(--text);
-}
-
-.tab-btn.active {
-  background: var(--gold);
-  border-color: var(--gold);
-  color: var(--bg);
-  font-weight: 600;
-}
-
-/* Tab panel */
-.tab-panel {
-  display: none;
-}
-
-.tab-panel.active {
-  display: block;
-}
-
-.panel-intro {
-  background: var(--bg-2);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 1.5rem 1.8rem;
-  margin-bottom: 1.5rem;
-  font-size: 0.95rem;
-  color: var(--text-2);
-  line-height: 1.6;
-}
-
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+.panel-intro { background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem 1.8rem; margin-bottom: 1.5rem; font-size: 0.95rem; color: var(--text-2); line-height: 1.6; }
 .panel-intro strong { color: var(--text); }
 
-/* Search */
-.search-row {
-  display: flex;
-  gap: 0.8rem;
-  margin-bottom: 1.5rem;
-  flex-wrap: wrap;
-}
+.search-row { display: flex; gap: 0.8rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.search-input { flex: 1; min-width: 220px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 10px; padding: 0.8rem 1rem; color: var(--text); font-family: inherit; font-size: 0.95rem; }
+.search-input:focus { outline: none; border-color: var(--gold); }
+.search-info { align-self: center; font-size: 0.85rem; color: var(--text-3); }
 
-.search-input {
-  flex: 1;
-  min-width: 220px;
-  background: var(--bg-2);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 0.8rem 1rem;
-  color: var(--text);
-  font-family: inherit;
-  font-size: 0.95rem;
-}
+.games-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.9rem; }
+.game-card { background: var(--bg-2); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.1rem; transition: all 0.2s; display: flex; flex-direction: column; gap: 0.6rem; cursor: pointer; }
+.game-card:hover { border-color: var(--gold); background: var(--bg-3); transform: translateY(-2px); }
+.game-card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 0.8rem; }
+.game-card-code { font-family: 'Playfair Display', Georgia, serif; font-size: 1.15rem; color: var(--gold); font-weight: 600; }
+.game-card-size { font-size: 0.75rem; color: var(--text-3); font-variant-numeric: tabular-nums; }
+.game-card-name { font-size: 0.95rem; color: var(--text); line-height: 1.35; }
+.game-card-stats { font-size: 0.78rem; color: var(--text-3); font-variant-numeric: tabular-nums; letter-spacing: 0.03em; }
+.game-card-cta { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; margin-top: 0.4rem; padding: 0.5rem 0.9rem; background: transparent; border: 1px solid var(--gold-dim); color: var(--gold); text-decoration: none; border-radius: 8px; font-size: 0.85rem; font-family: inherit; letter-spacing: 0.03em; pointer-events: none; }
+.game-card:hover .game-card-cta { background: var(--gold); color: var(--bg); border-color: var(--gold); }
 
-.search-input:focus {
-  outline: none;
-  border-color: var(--gold);
-}
+.empty, .loading { text-align: center; padding: 3rem 1rem; color: var(--text-3); font-style: italic; }
+.loading::after { content: ""; display: inline-block; width: 16px; height: 16px; margin-left: 0.6rem; border: 2px solid var(--gold-dim); border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; vertical-align: middle; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
-.search-info {
-  align-self: center;
-  font-size: 0.85rem;
-  color: var(--text-3);
-}
-
-/* Grid of cards */
-.games-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 0.9rem;
-}
-
-.game-card {
-  background: var(--bg-2);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 1rem 1.1rem;
-  transition: all 0.2s;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-
-.game-card:hover {
-  border-color: var(--gold-dim);
-  background: var(--bg-3);
-  transform: translateY(-2px);
-}
-
-.game-card-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.8rem;
-}
-
-.game-card-code {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 1.15rem;
-  color: var(--gold);
-  font-weight: 600;
-}
-
-.game-card-size {
-  font-size: 0.75rem;
-  color: var(--text-3);
-  font-variant-numeric: tabular-nums;
-}
-
-.game-card-name {
-  font-size: 0.95rem;
-  color: var(--text);
-  line-height: 1.35;
-}
-
-.game-card-stats {
-  font-size: 0.78rem;
-  color: var(--text-3);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.03em;
-}
-
-.game-card-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  margin-top: 0.4rem;
-  padding: 0.5rem 0.9rem;
-  background: transparent;
-  border: 1px solid var(--gold-dim);
-  color: var(--gold);
-  text-decoration: none;
-  border-radius: 8px;
-  font-size: 0.85rem;
-  font-family: inherit;
-  letter-spacing: 0.03em;
-  transition: all 0.2s;
-}
-
-.game-card-btn:hover {
-  background: var(--gold);
-  color: var(--bg);
-  border-color: var(--gold);
-}
-
-/* Loading + empty */
-.loading,
-.empty {
-  text-align: center;
-  padding: 3rem 1rem;
-  color: var(--text-3);
-  font-style: italic;
-}
-
-.loading::after {
-  content: "";
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  margin-left: 0.6rem;
-  border: 2px solid var(--gold-dim);
-  border-top-color: transparent;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  vertical-align: middle;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* Placeholder panels */
-.placeholder-card {
-  background: var(--bg-2);
-  border: 1px dashed var(--border);
-  border-radius: 12px;
-  padding: 3rem 2rem;
-  text-align: center;
-  color: var(--text-2);
-  max-width: 720px;
-  margin: 2rem auto;
-}
-
-.placeholder-card h3 {
-  font-family: 'Playfair Display', Georgia, serif;
-  color: var(--gold);
-  font-size: 1.4rem;
-  margin: 0 0 0.7rem;
-}
-
+.placeholder-card { background: var(--bg-2); border: 1px dashed var(--border); border-radius: 12px; padding: 3rem 2rem; text-align: center; color: var(--text-2); max-width: 720px; margin: 2rem auto; }
+.placeholder-card h3 { font-family: 'Playfair Display', Georgia, serif; color: var(--gold); font-size: 1.4rem; margin: 0 0 0.7rem; }
 .placeholder-card p { line-height: 1.6; margin: 0 0 0.5rem; }
+.placeholder-card .meta { font-size: 0.85rem; color: var(--text-3); margin-top: 1rem; }
 
-.placeholder-card .meta {
-  font-size: 0.85rem;
-  color: var(--text-3);
-  margin-top: 1rem;
-}
+.footnote { margin: 3rem auto 0; max-width: 900px; font-size: 0.85rem; color: var(--text-3); text-align: center; line-height: 1.6; }
 
-.footnote {
-  margin: 3rem auto 0;
-  max-width: 900px;
-  font-size: 0.85rem;
-  color: var(--text-3);
-  text-align: center;
-  line-height: 1.6;
-}
+/* ===== Opening Tree (ChessBase-style hierarchy) ===== */
+.tree-section { margin: 0 0 2.5rem; background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+.tree-section > summary { padding: 1.1rem 1.5rem; cursor: pointer; font-family: 'Playfair Display', Georgia, serif; color: var(--gold); font-size: 1.15rem; list-style: none; display: flex; align-items: center; justify-content: space-between; user-select: none; }
+.tree-section > summary::-webkit-details-marker { display: none; }
+.tree-section > summary::after { content: "\25BE"; color: var(--gold-dim); transition: transform 0.2s; font-size: 0.9rem; }
+.tree-section[open] > summary::after { transform: rotate(180deg); }
+.tree-section > summary:hover { background: var(--bg-3); }
+.tree-body { padding: 0 1.5rem 1.5rem; }
+.tree-intro { font-size: 0.92rem; color: var(--text-2); margin: 0 0 1.2rem; line-height: 1.6; padding: 0.9rem 1.1rem; background: var(--bg); border-left: 3px solid var(--gold-dim); border-radius: 6px; }
+.tree-intro strong { color: var(--text); }
 
-@media (max-width: 768px) {
-  .games-title { font-size: 2.1rem; }
-  .games-stats { gap: 1.5rem; }
+.tree-node { border-left: 2px solid rgba(201, 168, 76, 0.15); margin-left: 0.5rem; padding-left: 0.9rem; margin-bottom: 0.45rem; }
+.tree-node > summary { padding: 0.55rem 0.7rem; cursor: pointer; font-size: 0.96rem; color: var(--text); list-style: none; user-select: none; border-radius: 6px; transition: background 0.15s; display: flex; align-items: center; gap: 0.5rem; }
+.tree-node > summary::-webkit-details-marker { display: none; }
+.tree-node > summary::before { content: "\25B8"; color: var(--gold-dim); font-size: 0.75rem; transition: transform 0.2s; flex-shrink: 0; }
+.tree-node[open] > summary::before { transform: rotate(90deg); }
+.tree-node > summary:hover { background: var(--bg-3); }
+.tree-help { font-size: 0.82rem; color: var(--text-3); font-style: italic; padding: 0.2rem 0.7rem 0.8rem 1.9rem; line-height: 1.5; }
+
+.tree-subnode { border-left: 2px solid rgba(201, 168, 76, 0.1); margin-left: 0.7rem; padding-left: 0.8rem; margin: 0.3rem 0; }
+.tree-subnode > summary { padding: 0.45rem 0.7rem; cursor: pointer; font-size: 0.88rem; color: var(--text-2); list-style: none; user-select: none; border-radius: 6px; transition: background 0.15s; display: flex; align-items: center; gap: 0.5rem; }
+.tree-subnode > summary::-webkit-details-marker { display: none; }
+.tree-subnode > summary::before { content: "\25B8"; color: rgba(201, 168, 76, 0.45); font-size: 0.7rem; transition: transform 0.2s; flex-shrink: 0; }
+.tree-subnode[open] > summary::before { transform: rotate(90deg); }
+.tree-subnode > summary:hover { background: var(--bg-3); color: var(--text); }
+
+.tree-leaves { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.3rem; padding: 0.4rem 0 0.7rem 0.5rem; }
+.tree-leaf { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 0.45rem 0.7rem; cursor: pointer; display: flex; align-items: center; gap: 0.6rem; transition: all 0.15s; font-size: 0.82rem; }
+.tree-leaf:hover { border-color: var(--gold); background: var(--bg-3); }
+.tree-leaf-code { font-family: 'Playfair Display', Georgia, serif; color: var(--gold); font-weight: 600; flex-shrink: 0; min-width: 38px; }
+.tree-leaf-name { color: var(--text); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.8rem; }
+.tree-leaf-count { color: var(--text-3); font-size: 0.72rem; font-variant-numeric: tabular-nums; flex-shrink: 0; }
+
+/* ===== Viewer Modal ===== */
+.viewer-overlay { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.92); padding: 1.5rem; overflow-y: auto; }
+.viewer-overlay.active { display: flex; align-items: center; justify-content: center; }
+.viewer-modal { background: var(--bg-2); border: 1px solid var(--border); border-radius: 14px; width: 100%; max-width: 1280px; max-height: 92vh; display: grid; grid-template-columns: 280px 1fr 320px; grid-template-rows: auto 1fr; gap: 0; overflow: hidden; }
+.viewer-header { grid-column: 1 / 4; display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); background: var(--bg-3); }
+.viewer-title { font-family: 'Playfair Display', Georgia, serif; font-size: 1.2rem; color: var(--gold); margin: 0; }
+.viewer-sub { font-size: 0.8rem; color: var(--text-3); margin-top: 0.15rem; }
+.viewer-close { background: rgba(255,255,255,0.08); border: none; color: white; width: 38px; height: 38px; border-radius: 50%; font-size: 1.3rem; cursor: pointer; transition: background 0.2s; }
+.viewer-close:hover { background: rgba(255,255,255,0.18); }
+
+.viewer-gamelist { border-right: 1px solid var(--border); overflow-y: auto; max-height: 75vh; padding: 0.5rem; }
+.viewer-gamelist h4 { font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); margin: 0.5rem 0.7rem 0.6rem; }
+.viewer-gameitem { padding: 0.7rem 0.8rem; border-radius: 8px; cursor: pointer; border: 1px solid transparent; margin-bottom: 0.3rem; transition: background 0.15s, border-color 0.15s; }
+.viewer-gameitem:hover { background: var(--bg-3); }
+.viewer-gameitem.active { background: var(--bg-3); border-color: var(--gold-dim); }
+.viewer-gameitem-players { font-size: 0.88rem; color: var(--text); line-height: 1.3; }
+.viewer-gameitem-meta { font-size: 0.72rem; color: var(--text-3); margin-top: 0.2rem; display: flex; gap: 0.6rem; flex-wrap: wrap; }
+.viewer-gameitem-result { color: var(--gold); font-weight: 600; }
+
+.viewer-board { padding: 1.5rem; display: flex; align-items: flex-start; justify-content: center; background: var(--bg); }
+.board-wrap { width: 100%; max-width: 500px; }
+.board-svg { width: 100%; height: auto; display: block; border: 2px solid var(--board-border); border-radius: 4px; }
+.board-controls { display: flex; gap: 0.4rem; justify-content: center; margin-top: 0.9rem; }
+.board-btn { background: var(--bg-2); border: 1px solid var(--border); color: var(--text); padding: 0.5rem 0.9rem; border-radius: 8px; font-family: inherit; font-size: 0.9rem; cursor: pointer; transition: all 0.15s; min-width: 56px; }
+.board-btn:hover:not(:disabled) { border-color: var(--gold); background: var(--bg-3); }
+.board-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.board-position { text-align: center; margin-top: 0.6rem; font-size: 0.85rem; color: var(--text-3); font-variant-numeric: tabular-nums; }
+
+.viewer-side { border-left: 1px solid var(--border); padding: 1.2rem; overflow-y: auto; max-height: 75vh; display: flex; flex-direction: column; gap: 1rem; }
+.game-headers { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.1rem; }
+.game-headers-title { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); margin: 0 0 0.5rem; }
+.game-headers dl { display: grid; grid-template-columns: auto 1fr; gap: 0.3rem 0.8rem; margin: 0; font-size: 0.84rem; }
+.game-headers dt { color: var(--text-3); }
+.game-headers dd { color: var(--text); margin: 0; word-break: break-word; }
+
+.movelist-wrap { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 0.9rem 1rem; min-height: 0; flex: 1; display: flex; flex-direction: column; }
+.movelist-wrap h5 { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); margin: 0 0 0.6rem; }
+.movelist { flex: 1; overflow-y: auto; font-family: 'JetBrains Mono', 'Menlo', monospace; font-size: 0.85rem; line-height: 1.55; color: var(--text); }
+.move-num { color: var(--text-3); margin-right: 0.35rem; }
+.move-san { display: inline-block; padding: 0 0.3rem; border-radius: 3px; cursor: pointer; transition: background 0.1s; }
+.move-san:hover { background: var(--bg-3); }
+.move-san.current { background: var(--gold); color: var(--bg); font-weight: 600; }
+
+.viewer-empty { text-align: center; color: var(--text-3); font-style: italic; padding: 3rem 1rem; }
+
+@media (max-width: 1024px) {
+  .viewer-modal { grid-template-columns: 1fr; max-height: 96vh; }
+  .viewer-gamelist { max-height: 30vh; border-right: none; border-bottom: 1px solid var(--border); }
+  .viewer-side { max-height: none; border-left: none; border-top: 1px solid var(--border); }
 }
+@media (max-width: 768px) { .games-title { font-size: 2.1rem; } .games-stats { gap: 1.5rem; } }
 </style>
 
 <div class="games-page">
   <div class="games-inner">
     <header class="games-hero">
-      <span class="games-eyebrow">Chess School &middot; Database</span>
-      <h1 class="games-title">Games Database</h1>
-      <p class="games-sub">14.8 million chess games organized for study and exploration. TWIC (2012 to present), Lumbra Gigabase (1485 to 2026), and curated collections by player and event. Free to browse, free to download.</p>
+      <span class="games-eyebrow">Chess School &middot; Library</span>
+      <h1 class="games-title">Our Games Library</h1>
+      <p class="games-sub">Almost 15 million chess games &mdash; from the oldest games ever recorded to last week's grandmaster tournaments &mdash; collected, organized, and ready to play through on the board. Pick a game, click it, and watch the moves unfold. No download, no signup, no leaving the page.</p>
       <div class="games-stats">
-        <div class="games-stat">
-          <span class="games-stat-num">14.8M</span>
-          <span class="games-stat-label">Games</span>
-        </div>
-        <div class="games-stat">
-          <span class="games-stat-num">1,228</span>
-          <span class="games-stat-label">PGN files</span>
-        </div>
-        <div class="games-stat">
-          <span class="games-stat-num">500+</span>
-          <span class="games-stat-label">ECO codes</span>
-        </div>
-        <div class="games-stat">
-          <span class="games-stat-num">540 yrs</span>
-          <span class="games-stat-label">1485&ndash;2026</span>
-        </div>
+        <div class="games-stat"><span class="games-stat-num">14.8M</span><span class="games-stat-label">Games</span></div>
+        <div class="games-stat"><span class="games-stat-num">540 yrs</span><span class="games-stat-label">Of history</span></div>
+        <div class="games-stat"><span class="games-stat-num">500+</span><span class="games-stat-label">Openings</span></div>
+        <div class="games-stat"><span class="games-stat-num">36</span><span class="games-stat-label">Great players</span></div>
       </div>
     </header>
 
+    <!-- ChessBase-style hierarchical opening tree.
+         Each leaf code is a .game-card.eco-card so it picks up the same
+         click handler as the tab grids and opens the viewer. -->
+    <details class="tree-section" open>
+      <summary>Opening Tree &mdash; how the codes group together</summary>
+      <div class="tree-body">
+        <p class="tree-intro">
+          <strong>Every chess opening lives somewhere in this tree.</strong> Long ago, the world's chess teachers carved every possible first move into a few big families &mdash; flank openings, semi-open games, open games, closed games, Indian defenses. Each family was given a letter (A through E) and a number (00 through 99). Click any branch to open it; click any code at the bottom to play through the games inside.
+        </p>
+
+        {ecoTree.map((bucket) => (
+          <details class="tree-node">
+            <summary set:html={bucket.label}></summary>
+            {bucket.help && <div class="tree-help" set:html={bucket.help}></div>}
+            {bucket.children ? (
+              bucket.children.map((sub) => (
+                <details class="tree-subnode">
+                  <summary set:html={sub.label}></summary>
+                  <div class="tree-leaves">
+                    {(sub.codes || []).map((code) => {
+                      const entry = ecoByCode.get(code);
+                      if (!entry) return null;
+                      return (
+                        <div class="tree-leaf game-card eco-card" data-search={(code + ' ' + entry.name).toLowerCase()} data-file={`eco/${code}.pgn`} data-label={`ECO ${code} — ${entry.name}`} data-bytes={entry.bytes} role="button" tabindex="0">
+                          <span class="tree-leaf-code">{code}</span>
+                          <span class="tree-leaf-name">{entry.name}</span>
+                          <span class="tree-leaf-count">{fmtCount(entry.games)}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </details>
+              ))
+            ) : (
+              <div class="tree-leaves">
+                {(bucket.codes || []).map((code) => {
+                  const entry = ecoByCode.get(code);
+                  if (!entry) return null;
+                  return (
+                    <div class="tree-leaf game-card eco-card" data-search={(code + ' ' + entry.name).toLowerCase()} data-file={`eco/${code}.pgn`} data-label={`ECO ${code} — ${entry.name}`} data-bytes={entry.bytes} role="button" tabindex="0">
+                      <span class="tree-leaf-code">{code}</span>
+                      <span class="tree-leaf-name">{entry.name}</span>
+                      <span class="tree-leaf-count">{fmtCount(entry.games)}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </details>
+        ))}
+      </div>
+    </details>
+
     <nav class="tab-bar" role="tablist">
-      <button class="tab-btn active" data-tab="eco" role="tab">By ECO Code</button>
-      <button class="tab-btn" data-tab="historical" role="tab">By Historical Era</button>
+      <button class="tab-btn active" data-tab="eco" role="tab">By Opening (Modern)</button>
+      <button class="tab-btn" data-tab="historical" role="tab">By Opening (Historical)</button>
       <button class="tab-btn" data-tab="players" role="tab">By Player</button>
-      <button class="tab-btn" data-tab="events" role="tab">By Event</button>
+      <button class="tab-btn" data-tab="events" role="tab">By Tournament</button>
       <button class="tab-btn" data-tab="openings" role="tab">By Opening Name</button>
     </nav>
 
-    <!-- ECO TAB -->
     <section class="tab-panel active" data-panel="eco">
       <div class="panel-intro">
-        <strong>The Week in Chess (TWIC)</strong> &mdash; modern tournament games from 2012 onward, organized by <strong>ECO code</strong> (the standard 5-letter classification: A00 through E99). Pick a code to download every game in that opening family.
+        <strong>Modern tournament games &mdash; the last fourteen years.</strong> Every game here was played at a serious chess tournament somewhere in the world since 2012, gathered into our library week by week.
+        <br><br>
+        They're sorted by <strong>opening code</strong>. Long ago, chess teachers grouped the thousands of ways to start a game into <strong>five families</strong>, labeled A through E, with numbers from 00 to 99 inside each family. So a Sicilian Defense (a famous Black response to 1.e4) sits in family B; the Queen's Gambit lives in family D. Pick any code below to open the door to that family of games.
       </div>
       <div class="search-row">
         <input type="text" class="search-input" id="eco-search" placeholder="Search ECO code or opening name (e.g. B90, Najdorf, Reti)..." aria-label="Search ECO" />
-        <span class="search-info" id="eco-info">Loading manifest...</span>
+        <span class="search-info">{ecoEntries.length} ECO codes &middot; {fmtCount(totalEcoGames)} games</span>
       </div>
       <div class="games-grid" id="eco-grid">
-        <div class="loading">Fetching the ECO manifest from Bunny CDN</div>
+        {ecoEntries.length === 0 ? (
+          <div class="empty">Manifest unavailable at build time. Refresh after the next deploy.</div>
+        ) : ecoEntries.map((e) => (
+          <div class="game-card eco-card" data-search={(e.code + ' ' + e.name).toLowerCase()} data-file={`eco/${e.code}.pgn`} data-label={`ECO ${e.code} — ${e.name}`} data-bytes={e.bytes} role="button" tabindex="0">
+            <div class="game-card-head">
+              <span class="game-card-code">{e.code}</span>
+              <span class="game-card-size">{bytesToHuman(e.bytes)}</span>
+            </div>
+            <div class="game-card-name">{e.name}</div>
+            <div class="game-card-stats">{fmtCount(e.games)} games</div>
+            <span class="game-card-cta">&#9654; Browse Games</span>
+          </div>
+        ))}
       </div>
     </section>
 
-    <!-- HISTORICAL TAB -->
     <section class="tab-panel" data-panel="historical">
       <div class="panel-intro">
-        <strong>Lumbra Gigabase</strong> &mdash; over the board (OTB) games from <strong>1485 through 2026</strong>, also organized by ECO code. Includes everything from Lucena and Damiano through the 19th-century masters to the modern era. About 11 million games.
+        <strong>The Long Memory &mdash; every game we have, going back five hundred and forty years.</strong> The oldest game in here was played in 1485, when Christopher Columbus hadn't yet crossed the Atlantic. The newest was played this past week. Eleven million games sit between those two moments.
+        <br><br>
+        Like the tab before, the games are grouped by the same A&ndash;E opening codes. Open any door and you'll find masters and amateurs across five centuries, all reaching for the same first move.
       </div>
       <div class="search-row">
         <input type="text" class="search-input" id="hist-search" placeholder="Search ECO code or opening name..." aria-label="Search historical ECO" />
-        <span class="search-info" id="hist-info">Loading manifest...</span>
+        <span class="search-info">{histEntries.length} ECO codes &middot; {fmtCount(totalHistGames)} games</span>
       </div>
       <div class="games-grid" id="hist-grid">
-        <div class="loading">Fetching the historical manifest from Bunny CDN</div>
+        {histEntries.length === 0 ? (
+          <div class="empty">Manifest unavailable at build time. Refresh after the next deploy.</div>
+        ) : histEntries.map((e) => (
+          <div class="game-card eco-card" data-search={(e.code + ' ' + e.name).toLowerCase()} data-file={`historical/${e.code}.pgn`} data-label={`${e.code} — ${e.name}`} data-bytes={e.bytes} role="button" tabindex="0">
+            <div class="game-card-head">
+              <span class="game-card-code">{e.code}</span>
+              <span class="game-card-size">{bytesToHuman(e.bytes)}</span>
+            </div>
+            <div class="game-card-name">{e.name}</div>
+            <div class="game-card-stats">{fmtCount(e.games)} games</div>
+            <span class="game-card-cta">&#9654; Browse Games</span>
+          </div>
+        ))}
       </div>
     </section>
 
-    <!-- PLAYERS TAB -->
     <section class="tab-panel" data-panel="players">
       <div class="panel-intro">
-        <strong>Player collections</strong> &mdash; the complete known game record for selected modern and classical masters. Each file is a single PGN containing every published game by that player, ready to load into ChessBase, SCID, or any PGN viewer.
+        <strong>Thirty-six of the greatest chess players who ever lived.</strong> Every published game by each of them, in one place. Modern champions are at the top of the page; the old masters &mdash; from Paul Morphy to Mikhail Tal &mdash; are right below.
+        <br><br>
+        Click any name to open a player's library, then click a game to watch it move by move.
       </div>
       <div class="search-row">
         <input type="text" class="search-input" id="player-search" placeholder="Search by name (e.g. Carlsen, Fischer, Polgar)..." aria-label="Search player" />
-        <span class="search-info" id="player-info">{playersModern.length + playersClassical.length} players</span>
+        <span class="search-info">{playersModern.length + playersClassical.length} players</span>
       </div>
 
-      <h3 style="font-family:'Playfair Display',Georgia,serif; color:var(--gold); margin:1.5rem 0 1rem; font-size:1.2rem; letter-spacing:0.05em;">Modern Era</h3>
-      <div class="games-grid" id="player-modern-grid">
+      <h3 style="font-family:'Playfair Display',Georgia,serif; color:var(--gold); margin:1.5rem 0 1rem; font-size:1.2rem; letter-spacing:0.05em;">Champions of Today</h3>
+      <div class="games-grid">
         {playersModern.map((p) => (
-          <div class="game-card player-card" data-name={p.name.toLowerCase()}>
+          <div class="game-card player-card" data-name={p.name.toLowerCase()} data-file={`players/${p.file}.pgn`} data-label={p.name} role="button" tabindex="0">
             <div class="game-card-head">
               <span class="game-card-code">{p.name.split(' ').map((s) => s[0]).join('')}</span>
             </div>
             <div class="game-card-name">{p.name}</div>
             <div class="game-card-stats">Full career PGN</div>
-            <a class="game-card-btn" href={`${BUNNY}/players/${p.file}.pgn`} download={`${p.file}.pgn`}>
-              Download PGN
-            </a>
+            <span class="game-card-cta">&#9654; Open Games</span>
           </div>
         ))}
       </div>
 
-      <h3 style="font-family:'Playfair Display',Georgia,serif; color:var(--gold); margin:2.5rem 0 1rem; font-size:1.2rem; letter-spacing:0.05em;">Classical Era</h3>
-      <div class="games-grid" id="player-classical-grid">
+      <h3 style="font-family:'Playfair Display',Georgia,serif; color:var(--gold); margin:2.5rem 0 1rem; font-size:1.2rem; letter-spacing:0.05em;">Masters of the Past</h3>
+      <div class="games-grid">
         {playersClassical.map((p) => (
-          <div class="game-card player-card" data-name={p.name.toLowerCase()}>
+          <div class="game-card player-card" data-name={p.name.toLowerCase()} data-file={`players/${p.file}.pgn`} data-label={p.name} role="button" tabindex="0">
             <div class="game-card-head">
               <span class="game-card-code">{p.name.split(' ').map((s) => s[0]).join('')}</span>
             </div>
             <div class="game-card-name">{p.name}</div>
             <div class="game-card-stats">Full career PGN</div>
-            <a class="game-card-btn" href={`${BUNNY}/players/${p.file}.pgn`} download={`${p.file}.pgn`}>
-              Download PGN
-            </a>
+            <span class="game-card-cta">&#9654; Open Games</span>
           </div>
         ))}
       </div>
     </section>
 
-    <!-- EVENTS TAB -->
     <section class="tab-panel" data-panel="events">
       <div class="placeholder-card">
-        <h3>By Event &mdash; coming soon</h3>
-        <p>982 individual tournament PGNs are uploaded to the network &mdash; everything from the Candidates, World Championship matches, Norway Chess, Tata Steel, Sinquefield, Wijk aan Zee, and U.S. Championships through to club and youth events.</p>
-        <p>The event index isn't browsable yet. It'll appear here in the next iteration of this page.</p>
-        <p class="meta">If you need a specific event PGN today, send the name and I'll point you at it directly.</p>
+        <h3>By Tournament &mdash; coming soon</h3>
+        <p>Almost a thousand famous tournaments are sitting in the library &mdash; the World Championships, the Candidates, Norway Chess, the U.S. Championship, and many more &mdash; but we haven't finished organizing the browser for them yet. Check back in.</p>
       </div>
     </section>
 
-    <!-- OPENINGS TAB -->
     <section class="tab-panel" data-panel="openings">
       <div class="placeholder-card">
         <h3>By Opening Name &mdash; coming soon</h3>
-        <p>233 named-variation PGNs (Sicilian Najdorf, Berlin Defense, King's Indian Mar del Plata, Catalan Open, etc.) are uploaded. For now, use the <strong>By ECO Code</strong> tab &mdash; every named opening maps to one or more ECO codes.</p>
-        <p class="meta">A named-opening browser will appear here once the index is generated.</p>
+        <p>233 famous opening variations are waiting &mdash; the Sicilian Najdorf, the Berlin Defense, the King's Indian, the Catalan, and many more &mdash; named for the players who made them famous. For today, use the <strong>By Opening (Modern)</strong> tab and pick a code; every named opening lives inside one of those families.</p>
       </div>
     </section>
 
     <p class="footnote">
-      Sources &mdash; <a href="https://theweekinchess.com" target="_blank" rel="noopener" style="color:var(--gold);">The Week in Chess</a>, <a href="https://lumbrasgigabase.com" target="_blank" rel="noopener" style="color:var(--gold);">Lumbra's Gigabase</a>, <a href="https://www.pgnmentor.com" target="_blank" rel="noopener" style="color:var(--gold);">pgnmentor.com</a>. Files mirrored on the Mind's Gambit network and served free for study purposes. The original sources retain credit; please support them.
+      Everything in this library has been collected from publicly available archives and is mirrored here on the Mind's Gambit network for free, in-page play. We keep it growing, and we keep it open.
     </p>
   </div>
 </div>
 
+<!-- VIEWER MODAL -->
+<div class="viewer-overlay" id="viewerOverlay" role="dialog" aria-modal="true" aria-labelledby="viewerTitle">
+  <div class="viewer-modal">
+    <div class="viewer-header">
+      <div>
+        <h2 class="viewer-title" id="viewerTitle">Loading...</h2>
+        <div class="viewer-sub" id="viewerSub"></div>
+      </div>
+      <button class="viewer-close" id="viewerClose" aria-label="Close viewer">&times;</button>
+    </div>
+    <div class="viewer-gamelist" id="viewerGameList">
+      <h4>Games</h4>
+      <div class="viewer-empty" id="viewerGameListEmpty">Loading game list...</div>
+    </div>
+    <div class="viewer-board">
+      <div class="board-wrap">
+        <svg class="board-svg" id="boardSvg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"></svg>
+        <div class="board-controls">
+          <button class="board-btn" id="btnFirst" title="First move (Home)" disabled>|&lt;</button>
+          <button class="board-btn" id="btnPrev" title="Previous move (Left arrow)" disabled>&lt;</button>
+          <button class="board-btn" id="btnNext" title="Next move (Right arrow)" disabled>&gt;</button>
+          <button class="board-btn" id="btnLast" title="Last move (End)" disabled>&gt;|</button>
+          <button class="board-btn" id="btnFlip" title="Flip board" disabled>&#8645;</button>
+        </div>
+        <div class="board-position" id="boardPos">No game selected</div>
+      </div>
+    </div>
+    <div class="viewer-side">
+      <div class="game-headers" id="gameHeaders">
+        <p class="game-headers-title">Game Info</p>
+        <dl id="gameHeadersDl"><dt>&mdash;</dt><dd>Select a game from the list</dd></dl>
+      </div>
+      <div class="movelist-wrap">
+        <h5>Move list</h5>
+        <div class="movelist" id="moveListEl"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- chess.js for PGN parsing & move state -->
+<script src="https://cdn.jsdelivr.net/npm/chess.js@0.13.4/chess.min.js"></script>
+
 <script>
-  const BUNNY = 'https://mindsgambitgames.b-cdn.net';
-
-  function bytesToHuman(n) {
-    if (!n || n < 1024) return (n || 0) + ' B';
-    if (n < 1024 * 1024) return (n / 1024).toFixed(1) + ' KB';
-    if (n < 1024 * 1024 * 1024) return (n / 1024 / 1024).toFixed(1) + ' MB';
-    return (n / 1024 / 1024 / 1024).toFixed(2) + ' GB';
-  }
-
-  function fmtCount(n) {
-    return new Intl.NumberFormat('en-US').format(n || 0);
-  }
-
-  // Tab switching
+  // ----- Tabs + Search (same as before) -----
   document.querySelectorAll('.tab-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
       const tab = (btn as HTMLElement).dataset.tab;
@@ -529,79 +576,307 @@ const playersClassical = [
     });
   });
 
-  // Renders a manifest into a grid. Manifest = { ecos: { CODE: { name, gameCount|games, fileSize|sizeKB } } }
-  function renderEcoGrid(gridId, infoId, manifest, basePath, gameCountKey, sizeKey, sizeIsKB) {
-    const grid = document.getElementById(gridId);
-    const info = document.getElementById(infoId);
-    if (!grid || !manifest || !manifest.ecos) return;
-    const codes = Object.keys(manifest.ecos).sort();
-    info.textContent = codes.length + ' ECO codes · ' + fmtCount(manifest.totalGames) + ' games';
-    grid.innerHTML = '';
-    codes.forEach((code) => {
-      const entry = manifest.ecos[code];
-      const games = entry[gameCountKey] || 0;
-      let sizeBytes = entry[sizeKey] || 0;
-      if (sizeIsKB) sizeBytes = sizeBytes * 1024;
-      const card = document.createElement('div');
-      card.className = 'game-card eco-card';
-      card.dataset.search = (code + ' ' + (entry.name || '')).toLowerCase();
-      card.innerHTML =
-        '<div class="game-card-head">' +
-          '<span class="game-card-code">' + code + '</span>' +
-          '<span class="game-card-size">' + bytesToHuman(sizeBytes) + '</span>' +
-        '</div>' +
-        '<div class="game-card-name">' + (entry.name || '') + '</div>' +
-        '<div class="game-card-stats">' + fmtCount(games) + ' games</div>' +
-        '<a class="game-card-btn" href="' + BUNNY + basePath + code + '.pgn" download="' + code + '.pgn">Download PGN</a>';
-      grid.appendChild(card);
-    });
-  }
-
-  // Fetch + render ECO (TWIC)
-  fetch(BUNNY + '/eco/eco-index.json')
-    .then((r) => r.json())
-    .then((m) => renderEcoGrid('eco-grid', 'eco-info', m, '/eco/', 'gameCount', 'fileSize', false))
-    .catch((e) => {
-      const g = document.getElementById('eco-grid');
-      if (g) g.innerHTML = '<div class="empty">Could not load the ECO manifest. Please try again.</div>';
-    });
-
-  // Fetch + render Historical (Lumbra)
-  fetch(BUNNY + '/historical/eco-index.json')
-    .then((r) => r.json())
-    .then((m) => renderEcoGrid('hist-grid', 'hist-info', m, '/historical/', 'games', 'sizeKB', true))
-    .catch((e) => {
-      const g = document.getElementById('hist-grid');
-      if (g) g.innerHTML = '<div class="empty">Could not load the historical manifest. Please try again.</div>';
-    });
-
-  // Search filtering — generic
-  function attachSearch(inputId, cardSelector, searchAttr) {
+  function attachSearch(inputId: string, cardSelector: string, datasetKey: string) {
     const input = document.getElementById(inputId) as HTMLInputElement | null;
     if (!input) return;
     input.addEventListener('input', () => {
       const q = input.value.trim().toLowerCase();
       document.querySelectorAll(cardSelector).forEach((card) => {
-        const haystack = (card as HTMLElement).getAttribute(searchAttr) || (card as HTMLElement).dataset[searchAttr.replace('data-', '')] || '';
+        const haystack = ((card as HTMLElement).dataset[datasetKey] || '').toLowerCase();
         (card as HTMLElement).style.display = (!q || haystack.includes(q)) ? '' : 'none';
       });
     });
   }
+  attachSearch('eco-search', '#eco-grid .eco-card', 'search');
+  attachSearch('hist-search', '#hist-grid .eco-card', 'search');
+  attachSearch('player-search', '.player-card', 'name');
 
-  attachSearch('eco-search', '.eco-card', 'data-search');
-  attachSearch('hist-search', '#hist-grid .eco-card', 'data-search');
+  // ----- Click to open viewer -----
+  document.querySelectorAll('.game-card[data-file]').forEach((card) => {
+    card.addEventListener('click', () => openViewer(card as HTMLElement));
+    card.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openViewer(card as HTMLElement); }
+    });
+  });
 
-  // Player search
-  const playerInput = document.getElementById('player-search') as HTMLInputElement | null;
-  if (playerInput) {
-    playerInput.addEventListener('input', () => {
-      const q = playerInput.value.trim().toLowerCase();
-      document.querySelectorAll('.player-card').forEach((card) => {
-        const name = (card as HTMLElement).dataset.name || '';
-        (card as HTMLElement).style.display = (!q || name.includes(q)) ? '' : 'none';
+  // ===== Viewer state =====
+  const overlay = document.getElementById('viewerOverlay')!;
+  const titleEl = document.getElementById('viewerTitle')!;
+  const subEl = document.getElementById('viewerSub')!;
+  const gameListEl = document.getElementById('viewerGameList')!;
+  const gameListEmptyEl = document.getElementById('viewerGameListEmpty')!;
+  const boardSvg = document.getElementById('boardSvg') as unknown as SVGElement;
+  const btnFirst = document.getElementById('btnFirst') as HTMLButtonElement;
+  const btnPrev = document.getElementById('btnPrev') as HTMLButtonElement;
+  const btnNext = document.getElementById('btnNext') as HTMLButtonElement;
+  const btnLast = document.getElementById('btnLast') as HTMLButtonElement;
+  const btnFlip = document.getElementById('btnFlip') as HTMLButtonElement;
+  const boardPos = document.getElementById('boardPos')!;
+  const gameHeadersDl = document.getElementById('gameHeadersDl')!;
+  const moveListEl = document.getElementById('moveListEl')!;
+  const closeBtn = document.getElementById('viewerClose')!;
+
+  type ParsedGame = { headers: Record<string, string>; pgn: string };
+  let games: ParsedGame[] = [];
+  let currentGameIdx = -1;
+  let currentMoves: { san: string; fen: string }[] = [];
+  let currentMoveIdx = -1;
+  let flipped = false;
+
+  const STARTING_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+  const PIECE = {
+    K: '♔', Q: '♕', R: '♖', B: '♗', N: '♘', P: '♙',
+    k: '♚', q: '♛', r: '♜', b: '♝', n: '♞', p: '♟',
+  } as Record<string, string>;
+
+  // Render an SVG chessboard from a FEN string.
+  function renderBoard(fen: string) {
+    const ranks = fen.split(' ')[0].split('/');
+    const sq = 50;
+    let svg = '';
+    for (let r = 0; r < 8; r++) {
+      let file = 0;
+      const rankRow = ranks[r];
+      for (const ch of rankRow) {
+        if (/[1-8]/.test(ch)) { file += parseInt(ch); continue; }
+        const dispR = flipped ? 7 - r : r;
+        const dispF = flipped ? 7 - file : file;
+        const x = dispF * sq;
+        const y = dispR * sq;
+        const isLight = (dispR + dispF) % 2 === 0;
+        // Square color is drawn in batch below; here we draw piece on top.
+        const piece = PIECE[ch] || '';
+        const pieceColor = ch === ch.toUpperCase() ? '#1a1a1a' : '#0a0a0a';
+        svg += `<text x="${x + sq/2}" y="${y + sq*0.72}" text-anchor="middle" font-family="Noto Sans Symbols 2, DejaVu Serif, Cambria, Georgia, Times New Roman, serif" font-size="${sq*0.82}" fill="${pieceColor}">${piece}</text>`;
+        file++;
+      }
+    }
+    // Draw squares first so they're underneath the pieces text.
+    let squares = '';
+    for (let r = 0; r < 8; r++) {
+      for (let f = 0; f < 8; f++) {
+        const dispR = flipped ? 7 - r : r;
+        const dispF = flipped ? 7 - f : f;
+        const x = dispF * sq;
+        const y = dispR * sq;
+        const isLight = (r + f) % 2 === 0;
+        squares += `<rect x="${x}" y="${y}" width="${sq}" height="${sq}" fill="${isLight ? '#f5ead6' : '#c9a87a'}" />`;
+      }
+    }
+    // Coordinate labels
+    let coords = '';
+    const fileLetters = flipped ? ['h','g','f','e','d','c','b','a'] : ['a','b','c','d','e','f','g','h'];
+    const rankNumbers = flipped ? ['1','2','3','4','5','6','7','8'] : ['8','7','6','5','4','3','2','1'];
+    for (let i = 0; i < 8; i++) {
+      coords += `<text x="${i*sq + 4}" y="${8*sq - 4}" font-family="Georgia, serif" font-size="10" fill="rgba(0,0,0,0.4)">${fileLetters[i]}</text>`;
+      coords += `<text x="${8*sq - 10}" y="${i*sq + 12}" font-family="Georgia, serif" font-size="10" fill="rgba(0,0,0,0.4)">${rankNumbers[i]}</text>`;
+    }
+    boardSvg.innerHTML = squares + coords + svg;
+  }
+
+  function openViewer(card: HTMLElement) {
+    const file = card.dataset.file || '';
+    const label = card.dataset.label || file;
+    const bytes = parseInt(card.dataset.bytes || '0', 10);
+
+    titleEl.textContent = label;
+    subEl.textContent = bytes ? humanBytes(bytes) + ' on the network' : '';
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    renderBoard(STARTING_FEN);
+    boardPos.textContent = 'Loading PGN...';
+    gameListEmptyEl.textContent = 'Loading games...';
+    gameListEmptyEl.style.display = '';
+    games = [];
+    currentGameIdx = -1;
+    currentMoves = [];
+    currentMoveIdx = -1;
+    updateButtons();
+    gameHeadersDl.innerHTML = '<dt>&mdash;</dt><dd>Loading game...</dd>';
+    moveListEl.innerHTML = '';
+
+    // Fetch first 200KB via Range request — enough for ~50 games' headers + moves.
+    fetch('/api/pgn?file=' + encodeURIComponent(file), { headers: { 'Range': 'bytes=0-204800' } })
+      .then((r) => r.text())
+      .then((text) => {
+        games = parsePgnBatch(text, 50);
+        if (games.length === 0) {
+          gameListEmptyEl.textContent = 'No games found in this file.';
+          return;
+        }
+        renderGameList();
+        selectGame(0);
+      })
+      .catch((err) => {
+        gameListEmptyEl.textContent = 'Could not load PGN: ' + err.message;
       });
+  }
+
+  function humanBytes(n: number): string {
+    if (n < 1024) return n + ' B';
+    if (n < 1048576) return (n/1024).toFixed(1) + ' KB';
+    if (n < 1073741824) return (n/1048576).toFixed(1) + ' MB';
+    return (n/1073741824).toFixed(2) + ' GB';
+  }
+
+  // Parse a PGN string into individual games. Returns up to maxGames complete games.
+  function parsePgnBatch(text: string, maxGames: number): ParsedGame[] {
+    const result: ParsedGame[] = [];
+    // Split on the start of a new game's [Event tag — preserve the [Event marker.
+    const parts = text.split(/(?=^\[Event\b)/m);
+    for (const part of parts) {
+      const trimmed = part.trim();
+      if (!trimmed || !trimmed.startsWith('[Event')) continue;
+      const headers: Record<string, string> = {};
+      const headerRegex = /^\[(\w+)\s+"((?:\\"|[^"])*)"\]\s*$/gm;
+      let m: RegExpExecArray | null;
+      while ((m = headerRegex.exec(trimmed)) !== null) {
+        headers[m[1]] = m[2].replace(/\\"/g, '"');
+      }
+      // The move text is everything after the last header line.
+      const lastHeaderEnd = trimmed.search(/\n\s*\n/);
+      let moveText = lastHeaderEnd > -1 ? trimmed.slice(lastHeaderEnd).trim() : '';
+      // Require a result token to count it as complete.
+      if (!/(1-0|0-1|1\/2-1\/2|\*)\s*$/.test(moveText)) continue;
+      result.push({ headers, pgn: trimmed });
+      if (result.length >= maxGames) break;
+    }
+    return result;
+  }
+
+  function renderGameList() {
+    gameListEmptyEl.style.display = 'none';
+    gameListEl.innerHTML = '<h4>Games (' + games.length + ')</h4>' + games.map((g, i) => {
+      const w = g.headers.White || 'Unknown';
+      const b = g.headers.Black || 'Unknown';
+      const res = g.headers.Result || '*';
+      const event = g.headers.Event || '';
+      const date = g.headers.Date || g.headers.UTCDate || '';
+      return `<div class="viewer-gameitem" data-idx="${i}">
+        <div class="viewer-gameitem-players">${escapeHtml(w)} &mdash; ${escapeHtml(b)}</div>
+        <div class="viewer-gameitem-meta">
+          <span class="viewer-gameitem-result">${res}</span>
+          ${event ? `<span>${escapeHtml(event)}</span>` : ''}
+          ${date ? `<span>${escapeHtml(date)}</span>` : ''}
+        </div>
+      </div>`;
+    }).join('');
+    gameListEl.querySelectorAll('.viewer-gameitem').forEach((el) => {
+      el.addEventListener('click', () => selectGame(parseInt((el as HTMLElement).dataset.idx || '0', 10)));
     });
   }
+
+  function escapeHtml(s: string): string {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function selectGame(idx: number) {
+    if (idx < 0 || idx >= games.length) return;
+    currentGameIdx = idx;
+    gameListEl.querySelectorAll('.viewer-gameitem').forEach((el, i) => {
+      el.classList.toggle('active', i === idx);
+    });
+    const g = games[idx];
+    // Render headers
+    const orderedHeaderKeys = ['White', 'Black', 'Result', 'Event', 'Site', 'Date', 'Round', 'ECO', 'Opening', 'WhiteElo', 'BlackElo'];
+    let html = '';
+    for (const k of orderedHeaderKeys) {
+      if (g.headers[k]) html += `<dt>${k}</dt><dd>${escapeHtml(g.headers[k])}</dd>`;
+    }
+    gameHeadersDl.innerHTML = html || '<dt>&mdash;</dt><dd>(no headers)</dd>';
+
+    // Parse via chess.js
+    const ChessCtor = (window as any).Chess;
+    if (!ChessCtor) {
+      boardPos.textContent = 'chess.js failed to load';
+      return;
+    }
+    const chess = new ChessCtor();
+    let ok = false;
+    try { ok = chess.load_pgn(g.pgn, { sloppy: true }); } catch (e) { ok = false; }
+    if (!ok) {
+      // chess.js can be picky; try a more permissive parse by stripping comments.
+      const stripped = g.pgn.replace(/\{[^}]*\}/g, '').replace(/\([^)]*\)/g, '');
+      try { ok = chess.load_pgn(stripped, { sloppy: true }); } catch (e) { ok = false; }
+    }
+    if (!ok) {
+      boardPos.textContent = 'Could not parse this game';
+      return;
+    }
+    // Step through the game to collect FEN at each ply.
+    const history = chess.history({ verbose: true });
+    const replay = new ChessCtor();
+    currentMoves = [{ san: '', fen: replay.fen() }];
+    for (const mv of history) {
+      replay.move(mv);
+      currentMoves.push({ san: mv.san, fen: replay.fen() });
+    }
+    renderMoveList();
+    goToMove(currentMoves.length - 1); // Jump to end of game
+  }
+
+  function renderMoveList() {
+    let html = '';
+    for (let i = 1; i < currentMoves.length; i++) {
+      if (i % 2 === 1) {
+        html += `<span class="move-num">${Math.ceil(i/2)}.</span>`;
+      }
+      html += `<span class="move-san" data-move="${i}">${escapeHtml(currentMoves[i].san)}</span> `;
+    }
+    moveListEl.innerHTML = html;
+    moveListEl.querySelectorAll('.move-san').forEach((el) => {
+      el.addEventListener('click', () => goToMove(parseInt((el as HTMLElement).dataset.move || '0', 10)));
+    });
+  }
+
+  function goToMove(idx: number) {
+    if (currentMoves.length === 0) return;
+    currentMoveIdx = Math.max(0, Math.min(idx, currentMoves.length - 1));
+    renderBoard(currentMoves[currentMoveIdx].fen);
+    boardPos.textContent = currentMoveIdx === 0
+      ? 'Start position'
+      : `Move ${Math.ceil(currentMoveIdx/2)}${currentMoveIdx % 2 === 1 ? '.' : '...'} ${currentMoves[currentMoveIdx].san}`;
+    // highlight current move
+    moveListEl.querySelectorAll('.move-san').forEach((el) => {
+      el.classList.toggle('current', parseInt((el as HTMLElement).dataset.move || '0', 10) === currentMoveIdx);
+    });
+    updateButtons();
+  }
+
+  function updateButtons() {
+    const has = currentMoves.length > 0;
+    btnFirst.disabled = !has || currentMoveIdx <= 0;
+    btnPrev.disabled = !has || currentMoveIdx <= 0;
+    btnNext.disabled = !has || currentMoveIdx >= currentMoves.length - 1;
+    btnLast.disabled = !has || currentMoveIdx >= currentMoves.length - 1;
+    btnFlip.disabled = !has;
+  }
+
+  btnFirst.addEventListener('click', () => goToMove(0));
+  btnPrev.addEventListener('click', () => goToMove(currentMoveIdx - 1));
+  btnNext.addEventListener('click', () => goToMove(currentMoveIdx + 1));
+  btnLast.addEventListener('click', () => goToMove(currentMoves.length - 1));
+  btnFlip.addEventListener('click', () => { flipped = !flipped; if (currentMoves.length > 0) renderBoard(currentMoves[currentMoveIdx].fen); });
+
+  closeBtn.addEventListener('click', closeViewer);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeViewer(); });
+
+  function closeViewer() {
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (!overlay.classList.contains('active')) return;
+    if (e.key === 'Escape') closeViewer();
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); if (!btnPrev.disabled) goToMove(currentMoveIdx - 1); }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); if (!btnNext.disabled) goToMove(currentMoveIdx + 1); }
+    else if (e.key === 'Home') { e.preventDefault(); goToMove(0); }
+    else if (e.key === 'End') { e.preventDefault(); goToMove(currentMoves.length - 1); }
+  });
+
+  // Initial empty board so users see what they're getting before opening.
+  renderBoard(STARTING_FEN);
 </script>
 
 </BaseLayout>

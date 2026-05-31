@@ -1,4 +1,4 @@
-# The Daily Gambit — Automation Guide
+——————————# The Daily Gambit — Automation Guide
 
 This document is the single source of truth for the automated publishing pipeline
 that feeds the /daily newspaper page. It is meant to be read by whoever wires up the

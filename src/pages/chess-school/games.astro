@@ -136,6 +136,503 @@ function fmtCount(n: number): string {
   return new Intl.NumberFormat('en-US').format(n || 0);
 }
 
+// ----- TOURNAMENT FAMILIES -----
+// Major tournament series, each with the list of editions we have on Bunny.
+// Filenames match exactly: `<File>.pgn` lives at /events/<File>.pgn on the CDN.
+type TournamentEdition = { year: number | string; file: string; note?: string };
+type TournamentSeries = { name: string; intro: string; editions: TournamentEdition[] };
+
+const tournamentSeries: TournamentSeries[] = [
+  {
+    name: 'World Championship Matches',
+    intro: 'The match that decides who is the World Chess Champion. From Steinitz vs Zukertort in 1886 to the present day.',
+    editions: [
+      { year: 2024, file: 'WorldChamp2024', note: 'Singapore — Ding Liren vs Gukesh Dommaraju' },
+      { year: 2023, file: 'WorldChamp2023', note: 'Astana — Nepomniachtchi vs Ding Liren' },
+      { year: 2021, file: 'WorldChamp2021', note: 'Dubai — Carlsen vs Nepomniachtchi' },
+      { year: 2018, file: 'WorldChamp2018', note: 'London — Carlsen vs Caruana' },
+      { year: 2016, file: 'WorldChamp2016', note: 'New York — Carlsen vs Karjakin' },
+      { year: 2014, file: 'WorldChamp2014', note: 'Sochi — Carlsen vs Anand' },
+      { year: 2013, file: 'WorldChamp2013', note: 'Chennai — Anand vs Carlsen' },
+      { year: 2012, file: 'WorldChamp2012', note: 'Moscow — Anand vs Gelfand' },
+      { year: 2010, file: 'WorldChamp2010', note: 'Sofia — Anand vs Topalov' },
+      { year: 2008, file: 'WorldChamp2008', note: 'Bonn — Anand vs Kramnik' },
+      { year: 2007, file: 'WorldChamp2007', note: 'Mexico City — Anand wins the title' },
+      { year: 2006, file: 'WorldChamp2006', note: 'Elista — Topalov vs Kramnik (reunification)' },
+      { year: 2004, file: 'WorldChamp2004', note: 'Brissago — Leko vs Kramnik' },
+      { year: 2000, file: 'WorldChamp2000', note: 'London — Kasparov vs Kramnik' },
+      { year: 1990, file: 'WorldChamp1990', note: 'Kasparov vs Karpov V' },
+      { year: 1987, file: 'WorldChamp1987', note: 'Seville — Kasparov vs Karpov IV' },
+      { year: 1986, file: 'WorldChamp1986', note: 'London/Leningrad — Kasparov vs Karpov III' },
+      { year: 1985, file: 'WorldChamp1985', note: 'Moscow — Kasparov becomes World Champion' },
+      { year: 1984, file: 'WorldChamp1984', note: 'Moscow — Karpov vs Kasparov (terminated)' },
+      { year: 1981, file: 'WorldChamp1981', note: 'Karpov vs Korchnoi (Merano)' },
+      { year: 1978, file: 'WorldChamp1978', note: 'Baguio — Karpov vs Korchnoi' },
+      { year: 1972, file: 'WorldChamp1972', note: 'Reykjavik — Fischer vs Spassky' },
+      { year: 1969, file: 'WorldChamp1969', note: 'Spassky vs Petrosian' },
+      { year: 1966, file: 'WorldChamp1966', note: 'Petrosian vs Spassky' },
+      { year: 1963, file: 'WorldChamp1963', note: 'Petrosian vs Botvinnik' },
+      { year: 1961, file: 'WorldChamp1961', note: 'Botvinnik vs Tal (return)' },
+      { year: 1960, file: 'WorldChamp1960', note: 'Tal vs Botvinnik' },
+      { year: 1958, file: 'WorldChamp1958', note: 'Botvinnik vs Smyslov (return)' },
+      { year: 1957, file: 'WorldChamp1957', note: 'Smyslov vs Botvinnik' },
+      { year: 1954, file: 'WorldChamp1954', note: 'Botvinnik vs Smyslov (drawn)' },
+      { year: 1951, file: 'WorldChamp1951', note: 'Botvinnik vs Bronstein' },
+      { year: 1948, file: 'WorldChamp1948', note: 'The Hague/Moscow — Botvinnik wins the vacant title' },
+      { year: 1937, file: 'WorldChamp1937', note: 'Alekhine vs Euwe (return)' },
+      { year: 1935, file: 'WorldChamp1935', note: 'Euwe vs Alekhine' },
+      { year: 1934, file: 'WorldChamp1934', note: 'Alekhine vs Bogoljubow' },
+      { year: 1929, file: 'WorldChamp1929', note: 'Alekhine vs Bogoljubow' },
+      { year: 1927, file: 'WorldChamp1927', note: 'Buenos Aires — Alekhine vs Capablanca' },
+      { year: 1921, file: 'WorldChamp1921', note: 'Havana — Capablanca vs Lasker' },
+      { year: 1910, file: 'WorldChamp1910a', note: 'Lasker vs Schlechter' },
+      { year: 1910, file: 'WorldChamp1910b', note: 'Lasker vs Janowski' },
+      { year: 1909, file: 'WorldChamp1909', note: 'Lasker vs Janowski' },
+      { year: 1908, file: 'WorldChamp1908', note: 'Lasker vs Tarrasch' },
+      { year: 1907, file: 'WorldChamp1907', note: 'Lasker vs Marshall' },
+      { year: 1896, file: 'WorldChamp1896', note: 'Lasker vs Steinitz (return)' },
+      { year: 1894, file: 'WorldChamp1894', note: 'Lasker vs Steinitz' },
+      { year: 1892, file: 'WorldChamp1892', note: 'Steinitz vs Chigorin (return)' },
+      { year: 1890, file: 'WorldChamp1890', note: 'Steinitz vs Gunsberg' },
+      { year: 1889, file: 'WorldChamp1889', note: 'Steinitz vs Chigorin' },
+      { year: 1886, file: 'WorldChamp1886', note: 'Steinitz vs Zukertort — the first official match' },
+    ],
+  },
+  {
+    name: 'Candidates Tournament',
+    intro: 'The qualifier that produces the next World Championship challenger. Eight of the strongest players in the world compete head-to-head.',
+    editions: [
+      { year: 2024, file: 'Candidates2024', note: 'Toronto — Gukesh wins' },
+      { year: 2022, file: 'Candidates2022', note: 'Madrid — Nepomniachtchi wins' },
+      { year: 2020, file: 'Candidates2020', note: 'Yekaterinburg — paused and resumed' },
+      { year: 2018, file: 'Candidates2018', note: 'Berlin — Caruana wins' },
+      { year: 2016, file: 'Candidates2016', note: 'Moscow — Karjakin wins' },
+      { year: 2014, file: 'Candidates2014', note: 'Khanty-Mansiysk — Anand wins' },
+      { year: 2013, file: 'Candidates2013', note: 'London — Carlsen wins on tiebreak' },
+      { year: 2011, file: 'Candidates2011', note: 'Kazan — Gelfand wins' },
+      { year: 1994, file: 'Candidates1994', note: 'PCA cycle' },
+      { year: 1990, file: 'Candidates1990' },
+      { year: 1988, file: 'Candidates1988' },
+      { year: 1985, file: 'Candidates1985', note: '1985 cycle (a)' },
+      { year: 1985, file: 'Candidates1985r', note: '1985 cycle (rapid)' },
+      { year: 1983, file: 'Candidates1983' },
+      { year: 1980, file: 'Candidates1980' },
+      { year: 1977, file: 'Candidates1977' },
+      { year: 1974, file: 'Candidates1974' },
+      { year: 1971, file: 'Candidates1971' },
+      { year: 1968, file: 'Candidates1968' },
+      { year: 1965, file: 'Candidates1965' },
+      { year: 1962, file: 'Candidates1962', note: 'Curaçao — the famous "fixed" event' },
+      { year: 1959, file: 'Candidates1959', note: 'Bled/Belgrade/Zagreb — Tal’s breakthrough' },
+      { year: 1956, file: 'Candidates1956' },
+      { year: 1953, file: 'Candidates1953', note: 'Zurich — one of the greatest tournaments ever' },
+      { year: 1950, file: 'Candidates1950' },
+    ],
+  },
+  {
+    name: 'Tata Steel (Wijk aan Zee)',
+    intro: 'The "Wimbledon of chess" — held every January in the small Dutch town of Wijk aan Zee since 1968. The world’s longest-running annual elite tournament.',
+    editions: [
+      { year: 2024, file: 'WijkaanZee2024' }, { year: 2023, file: 'WijkaanZee2023' },
+      { year: 2022, file: 'WijkaanZee2022' }, { year: 2021, file: 'WijkaanZee2021' },
+      { year: 2020, file: 'WijkaanZee2020' }, { year: 2019, file: 'WijkaanZee2019' },
+      { year: 2018, file: 'WijkaanZee2018' }, { year: 2017, file: 'WijkaanZee2017' },
+      { year: 2016, file: 'WijkaanZee2016' }, { year: 2015, file: 'WijkaanZee2015' },
+      { year: 2014, file: 'WijkaanZee2014' }, { year: 2013, file: 'WijkaanZee2013' },
+      { year: 2012, file: 'WijkaanZee2012' }, { year: 2011, file: 'WijkaanZee2011' },
+      { year: 2010, file: 'WijkaanZee2010' }, { year: 2005, file: 'WijkaanZee2005' },
+      { year: 2000, file: 'WijkaanZee2000' }, { year: 1995, file: 'WijkaanZee1995' },
+      { year: 1990, file: 'WijkaanZee1990' }, { year: 1985, file: 'WijkaanZee1985' },
+      { year: 1980, file: 'WijkaanZee1980' }, { year: 1975, file: 'WijkaanZee1975' },
+      { year: 1968, file: 'WijkaanZee1968', note: 'The first edition' },
+    ],
+  },
+  {
+    name: 'Norway Chess (Stavanger)',
+    intro: 'The Norwegian super-tournament that hosted Magnus Carlsen’s annual home event since 2013.',
+    editions: [
+      { year: 2024, file: 'Stavanger2024' }, { year: 2023, file: 'Stavanger2023' },
+      { year: 2022, file: 'Stavanger2022' }, { year: 2021, file: 'Stavanger2021' },
+      { year: 2020, file: 'Stavanger2020' }, { year: 2019, file: 'Stavanger2019' },
+      { year: 2018, file: 'Stavanger2018' }, { year: 2017, file: 'Stavanger2017' },
+      { year: 2016, file: 'Stavanger2016' }, { year: 2015, file: 'Stavanger2015' },
+      { year: 2014, file: 'Stavanger2014' }, { year: 2013, file: 'Stavanger2013', note: 'The first edition' },
+    ],
+  },
+  {
+    name: 'Sinquefield Cup (Saint Louis)',
+    intro: 'America’s flagship super-tournament. Held in Saint Louis since 2014 at the chess club Rex Sinquefield built.',
+    editions: [
+      { year: 2023, file: 'SaintLouis2023' }, { year: 2022, file: 'SaintLouis2022' },
+      { year: 2022, file: 'SaintLouis2022-Sinq', note: 'Sinquefield Cup proper' },
+      { year: 2021, file: 'SaintLouis2021' }, { year: 2019, file: 'SaintLouis2019' },
+      { year: 2018, file: 'SaintLouis2018' }, { year: 2017, file: 'SaintLouis2017' },
+      { year: 2016, file: 'SaintLouis2016' }, { year: 2015, file: 'SaintLouis2015' },
+      { year: 2014, file: 'SaintLouis2014', note: 'Caruana’s historic 7/7 start' },
+    ],
+  },
+  {
+    name: 'Hastings International (Annual)',
+    intro: 'The famous English New Year’s tournament, running almost every year since 1895. Hastings 1895 is one of the great events in chess history.',
+    editions: [
+      { year: 2004, file: 'Hastings2004' }, { year: 2000, file: 'Hastings2000' },
+      { year: 1995, file: 'Hastings1995' }, { year: 1990, file: 'Hastings1990' },
+      { year: 1985, file: 'Hastings1985' }, { year: 1975, file: 'Hastings1975' },
+      { year: 1965, file: 'Hastings1965' }, { year: 1953, file: 'Hastings1953' },
+      { year: 1945, file: 'Hastings1945' }, { year: 1938, file: 'Hastings1938' },
+      { year: 1934, file: 'Hastings1934' }, { year: 1922, file: 'Hastings1922' },
+      { year: 1919, file: 'Hastings1919' }, { year: 1895, file: 'Hastings1895', note: 'The legendary 1895 super-tournament' },
+    ],
+  },
+  {
+    name: 'Linares Super-Tournament',
+    intro: 'The Spanish elite event that defined top-flight chess from the 1980s through 2010.',
+    editions: [
+      { year: 2010, file: 'Linares2010' }, { year: 2008, file: 'Linares2008' },
+      { year: 2005, file: 'Linares2005' }, { year: 2003, file: 'Linares2003' },
+      { year: 2000, file: 'Linares2000' }, { year: 1995, file: 'Linares1995' },
+      { year: 1991, file: 'Linares1991' }, { year: 1988, file: 'Linares1988' },
+      { year: 1985, file: 'Linares1985' }, { year: 1981, file: 'Linares1981' },
+    ],
+  },
+  {
+    name: 'World Cup (FIDE)',
+    intro: 'The modern knockout that qualifies players for the Candidates. Open to a huge field, with single-elimination matches.',
+    editions: [
+      { year: 2023, file: 'WorldCup2023' }, { year: 2021, file: 'WorldCup2021' },
+      { year: 2015, file: 'WorldCup2015' }, { year: 2013, file: 'WorldCup2013' },
+      { year: 2011, file: 'WorldCup2011' }, { year: 2009, file: 'WorldCup2009' },
+      { year: 2007, file: 'WorldCup2007' }, { year: 2005, file: 'WorldCup2005' },
+    ],
+  },
+  {
+    name: 'Soviet Championships',
+    intro: 'For 70 years, the strongest national championship in the world. Winning the USSR Championship was harder than winning most international tournaments.',
+    editions: [
+      { year: 1991, file: 'SovietChamp1991' }, { year: 1988, file: 'SovietChamp1988' },
+      { year: 1985, file: 'SovietChamp1985' }, { year: 1980, file: 'SovietChamp1980' },
+      { year: 1975, file: 'SovietChamp1975' }, { year: 1970, file: 'SovietChamp1970' },
+      { year: 1965, file: 'SovietChamp1965' }, { year: 1960, file: 'SovietChamp1960' },
+      { year: 1955, file: 'SovietChamp1955' }, { year: 1949, file: 'SovietChamp1949' },
+      { year: 1945, file: 'SovietChamp1945' }, { year: 1940, file: 'SovietChamp1940' },
+      { year: 1933, file: 'SovietChamp1933' }, { year: 1925, file: 'SovietChamp1925' },
+      { year: 1920, file: 'SovietChamp1920', note: 'The first edition' },
+    ],
+  },
+  {
+    name: 'Historical Tournaments',
+    intro: 'The great events of chess history. London 1851 is the first international tournament ever played. Each of these shaped the way the game is understood.',
+    editions: [
+      { year: 1851, file: 'London1851', note: 'The first international chess tournament' },
+      { year: 1862, file: 'London1862' }, { year: 1873, file: 'Vienna1873' },
+      { year: 1883, file: 'London1883' }, { year: 1889, file: 'NewYork1889' },
+      { year: 1895, file: 'Hastings1895' }, { year: 1907, file: 'Karlsbad1911' },
+      { year: 1911, file: 'SanSebastian1911', note: 'Capablanca’s European debut' },
+      { year: 1914, file: 'StPetersburg1914' }, { year: 1924, file: 'NewYork1924' },
+      { year: 1925, file: 'Moscow1925' }, { year: 1929, file: 'Karlsbad1929' },
+      { year: 1936, file: 'Nottingham1936', note: 'Botvinnik’s breakthrough' },
+      { year: 1953, file: 'Zurich1934' }, { year: 1936, file: 'NewYork1940' },
+      { year: 1966, file: 'SantaMonica1966', note: '"The Tournament of Stars" — Petrosian, Spassky, Fischer' },
+    ],
+  },
+];
+
+// ----- OPENING FAMILIES -----
+// All 229 named opening files, grouped into the major opening families.
+// Each leaf is { file, name } — file matches the filename at /openings/<file>.pgn.
+type OpeningEntry = { file: string; name: string };
+type OpeningFamily = { label: string; intro: string; openings: OpeningEntry[] };
+
+const openingFamilies: OpeningFamily[] = [
+  {
+    label: 'Open Games &mdash; 1.e4 e5',
+    intro: 'The oldest and most romantic of chess battles. Both sides push the king pawn two squares with their first move.',
+    openings: [
+      { file: 'RuyLopezBerlin', name: 'Ruy López — Berlin Defense' },
+      { file: 'RuyLopezMarshall', name: 'Ruy López — Marshall Attack' },
+      { file: 'RuyLopezAntiMarshall', name: 'Ruy López — Anti-Marshall' },
+      { file: 'RuyLopezBreyer', name: 'Ruy López — Breyer Variation' },
+      { file: 'RuyLopezChigorin', name: 'Ruy López — Chigorin Variation' },
+      { file: 'RuyLopezClassical', name: 'Ruy López — Classical' },
+      { file: 'RuyLopezExchange', name: 'Ruy López — Exchange Variation' },
+      { file: 'RuyLopezOpen', name: 'Ruy López — Open Defense' },
+      { file: 'RuyLopezArchangelsk', name: 'Ruy López — Archangelsk' },
+      { file: 'RuyLopezFlohr-Zaitsev', name: 'Ruy López — Flohr-Zaitsev' },
+      { file: 'RuyLopezKar-Smy-Khol', name: 'Ruy López — Karpov / Smyslov / Kholmov' },
+      { file: 'RuyLopezModSteinitz', name: 'Ruy López — Modern Steinitz' },
+      { file: 'RuyLopezSchliemann', name: 'Ruy López — Schliemann Defense' },
+      { file: 'RuyLopezOther3', name: 'Ruy López — Other 3rd moves' },
+      { file: 'RuyLopezOther5', name: 'Ruy López — Other 5th moves' },
+      { file: 'RuyLopezOther6', name: 'Ruy López — Other 6th moves' },
+      { file: 'RuyLopezOther9', name: 'Ruy López — Other 9th moves' },
+      { file: 'RuyMoeller-SteinDef', name: 'Ruy López — Möller / Steinitz Defense' },
+      { file: 'GiuocoPiano', name: 'Italian Game — Giuoco Piano' },
+      { file: 'TwoKnights', name: 'Italian Game — Two Knights Defense' },
+      { file: 'Hungarian', name: 'Italian Game — Hungarian Defense' },
+      { file: 'GoringGambit', name: 'Göring Gambit' },
+      { file: 'ScotchGambit', name: 'Scotch Gambit' },
+      { file: 'Scotch4Bc5', name: 'Scotch Game — 4...Bc5' },
+      { file: 'Scotch4Nf6', name: 'Scotch Game — 4...Nf6' },
+      { file: 'ScotchOther4', name: 'Scotch Game — Other 4th moves' },
+      { file: 'PetroffMain', name: 'Petroff Defense — Main Line' },
+      { file: 'PetroffOther3', name: 'Petroff Defense — Other 3rd moves' },
+      { file: 'KingsGambit', name: 'King’s Gambit' },
+      { file: 'BishopsOpening', name: 'Bishop’s Opening' },
+      { file: 'Vienna', name: 'Vienna Game' },
+      { file: 'CenterGame-Danish', name: 'Center Game / Danish Gambit' },
+      { file: 'FourKnights', name: 'Four Knights Game' },
+      { file: 'ThreeKnights', name: 'Three Knights Game' },
+      { file: 'Philidor', name: 'Philidor Defense' },
+      { file: 'Ponziani', name: 'Ponziani Opening' },
+      { file: 'Latvian-Elephant', name: 'Latvian Gambit / Elephant Gambit' },
+    ],
+  },
+  {
+    label: 'Sicilian Defense &mdash; 1.e4 c5',
+    intro: 'The most popular and combative reply to 1.e4. Sharp positions, rich theory, and famous variations like the Najdorf and Dragon.',
+    openings: [
+      { file: 'SicilianNajdorf6Bg5', name: 'Sicilian Najdorf — 6.Bg5' },
+      { file: 'SicilianNajdorf6Be3', name: 'Sicilian Najdorf — 6.Be3 (English Attack)' },
+      { file: 'SicilianNajdorf6Be2', name: 'Sicilian Najdorf — 6.Be2 (Classical)' },
+      { file: 'SicilianNajdorf6Bc4', name: 'Sicilian Najdorf — 6.Bc4 (Fischer-Sozin)' },
+      { file: 'SicilianNajdorf6f3', name: 'Sicilian Najdorf — 6.f3' },
+      { file: 'SicilianNajdorf6f4', name: 'Sicilian Najdorf — 6.f4' },
+      { file: 'SicilianNajdorf6g3', name: 'Sicilian Najdorf — 6.g3' },
+      { file: 'SicilianNajdorf6a4', name: 'Sicilian Najdorf — 6.a4' },
+      { file: 'SicilianDragonYugoslav', name: 'Sicilian Dragon — Yugoslav Attack' },
+      { file: 'SicilianDragonOther6', name: 'Sicilian Dragon — Other 6th moves' },
+      { file: 'SicDragon6Be2-6Bc4', name: 'Sicilian Dragon — 6.Be2 / 6.Bc4' },
+      { file: 'SicilianAccelDragon', name: 'Sicilian — Accelerated Dragon' },
+      { file: 'SicilianScheveningen', name: 'Sicilian — Scheveningen' },
+      { file: 'SicilianSveshnikov', name: 'Sicilian — Sveshnikov' },
+      { file: 'SicilianTaimanovMain', name: 'Sicilian Taimanov — Main Lines' },
+      { file: 'SicilianTaimanov5Nb5', name: 'Sicilian Taimanov — 5.Nb5' },
+      { file: 'SicilianTaimanovOther5', name: 'Sicilian Taimanov — Other 5th moves' },
+      { file: 'SicilianKan5Bd3', name: 'Sicilian Kan — 5.Bd3' },
+      { file: 'SicilianKan5c4', name: 'Sicilian Kan — 5.c4 (Maróczy Bind)' },
+      { file: 'SicilianKan5Nc3', name: 'Sicilian Kan — 5.Nc3' },
+      { file: 'SicilianKanOther5', name: 'Sicilian Kan — Other 5th moves' },
+      { file: 'SicilianClassicalSozin', name: 'Sicilian Classical — Sozin Attack' },
+      { file: 'SicilianClassicalOther6', name: 'Sicilian Classical — Other 6th moves' },
+      { file: 'SicilianRichter-Rauzer', name: 'Sicilian — Richter-Rauzer Attack' },
+      { file: 'SicilianRossolimo', name: 'Sicilian — Rossolimo (3.Bb5)' },
+      { file: 'SicilianMoscow', name: 'Sicilian — Moscow Variation (3.Bb5+)' },
+      { file: 'SicilianAlapin2d5', name: 'Sicilian Alapin — 2...d5' },
+      { file: 'SicilianAlapin2Nf6', name: 'Sicilian Alapin — 2...Nf6' },
+      { file: 'SicilianAlapinOther2', name: 'Sicilian Alapin — Other 2nd moves' },
+      { file: 'SicilianClosedMain', name: 'Sicilian Closed — Main Line' },
+      { file: 'SicilianClosedOther3', name: 'Sicilian Closed — Other 3rd moves' },
+      { file: 'SicilianGrandPrix', name: 'Sicilian — Grand Prix Attack' },
+      { file: 'SicilianSmith-Morra', name: 'Sicilian — Smith-Morra Gambit' },
+      { file: 'SicilianLowenthal', name: 'Sicilian — Löwenthal Variation' },
+      { file: 'SicilianMisc2', name: 'Sicilian — Miscellaneous 2nd moves' },
+      { file: 'Sicilian2Nc3-d6', name: 'Sicilian — 2.Nc3 with ...d6' },
+      { file: 'Sicilian2Nc3-e6', name: 'Sicilian — 2.Nc3 with ...e6' },
+      { file: 'Sicilian2Nc6Other5', name: 'Sicilian — 2...Nc6 (other 5th moves)' },
+      { file: 'Sicilian2Nf3Other2', name: 'Sicilian — 2.Nf3 (other 2nd moves)' },
+      { file: 'Sicilian2d6-4Qxd4', name: 'Sicilian — 2...d6, 4.Qxd4' },
+      { file: 'Sicilian2f4', name: 'Sicilian — 2.f4 (Big Clamp)' },
+      { file: 'Sic2Nc6-4Qc7-4Qb6', name: 'Sicilian — 2...Nc6 with 4...Qc7 / 4...Qb6' },
+    ],
+  },
+  {
+    label: 'French Defense &mdash; 1.e4 e6',
+    intro: 'Black’s solid reply: prepare ...d5 to challenge the center. Strategic, slow, and rich in pawn structures.',
+    openings: [
+      { file: 'FrenchAdvance', name: 'French — Advance Variation' },
+      { file: 'FrenchClassical', name: 'French — Classical Variation' },
+      { file: 'FrenchBurn', name: 'French — Burn Variation' },
+      { file: 'FrenchSteinitz', name: 'French — Steinitz Variation' },
+      { file: 'FrenchRubinstein', name: 'French — Rubinstein Variation' },
+      { file: 'FrenchExchange', name: 'French — Exchange Variation' },
+      { file: 'FrenchMacCutcheon', name: 'French — MacCutcheon Variation' },
+      { file: 'FrenchSchlechter', name: 'French — Schlechter Variation' },
+      { file: 'FrenchKIA', name: 'French — King’s Indian Attack' },
+      { file: 'FrTarrasch3c5', name: 'French Tarrasch — 3...c5' },
+      { file: 'FrTarrasch3Nf6', name: 'French Tarrasch — 3...Nf6' },
+      { file: 'FrTarraschOther3', name: 'French Tarrasch — Other 3rd moves' },
+      { file: 'FrWinawerMain', name: 'French Winawer — Main Line' },
+      { file: 'FrWinawerOtherB4', name: 'French Winawer — Other Black 4th moves' },
+      { file: 'FrWinawerOtherW4', name: 'French Winawer — Other White 4th moves' },
+      { file: 'FrenchOther2', name: 'French — Other 2nd moves' },
+    ],
+  },
+  {
+    label: 'Caro-Kann Defense &mdash; 1.e4 c6',
+    intro: 'Black’s most solid reply to 1.e4. Karpov and Anand both adopted it as a main weapon.',
+    openings: [
+      { file: 'Caro-KannAdv', name: 'Caro-Kann — Advance Variation' },
+      { file: 'Caro-KannClassic', name: 'Caro-Kann — Classical Variation' },
+      { file: 'Caro-KannEx', name: 'Caro-Kann — Exchange Variation' },
+      { file: 'Caro-KannPan-Bot', name: 'Caro-Kann — Panov-Botvinnik Attack' },
+      { file: 'Caro-Kann2c4', name: 'Caro-Kann — 2.c4' },
+      { file: 'Caro-Kann2Knight', name: 'Caro-Kann — Two Knights' },
+      { file: 'Caro-Kann4Nd7', name: 'Caro-Kann — 4...Nd7' },
+      { file: 'Caro-Kann4Nf6', name: 'Caro-Kann — 4...Nf6' },
+    ],
+  },
+  {
+    label: 'Other 1.e4 Replies',
+    intro: 'Pirc, Modern, Alekhine, Scandinavian, and the unorthodox lines that Black plays against 1.e4.',
+    openings: [
+      { file: 'AlekhineExchange', name: 'Alekhine’s Defense — Exchange' },
+      { file: 'AlekhineModern', name: 'Alekhine’s Defense — Modern' },
+      { file: 'Alekhine4Pawns', name: 'Alekhine’s Defense — Four Pawns Attack' },
+      { file: 'Alekhine2Nc3-d5', name: 'Alekhine’s Defense — 2.Nc3 d5' },
+      { file: 'AlekhineOther3', name: 'Alekhine’s Defense — Other 3rd moves' },
+      { file: 'PircClassical', name: 'Pirc Defense — Classical' },
+      { file: 'PircAustrian', name: 'Pirc Defense — Austrian Attack' },
+      { file: 'PircOtherBlack3', name: 'Pirc Defense — Other Black 3rd moves' },
+      { file: 'PircOtherWhite3', name: 'Pirc Defense — Other White 3rd moves' },
+      { file: 'PircOtherWhite4', name: 'Pirc Defense — Other White 4th moves' },
+      { file: 'Modern', name: 'Modern Defense' },
+      { file: 'Modern3Nc3-c6', name: 'Modern Defense — 3.Nc3 c6' },
+      { file: 'Modern3Nc3-d6', name: 'Modern Defense — 3.Nc3 d6' },
+      { file: 'Modern3Nc3Other', name: 'Modern Defense — Other 3.Nc3' },
+      { file: 'Modern3Nf3', name: 'Modern Defense — 3.Nf3' },
+      { file: 'ModernOther3', name: 'Modern Defense — Other 3rd moves' },
+      { file: 'OwenDefense', name: 'Owen’s Defense' },
+      { file: 'Scand2Qxd5-3Qa5', name: 'Scandinavian — 2...Qxd5, 3...Qa5' },
+      { file: 'Scand3Qd6-Qd8', name: 'Scandinavian — 3...Qd6 / 3...Qd8' },
+      { file: 'Scand2Nf6-3d4', name: 'Scandinavian — 2...Nf6, 3.d4' },
+      { file: 'Scand2Nf6Other', name: 'Scandinavian — Other 2...Nf6 lines' },
+      { file: 'Nimzowitsch-Larsen', name: 'Nimzowitsch-Larsen Defense' },
+    ],
+  },
+  {
+    label: 'Queen’s Pawn &mdash; 1.d4 d5',
+    intro: 'The classical fight for the center. Queen’s Gambit, Slav, Semi-Slav, and the many ways Black can hold the d5 square.',
+    openings: [
+      { file: 'QGAMain', name: 'Queen’s Gambit Accepted — Main Lines' },
+      { file: 'QGA3e4', name: 'Queen’s Gambit Accepted — 3.e4' },
+      { file: 'QGAOther3', name: 'Queen’s Gambit Accepted — Other 3rd moves' },
+      { file: 'QGAOther4', name: 'Queen’s Gambit Accepted — Other 4th moves' },
+      { file: 'QGDOrthoMain', name: 'Queen’s Gambit Declined — Orthodox Main' },
+      { file: 'QGDOrthoOther4', name: 'Queen’s Gambit Declined — Orthodox Other 4th moves' },
+      { file: 'QGD5Bf4', name: 'Queen’s Gambit Declined — 5.Bf4' },
+      { file: 'QGDExchange', name: 'Queen’s Gambit Declined — Exchange Variation' },
+      { file: 'QGDTarrasch', name: 'Queen’s Gambit Declined — Tarrasch Defense' },
+      { file: 'QGDOther34', name: 'Queen’s Gambit Declined — Other 3rd/4th moves' },
+      { file: 'QG-Albin', name: 'Queen’s Gambit — Albin Counter-Gambit' },
+      { file: 'QG-Chigorin', name: 'Queen’s Gambit — Chigorin Defense' },
+      { file: 'QGSym-Baltic', name: 'Queen’s Gambit — Symmetrical / Baltic' },
+      { file: 'SlavMain', name: 'Slav Defense — Main Lines' },
+      { file: 'SlavExchange', name: 'Slav Defense — Exchange' },
+      { file: 'Slav4a6', name: 'Slav Defense — 4...a6 (Chebanenko)' },
+      { file: 'SlavOther34', name: 'Slav Defense — Other 3rd/4th moves' },
+      { file: 'SlavOther5', name: 'Slav Defense — Other 5th moves' },
+      { file: 'SemiSlavMeran', name: 'Semi-Slav — Meran Variation' },
+      { file: 'SemiSlavBotvinnik', name: 'Semi-Slav — Botvinnik Variation' },
+      { file: 'SemiSlavOther5', name: 'Semi-Slav — Other 5th moves' },
+      { file: 'SemiTarraschMain', name: 'Semi-Tarrasch — Main Lines' },
+      { file: 'SemiTarr5e3-Nc6', name: 'Semi-Tarrasch — 5.e3 Nc6' },
+    ],
+  },
+  {
+    label: 'Indian Defenses &mdash; 1.d4 Nf6',
+    intro: 'Black develops knights and bishops before pawns. Nimzo-Indian, Queen’s Indian, King’s Indian, Grünfeld, Catalan — the modern mainstream.',
+    openings: [
+      { file: 'NimzoDefense', name: 'Nimzo-Indian — Definition' },
+      { file: 'NimzoSaemisch', name: 'Nimzo-Indian — Saemisch Variation' },
+      { file: 'NimzoLeningrad', name: 'Nimzo-Indian — Leningrad Variation' },
+      { file: 'NimzoCl4c5', name: 'Nimzo-Indian — Classical 4...c5' },
+      { file: 'NimzoCl4O-O', name: 'Nimzo-Indian — Classical 4...O-O' },
+      { file: 'NimzoClOther', name: 'Nimzo-Indian — Classical other' },
+      { file: 'NimzoRub4c5', name: 'Nimzo-Indian — Rubinstein 4...c5' },
+      { file: 'NimzoRub4O-O', name: 'Nimzo-Indian — Rubinstein 4...O-O' },
+      { file: 'NimzoRubOther', name: 'Nimzo-Indian — Rubinstein other' },
+      { file: 'Nimzo4f3', name: 'Nimzo-Indian — 4.f3' },
+      { file: 'Nimzo4Nf3', name: 'Nimzo-Indian — 4.Nf3' },
+      { file: 'NimzoOther4', name: 'Nimzo-Indian — Other 4th moves' },
+      { file: 'Bogo4Bd2', name: 'Bogo-Indian — 4.Bd2' },
+      { file: 'Bogo4Nbd2', name: 'Bogo-Indian — 4.Nbd2' },
+      { file: 'QID4a3', name: 'Queen’s Indian — 4.a3 (Petrosian)' },
+      { file: 'QID4e3', name: 'Queen’s Indian — 4.e3' },
+      { file: 'QID4g3-Ba6', name: 'Queen’s Indian — 4.g3 with ...Ba6' },
+      { file: 'QID4g3Other', name: 'Queen’s Indian — 4.g3 (other)' },
+      { file: 'QID4Nc3', name: 'Queen’s Indian — 4.Nc3' },
+      { file: 'QIDOther', name: 'Queen’s Indian — Other 4th moves' },
+      { file: 'KIDClassical', name: 'King’s Indian — Classical' },
+      { file: 'KIDSaemisch', name: 'King’s Indian — Saemisch' },
+      { file: 'KIDFianchetto', name: 'King’s Indian — Fianchetto Variation' },
+      { file: 'KIDPetrosian', name: 'King’s Indian — Petrosian Variation' },
+      { file: 'KIDAverbakh', name: 'King’s Indian — Averbakh Variation' },
+      { file: 'KID4pawns', name: 'King’s Indian — Four Pawns Attack' },
+      { file: 'KIDOther56', name: 'King’s Indian — Other 5th/6th moves' },
+      { file: 'KIDOther7', name: 'King’s Indian — Other 7th moves' },
+      { file: 'GrunfeldExchange', name: 'Grünfeld — Exchange Variation' },
+      { file: 'GrunfeldFianchetto', name: 'Grünfeld — Fianchetto Variation' },
+      { file: 'Grunfeld4Nf3', name: 'Grünfeld — 4.Nf3' },
+      { file: 'GrunfeldOther', name: 'Grünfeld — Other Variations' },
+      { file: 'CatalanOpen', name: 'Catalan — Open' },
+      { file: 'CatalanClosed', name: 'Catalan — Closed' },
+      { file: 'Catalan3Bb4', name: 'Catalan — 3...Bb4' },
+      { file: 'Catalan3c5', name: 'Catalan — 3...c5' },
+      { file: 'BenkoGambit', name: 'Benko Gambit' },
+      { file: 'ModernBenoni6e4', name: 'Modern Benoni — 6.e4' },
+      { file: 'ModernBenoni6Nf3', name: 'Modern Benoni — 6.Nf3' },
+      { file: 'SemiBenoni', name: 'Semi-Benoni' },
+      { file: 'CzechBenoni', name: 'Czech Benoni' },
+      { file: 'BudapestGambit', name: 'Budapest Gambit' },
+      { file: 'OldIndian', name: 'Old Indian Defense' },
+      { file: 'BlackKnightTango', name: 'Black Knight’s Tango' },
+    ],
+  },
+  {
+    label: 'Dutch &amp; Flank Defenses',
+    intro: 'The Dutch (1...f5) and other ways to fight 1.d4 without taking the center pawns.',
+    openings: [
+      { file: 'DutchLeningrad', name: 'Dutch — Leningrad Variation' },
+      { file: 'DutchClassical', name: 'Dutch — Classical Variation' },
+      { file: 'Dutch3Nc3', name: 'Dutch — 3.Nc3' },
+      { file: 'DutchOther', name: 'Dutch — Other Variations' },
+    ],
+  },
+  {
+    label: 'Flank Openings &amp; Systems',
+    intro: 'English, Reti, London, Trompowsky — the modern “system” openings where White avoids early pawn confrontations.',
+    openings: [
+      { file: 'EnglishSym3d4', name: 'English Symmetrical — 3.d4' },
+      { file: 'EnglishSymMain', name: 'English Symmetrical — Main Lines' },
+      { file: 'EnglishSymHedgehog', name: 'English Symmetrical — Hedgehog' },
+      { file: 'EnglishSymFourKnights', name: 'English Symmetrical — Four Knights' },
+      { file: 'EnglishSymOtherB3', name: 'English Symmetrical — Other B3' },
+      { file: 'EngSymDoubleFianchetto', name: 'English Symmetrical — Double Fianchetto' },
+      { file: 'EnglishSicRev2g3', name: 'English Sicilian Reversed — 2.g3' },
+      { file: 'EnglishSicRev4Knights', name: 'English Sicilian Reversed — 4 Knights' },
+      { file: 'EnglishSicRevBremen', name: 'English Sicilian Reversed — Bremen' },
+      { file: 'EnglishSicRevClosed', name: 'English Sicilian Reversed — Closed' },
+      { file: 'EnglishSicRevOtherB2', name: 'English Sicilian Reversed — Other B2' },
+      { file: 'EnglishFlohr-Mikenas', name: 'English — Flohr-Mikenas Variation' },
+      { file: 'English1b6', name: 'English — 1...b6' },
+      { file: 'English1c6', name: 'English — 1...c6' },
+      { file: 'English1e6Main', name: 'English — 1...e6 Main' },
+      { file: 'English1e6-2Nc3-d5', name: 'English — 1...e6 2.Nc3 d5' },
+      { file: 'English1e6-2Nf3-d5', name: 'English — 1...e6 2.Nf3 d5' },
+      { file: 'English1f5', name: 'English — 1...f5' },
+      { file: 'English1g6', name: 'English — 1...g6' },
+      { file: 'English1Nf6-2g3', name: 'English — 1...Nf6 2.g3' },
+      { file: 'English1Nf6-2Nc3', name: 'English — 1...Nf6 2.Nc3' },
+      { file: 'English1Nf6-2Nf3', name: 'English — 1...Nf6 2.Nf3' },
+      { file: 'Reti2b3', name: 'Réti Opening — 2.b3' },
+      { file: 'Reti2c4', name: 'Réti Opening — 2.c4' },
+      { file: 'RetiKIA', name: 'Réti — King’s Indian Attack' },
+      { file: 'London2e6', name: 'London System — ...e6 lines' },
+      { file: 'London2g6', name: 'London System — ...g6 lines' },
+      { file: 'Colle', name: 'Colle System' },
+      { file: 'Trompowsky2e6', name: 'Trompowsky — 2...e6' },
+      { file: 'Trompowsky2Ne4', name: 'Trompowsky — 2...Ne4' },
+      { file: 'TrompowskyOther', name: 'Trompowsky — Other 2nd moves' },
+      { file: 'Torre2e6', name: 'Torre Attack — ...e6' },
+      { file: 'Torre2g6', name: 'Torre Attack — ...g6' },
+      { file: 'Bird', name: 'Bird’s Opening (1.f4)' },
+      { file: 'Sokolsky', name: 'Sokolsky / Polish Opening (1.b4)' },
+      { file: 'Hodgson', name: 'Hodgson Attack' },
+      { file: 'Dunst', name: 'Dunst Opening (1.Nc3)' },
+    ],
+  },
+];
+
 // Curated player collections — all hosted on Bunny CDN at /players/<file>.pgn.
 const playersModern = [
   { name: 'Magnus Carlsen', file: 'Carlsen' },
@@ -278,6 +775,21 @@ const playersClassical = [
 .tree-leaf-code { font-family: 'Playfair Display', Georgia, serif; color: var(--gold); font-weight: 600; flex-shrink: 0; min-width: 38px; }
 .tree-leaf-name { color: var(--text); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.8rem; }
 .tree-leaf-count { color: var(--text-3); font-size: 0.72rem; font-variant-numeric: tabular-nums; flex-shrink: 0; }
+
+/* Tournament series + Opening family collapsible blocks */
+.tournament-series, .opening-family { margin: 0 0 1.2rem; background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+.tournament-series-summary, .opening-family-summary { padding: 1rem 1.4rem; cursor: pointer; font-family: 'Playfair Display', Georgia, serif; color: var(--gold); font-size: 1.05rem; list-style: none; display: flex; align-items: center; justify-content: space-between; user-select: none; gap: 0.8rem; }
+.tournament-series-summary::-webkit-details-marker, .opening-family-summary::-webkit-details-marker { display: none; }
+.tournament-series-summary::after, .opening-family-summary::after { content: "\25BE"; color: var(--gold-dim); transition: transform 0.2s; font-size: 0.85rem; }
+.tournament-series[open] .tournament-series-summary::after,
+.opening-family[open] .opening-family-summary::after { transform: rotate(180deg); }
+.tournament-series-summary:hover, .opening-family-summary:hover { background: var(--bg-3); }
+.tournament-series-name, .opening-family-name { flex: 1; }
+.tournament-series-count, .opening-family-count { color: var(--text-3); font-family: 'Inter', system-ui, sans-serif; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.tournament-series-intro, .opening-family-intro { padding: 0 1.4rem 1rem; margin: 0 0 0.8rem; font-size: 0.92rem; color: var(--text-2); line-height: 1.55; font-style: italic; border-bottom: 1px solid var(--border); }
+.tournament-series .games-grid, .opening-family .games-grid { padding: 0 1.4rem 1.2rem; }
+.tournament-card { display: flex; flex-direction: column; gap: 0.4rem; }
+.opening-card .game-card-name { font-size: 0.92rem; }
 
 /* ===== Viewer Modal ===== */
 .viewer-overlay { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.92); padding: 1.5rem; overflow-y: auto; }
@@ -502,17 +1014,66 @@ const playersClassical = [
     </section>
 
     <section class="tab-panel" data-panel="events">
-      <div class="placeholder-card">
-        <h3>By Tournament &mdash; coming soon</h3>
-        <p>Almost a thousand famous tournaments are sitting in the library &mdash; the World Championships, the Candidates, Norway Chess, the U.S. Championship, and many more &mdash; but we haven't finished organizing the browser for them yet. Check back in.</p>
+      <div class="panel-intro">
+        <strong>The famous tournaments of chess history</strong> &mdash; organized by the series that defined each era. The World Championship matches go back to 1886; the Candidates Tournament has been running every Olympic cycle since 1950; Wijk aan Zee has been held every January since 1968. Pick any year and play through the games.
       </div>
+      <div class="search-row">
+        <input type="text" class="search-input" id="tournament-search" placeholder="Search by tournament name (e.g. Carlsen, Reykjavik, Linares)..." aria-label="Search tournament" />
+        <span class="search-info">{tournamentSeries.reduce((s, t) => s + t.editions.length, 0)} curated editions across {tournamentSeries.length} series</span>
+      </div>
+
+      {tournamentSeries.map((series) => (
+        <details class="tournament-series" open>
+          <summary class="tournament-series-summary">
+            <span class="tournament-series-name">{series.name}</span>
+            <span class="tournament-series-count">{series.editions.length} editions</span>
+          </summary>
+          <p class="tournament-series-intro">{series.intro}</p>
+          <div class="games-grid">
+            {series.editions.map((e) => (
+              <div class="game-card eco-card tournament-card" data-search={(series.name + ' ' + e.file + ' ' + (e.note || '')).toLowerCase()} data-file={`events/${e.file}.pgn`} data-label={`${series.name} — ${e.year}${e.note ? ' (' + e.note + ')' : ''}`} role="button" tabindex="0">
+                <div class="game-card-head">
+                  <span class="game-card-code">{e.year}</span>
+                </div>
+                <div class="game-card-name">{e.note || series.name}</div>
+                <div class="game-card-stats">Play the games &rarr;</div>
+              </div>
+            ))}
+          </div>
+        </details>
+      ))}
+
+      <p class="tree-help" style="margin-top:2rem; padding:1rem; background:var(--bg-2); border-radius:8px;">
+        <strong>Note:</strong> The library on the network has roughly 980 tournaments in total. The ones above are the curated headline series &mdash; the events that shaped modern chess. We&rsquo;ll add more browseable categories (national championships, junior events, women&rsquo;s events) in upcoming releases.
+      </p>
     </section>
 
     <section class="tab-panel" data-panel="openings">
-      <div class="placeholder-card">
-        <h3>By Opening Name &mdash; coming soon</h3>
-        <p>233 famous opening variations are waiting &mdash; the Sicilian Najdorf, the Berlin Defense, the King's Indian, the Catalan, and many more &mdash; named for the players who made them famous. For today, use the <strong>By Opening (Modern)</strong> tab and pick a code; every named opening lives inside one of those families.</p>
+      <div class="panel-intro">
+        <strong>All 229 named opening variations</strong> &mdash; grouped into the major families the way you&rsquo;d find them in a chess book. The Sicilian Najdorf, the Berlin Defense, the King&rsquo;s Indian, the Catalan Open &mdash; the famous names that chess players speak about every day. Click any opening to play through every game we have in that line.
       </div>
+      <div class="search-row">
+        <input type="text" class="search-input" id="opening-search" placeholder="Search by opening name (e.g. Najdorf, Berlin, Catalan, Marshall)..." aria-label="Search opening" />
+        <span class="search-info">{openingFamilies.reduce((s, f) => s + f.openings.length, 0)} openings across {openingFamilies.length} families</span>
+      </div>
+
+      {openingFamilies.map((family) => (
+        <details class="opening-family" open>
+          <summary class="opening-family-summary">
+            <span class="opening-family-name" set:html={family.label}></span>
+            <span class="opening-family-count">{family.openings.length} openings</span>
+          </summary>
+          <p class="opening-family-intro">{family.intro}</p>
+          <div class="games-grid">
+            {family.openings.map((o) => (
+              <div class="game-card eco-card opening-card" data-search={(family.label + ' ' + o.name).toLowerCase()} data-file={`openings/${o.file}.pgn`} data-label={o.name} role="button" tabindex="0">
+                <div class="game-card-name">{o.name}</div>
+                <div class="game-card-stats">Play the games &rarr;</div>
+              </div>
+            ))}
+          </div>
+        </details>
+      ))}
     </section>
 
     <p class="footnote">
@@ -590,6 +1151,8 @@ const playersClassical = [
   attachSearch('eco-search', '#eco-grid .eco-card', 'search');
   attachSearch('hist-search', '#hist-grid .eco-card', 'search');
   attachSearch('player-search', '.player-card', 'name');
+  attachSearch('tournament-search', '.tournament-card', 'search');
+  attachSearch('opening-search', '.opening-card', 'search');
 
   // ----- Click to open viewer -----
   document.querySelectorAll('.game-card[data-file]').forEach((card) => {

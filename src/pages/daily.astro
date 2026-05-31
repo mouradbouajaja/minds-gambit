@@ -4,6 +4,18 @@ import { getCollection } from 'astro:content';
 
 const today = new Date();
 const dateLine = today.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+// Edition counter — auto-increments daily from the launch date (May 30, 2026 = Vol. 1, No. 1).
+// VOL. bumps and NO. resets to 1 on each launch anniversary (May 30).
+const LAUNCH = new Date(2026, 4, 30); // May is month index 4
+const MS_PER_DAY = 86400000;
+const startOfDay = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+const todayMidnight = startOfDay(today);
+// Most recent launch anniversary (May 30) on or before today.
+let anniversary = new Date(todayMidnight.getFullYear(), 4, 30);
+if (anniversary > todayMidnight) anniversary = new Date(todayMidnight.getFullYear() - 1, 4, 30);
+// Before launch, pin to Vol. 1, No. 1.
+const volumeNumber = todayMidnight < LAUNCH ? 1 : (anniversary.getFullYear() - LAUNCH.getFullYear()) + 1;
+const editionNumber = todayMidnight < LAUNCH ? 1 : Math.floor((todayMidnight - anniversary) / MS_PER_DAY) + 1;
 import ChessBoard from '../components/daily/ChessBoard.astro';
 
 // Quote of the Day: one chess quote per weekday (0 = Sunday ... 6 = Saturday).
@@ -47,7 +59,7 @@ const hasStories = all.length > 0;
     <div class="tdg-sheet">
 
       <div class="tdg-strip">
-        <span>Vol. 1 — No. 1</span>
+        <span>Vol. {volumeNumber} — No. {editionNumber}</span>>
         <span>The Mind's Gambit</span>
         <span>Price: Free</span>
       </div>

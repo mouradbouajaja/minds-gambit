@@ -34,7 +34,7 @@ const SECTION_LABELS = {
 // Lead story: an explicit lead flag wins, otherwise the newest non-local story.
 const lead = all.find((s) => s.data.lead) || all.find((s) => s.data.section !== 'local') || all[0] || null;
 // Secondary column: non-local stories that are not the lead (max 4).
-const secondary = all.filter((s) => s.data.section !== 'local' && s.id !== (lead && lead.id)).slice(0, 4);
+const secondary = all.filter((s) => s.data.section !== 'local' && s.id !== (lead && lead.id)).slice(0, 8);
 // Local section: Pittsburgh & Pennsylvania stories (max 4).
 const local = all.filter((s) => s.data.section === 'local').slice(0, 4);
 
@@ -361,7 +361,7 @@ const hasStories = all.length > 0;
           <h4 class="tdg-archive-title">Edition Archive</h4>
           <p class="tdg-archive-intro">Every story published in The Daily Gambit, newest first.</p>
           <ul class="tdg-archive-list">
-                        {all.slice(0, 6).map((s) => (
+                        {all.slice(0, 9).map((s) => (
               <li class="tdg-archive-item">
                 <span class="tdg-archive-date">{s.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
                 <span class="tdg-archive-sec">{SECTION_LABELS[s.data.section]}</span>
@@ -373,7 +373,7 @@ const hasStories = all.length > 0;
               </li>
             ))}
           </ul>
-          {all.length > 6 && (
+          {all.length > 9 && (
             <p class="tdg-archive-more"><a href="/daily/archive">View the full archive ({all.length} editions) &rarr;</a></p>
           )}
         </section>

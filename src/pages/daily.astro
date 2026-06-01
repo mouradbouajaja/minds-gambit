@@ -34,6 +34,15 @@ const todaysQuote = QUOTES[today.getDay()];
 const all = (await getCollection('daily', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
+// Isolate the latest published edition (by date) for the front page.
+// All stories in a single edition share the same frontmatter date:,
+// so filtering by ===latestDate cleanly groups one edition's stories.
+// The archive (further down) still reads from all to preserve history.
+const latestDate = all.length ? all[0].data.date.valueOf() : null;
+const edition = latestDate !== null
+  ? all.filter((s) => s.data.date.valueOf() === latestDate)
+  : [];
+
 const SECTION_LABELS = {
   world: 'World Chess',
   tournaments: 'Tournaments',
@@ -45,13 +54,12 @@ const SECTION_LABELS = {
 };
 
 // Lead story: an explicit lead flag wins, otherwise the newest non-local story.
-const lead = all.find((s) => s.data.lead) || all.find((s) => s.data.section !== 'local') || all[0] || null;
+const lead = edition.find((s) => s.data.lead) || edition.find((s) => s.data.section !== 'local') || edition[0] || null;
 // Secondary column: non-local stories that are not the lead (max 4).
-const secondary = all.filter((s) => s.data.section !== 'local' && s.id !== (lead && lead.id)).slice(0, 8);
+const secondary = edition.filter((s) => s.data.section !== 'local' && s.id !== (lead && lead.id)).slice(0, 8);
 // Local section: Pittsburgh & Pennsylvania stories (max 4).
-const local = all.filter((s) => s.data.section === 'local').slice(0, 4);
-
-const hasStories = all.length > 0;
+const local = edition.filter((s) => s.data.section === 'local').slice(0, 4);
+const hasStories = edition.length > 0;
 ---
 
 <BaseLayout title="The Daily Gambit — Chess News, Results & Analysis" description="The Daily Gambit: your morning briefing from the chess world. Tournament results, player news, opening theory, puzzles, local Pittsburgh & Pennsylvania chess, and analysis — gathered fresh every day.">

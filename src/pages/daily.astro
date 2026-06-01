@@ -58,7 +58,9 @@ const lead = edition.find((s) => s.data.lead) || edition.find((s) => s.data.sect
 // Secondary column: non-local stories that are not the lead (max 4).
 const secondary = edition.filter((s) => s.data.section !== 'local' && s.id !== (lead && lead.id)).slice(0, 8);
 // Local section: Pittsburgh & Pennsylvania stories (max 4).
-const local = edition.filter((s) => s.data.section === 'local').slice(0, 4);
+// Local section: latest Pittsburgh & Pennsylvania stories from the full archive (max 4),
+  // pinned across editions so local visitors always see upcoming PA events.
+  const local = all.filter((s) => s.data.section === 'local').slice(0, 4);
 const hasStories = edition.length > 0;
 ---
 

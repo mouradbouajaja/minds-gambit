@@ -38,6 +38,57 @@ const standingsWomen = (lead && lead.data.standingsWomen) || [];
 const standingsRound = (lead && lead.data.standingsRound) || 'Round 5';
 const resultsOpen = (lead && lead.data.resultsOpen) || '';
 const resultsWomen = (lead && lead.data.resultsWomen) || '';
+
+// ---- Puzzle of the Day (build-time fetch from Bunny CDN pool) ----
+function getDayOfYearET(d = new Date()) {
+  const et = new Date(d.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+  const start = new Date(et.getFullYear(), 0, 0);
+  return Math.floor((et.getTime() - start.getTime()) / 86400000);
+}
+const FALLBACK_PUZZLE = { fen: '8/8/8/8/8/8/8/8 w - - 0 1', moves: '', mateIn: 2 };
+let puzzle = FALLBACK_PUZZLE;
+try {
+  const res = await fetch('https://mindsgambit-cdn.b-cdn.net/puzzles/puzzle-pool.json');
+  if (res.ok) {
+    const pool = await res.json();
+    const list = pool.puzzles || [];
+    if (list.length) puzzle = list[getDayOfYearET(today) % list.length];
+  }
+} catch (e) { /* keep fallback so build never breaks */ }
+
+// Parse FEN placement field into 64 cells (rank 8..1, file a..h).
+const PIECE_BASE = 'https://cdn.jsdelivr.net/gh/oakmac/chessboardjs@v1.0.0/website/img/chesspieces/wikipedia/';
+const PIECE_CODE = { p:'bP', n:'bN', b:'bB', r:'bR', q:'bQ', k:'bK', P:'wP', N:'wN', B:'wB', R:'wR', Q:'wQ', K:'wK' };
+const PIECE_ALT = { p:'black pawn', n:'black knight', b:'black bishop', r:'black rook', q:'black queen', k:'black king', P:'white pawn', N:'white knight', B:'white bishop', R:'white rook', Q:'white queen', K:'white king' };
+const fenParts = (puzzle.fen || '').split(' ');
+const placement = fenParts[0] || '8/8/8/8/8/8/8/8';
+const activeColor = fenParts[1] || 'w';
+const files = ['a','b','c','d','e','f','g','h'];
+const puzzleCells = [];
+const rows = placement.split('/');
+for (let r = 0; r < 8; r++) {
+  const rankNum = 8 - r;
+  let fileIdx = 0;
+  const row = rows[r] || '8';
+  for (const ch of row) {
+    if (/[1-8]/.test(ch)) {
+      const n = parseInt(ch, 10);
+      for (let k = 0; k < n; k++) {
+        const sq = files[fileIdx] + rankNum;
+        const shade = ((fileIdx + r) % 2 === 0) ? 'cb-light' : 'cb-dark';
+        puzzleCells.push({ square: sq, shade, piece: null, alt: '' });
+        fileIdx++;
+      }
+    } else {
+      const sq = files[fileIdx] + rankNum;
+      const shade = ((fileIdx + r) % 2 === 0) ? 'cb-light' : 'cb-dark';
+      puzzleCells.push({ square: sq, shade, piece: PIECE_BASE + PIECE_CODE[ch] + '.png', alt: PIECE_ALT[ch] || '' });
+      fileIdx++;
+    }
+  }
+}
+const sideToMove = activeColor === 'b' ? 'Black to move' : 'White to move';
+const puzzleTitle = (activeColor === 'b' ? 'Black' : 'White') + ' to move, mate in ' + puzzle.mateIn + '.';
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -305,29 +356,24 @@ section.archive { margin-top: 2rem; border-top: 3px double #1a1a1a; padding-top:
 <a class="more" href="#">More... →</a>
 </div>
 </article>
-<section class="cb-board-card">
+<section class="cb-board-card" data-puzzle-card>
 <p class="cb-kicker"><span class="slot-tag">FEATURE</span> Puzzle of the Day</p>
-<h3>White to move, mate in 2.</h3>
-<p class="cb-meta">From the Mind’s Gambit Tactics Trainer · Mate in 2</p>
+<h3 data-puzzle-title>{puzzleTitle}</h3>
+<p class="cb-meta">From the Mind’s Gambit Tactics Trainer · Mate in {puzzle.mateIn}</p>
 <div class="cb-board-wrap">
 <div class="cb-board-frame">
-<div class="cb-board">
-<div class="cb-sq cb-light"></div><div class="cb-sq cb-dark"></div><div class="cb-sq cb-light"></div><div class="cb-sq cb-dark"></div><div class="cb-sq cb-light"></div><div class="cb-sq cb-dark"></div><div class="cb-sq cb-light"></div><div class="cb-sq cb-dark"><img src="https://cdn.jsdelivr.net/gh/oakmac/chessboardjs@v1.0.0/website/img/chesspieces/wikipedia/bK.png" alt="black king" /></div>
-<div class="cb-sq cb-dark"></div><div class="cb-sq cb-light"></div><div class="cb-sq cb-dark"></div><div class="cb-sq cb-light"></div><div class="cb-sq cb-dark"></div><div class="cb-sq cb-light"></div><div class="cb-sq cb-dark"><img src="https://cdn.jsdelivr.net/gh/oakmac/chessboardjs@v1.0.0/website/img/chesspieces/wikipedia/bP.png" alt="black pawn" /></div><div class="cb-sq cb-light"><img src="https://cdn.jsdelivr.net/gh/oakmac/chessboardjs@v1.0.0/website/img/chesspieces/wikipedia/bP.png" alt="black pawn" /></div>
-<div class="cb-sq cb-light"></div><div class="cb-sq cb-dark"></div><div class="cb-sq cb-light"></div><div class="cb-sq cb-dark"></div><div class="cb-sq cb-light"></div><div class="cb-sq cb-dark"></div><div class="cb-sq cb-light"></div><div class="cb-sq cb-dark"></div>
-<div class="cb-sq cb-dark"></div><div class="cb-sq cb-light"></div><div class="cb-sq cb-dark"></div><div class="cb-sq cb-light"></div><div class="cb-sq cb-dark"></div><div class="cb-sq cb-light"></div><div class="cb-sq cb-dark"><img src="https://cdn.jsdelivr.net/gh/oakmac/chessboardjs@v1.0.0/website/img/chesspieces/wikipedia/wR.png" alt="white rook" /></div><div class="cb-sq cb-light"></div>
-<div class="cb-sq cb-light"></div><div class="cb-sq cb-dark"></div><div class="cb-sq cb-light"></div><div class="cb-sq cb-dark"></div><div class="cb-sq cb-light"></div><div class="cb-sq cb-dark"></div><div class="cb-sq cb-light"></div><div class="cb-sq cb-dark"><img src="https://cdn.jsdelivr.net/gh/oakmac/chessboardjs@v1.0.0/website/img/chesspieces/wikipedia/wQ.png" alt="white queen" /></div>
-<div class="cb-sq cb-dark"></div><div class="cb-sq cb-light"></div><div class="cb-sq cb-dark"></div><div class="cb-sq cb-light"></div><div class="cb-sq cb-dark"></div><div class="cb-sq cb-light"></div><div class="cb-sq cb-dark"></div><div class="cb-sq cb-light"></div>
-<div class="cb-sq cb-light"></div><div class="cb-sq cb-dark"></div><div class="cb-sq cb-light"></div><div class="cb-sq cb-dark"></div><div class="cb-sq cb-light"></div><div class="cb-sq cb-dark"></div><div class="cb-sq cb-light"><img src="https://cdn.jsdelivr.net/gh/oakmac/chessboardjs@v1.0.0/website/img/chesspieces/wikipedia/wK.png" alt="white king" /></div><div class="cb-sq cb-dark"></div>
-<div class="cb-sq cb-dark"></div><div class="cb-sq cb-light"></div><div class="cb-sq cb-dark"></div><div class="cb-sq cb-light"></div><div class="cb-sq cb-dark"></div><div class="cb-sq cb-light"></div><div class="cb-sq cb-dark"></div><div class="cb-sq cb-light"></div>
+<div class="cb-board" data-puzzle-board data-fen={puzzle.fen} data-moves={puzzle.moves} data-matein={String(puzzle.mateIn)}>
+{puzzleCells.map((cell) => (
+<div class={"cb-sq " + cell.shade} data-sq={cell.square}>{cell.piece && (<img src={cell.piece} alt={cell.alt} />)}</div>
+))}
 </div>
 <div class="cb-files"><span>a</span><span>b</span><span>c</span><span>d</span><span>e</span><span>f</span><span>g</span><span>h</span></div>
 <div class="cb-ranks"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div>
 </div>
 <div class="cb-info">
-<p class="cb-side-to-move">White to move</p>
+<p class="cb-side-to-move" data-side-to-move>{sideToMove}</p>
 <p>A fresh tactic to sharpen your eye. Click a piece and find the mate — the opponent will respond until you crack it.</p>
-<p style="font-size:0.78rem; color:#8a6d1d; font-style:italic; margin-top:0.4rem;">Tap pieces to play. Wrong moves bounce back. No spoilers.</p>
+<p class="cb-feedback" data-puzzle-feedback style="font-size:0.78rem; color:#8a6d1d; font-style:italic; margin-top:0.4rem; min-height:1.1rem;">Tap pieces to play. Wrong moves bounce back. No spoilers.</p>
 <a href="/daily/puzzles" class="cb-more">Browse past daily puzzles →</a>
 </div>
 </div>
@@ -345,7 +391,7 @@ section.archive { margin-top: 2rem; border-top: 3px double #1a1a1a; padding-top:
 <aside class="col-side">
 <div class="promo-box">
 <div class="promo-img">
-<img src="https://drive.google.com/thumbnail?id=13xbClqtXa5pdVSZMuuCmVyZk1M4ExdcR&sz=w400" alt="The Mind’s Gambit - book cover" onerror="this.style.background='linear-gradient(135deg,#b8902a,#8a6d1d)';this.alt='[ Cover loads from /public/book-cover.png in production ]'"/>
+<img src="/daily/book-cover.png" alt="The Mind’s Gambit - book cover" onerror="this.style.background='linear-gradient(135deg,#b8902a,#8a6d1d)';this.alt='[ Cover loads from /public/book-cover.png in production ]'"/>
 </div>
 <h4>The Mind’s Gambit</h4>
 <p>The book by Mourad Bouajaja — Chess, Madness, and the Battle for the Mind.</p>
@@ -420,8 +466,8 @@ section.archive { margin-top: 2rem; border-top: 3px double #1a1a1a; padding-top:
 <div>
 <div class="game-wrap">
 <div>
-<div class="mini-board"><img src="file:///C:/Users/moura/Desktop/Game%20of%20the%20Week/330px-Chess_pieces_close_up%20%28%20Game%20of%20The%20week%29.jpg" alt="Chess pieces, close-up"/></div>
-<p class="mini-caption">Chess pieces.<br>Photo: <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Wikimedia Commons</a></p>
+<div class="mini-board"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Chess_pieces_close_up.jpg" alt="Chess pieces, close-up"/></div>
+<p class="mini-caption">Chess pieces.<br>Photo: Aaaatu, CC BY-SA 4.0 — <a href="https://commons.wikimedia.org/wiki/File:Chess_pieces_close_up.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></p>
 </div>
 <div>
 <p class="col-kicker"><span class="slot-tag">GAME 1</span> {todaysGames.men.kicker}</p>
@@ -435,8 +481,8 @@ section.archive { margin-top: 2rem; border-top: 3px double #1a1a1a; padding-top:
 <div>
 <div class="game-wrap">
 <div>
-<div class="mini-board"><img src="file:///C:/Users/moura/Desktop/Game%20of%20the%20Week/330px-Schaken.svg%20%28%20Game%20of%20the%20week%29.png" alt="Schaken (chess) - Wikimedia illustration"/></div>
-<p class="mini-caption">Schaken (chess).<br>Photo: <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Wikimedia Commons</a></p>
+<div class="mini-board"><img src="https://upload.wikimedia.org/wikipedia/commons/4/40/Schaken.svg" alt="Schaken (chess) - Wikimedia illustration"/></div>
+<p class="mini-caption">Schaken (chess).<br>Public domain (CC0) — <a href="https://commons.wikimedia.org/wiki/File:Schaken.svg" target="_blank" rel="noopener">Wikimedia Commons</a></p>
 </div>
 <div>
 <p class="col-kicker"><span class="slot-tag">GAME 2</span> {todaysGames.women.kicker}</p>
@@ -456,9 +502,9 @@ section.archive { margin-top: 2rem; border-top: 3px double #1a1a1a; padding-top:
 <div>
 <figure class="origin-fig">
 <div class="fig-img">
-<img src="file:///C:/Users/moura/Desktop/Game%20of%20the%20Week/%28%20History%29250px-Ladies_playing_Chess%2C_Arki_School_of_Art%2C_attributed_to_Basant_Singh%2C_circa_1930_CE%2C_Bhuri_Singh_Museum%2C_Chamba%2C_Himachal_Pradesh.jpg" alt="Ladies playing chess - Arki School of Art, attributed to Basant Singh, c. 1930 CE"/>
+<img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Ladies_playing_Chess%2C_Arki_School_of_Art%2C_attributed_to_Basant_Singh%2C_circa_1930_CE%2C_Bhuri_Singh_Museum%2C_Chamba%2C_Himachal_Pradesh.jpg" alt="Ladies playing chess - Arki School of Art, attributed to Basant Singh, c. 1930 CE"/>
 </div>
-<figcaption>Ladies Playing Chess. Arki School of Art, attributed to Basant Singh, c. 1930 CE. Bhuri Singh Museum, Chamba, Himachal Pradesh. <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Wikimedia Commons</a> — public domain.</figcaption>
+<figcaption>Ladies Playing Chess. Arki School of Art, attributed to Basant Singh, c. 1930 CE. Bhuri Singh Museum, Chamba, Himachal Pradesh. Photo: SpeakingArch, CC BY-SA 4.0 — <a href="https://commons.wikimedia.org/wiki/File:Ladies_playing_Chess,_Arki_School_of_Art,_attributed_to_Basant_Singh,_circa_1930_CE,_Bhuri_Singh_Museum,_Chamba,_Himachal_Pradesh.jpg" target="_blank" rel="noopener">Wikimedia Commons</a>.</figcaption>
 </figure>
 <p class="col-kicker"><span class="slot-tag">PERM A</span> India · Chaturanga</p>
 <h3 class="col-head">A Game Named for an Army</h3>
@@ -467,9 +513,9 @@ section.archive { margin-top: 2rem; border-top: 3px double #1a1a1a; padding-top:
 <div>
 <figure class="origin-fig">
 <div class="fig-img">
-<img src="file:///C:/Users/moura/Desktop/Game%20of%20the%20Week/%28%20History%29330px-Book_of_chess_and_dice%2C_page_0044R._Arab_Muslims_in_Spain.jpg" alt="Arab Muslims in Spain playing chess - from the Book of Chess and Dice"/>
+<img src="https://upload.wikimedia.org/wikipedia/commons/d/d4/Book_of_chess_and_dice%2C_page_0044R._Arab_Muslims_in_Spain.jpg" alt="Arab Muslims in Spain playing chess - from the Book of Chess and Dice"/>
 </div>
-<figcaption>Arab Muslims in Spain playing chess. Page from the Book of Chess and Dice (Libro de los Juegos), c. 1283. <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Wikimedia Commons</a> — public domain.</figcaption>
+<figcaption>Arab Muslims in Spain playing chess. Page from the Book of Chess and Dice (Libro de los Juegos), c. 1283. Public domain — <a href="https://commons.wikimedia.org/wiki/File:Book_of_chess_and_dice,_page_0044R._Arab_Muslims_in_Spain.jpg" target="_blank" rel="noopener">Wikimedia Commons</a>.</figcaption>
 </figure>
 <p class="col-kicker"><span class="slot-tag">PERM B</span> Persia &amp; Arabia · Shatranj</p>
 <h3 class="col-head">The Geographer Who Wrote It Down</h3>
@@ -505,5 +551,76 @@ section.archive { margin-top: 2rem; border-top: 3px double #1a1a1a; padding-top:
 <p>The Daily Gambit is published by The Mind’s Gambit. <a href="/">Return to The Mind’s Gambit →</a></p>
 </footer>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chess.js@0.13.4/chess.min.js"></script>
+<script>
+(function () {
+  var board = document.querySelector('[data-puzzle-board]');
+  if (!board || typeof Chess === 'undefined') return;
+  var fen = board.getAttribute('data-fen');
+  var moves = (board.getAttribute('data-moves') || '').trim().split(/\s+/).filter(Boolean);
+  if (!fen || moves.length === 0) return;
+  var card = document.querySelector('[data-puzzle-card]');
+  var feedback = card.querySelector('[data-puzzle-feedback]');
+  var titleEl = card.querySelector('[data-puzzle-title]');
+  var game = new Chess(fen);
+  var step = 0;
+  var solved = false;
+  var selected = null;
+  var PIECE_BASE = 'https://cdn.jsdelivr.net/gh/oakmac/chessboardjs@v1.0.0/website/img/chesspieces/wikipedia/';
+  function codeFor(p){ return (p.color === 'w' ? 'w' : 'b') + p.type.toUpperCase(); }
+  function altFor(p){ var names={p:'pawn',n:'knight',b:'bishop',r:'rook',q:'queen',k:'king'}; return (p.color==='w'?'white ':'black ')+names[p.type]; }
+  function cellFor(sq){ return board.querySelector('[data-sq="' + sq + '"]'); }
+  function clearSel(){ if(selected){ var c=cellFor(selected); if(c) c.style.outline=''; selected=null; } }
+  function repaint(){
+    var cells = board.querySelectorAll('[data-sq]');
+    cells.forEach(function(cell){
+      var sq = cell.getAttribute('data-sq');
+      var p = game.get(sq);
+      cell.innerHTML = '';
+      if (p) { var img=document.createElement('img'); img.src=PIECE_BASE+codeFor(p)+'.png'; img.alt=altFor(p); cell.appendChild(img); }
+    });
+  }
+  function setFeedback(msg){ if(feedback) feedback.textContent = msg; }
+  function freezeSolved(lastTo){
+    solved = true; clearSel();
+    var c = cellFor(lastTo); if(c) c.style.boxShadow = 'inset 0 0 0 4px #d6b85a';
+    if (titleEl) { titleEl.innerHTML = ''; var a=document.createElement('a'); a.href='/chess-school/tactics'; a.textContent='Solved! \u2713 Train more \u2192'; a.style.color='#8a6d1d'; a.style.textDecoration='none'; titleEl.appendChild(a); }
+    setFeedback('');
+  }
+  function autoPlay(uci){
+    var mv = game.move({ from: uci.slice(0,2), to: uci.slice(2,4), promotion: uci.slice(4,5) || undefined });
+    if (mv) { repaint(); }
+  }
+  function tryUserMove(from, to){
+    if (solved) return;
+    var expected = moves[step];
+    var promo = expected.length > 4 ? expected.slice(4,5) : undefined;
+    var uci = from + to + (promo || '');
+    if (uci !== expected) { setFeedback('Not quite \u2014 try again.'); return false; }
+    game.move({ from: from, to: to, promotion: promo });
+    repaint(); step++;
+    if (step >= moves.length) { freezeSolved(to); return true; }
+    setFeedback('');
+    var opp = moves[step];
+    setTimeout(function(){ autoPlay(opp); step++; }, 400);
+    return true;
+  }
+  board.addEventListener('click', function(ev){
+    if (solved) return;
+    var cell = ev.target.closest('[data-sq]'); if(!cell) return;
+    var sq = cell.getAttribute('data-sq');
+    var p = game.get(sq);
+    var sideChar = game.turn();
+    if (selected === null) {
+      if (p && p.color === sideChar) { selected = sq; cell.style.outline = '3px solid #d6b85a'; cell.style.outlineOffset = '-3px'; }
+      return;
+    }
+    if (sq === selected) { clearSel(); return; }
+    if (p && p.color === sideChar) { clearSel(); selected = sq; cell.style.outline = '3px solid #d6b85a'; cell.style.outlineOffset = '-3px'; return; }
+    var from = selected; clearSel();
+    tryUserMove(from, sq);
+  });
+})();
+</script>
 </body>
 </html>

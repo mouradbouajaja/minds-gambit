@@ -11,6 +11,9 @@ const dateLine = today.toLocaleDateString('en-US', { timeZone: 'America/New_York
 const todaysQuote = getDailyQuote(today);
 const todaysPlayer = getDailyPlayer(today);
 const todaysArchive = getDailyArchive(today);
+const SIL_NEUTRAL = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 180'%3E%3Crect width='160' height='180' fill='%232a2a2a'/%3E%3Cg fill='%23565049'%3E%3Ccircle cx='80' cy='68' r='30'/%3E%3Cpath d='M22 180c0-43 26-62 58-62s58 19 58 62z'/%3E%3C/g%3E%3C/svg%3E";
+const SIL_FEMALE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 180'%3E%3Crect width='160' height='180' fill='%232a2a2a'/%3E%3Cg fill='%23565049'%3E%3Cpath d='M48 74c0-28 14-46 32-46s32 18 32 46c0 16-6 22-12 26H60c-6-4-12-10-12-26z'/%3E%3Ccircle cx='80' cy='70' r='25'/%3E%3Cpath d='M26 180c0-42 25-60 54-60s54 18 54 60z'/%3E%3C/g%3E%3C/svg%3E";
+const archiveSilhouette = (todaysArchive && todaysArchive.gender === 'female') ? SIL_FEMALE : SIL_NEUTRAL;
 const todaysWhatIs = getDailyWhatIs(today);
 const todaysOpening = getDailyOpening(today);
 const todaysBookExcerpt = getDailyBookExcerpt(today);
@@ -457,7 +460,7 @@ section.archive { margin-top: 2rem; border-top: 3px double #1a1a1a; padding-top:
 <div class="side-box featured">
 <h4 class="side-title"><span class="slot-tag">BOX 4</span> From the Archives <span class="wc-badge">93 W</span></h4>
 <div class="arch-img-ph">
-<img src={todaysArchive.imageUrl} alt={todaysArchive.imageAlt} onerror="this.parentElement.innerHTML='[ portrait failed to load ]'"/>
+<img src={todaysArchive.imageUrl || archiveSilhouette} alt={todaysArchive.imageAlt || (todaysArchive.name + " — portrait not available")} data-sil={archiveSilhouette} onerror="this.onerror=null;this.src=this.dataset.sil"/>
 </div>
 <p style="font-size:0.7rem; font-style:italic; color:#777; text-align:center; margin:0 0 0.25rem;">{todaysArchive.imageCaption}</p>
 <p class="img-credit">Photo: <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Wikimedia Commons</a> · Public domain</p>

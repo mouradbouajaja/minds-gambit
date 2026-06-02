@@ -116,13 +116,12 @@ const hasStories = edition.length > 0;
         <aside class="tdg-rail">
           <div class="tdg-box">
             <h4 class="tdg-boxtitle">Puzzle of the Day</h4>
-                        <ChessBoard fen="7k/6pp/8/6R1/7Q/8/6K1/8 w" caption="White to move — mate in two." />
-                    <p class="tdg-boxtext"><strong>White to move, mate in 2.</strong> A fresh tactic to sharpen your eye before your coffee gets cold.</p>
-            <details class="tdg-solution">
-              <summary>Show solution</summary>
-                        <p class="tdg-soltext">1. Qd4! (threatening 2. Qxg7#). Black has no defence: 1… Kg8, 1… h6, or 1… h5 all run into 2. Qxg7# — the rook on g5 guards g7, so the queen mates the boxed-in king.</p>
-              <p class="tdg-solnote">Theme: Mate in 2 · from the <a href="/chess-school/tactics">Tactics Trainer</a>.</p>
-            </details>
+            <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" />
+            <div id="tdg-daily-board" class="tdg-daily-board"></div>
+            <p class="tdg-boxtext"><strong id="tdg-daily-caption">Loading today&rsquo;s puzzle&hellip;</strong></p>
+            <p class="tdg-boxtext tdg-daily-flavor">A fresh tactic to sharpen your eye before your coffee gets cold.</p>
+            <p class="tdg-daily-status" id="tdg-daily-status"></p>
+            <p class="tdg-cta"><a href="/daily/puzzles">Browse past daily puzzles &rarr;</a></p>
           </div>
           <div class="tdg-box">
             <h4 class="tdg-boxtitle">Results at a Glance</h4>
@@ -519,5 +518,126 @@ const hasStories = edition.length > 0;
       .tdg-localstory:last-child { border-bottom: none; }
       .tdg-archive-list { columns: 1; }
     }
+    /* Daily Puzzle box (interactive, no solution shown) */
+    .tdg-daily-board { width: 100%; max-width: 240px; margin: 0 auto 0.6rem; aspect-ratio: 1 / 1; border: 2px solid #111; }
+    .tdg-daily-status { font-size: 0.78rem; line-height: 1.4; margin: 0.4rem 0 0; min-height: 1.1em; text-align: center; color: #2a2a2a; }
+    .tdg-daily-status.tdg-daily-good { color: #2e6b2e; font-weight: 700; }
+    .tdg-daily-status.tdg-daily-bad { color: #a04040; font-style: italic; }
+    .tdg-daily-flavor { font-size: 0.78rem; color: #5a5a5a; font-style: italic; margin-top: 0.3rem; }
+    .tdg-daily-board .board-b72b1 { box-sizing: border-box; }
   </style>
+
+  <!-- DAILY PUZZLE: chess.js + chessboard.js + Bunny CDN pool -->
+  <script is:inline src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <script is:inline src="https://cdn.jsdelivr.net/npm/chess.js@0.10.3/chess.min.js"></script>
+  <script is:inline src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+  <script is:inline>
+  (function() {
+    'use strict';
+    var POOL_URL = 'https://mindsgambit-cdn.b-cdn.net/puzzles/puzzle-pool.json';
+    var boardEl = document.getElementById('tdg-daily-board');
+    var captionEl = document.getElementById('tdg-daily-caption');
+    var statusEl = document.getElementById('tdg-daily-status');
+    if (!boardEl || !captionEl || !statusEl) return;
+
+    function setStatus(msg, kind) {
+      statusEl.textContent = msg || '';
+      statusEl.className = 'tdg-daily-status' + (kind ? ' tdg-daily-' + kind : '');
+    }
+    function dayOfYearET() {
+      var now = new Date();
+      var et = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+      var start = new Date(et.getFullYear(), 0, 0);
+      return Math.floor((et.getTime() - start.getTime()) / 86400000);
+    }
+    function uciToMove(uci) {
+      return { from: uci.substring(0, 2), to: uci.substring(2, 4), promotion: uci.length >= 5 ? uci.substring(4, 5) : undefined };
+    }
+    function moveToUci(m) { return m.from + m.to + (m.promotion || ''); }
+
+    var game, board, solution = [], idx = 0, userColor = 'w', solved = false, animating = false;
+
+    function onDragStart(source, piece) {
+      if (solved || animating) return false;
+      if (!game || game.game_over()) return false;
+      if (game.turn() !== userColor) return false;
+      if ((userColor === 'w' && piece.charAt(0) !== 'w') || (userColor === 'b' && piece.charAt(0) !== 'b')) return false;
+      return true;
+    }
+    function onSnapEnd() { board.position(game.fen()); }
+    function onDrop(source, target) {
+      var attempt = game.move({ from: source, to: target, promotion: 'q' });
+      if (attempt === null) return 'snapback';
+      var played = moveToUci(attempt);
+      var expected = solution[idx];
+      if (played === expected) {
+        idx += 1;
+        if (idx >= solution.length) { finish(); return; }
+        setStatus('Watch the response…', 'good');
+        animating = true;
+        setTimeout(function() {
+          game.move(uciToMove(solution[idx]));
+          board.position(game.fen());
+          idx += 1;
+          animating = false;
+          if (idx >= solution.length) finish();
+          else setStatus('Your move — find the mate.', '');
+        }, 550);
+      } else {
+        setStatus('Not quite — try again.', 'bad');
+        setTimeout(function() { game.undo(); board.position(game.fen()); }, 700);
+      }
+    }
+    function finish() {
+      solved = true;
+      setStatus('Solved ✓  Come back tomorrow for a new one.', 'good');
+    }
+
+    function whenReady(cb) {
+      if (window.Chess && window.Chessboard && window.jQuery) cb();
+      else setTimeout(function() { whenReady(cb); }, 50);
+    }
+
+    function loadPuzzle() {
+      fetch(POOL_URL).then(function(r) {
+        if (!r.ok) throw new Error('Pool ' + r.status);
+        return r.json();
+      }).then(function(pool) {
+        var puzzle = pool.puzzles[dayOfYearET() % pool.puzzles.length];
+        solution = (puzzle.moves || '').split(' ').filter(Boolean);
+        game = new Chess();
+        game.load(puzzle.fen);
+        userColor = game.turn() === 'w' ? 'b' : 'w';
+        var sideLabel = userColor === 'w' ? 'White' : 'Black';
+        captionEl.textContent = sideLabel + ' to move, mate in ' + puzzle.mateIn + '.';
+        board = Chessboard('tdg-daily-board', {
+          position: game.fen(),
+          orientation: userColor === 'w' ? 'white' : 'black',
+          draggable: true,
+          onDragStart: onDragStart,
+          onDrop: onDrop,
+          onSnapEnd: onSnapEnd,
+          pieceTheme: 'https://cdn.jsdelivr.net/gh/oakmac/chessboardjs@v1.0.0/website/img/chesspieces/wikipedia/{piece}.png',
+          moveSpeed: 'slow',
+          snapbackSpeed: 250
+        });
+        setStatus('Opponent moves first…', '');
+        setTimeout(function() {
+          if (solution.length > 0) {
+            game.move(uciToMove(solution[0]));
+            board.position(game.fen());
+            idx = 1;
+            setStatus('Your move — find the mate.', '');
+          }
+        }, 800);
+        window.addEventListener('resize', function() { if (board) board.resize(); });
+      }).catch(function(err) {
+        captionEl.textContent = 'Today’s puzzle could not load.';
+        setStatus('Try refreshing in a moment.', 'bad');
+      });
+    }
+
+    whenReady(loadPuzzle);
+  })();
+  </script>
 </BaseLayout>

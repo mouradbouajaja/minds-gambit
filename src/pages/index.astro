@@ -514,7 +514,27 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
   </section>
 
-<!-- WATCH THE DOCUMENTARY CTA (replaces in-page embeds; full player lives at /watch) -->
+<section id='daily' data-reveal>
+    <div class='section-inner'>
+      <div class='section-label'>Daily Newspaper</div>
+      <h2 class='section-title'>The Daily Gambit</h2>
+      <a href='/daily-wired' style='display:block;max-width:780px;margin:1.6rem auto 0;text-decoration:none;color:inherit;'>
+        <div style='background:linear-gradient(135deg,#14213d 0%,#1e2a4a 100%);border:1px solid #c8a84e;border-radius:12px;padding:2rem 2.2rem;box-shadow:0 16px 44px rgba(0,0,0,0.35);'>
+          <div style='display:flex;align-items:center;gap:1.3rem;flex-wrap:wrap;'>
+            <span style='font-size:3.2rem;line-height:1;color:#c8a84e;'>♛</span>
+            <div style='flex:1;min-width:230px;text-align:left;'>
+              <p style='margin:0 0 .45rem;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:#c8a84e;'>A Mind&#8217;s Gambit Publication · New every 6am &amp; 6pm</p>
+              <h3 style='margin:0 0 .55rem;font-family:Georgia,serif;font-size:1.7rem;color:#f5f1e6;'>Today&#8217;s Edition</h3>
+              <p style='margin:0;color:#cdd3e0;font-size:1.02rem;line-height:1.6;'>A daily chess newspaper that reads the game through sociology, institutional pressure, and mental health — tournaments, players, and the human story behind the moves.</p>
+            </div>
+          </div>
+          <span style='display:inline-block;margin-top:1.5rem;background:#c8a84e;color:#14213d;font-weight:800;letter-spacing:.05em;text-transform:uppercase;font-size:.8rem;padding:.75rem 1.5rem;border-radius:7px;'>Read today&#8217;s edition →</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- WATCH THE DOCUMENTARY CTA (replaces in-page embeds; full player lives at /watch) -->
 <section class="chess-cta-section" style="max-width:900px;">
   <div class="chess-cta-inner">
     <p class="chess-cta-question">Watch the Documentary</p>

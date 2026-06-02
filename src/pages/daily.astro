@@ -74,6 +74,24 @@ function tileFor(section) {
 function formatStoryDate(d) {
   return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 }
+function shortDateLabel(d) {
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+// Tile-title generator: short thematic label for the designed tiles.
+// Priority: explicit story.data.tileTitle → kicker if short → first 3-4 words of headline.
+function tileTitleFor(story) {
+  if (story.data.tileTitle) return story.data.tileTitle;
+  if (story.data.kicker && story.data.kicker.length <= 28) return story.data.kicker;
+  const headline = story.data.headline || '';
+  const words = headline.split(/\s+/).filter(Boolean);
+  // Skip common opening words ("The", "A", "An") for tile clarity.
+  const start = ['the', 'a', 'an'].includes((words[0] || '').toLowerCase()) ? 1 : 0;
+  return words.slice(start, start + 3).join(' ');
+}
+function tileMetaFor(story) {
+  if (story.data.tileMeta) return story.data.tileMeta;
+  return shortDateLabel(story.data.date);
+}
 
 // Lead story.
 const lead = edition.find((s) => s.data.lead) || edition.find((s) => s.data.section !== 'local') || edition[0] || null;
@@ -87,11 +105,21 @@ const hasStories = edition.length > 0;
 const openingTile = tileFor('openings');
 const playerTile = tileFor('players');
 const leadTile = lead ? tileFor(lead.data.section) : tileFor('world');
+
+// Editor reference mode: append ?ref=1 to /daily to show slot tags + word-count badges
+// from the locked mock (Reference v3). Production view (no query) hides them.
+const url = Astro.url;
+const refMode = url.searchParams.get('ref') === '1';
 ---
 
 <BaseLayout title="The Daily Gambit — Chess News, Results & Analysis" description="The Daily Gambit: your morning briefing from the chess world — tournament results, player news, opening theory, puzzles, local Pittsburgh & Pennsylvania chess, and analysis. Gathered fresh every day.">
   <div class="tdg-paper">
-    <div class="tdg-sheet">
+    <div class:list={["tdg-sheet", refMode && "tdg-reference"]}>
+      {refMode && (
+        <div class="tdg-ref-legend">
+          <strong>REFERENCE MODE — Editor view.</strong> Slot tags (BOX 1, STORY 2…) and word-count badges visible. Remove <code>?ref=1</code> from the URL to see the published view.
+        </div>
+      )}
 
       <div class="tdg-strip">
         <span>Vol. {volumeNumber} &mdash; No. {editionNumber}</span>
@@ -136,13 +164,13 @@ const leadTile = lead ? tileFor(lead.data.section) : tileFor('world');
               <div class={`tdg-lead-img tdg-tile ${leadTile.color}`}>
                 <span class="tdg-lead-glyph">{leadTile.glyph}</span>
                 <p class="tdg-lead-tile-kicker">{lead.data.kicker || SECTION_LABELS[lead.data.section]}</p>
-                <h3 class="tdg-lead-tile-title">{lead.data.subhead || lead.data.headline}</h3>
-                <p class="tdg-lead-tile-meta">{shortDate}</p>
+                <h3 class="tdg-lead-tile-title">{tileTitleFor(lead)}</h3>
+                <p class="tdg-lead-tile-meta">{tileMetaFor(lead)}</p>
               </div>
-              <p class="tdg-card-kicker">{lead.data.kicker || SECTION_LABELS[lead.data.section]}</p>
-              <h2 class="tdg-lead-head">{lead.data.headline}</h2>
+              <p class="tdg-card-kicker"><span class="tdg-slot-tag">LEAD</span>{lead.data.kicker || SECTION_LABELS[lead.data.section]}</p>
+              <h2 class="tdg-lead-head">{lead.data.headline} <span class="tdg-wc-badge">~13 HEAD</span></h2>
               <p class="tdg-card-meta">{formatStoryDate(lead.data.date)} &middot; By The Daily Gambit Desk{lead.data.sourceName ? ` · Source: ${lead.data.sourceName}` : ''}</p>
-              <p class="tdg-card-summary">{lead.data.summary}</p>
+              <p class="tdg-card-summary">{lead.data.summary} <span class="tdg-wc-badge">~55 SUMMARY</span></p>
               {lead.data.sourceUrl && (
                 <a class="tdg-card-more" href={lead.data.sourceUrl} target="_blank" rel="noopener">More&hellip; &rarr;</a>
               )}
@@ -163,19 +191,20 @@ const leadTile = lead ? tileFor(lead.data.section) : tileFor('world');
           )}
 
           <!-- STORY CARDS — ChessBase content river -->
-          {secondary.length > 0 ? secondary.map((s) => {
+          {secondary.length > 0 ? secondary.map((s, i) => {
             const tile = tileFor(s.data.section);
+            const slotNum = i + 2;
             return (
               <article class="tdg-story-card">
                 <div class={`tdg-thumb tdg-tile ${tile.color}`}>
                   <span class="tdg-tile-glyph">{tile.glyph}</span>
-                  <p class="tdg-tile-kicker">{s.data.kicker || SECTION_LABELS[s.data.section]}</p>
-                  <h4 class="tdg-tile-title">{s.data.headline.length > 40 ? s.data.headline.slice(0, 38) + '…' : s.data.headline}</h4>
-                  <p class="tdg-tile-meta">{SECTION_LABELS[s.data.section]}</p>
+                  <p class="tdg-tile-kicker">{SECTION_LABELS[s.data.section]}</p>
+                  <h4 class="tdg-tile-title">{tileTitleFor(s)}</h4>
+                  <p class="tdg-tile-meta">{tileMetaFor(s)}</p>
                 </div>
                 <div class="tdg-story-body">
-                  <p class="tdg-card-kicker">{s.data.kicker || SECTION_LABELS[s.data.section]}</p>
-                  <h3 class="tdg-story-head">{s.data.headline}</h3>
+                  <p class="tdg-card-kicker"><span class="tdg-slot-tag">STORY {slotNum}</span>{s.data.kicker || SECTION_LABELS[s.data.section]}</p>
+                  <h3 class="tdg-story-head">{s.data.headline} <span class="tdg-wc-badge">~45</span></h3>
                   <p class="tdg-card-meta">{formatStoryDate(s.data.date)} &middot; From the Daily Gambit Desk</p>
                   <p class="tdg-card-summary">{s.data.summary}</p>
                   {s.data.sourceUrl && (
@@ -261,8 +290,20 @@ const leadTile = lead ? tileFor(lead.data.section) : tileFor('world');
             </div>
             <h4>The Mind&rsquo;s Gambit</h4>
             <p>The book by Mourad Bouajaja &mdash; Chess, Madness, and the Battle for the Mind.</p>
-            <a class="tdg-promo-cta" href="/#book">Sample Chapter</a>
+            <span class="tdg-promo-cta">Coming soon</span>
           </div>
+
+          <!-- STANDINGS (Box 1) — pulled from lead.data.standings if n8n provides it -->
+          {lead && lead.data.standings && lead.data.standings.length > 0 && (
+            <div class="tdg-side-box">
+              <h4 class="tdg-side-title">{lead.data.standingsTitle || 'Standings'}</h4>
+              <ol class="tdg-standings">
+                {lead.data.standings.map((row, i) => (
+                  <li><span class="tdg-rank">{i + 1}.</span><span class="tdg-player">{row.player}</span><span class="tdg-score">{row.score}</span></li>
+                ))}
+              </ol>
+            </div>
+          )}
 
           <!-- PLAYER PROFILE -->
           <div class="tdg-side-box">
@@ -423,11 +464,7 @@ const leadTile = lead ? tileFor(lead.data.section) : tileFor('world');
               <li class="tdg-archive-item">
                 <span class="tdg-archive-date">{s.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
                 <span class="tdg-archive-sec">{SECTION_LABELS[s.data.section]}</span>
-                {s.data.sourceUrl ? (
-                  <a class="tdg-archive-link" href={s.data.sourceUrl} target="_blank" rel="noopener">{s.data.headline}</a>
-                ) : (
-                  <span class="tdg-archive-link">{s.data.headline}</span>
-                )}
+                <span class="tdg-archive-link">{s.data.headline}</span>
               </li>
             ))}
           </ul>
@@ -453,6 +490,15 @@ const leadTile = lead ? tileFor(lead.data.section) : tileFor('world');
     * { box-sizing: border-box; }
     .tdg-paper { background: #14141a; padding: 2rem 1rem 4rem; display: flex; justify-content: center; }
     .tdg-sheet { background: #f5f1e6; color: #1a1a1a; width: 100%; max-width: 1200px; padding: 2rem 2.4rem 2.6rem; box-shadow: 0 24px 60px rgba(0,0,0,0.5); font-family: Georgia, 'Times New Roman', Times, serif; }
+
+    /* Editorial reference markers — visible only in tdg-reference (?ref=1) mode */
+    .tdg-slot-tag, .tdg-wc-badge, .tdg-ref-legend { display: none; }
+    .tdg-reference .tdg-slot-tag, .tdg-reference .tdg-wc-badge, .tdg-reference .tdg-ref-legend { display: inline-block; }
+    .tdg-reference .tdg-ref-legend { display: block; background: #fff7d6; border: 2px solid #b8902a; padding: 0.7rem 1rem; margin-bottom: 1rem; font-size: 0.85rem; line-height: 1.5; color: #2a2a2a; border-radius: 4px; }
+    .tdg-reference .tdg-ref-legend strong { color: #8a6d1d; }
+    .tdg-reference .tdg-ref-legend code { background: #efe7cf; padding: 0.05rem 0.3rem; border-radius: 2px; font-family: 'Courier New', monospace; font-size: 0.78rem; }
+    .tdg-slot-tag { font-family: 'Courier New', monospace; font-size: 0.62rem; background: #2a4d6e; color: white; padding: 0.08rem 0.4rem; margin-right: 0.4rem; vertical-align: middle; border-radius: 2px; }
+    .tdg-wc-badge { font-family: 'Courier New', monospace; font-size: 0.62rem; background: #b8902a; color: white; padding: 0.08rem 0.4rem; margin-left: 0.4rem; vertical-align: middle; border-radius: 2px; }
 
     /* Masthead */
     .tdg-strip { display: flex; justify-content: space-between; font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; color: #4a4a4a; border-bottom: 1px solid #1a1a1a; padding-bottom: 0.4rem; }
@@ -526,8 +572,9 @@ const leadTile = lead ? tileFor(lead.data.section) : tileFor('world');
     .tdg-cb-more:hover { text-decoration: underline; }
     .tdg-cb-card .board-b72b1 { box-sizing: border-box; }
 
-    /* FROM THE BOOK */
-    .tdg-book-excerpt { margin-top: 1.4rem; padding: 1.4rem 1.6rem; background: #1a1a1a; color: #f5f1e6; border-left: 4px solid #b8902a; }
+    /* FROM THE BOOK — flex: 1 so bottom aligns with Box 7 in the rail (locked rule #4) */
+    .tdg-book-excerpt { margin-top: 1.4rem; padding: 1.4rem 1.6rem; background: #1a1a1a; color: #f5f1e6; border-left: 4px solid #b8902a; flex: 1 1 auto; display: flex; flex-direction: column; }
+    .tdg-book-excerpt blockquote { flex: 1 1 auto; }
     .tdg-book-kicker { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #b8902a; margin: 0 0 0.5rem; }
     .tdg-book-title { font-family: Georgia, serif; font-style: italic; font-size: 1.2rem; line-height: 1.3; font-weight: 600; margin: 0 0 0.7rem; color: #f5f1e6; }
     .tdg-book-quote { margin: 0 0 0.8rem; padding: 0; font-family: Georgia, serif; font-size: 1rem; line-height: 1.65; color: #e8dfc8; font-style: italic; }
@@ -550,6 +597,14 @@ const leadTile = lead ? tileFor(lead.data.section) : tileFor('world');
     .tdg-side-cta { margin: 0.5rem 0 0; font-size: 0.78rem; font-weight: 700; }
     .tdg-side-cta a { color: #8a6d1d; text-decoration: none; border-bottom: 1px solid #8a6d1d; }
 
+    /* Standings list */
+    .tdg-standings { list-style: none; margin: 0; padding: 0; font-size: 0.84rem; }
+    .tdg-standings li { display: grid; grid-template-columns: 1.5rem 1fr auto; gap: 0.4rem; padding: 0.22rem 0; border-bottom: 1px dotted #b5ab8a; align-items: baseline; }
+    .tdg-standings li:last-child { border-bottom: none; }
+    .tdg-rank { font-weight: 800; color: #8a6d1d; }
+    .tdg-player { color: #1f1f1f; }
+    .tdg-score { font-weight: 700; color: #1a1a1a; }
+
     /* Quote box */
     .tdg-quote-box { text-align: center; }
     .tdg-quote { font-style: italic; font-size: 0.95rem; line-height: 1.4; margin: 0 0 0.4rem; color: #2a2a2a; }
@@ -562,13 +617,13 @@ const leadTile = lead ? tileFor(lead.data.section) : tileFor('world');
     .tdg-tldate { flex: none; width: 2.6rem; font-weight: 800; color: #8a6d1d; font-size: 0.78rem; }
     .tdg-tltext { font-size: 0.76rem; line-height: 1.4; color: #2a2a2a; }
 
-    /* PROMO BOX (Fritz-style) */
+    /* PROMO BOX (Fritz-style) — book cover + Coming soon badge (NOT a link until pre-order is live) */
     .tdg-promo-box { background: #1a1a1a; color: #f5f1e6; padding: 1rem; margin-bottom: 1.2rem; text-align: center; }
     .tdg-promo-img { width: 100%; max-width: 170px; height: 240px; margin: 0 auto 0.6rem; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 4px 14px rgba(0,0,0,0.55); background: linear-gradient(135deg,#b8902a,#8a6d1d); }
     .tdg-promo-img img { width: 100%; height: 100%; object-fit: contain; display: block; background: #2a2a2a; }
     .tdg-promo-box h4 { font-size: 1rem; font-weight: 800; margin: 0 0 0.3rem; color: #f5f1e6; }
     .tdg-promo-box p { font-size: 0.78rem; line-height: 1.45; margin: 0 0 0.5rem; color: #d8cfb4; }
-    .tdg-promo-cta { display: inline-block; padding: 0.45rem 1.2rem; background: #b8902a; color: #1a1a1a; text-decoration: none; font-size: 0.74rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 0.3rem; }
+    .tdg-promo-cta { display: inline-block; padding: 0.45rem 1.2rem; background: #b8902a; color: #1a1a1a; font-size: 0.74rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 0.3rem; }
 
     /* WIDE SECTIONS */
     .tdg-wide { margin-top: 2rem; border-top: 3px double #1a1a1a; padding-top: 1.2rem; }

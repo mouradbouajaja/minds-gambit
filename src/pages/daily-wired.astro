@@ -60,7 +60,32 @@ try {
 const PIECE_BASE = 'https://cdn.jsdelivr.net/gh/oakmac/chessboardjs@v1.0.0/website/img/chesspieces/wikipedia/';
 const PIECE_CODE = { p:'bP', n:'bN', b:'bB', r:'bR', q:'bQ', k:'bK', P:'wP', N:'wN', B:'wB', R:'wR', Q:'wQ', K:'wK' };
 const PIECE_ALT = { p:'black pawn', n:'black knight', b:'black bishop', r:'black rook', q:'black queen', k:'black king', P:'white pawn', N:'white knight', B:'white bishop', R:'white rook', Q:'white queen', K:'white king' };
-const fenParts = (puzzle.fen || '').split(' ');
+function applyUci(fen, uci) {
+  if (!fen || !uci || uci.length < 4) return fen;
+  const parts = fen.split(' ');
+  const rows = parts[0].split('/');
+  const bd = rows.map((r) => { const a = []; for (const ch of r) { if (/\d/.test(ch)) { for (let i = 0; i < +ch; i++) a.push(''); } else a.push(ch); } return a; });
+  const fileIdx = (c) => c.charCodeAt(0) - 97;
+  const rankIdx = (c) => 8 - (+c);
+  const from = uci.slice(0, 2), to = uci.slice(2, 4), promo = uci[4];
+  const fr = rankIdx(from[1]), ff = fileIdx(from[0]), tr = rankIdx(to[1]), tf = fileIdx(to[0]);
+  let piece = bd[fr][ff]; const active = parts[1]; const isPawn = piece.toLowerCase() === 'p';
+  if (isPawn && ff !== tf && bd[tr][tf] === '') bd[fr][tf] = '';
+  if (piece.toLowerCase() === 'k' && Math.abs(tf - ff) === 2) { if (tf > ff) { bd[fr][7] = ''; bd[fr][5] = active === 'w' ? 'R' : 'r'; } else { bd[fr][0] = ''; bd[fr][3] = active === 'w' ? 'R' : 'r'; } }
+  bd[fr][ff] = ''; if (promo) piece = active === 'w' ? promo.toUpperCase() : promo.toLowerCase(); bd[tr][tf] = piece;
+  const np = bd.map((rk) => { let s = '', e = 0; for (const c of rk) { if (c === '') { e++; } else { if (e) { s += e; e = 0; } s += c; } } if (e) s += e; return s; }).join('/');
+  const na = active === 'w' ? 'b' : 'w'; let cr = parts[2] || '-';
+  if (piece.toLowerCase() === 'k') cr = active === 'w' ? cr.replace(/[KQ]/g, '') : cr.replace(/[kq]/g, ''); if (cr === '') cr = '-';
+  let ep = '-'; if (isPawn && Math.abs(tr - fr) === 2) { const er = active === 'w' ? '3' : '6'; ep = from[0] + er; }
+  let full = +(parts[5] || 1); if (active === 'b') full += 1;
+  return [np, na, cr, ep, 0, full].join(' ');
+}
+const rawFen = puzzle.fen || '8/8/8/8/8/8/8/8 w - - 0 1';
+const movesList = (puzzle.moves || '').trim().split(/\s+/).filter(Boolean);
+// Lichess convention: moves[0] is the opponent's forced setup ply, auto-applied here so the
+// static board shows the real puzzle position and side-to-move = the solver's color.
+const postSetupFEN = movesList.length ? applyUci(rawFen, movesList[0]) : rawFen;
+const fenParts = (postSetupFEN || '').split(' ');
 const placement = fenParts[0] || '8/8/8/8/8/8/8/8';
 const activeColor = fenParts[1] || 'w';
 const files = ['a','b','c','d','e','f','g','h'];
@@ -362,7 +387,7 @@ section.archive { margin-top: 2rem; border-top: 3px double #1a1a1a; padding-top:
 <p class="cb-meta">From the Mind’s Gambit Tactics Trainer · Mate in {puzzle.mateIn}</p>
 <div class="cb-board-wrap">
 <div class="cb-board-frame">
-<div class="cb-board" data-puzzle-board data-fen={puzzle.fen} data-moves={puzzle.moves} data-matein={String(puzzle.mateIn)}>
+<div class="cb-board" data-puzzle-board data-fen={postSetupFEN} data-moves={puzzle.moves} data-matein={String(puzzle.mateIn)}>
 {puzzleCells.map((cell) => (
 <div class={"cb-sq " + cell.shade} data-sq={cell.square}>{cell.piece && (<img src={cell.piece} alt={cell.alt} />)}</div>
 ))}
@@ -563,7 +588,7 @@ section.archive { margin-top: 2rem; border-top: 3px double #1a1a1a; padding-top:
   var feedback = card.querySelector('[data-puzzle-feedback]');
   var titleEl = card.querySelector('[data-puzzle-title]');
   var game = new Chess(fen);
-  var step = 0;
+  var step = 1;
   var solved = false;
   var selected = null;
   var PIECE_BASE = 'https://cdn.jsdelivr.net/gh/oakmac/chessboardjs@v1.0.0/website/img/chesspieces/wikipedia/';

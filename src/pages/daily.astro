@@ -8,6 +8,7 @@ import {
   getDailyPlayer,
   getDailyWhatIs,
   getDailyQuote,
+  getDailyThisWeek,
 } from '../utils/daily-rotation';
 
 const today = new Date();
@@ -36,6 +37,7 @@ const todaysArchive = getDailyArchive(today);
 const todaysWhatIs = getDailyWhatIs(today);
 const todaysOpening = getDailyOpening(today);
 const todaysBookExcerpt = getDailyBookExcerpt(today);
+const todaysThisWeek = getDailyThisWeek(today);
 
 // Pull all published Daily Gambit stories, newest first.
 const all = (await getCollection('daily', ({ data }) => !data.draft))
@@ -174,10 +176,9 @@ const hasStories = edition.length > 0;
           <div class="tdg-box tdg-thisweek">
             <h4 class="tdg-boxtitle">This Week in Chess History</h4>
             <ul class="tdg-timeline">
-              <li><span class="tdg-tldate">1837</span><span class="tdg-tltext">Paul Morphy is born in New Orleans on June 22 — the prodigy who would conquer Europe two decades later.</span></li>
-              <li><span class="tdg-tldate">1858</span><span class="tdg-tltext">Morphy plays his famous "Opera Game" in Paris, a model of rapid development still taught to beginners today.</span></li>
-              <li><span class="tdg-tldate">1972</span><span class="tdg-tltext">Bobby Fischer defeats Boris Spassky in Reykjavik to become World Champion, at the height of the Cold War.</span></li>
-              <li><span class="tdg-tldate">1997</span><span class="tdg-tltext">IBM's Deep Blue beats Garry Kasparov in a match — the first time a computer bested a reigning world champion.</span></li>
+              {todaysThisWeek.events.map((e) => (
+                <li><span class="tdg-tldate">{e.year}</span><span class="tdg-tltext">{e.text}</span></li>
+              ))}
             </ul>
           </div>
         </aside>

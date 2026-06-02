@@ -280,6 +280,27 @@ section.archive { margin-top: 2rem; border-top: 3px double #1a1a1a; padding-top:
 .rulebold { height: 3px; background: #1a1a1a; margin-bottom: 0.7rem; }
 .foot p { font-size: 0.8rem; color: #444; text-align: center; margin: 0; }
 .foot a { color: #8a6d1d; text-decoration: none; font-weight: 700; }
+
+/* ===== MOBILE (added) ===== */
+@media (max-width: 700px){
+  .sheet{ padding-left:0.9rem; padding-right:0.9rem; }
+  .masthead{ grid-template-columns:1fr; text-align:center; gap:0.4rem; }
+  .nameplate{ font-size:clamp(2rem,11vw,3rem); }
+  .sectionbar{ display:flex; flex-wrap:wrap; justify-content:center; gap:0.5rem 0.9rem; }
+  .sectionbar a{ font-size:0.82rem; }
+  .main-grid{ grid-template-columns:1fr; }
+  .story-card{ grid-template-columns:1fr; }
+  .game-wrap{ grid-template-columns:1fr; }
+  .two-col{ grid-template-columns:1fr; }
+  .four-col{ grid-template-columns:1fr 1fr; }
+  .cb-board-wrap{ grid-template-columns:1fr; }
+  .cb-board{ width:100%; max-width:320px; height:auto; aspect-ratio:1/1; }
+  .lead-img{ height:220px; }
+  .lead-img.tile .lead-glyph{ font-size:7rem; }
+  .lead-img.tile .lead-tile-title{ font-size:1.6rem; }
+  .lead-card h2{ font-size:1.5rem; }
+  .story-card img, .game-wrap img, .origin-fig img{ width:100%; height:auto; }
+}
 </style>
 </head>
 <body>

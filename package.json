@@ -1,19 +1,20 @@
 {
-    "name": "minds-gambit",
-    "type": "module",
-    "version": "1.0.0",
-    "scripts": {
-          "dev": "astro dev",
-          "start": "astro dev",
-          "build": "astro build",
-          "preview": "astro preview",
-          "astro": "astro"
-    },
-    "dependencies": {
-          "astro": "^5.0.0",
-          "@astrojs/mdx": "^4.0.0",
-          "@astrojs/sitemap": "^3.7.0",
-          "@astrojs/vercel": "^8.0.0",
-                "stripe": "^17.0.0"
-    }
+  "name": "minds-gambit",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "prebuild": "node scripts/validate-edition.js",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^5.0.0",
+    "@astrojs/mdx": "^4.0.0",
+    "@astrojs/sitemap": "^3.7.0",
+    "@astrojs/vercel": "^8.0.0",
+    "stripe": "^17.0.0"
+  }
 }

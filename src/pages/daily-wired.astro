@@ -1,0 +1,653 @@
+---
+import { getCollection } from 'astro:content';
+import {
+  getDailyArchive, getDailyBookExcerpt, getDailyOpening, getDailyPlayer,
+  getDailyWhatIs, getDailyQuote, getDailyThisWeek, getDailyGamesOfWeek,
+} from '../utils/daily-rotation';
+
+const today = new Date();
+const dateLine = today.toLocaleDateString('en-US', { timeZone: 'America/New_York', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase();
+
+const todaysQuote = getDailyQuote(today);
+const todaysPlayer = getDailyPlayer(today);
+const todaysArchive = getDailyArchive(today);
+const todaysWhatIs = getDailyWhatIs(today);
+const todaysOpening = getDailyOpening(today);
+const todaysBookExcerpt = getDailyBookExcerpt(today);
+const todaysThisWeek = getDailyThisWeek(today);
+const todaysGames = getDailyGamesOfWeek(today);
+
+const all = (await getCollection('daily', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const latestDate = all.length ? all[0].data.date.valueOf() : null;
+const edition = latestDate !== null ? all.filter((s) => s.data.date.valueOf() === latestDate) : [];
+
+function formatStoryDate(d) { return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }); }
+
+const lead = edition.find((s) => s.data.lead) || edition.find((s) => s.data.section !== 'local') || edition[0] || null;
+const secondary = edition.filter((s) => s.data.section !== 'local' && s.id !== (lead && lead.id)).slice(0, 4);
+const local = all.filter((s) => s.data.section === 'local').slice(0, 4);
+
+const story2 = secondary[0] || null;
+const story3 = secondary[1] || null;
+const story4 = secondary[2] || null;
+const story5 = secondary[3] || null;
+
+const standingsOpen = (lead && lead.data.standings) || [];
+const standingsWomen = (lead && lead.data.standingsWomen) || [];
+const standingsRound = (lead && lead.data.standingsRound) || 'Round 5';
+const resultsOpen = (lead && lead.data.resultsOpen) || '';
+const resultsWomen = (lead && lead.data.resultsWomen) || '';
+
+// ---- Puzzle of the Day (build-time fetch from Bunny CDN pool) ----
+function getDayOfYearET(d = new Date()) {
+  const et = new Date(d.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+  const start = new Date(et.getFullYear(), 0, 0);
+  return Math.floor((et.getTime() - start.getTime()) / 86400000);
+}
+const FALLBACK_PUZZLE = { fen: '8/8/8/8/8/8/8/8 w - - 0 1', moves: '', mateIn: 2 };
+let puzzle = FALLBACK_PUZZLE;
+try {
+  const res = await fetch('https://mindsgambit-cdn.b-cdn.net/puzzles/puzzle-pool.json');
+  if (res.ok) {
+    const pool = await res.json();
+    const list = pool.puzzles || [];
+    if (list.length) puzzle = list[getDayOfYearET(today) % list.length];
+  }
+} catch (e) { /* keep fallback so build never breaks */ }
+
+// Parse FEN placement field into 64 cells (rank 8..1, file a..h).
+const PIECE_BASE = 'https://cdn.jsdelivr.net/gh/oakmac/chessboardjs@v1.0.0/website/img/chesspieces/wikipedia/';
+const PIECE_CODE = { p:'bP', n:'bN', b:'bB', r:'bR', q:'bQ', k:'bK', P:'wP', N:'wN', B:'wB', R:'wR', Q:'wQ', K:'wK' };
+const PIECE_ALT = { p:'black pawn', n:'black knight', b:'black bishop', r:'black rook', q:'black queen', k:'black king', P:'white pawn', N:'white knight', B:'white bishop', R:'white rook', Q:'white queen', K:'white king' };
+function applyUci(fen, uci) {
+  if (!fen || !uci || uci.length < 4) return fen;
+  const parts = fen.split(' ');
+  const rows = parts[0].split('/');
+  const bd = rows.map((r) => { const a = []; for (const ch of r) { if (/\d/.test(ch)) { for (let i = 0; i < +ch; i++) a.push(''); } else a.push(ch); } return a; });
+  const fileIdx = (c) => c.charCodeAt(0) - 97;
+  const rankIdx = (c) => 8 - (+c);
+  const from = uci.slice(0, 2), to = uci.slice(2, 4), promo = uci[4];
+  const fr = rankIdx(from[1]), ff = fileIdx(from[0]), tr = rankIdx(to[1]), tf = fileIdx(to[0]);
+  let piece = bd[fr][ff]; const active = parts[1]; const isPawn = piece.toLowerCase() === 'p';
+  if (isPawn && ff !== tf && bd[tr][tf] === '') bd[fr][tf] = '';
+  if (piece.toLowerCase() === 'k' && Math.abs(tf - ff) === 2) { if (tf > ff) { bd[fr][7] = ''; bd[fr][5] = active === 'w' ? 'R' : 'r'; } else { bd[fr][0] = ''; bd[fr][3] = active === 'w' ? 'R' : 'r'; } }
+  bd[fr][ff] = ''; if (promo) piece = active === 'w' ? promo.toUpperCase() : promo.toLowerCase(); bd[tr][tf] = piece;
+  const np = bd.map((rk) => { let s = '', e = 0; for (const c of rk) { if (c === '') { e++; } else { if (e) { s += e; e = 0; } s += c; } } if (e) s += e; return s; }).join('/');
+  const na = active === 'w' ? 'b' : 'w'; let cr = parts[2] || '-';
+  if (piece.toLowerCase() === 'k') cr = active === 'w' ? cr.replace(/[KQ]/g, '') : cr.replace(/[kq]/g, ''); if (cr === '') cr = '-';
+  let ep = '-'; if (isPawn && Math.abs(tr - fr) === 2) { const er = active === 'w' ? '3' : '6'; ep = from[0] + er; }
+  let full = +(parts[5] || 1); if (active === 'b') full += 1;
+  return [np, na, cr, ep, 0, full].join(' ');
+}
+const rawFen = puzzle.fen || '8/8/8/8/8/8/8/8 w - - 0 1';
+const movesList = (puzzle.moves || '').trim().split(/\s+/).filter(Boolean);
+// Lichess convention: moves[0] is the opponent's forced setup ply, auto-applied here so the
+// static board shows the real puzzle position and side-to-move = the solver's color.
+const postSetupFEN = movesList.length ? applyUci(rawFen, movesList[0]) : rawFen;
+const fenParts = (postSetupFEN || '').split(' ');
+const placement = fenParts[0] || '8/8/8/8/8/8/8/8';
+const activeColor = fenParts[1] || 'w';
+const files = ['a','b','c','d','e','f','g','h'];
+const puzzleCells = [];
+const rows = placement.split('/');
+for (let r = 0; r < 8; r++) {
+  const rankNum = 8 - r;
+  let fileIdx = 0;
+  const row = rows[r] || '8';
+  for (const ch of row) {
+    if (/[1-8]/.test(ch)) {
+      const n = parseInt(ch, 10);
+      for (let k = 0; k < n; k++) {
+        const sq = files[fileIdx] + rankNum;
+        const shade = ((fileIdx + r) % 2 === 0) ? 'cb-light' : 'cb-dark';
+        puzzleCells.push({ square: sq, shade, piece: null, alt: '' });
+        fileIdx++;
+      }
+    } else {
+      const sq = files[fileIdx] + rankNum;
+      const shade = ((fileIdx + r) % 2 === 0) ? 'cb-light' : 'cb-dark';
+      puzzleCells.push({ square: sq, shade, piece: PIECE_BASE + PIECE_CODE[ch] + '.png', alt: PIECE_ALT[ch] || '' });
+      fileIdx++;
+    }
+  }
+}
+const sideToMove = activeColor === 'b' ? 'Black to move' : 'White to move';
+const puzzleTitle = (activeColor === 'b' ? 'Black' : 'White') + ' to move, mate in ' + puzzle.mateIn + '.';
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Daily Gambit — Reference v3 (ChessBase-Style Cards)</title>
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; background: #14141a; padding: 2rem 1rem 4rem; display: flex; justify-content: center; font-family: Georgia, 'Times New Roman', Times, serif; }
+body:not(.reference) .slot-tag,
+body:not(.reference) .wc-badge,
+body:not(.reference) .ref-legend { display: none !important; }
+.sheet { background: #f5f1e6; color: #1a1a1a; width: 100%; max-width: 1200px; padding: 2rem 2.4rem 2.6rem; box-shadow: 0 24px 60px rgba(0,0,0,0.5); }
+.ref-legend { background: #fff7d6; border: 2px solid #b8902a; padding: 0.7rem 1rem; margin-bottom: 1rem; font-size: 0.85rem; line-height: 1.5; color: #2a2a2a; border-radius: 4px; }
+.ref-legend strong { color: #8a6d1d; }
+.wc-badge { display: inline-block; font-family: 'Courier New', monospace; font-size: 0.62rem; background: #b8902a; color: white; padding: 0.08rem 0.4rem; margin-left: 0.4rem; vertical-align: middle; border-radius: 2px; }
+.slot-tag { display: inline-block; font-family: 'Courier New', monospace; font-size: 0.62rem; background: #2a4d6e; color: white; padding: 0.08rem 0.4rem; margin-right: 0.4rem; vertical-align: middle; border-radius: 2px; }
+.strip { display: flex; justify-content: space-between; font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; color: #4a4a4a; border-bottom: 1px solid #1a1a1a; padding-bottom: 0.4rem; }
+.masthead { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 1rem; padding: 1.1rem 0 0.6rem; }
+.mast-side { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.74rem; letter-spacing: 0.04em; text-transform: uppercase; color: #3a3a3a; }
+.mast-right { text-align: right; }
+.mast-edition { font-style: italic; text-transform: none; color: #6a6a6a; }
+.mast-center { text-align: center; }
+.nameplate { font-family: 'Times New Roman', Times, Georgia, serif; font-weight: 800; font-size: clamp(2.4rem, 6vw, 4.6rem); line-height: 0.95; margin: 0; letter-spacing: -0.01em; color: #111; }
+.motto { font-style: italic; font-size: 0.92rem; color: #555; margin: 0.4rem 0 0; }
+.sectionbar { display: grid; grid-template-columns: repeat(8, 1fr); align-items: center; gap: 0.4rem; border-top: 3px solid #1a1a1a; border-bottom: 1px solid #1a1a1a; padding: 0.6rem 0.2rem; margin-top: 0.6rem; margin-bottom: 1.4rem; }
+.sectionbar a { color: #1a1a1a; text-decoration: none; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; text-align: center; overflow: hidden; text-overflow: ellipsis; }
+.sectionbar a.archive { color: #8a6d1d; }
+.main-grid { display: grid; grid-template-columns: 2.4fr 1fr; gap: 2rem; align-items: stretch; }
+.col-main { grid-column: 1; display: flex; flex-direction: column; }
+.col-side { grid-column: 2; display: flex; flex-direction: column; }
+.lead-card { margin-bottom: 1.6rem; padding-bottom: 1.4rem; border-bottom: 2px solid #1a1a1a; }
+.lead-img { width: 100%; height: 360px; background: linear-gradient(135deg, #6b4e1d, #8a6d2a); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.6); font-size: 0.85rem; font-style: italic; margin-bottom: 1rem; overflow: hidden; position: relative; }
+.lead-img.tile { background: linear-gradient(135deg, #0a2e6f 0%, #1e5fc0 60%, #2a7ad6 100%); display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end; padding: 2.2rem 2.6rem; color: #fff; font-style: normal; }
+.lead-img.tile .lead-glyph { position: absolute; right: -1rem; bottom: -2.4rem; font-size: 18rem; line-height: 1; color: rgba(255,255,255,0.10); pointer-events: none; }
+.lead-img.tile .lead-tile-kicker { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.85); margin: 0 0 0.4rem; position: relative; z-index: 1; }
+.lead-img.tile .lead-tile-title { font-family: Georgia, 'Times New Roman', serif; font-size: 2.4rem; line-height: 1.05; font-weight: 800; margin: 0; color: #fff; position: relative; z-index: 1; max-width: 70%; }
+.lead-img.tile .lead-tile-meta { font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.75); margin: 0.6rem 0 0; position: relative; z-index: 1; }
+.lead-card .kicker { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #8a6d1d; margin: 0 0 0.3rem; }
+.lead-card h2 { font-size: 2rem; line-height: 1.1; font-weight: 800; margin: 0 0 0.5rem; color: #111; }
+.lead-card .summary { font-size: 1rem; line-height: 1.55; color: #1f1f1f; margin: 0 0 0.7rem; }
+.lead-card .meta { font-size: 0.78rem; color: #6a6a6a; letter-spacing: 0.04em; text-transform: uppercase; margin: 0 0 0.5rem; }
+.lead-card .more { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #8a6d1d; text-decoration: none; }
+.story-card { display: grid; grid-template-columns: 200px 1fr; gap: 1.2rem; padding: 1.2rem 0; border-bottom: 1px dotted #b5ab8a; }
+.story-card .thumb { width: 200px; height: 130px; background: linear-gradient(135deg, #5a4a1d, #8a6d2a); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.5); font-size: 0.7rem; font-style: italic; overflow: hidden; position: relative; }
+.thumb.tile { display: flex; flex-direction: column; align-items: stretch; justify-content: center; padding: 0.85rem 0.9rem; color: #fff; text-align: center; font-style: normal; }
+.thumb.tile .tile-glyph { position: absolute; right: -0.2rem; bottom: -0.6rem; font-size: 4.6rem; line-height: 1; color: rgba(255,255,255,0.18); pointer-events: none; }
+.thumb.tile .tile-kicker { font-size: 0.56rem; font-weight: 700; letter-spacing: 0.14em; line-height: 1.1; text-transform: uppercase; color: rgba(255,255,255,0.92); margin: 0 0 0.32rem; position: relative; z-index: 1; }
+.thumb.tile .tile-title { font-family: Georgia, 'Times New Roman', serif; font-size: 1.18rem; line-height: 1.08; font-weight: 800; letter-spacing: 0.005em; margin: 0 0 0.34rem; color: #fff; position: relative; z-index: 1; }
+.thumb.tile .tile-meta { font-size: 0.56rem; letter-spacing: 0.05em; line-height: 1.35; text-transform: uppercase; color: rgba(255,255,255,0.7); margin: 0; position: relative; z-index: 1; }
+.thumb.tile.blue { background: linear-gradient(135deg, #0a2e6f 0%, #1e5fc0 100%); }
+.thumb.tile.red { background: linear-gradient(135deg, #6a0d1c 0%, #b8232e 100%); }
+.thumb.tile.fide { background: linear-gradient(135deg, #14213d 0%, #2c3e6d 100%); }
+.thumb.tile.fide .tile-kicker { color: #d6b85a; }
+.thumb.tile.industry { background: linear-gradient(135deg, #1f1f24 0%, #3d3d48 100%); }
+.thumb.tile.industry .tile-kicker { color: #b8902a; }
+.thumb.tile.opening { background: linear-gradient(135deg, #1d3d2a 0%, #3a6b4a 100%); }
+.thumb.tile.opening .tile-kicker { color: #d6b85a; }
+      .tile.blue .tile-kicker { color: #d6b85a; }
+      .tile.red .tile-kicker { color: #d6b85a; }
+.story-card .body { display: flex; flex-direction: column; }
+.story-card .kicker { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #8a6d1d; margin: 0 0 0.25rem; }
+.story-card h3 { font-size: 1.25rem; line-height: 1.15; font-weight: 800; margin: 0 0 0.45rem; color: #111; }
+.story-card .meta { font-size: 0.74rem; color: #6a6a6a; letter-spacing: 0.04em; text-transform: uppercase; margin: 0 0 0.4rem; }
+.story-card .summary { font-size: 0.92rem; line-height: 1.5; color: #1f1f1f; margin: 0 0 0.5rem; }
+.story-card .more { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #8a6d1d; text-decoration: none; }
+.side-box { border: 1px solid #1a1a1a; padding: 0.9rem; margin-bottom: 1.2rem; background: #f5f1e6; }
+.side-box.featured { background: #f3ede0; border-color: #c9b67a; }
+.side-box.warm { background: #efe7cf; }
+.side-title { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 800; margin: 0 0 0.6rem; text-align: center; border-bottom: 2px solid #1a1a1a; padding-bottom: 0.35rem; }
+.side-box p { font-size: 0.82rem; line-height: 1.5; margin: 0 0 0.5rem; color: #2a2a2a; }
+.board-ph { width: 100%; max-width: 200px; aspect-ratio: 1; margin: 0 auto 0.4rem; background: repeating-conic-gradient(#c9a87a 0% 25%, #f5ead6 0% 50%) 0 0/50% 50%; border: 2px solid #1a1a1a; }
+.name { font-size: 1rem; font-weight: 800; color: #111; margin: 0 0 0.15rem; }
+.name-meta { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: #8a6d1d; margin: 0 0 0.4rem; }
+.arch-img-ph { width: 100%; max-width: 160px; height: 180px; background: #2a2a2a; margin: 0 auto 0.3rem; display: flex; align-items: center; justify-content: center; color: #888; font-size: 0.7rem; overflow: hidden; }
+.arch-img-ph img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; display: block; }
+.img-credit { font-size: 0.6rem; line-height: 1.35; color: #6a6a6a; text-align: center; margin: 0 0 0.4rem; letter-spacing: 0.02em; }
+.img-credit a { color: #8a6d1d; text-decoration: none; border-bottom: 1px dotted #8a6d1d; }
+.origin-fig { margin: 0 0 0.7rem; }
+.origin-fig .fig-img { width: 100%; height: 160px; overflow: hidden; background: linear-gradient(135deg, #8a6d2a 0%, #5a4a1d 70%, #3a2f15 100%); display: flex; align-items: center; justify-content: center; position: relative; filter: sepia(0.15) saturate(0.9); }
+.origin-fig .fig-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.origin-fig .fig-img .fig-fallback { font-size: 3rem; color: rgba(255,255,255,0.45); font-style: italic; }
+.origin-fig figcaption { font-size: 0.68rem; line-height: 1.4; color: #6a6a6a; font-style: italic; margin: 0.3rem 0 0; text-align: center; }
+.game-wrap { display: grid; grid-template-columns: 130px 1fr; gap: 1.1rem; align-items: start; }
+.mini-board { width: 120px; height: 120px; border: 1.5px solid #1a1a1a; box-shadow: 0 2px 6px rgba(0,0,0,0.22); background: #2a2a2a; overflow: hidden; flex: none; }
+.mini-board img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.mini-caption { font-size: 0.6rem; color: #6a6a6a; text-align: center; margin: 0.3rem 0 0; font-style: italic; line-height: 1.35; }
+.mini-caption a { color: #8a6d1d; text-decoration: none; border-bottom: 1px dotted #8a6d1d; }
+.cta { margin: 0.5rem 0 0; font-size: 0.78rem; font-weight: 700; }
+.cta a { color: #8a6d1d; text-decoration: none; border-bottom: 1px solid #8a6d1d; }
+.promo-box { background: #1a1a1a; color: #f5f1e6; padding: 1rem; margin-bottom: 1.2rem; text-align: center; }
+.promo-box .promo-img { width: 100%; max-width: 170px; height: 240px; margin: 0 auto 0.6rem; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 4px 14px rgba(0,0,0,0.55); }
+.promo-box .promo-img img { width: 100%; height: 100%; object-fit: contain; display: block; background: #2a2a2a; }
+.promo-box h4 { font-size: 1rem; font-weight: 800; margin: 0 0 0.3rem; color: #f5f1e6; }
+.promo-box p { font-size: 0.78rem; line-height: 1.45; margin: 0 0 0.5rem; color: #d8cfb4; }
+.promo-box .price { font-size: 1.05rem; font-weight: 800; color: #b8902a; margin: 0.4rem 0; }
+.promo-box .cta-promo { display: inline-block; padding: 0.45rem 1.2rem; background: #b8902a; color: #1a1a1a; text-decoration: none; font-size: 0.74rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 0.3rem; }
+.quote { font-style: italic; font-size: 0.95rem; line-height: 1.4; margin: 0 0 0.4rem; color: #2a2a2a; text-align: center; }
+.quote-attr { font-size: 0.74rem; letter-spacing: 0.05em; text-transform: uppercase; color: #6a6a6a; margin: 0; text-align: center; }
+.timeline { list-style: none; margin: 0; padding: 0; }
+.timeline li { display: flex; gap: 0.6rem; padding: 0.4rem 0; border-bottom: 1px dotted #b5ab8a; }
+.timeline li:last-child { border-bottom: none; }
+.tldate { flex: none; width: 2.4rem; font-weight: 800; color: #8a6d1d; font-size: 0.78rem; }
+.tltext { font-size: 0.76rem; line-height: 1.4; color: #2a2a2a; }
+.wide-section { margin-top: 2rem; border-top: 3px double #1a1a1a; padding-top: 1.2rem; }
+.wide-head { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.4rem; }
+.pin { font-size: 1.3rem; color: #8a6d1d; }
+.wide-title { font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 800; margin: 0; color: #111; }
+.wide-tag { margin-left: auto; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #f5f1e6; background: #8a6d1d; padding: 0.25rem 0.6rem; }
+.wide-intro { font-style: italic; font-size: 0.96rem; line-height: 1.5; color: #3a3a3a; margin: 0.5rem 0 1.2rem; max-width: 760px; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+.two-col > div { padding: 0 1.6rem; border-right: 1px solid #c9c0a4; }
+.two-col > div:first-child { padding-left: 0; }
+.two-col > div:last-child { border-right: none; padding-right: 0; }
+.four-col { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+.four-col > div { padding: 0 1.2rem; border-right: 1px solid #c9c0a4; }
+.four-col > div:first-child { padding-left: 0; }
+.four-col > div:last-child { border-right: none; padding-right: 0; }
+.col-kicker { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #8a6d1d; margin: 0 0 0.3rem; }
+.col-head { font-size: 1.1rem; line-height: 1.15; font-weight: 800; margin: 0 0 0.4rem; color: #111; }
+.col-body { font-size: 0.88rem; line-height: 1.5; color: #1f1f1f; margin: 0; }
+.moves-pre { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-size: 0.76rem; line-height: 1.55; color: #2a2a2a; background: #f5f1e6; border: 1px solid #d8cfb4; padding: 0.5rem; margin: 0.4rem 0 0; white-space: pre-wrap; max-height: 180px; overflow: auto; }
+.cb-board-card { margin-top: 1.4rem; padding: 1.4rem; background: #fbf6e7; border: 1px solid #c9b67a; }
+.cb-board-card .cb-kicker { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #8a6d1d; margin: 0 0 0.4rem; }
+.cb-board-card h3 { font-size: 1.45rem; line-height: 1.15; font-weight: 800; margin: 0 0 0.4rem; color: #111; font-family: Georgia, serif; }
+.cb-board-card .cb-meta { font-size: 0.78rem; color: #6a6a6a; letter-spacing: 0.04em; text-transform: uppercase; margin: 0 0 1rem; }
+.cb-board-wrap { display: grid; grid-template-columns: auto 1fr; gap: 1.4rem; align-items: start; }
+.cb-board-frame { position: relative; padding: 1.4rem 1rem 1rem 1.4rem; background: #d9c89f; border: 1px solid #1a1a1a; }
+.cb-board { width: 320px; height: 320px; display: grid; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(8, 1fr); border: 2px solid #1a1a1a; }
+.cb-sq { display: flex; align-items: center; justify-content: center; user-select: none; position: relative; }
+.cb-sq img { width: 88%; height: 88%; display: block; }
+.cb-light { background: #f0d9b5; }
+.cb-dark { background: #b58863; }
+.cb-files { position: absolute; left: 1.4rem; bottom: 0.2rem; right: 1rem; display: flex; justify-content: space-around; font-size: 0.72rem; color: #1a1a1a; letter-spacing: 0.05em; }
+.cb-ranks { position: absolute; top: 1.4rem; left: 0.2rem; bottom: 1rem; display: flex; flex-direction: column-reverse; justify-content: space-around; font-size: 0.72rem; color: #1a1a1a; }
+.cb-info { display: flex; flex-direction: column; }
+.cb-info p { font-size: 0.94rem; line-height: 1.55; color: #1f1f1f; margin: 0 0 0.6rem; }
+.cb-side-to-move { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #8a6d1d; margin: 0 0 0.4rem; }
+.cb-solution { margin-top: 0.4rem; padding-top: 0.6rem; border-top: 1px dotted #b5ab8a; }
+.cb-solution summary { cursor: pointer; font-size: 0.8rem; font-weight: 700; color: #8a6d1d; letter-spacing: 0.04em; text-transform: uppercase; }
+.cb-solution p { font-size: 0.86rem; line-height: 1.5; color: #2a2a2a; margin: 0.4rem 0 0; }
+.cb-more { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #8a6d1d; text-decoration: none; margin-top: 0.6rem; display: inline-block; }
+.book-excerpt { margin-top: 1.4rem; padding: 1.4rem 1.6rem; background: #1a1a1a; color: #f5f1e6; border-left: 4px solid #b8902a; flex: 1 1 auto; display: flex; flex-direction: column; }
+.book-excerpt .book-kicker { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #b8902a; margin: 0 0 0.5rem; }
+.book-excerpt h3 { font-family: Georgia, serif; font-style: italic; font-size: 1.2rem; line-height: 1.3; font-weight: 600; margin: 0 0 0.7rem; color: #f5f1e6; }
+.book-excerpt blockquote { margin: 0 0 0.8rem; padding: 0; font-family: Georgia, serif; font-size: 1rem; line-height: 1.65; color: #e8dfc8; font-style: italic; flex: 1 1 auto; }
+.book-excerpt blockquote p { margin: 0 0 0.7rem; }
+.book-excerpt blockquote p:last-child { margin-bottom: 0; }
+.book-excerpt .book-attr { font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; color: #b8902a; margin: 0; }
+.book-excerpt .book-cta { display: inline-block; margin-top: 0.6rem; font-size: 0.74rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #b8902a; text-decoration: none; border-bottom: 1px solid #b8902a; padding-bottom: 0.1rem; align-self: flex-start; }
+section.archive { margin-top: 2rem; border-top: 3px double #1a1a1a; padding-top: 1.2rem; }
+.archive-title { font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 800; margin: 0; color: #111; }
+.archive-intro { font-style: italic; font-size: 0.92rem; color: #555; margin: 0.2rem 0 1rem; }
+.archive-list { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 2.4rem; }
+.archive-item { display: block; break-inside: avoid; padding: 0.5rem 0; border-bottom: 1px dotted #b5ab8a; }
+.archive-date { display: inline-block; min-width: 6rem; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: #8a6d1d; }
+.archive-link { font-size: 0.92rem; color: #1a1a1a; text-decoration: none; font-weight: 600; }
+.foot { margin-top: 1.8rem; }
+.rulebold { height: 3px; background: #1a1a1a; margin-bottom: 0.7rem; }
+.foot p { font-size: 0.8rem; color: #444; text-align: center; margin: 0; }
+.foot a { color: #8a6d1d; text-decoration: none; font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="sheet">
+<div class="strip">
+<span>Vol. 1 — No. 3</span>
+<span>The Mind’s Gambit</span>
+<span>Price: Free</span>
+</div>
+<header class="masthead">
+<div class="mast-side"><span>{dateLine}</span><span class="mast-edition">Morning Edition</span></div>
+<div class="mast-center"><h1 class="nameplate">The Daily Gambit</h1><p class="motto">“All the chess that’s fit to print”</p></div>
+<div class="mast-side mast-right"><span>Chess · Mind · Culture</span><span class="mast-edition">A Mind’s Gambit Publication</span></div>
+</header>
+<nav class="sectionbar">
+<a href="#">Tournaments</a><a href="#">Players</a><a href="#">Openings</a><a href="#">Local</a><a href="#">Puzzles</a><a href="#">Opinion</a><a href="#">World Chess</a><a href="#" class="archive">Archive</a>
+</nav>
+<div class="main-grid">
+<div class="col-main">
+<article class="lead-card">
+<div class="lead-img tile">
+<span class="lead-glyph">♛</span>
+<p class="lead-tile-kicker">{lead ? lead.data.tileKicker : ""}</p>
+<h3 class="lead-tile-title">{lead ? lead.data.tileTitle : ""}</h3>
+<p class="lead-tile-meta">{lead ? lead.data.tileMeta : ""}</p>
+</div>
+<p class="kicker"><span class="slot-tag">LEAD</span> {lead ? lead.data.kicker : ""}</p>
+<h2>{lead ? lead.data.headline : ""} <span class="wc-badge">13 HEAD</span></h2>
+<p class="meta">{lead ? formatStoryDate(lead.data.date) : ""} · By The Daily Gambit Desk · Source: {lead ? lead.data.sourceName : ""}</p>
+<p class="summary">{lead ? lead.data.summary : ""} <span class="wc-badge">~55 SUMMARY</span></p>
+<a class="more" href={lead ? ("/daily/" + lead.id) : "#"}>More... →</a>
+</article>
+<article class="story-card">
+<div class="thumb tile blue">
+<span class="tile-glyph">♛</span>
+<p class="tile-kicker">{story2 ? story2.data.tileKicker : ""}</p>
+<h4 class="tile-title">{story2 ? story2.data.tileTitle : ""}</h4>
+<p class="tile-meta">{story2 ? story2.data.tileMeta : ""}</p>
+</div>
+<div class="body">
+<p class="kicker"><span class="slot-tag">STORY 2</span> {story2 ? story2.data.kicker : ""}</p>
+<h3>{story2 ? story2.data.headline : ""}</h3>
+<p class="meta">{story2 ? formatStoryDate(story2.data.date) : ""} · From the Daily Gambit Desk</p>
+<p class="summary">{story2 ? story2.data.summary : ""} <span class="wc-badge">~45</span></p>
+<a class="more" href={story2 ? ("/daily/" + story2.id) : "#"}>More... →</a>
+</div>
+</article>
+<article class="story-card">
+<div class="thumb tile red">
+<span class="tile-glyph">♞</span>
+<p class="tile-kicker">{story3 ? story3.data.tileKicker : ""}</p>
+<h4 class="tile-title">{story3 ? story3.data.tileTitle : ""}</h4>
+<p class="tile-meta">{story3 ? story3.data.tileMeta : ""}</p>
+</div>
+<div class="body">
+<p class="kicker"><span class="slot-tag">STORY 3</span> {story3 ? story3.data.kicker : ""}</p>
+<h3>{story3 ? story3.data.headline : ""}</h3>
+<p class="meta">{story3 ? formatStoryDate(story3.data.date) : ""} · From the Daily Gambit Desk</p>
+<p class="summary">{story3 ? story3.data.summary : ""} <span class="wc-badge">~40</span></p>
+<a class="more" href={story3 ? ("/daily/" + story3.id) : "#"}>More... →</a>
+</div>
+</article>
+<article class="story-card">
+<div class="thumb tile fide">
+<span class="tile-glyph">♚</span>
+<p class="tile-kicker">{story4 ? story4.data.tileKicker : ""}</p>
+<h4 class="tile-title">{story4 ? story4.data.tileTitle : ""}</h4>
+<p class="tile-meta">{story4 ? story4.data.tileMeta : ""}</p>
+</div>
+<div class="body">
+<p class="kicker"><span class="slot-tag">STORY 4</span> {story4 ? story4.data.kicker : ""}</p>
+<h3>{story4 ? story4.data.headline : ""}</h3>
+<p class="meta">{story4 ? formatStoryDate(story4.data.date) : ""} · From the Daily Gambit Desk</p>
+<p class="summary">{story4 ? story4.data.summary : ""} <span class="wc-badge">~45</span></p>
+<a class="more" href={story4 ? ("/daily/" + story4.id) : "#"}>More... →</a>
+</div>
+</article>
+<article class="story-card">
+<div class="thumb tile industry">
+<span class="tile-glyph">♜</span>
+<p class="tile-kicker">{story5 ? story5.data.tileKicker : ""}</p>
+<h4 class="tile-title">{story5 ? story5.data.tileTitle : ""}</h4>
+<p class="tile-meta">{story5 ? story5.data.tileMeta : ""}</p>
+</div>
+<div class="body">
+<p class="kicker"><span class="slot-tag">STORY 5</span> {story5 ? story5.data.kicker : ""}</p>
+<h3>{story5 ? story5.data.headline : ""}</h3>
+<p class="meta">{story5 ? formatStoryDate(story5.data.date) : ""} · From the Daily Gambit Desk</p>
+<p class="summary">{story5 ? story5.data.summary : ""} <span class="wc-badge">~40</span></p>
+<a class="more" href={story5 ? ("/daily/" + story5.id) : "#"}>More... →</a>
+</div>
+</article>
+<article class="story-card">
+<div class="thumb tile opening">
+<span class="tile-glyph">♟</span>
+<p class="tile-kicker">Opening Spotlight</p>
+<h4 class="tile-title">{todaysOpening.opening}</h4>
+<p class="tile-meta">{todaysOpening.moves}</p>
+</div>
+<div class="body">
+<p class="kicker"><span class="slot-tag">FEATURE</span> Opening Spotlight (rotates daily)</p>
+<h3>The {todaysOpening.opening}</h3>
+<p class="meta">Today’s pick · {todaysOpening.moves}</p>
+<p class="summary">{todaysOpening.paragraphs[0]} <span class="wc-badge">~55</span></p>
+<a class="more" href="#">More... →</a>
+</div>
+</article>
+<section class="cb-board-card" data-puzzle-card>
+<p class="cb-kicker"><span class="slot-tag">FEATURE</span> Puzzle of the Day</p>
+<h3 data-puzzle-title>{puzzleTitle}</h3>
+<p class="cb-meta">From the Mind’s Gambit Tactics Trainer · Mate in {puzzle.mateIn}</p>
+<div class="cb-board-wrap">
+<div class="cb-board-frame">
+<div class="cb-board" data-puzzle-board data-fen={postSetupFEN} data-moves={puzzle.moves} data-matein={String(puzzle.mateIn)}>
+{puzzleCells.map((cell) => (
+<div class={"cb-sq " + cell.shade} data-sq={cell.square}>{cell.piece && (<img src={cell.piece} alt={cell.alt} />)}</div>
+))}
+</div>
+<div class="cb-files"><span>a</span><span>b</span><span>c</span><span>d</span><span>e</span><span>f</span><span>g</span><span>h</span></div>
+<div class="cb-ranks"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div>
+</div>
+<div class="cb-info">
+<p class="cb-side-to-move" data-side-to-move>{sideToMove}</p>
+<p>A fresh tactic to sharpen your eye. Click a piece and find the mate — the opponent will respond until you crack it.</p>
+<p class="cb-feedback" data-puzzle-feedback style="font-size:0.78rem; color:#8a6d1d; font-style:italic; margin-top:0.4rem; min-height:1.1rem;">Tap pieces to play. Wrong moves bounce back. No spoilers.</p>
+<a href="/daily/puzzles" class="cb-more">Browse past daily puzzles →</a>
+</div>
+</div>
+</section>
+<aside class="book-excerpt">
+<p class="book-kicker">From the Book · The Mind’s Gambit</p>
+<h3>{todaysBookExcerpt.title}</h3>
+<blockquote>
+{todaysBookExcerpt.paragraphs.map((p) => (<p>{p}</p>))}
+</blockquote>
+<p class="book-attr">— Mourad Bouajaja, <em>The Mind’s Gambit</em> ({todaysBookExcerpt.chapter})</p>
+<a class="book-cta" href="/the-book">Read more from the book →</a>
+</aside>
+</div>
+<aside class="col-side">
+<div class="promo-box">
+<div class="promo-img">
+<img src="/daily/book-cover.png" alt="The Mind’s Gambit - book cover" onerror="this.style.background='linear-gradient(135deg,#b8902a,#8a6d1d)';this.alt='[ Cover loads from /public/book-cover.png in production ]'"/>
+</div>
+<h4>The Mind’s Gambit</h4>
+<p>The book by Mourad Bouajaja — Chess, Madness, and the Battle for the Mind.</p>
+<span class="cta-promo">Coming soon</span>
+</div>
+<div class="side-box">
+<h4 class="side-title"><span class="slot-tag">BOX 1</span> Standings · {standingsRound}</h4>
+<p style="font-size:0.7rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#8a6d1d; margin:0.4rem 0 0.3rem;">Open</p>
+<ul style="list-style:none; margin:0 0 0.6rem; padding:0; font-size:0.84rem;">
+{standingsOpen.map((row, i) => (
+<li style="display:flex; justify-content:space-between; padding:0.22rem 0; border-bottom:1px dotted #b5ab8a;"><span><strong>{i + 1}.</strong> {row.player}</span><span>{row.score}</span></li>
+))}
+</ul>
+<p style="font-size:0.7rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#8a6d1d; margin:0.6rem 0 0.3rem;">Women</p>
+<ul style="list-style:none; margin:0 0 0.4rem; padding:0; font-size:0.84rem;">
+{standingsWomen.map((row, i) => (
+<li style="display:flex; justify-content:space-between; padding:0.22rem 0; border-bottom:1px dotted #b5ab8a;"><span><strong>{i + 1}.</strong> {row.player}</span><span>{row.score}</span></li>
+))}
+</ul>
+<p style="font-size:0.7rem; font-style:italic; color:#777; text-align:right; margin:0.3rem 0 0;">Norway Chess 2026 · After {standingsRound} of 14</p>
+</div>
+<div class="side-box">
+<h4 class="side-title"><span class="slot-tag">BOX 2</span> Results at a Glance <span class="wc-badge">66 W</span></h4>
+<p style="font-size:0.7rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#8a6d1d; margin:0.4rem 0 0.2rem;">Open · {standingsRound}</p>
+<p style="font-size:0.78rem; margin:0;" set:html={resultsOpen.replace(/\n/g, "<br>")}></p>
+<p style="font-size:0.7rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#8a6d1d; margin:0.6rem 0 0.2rem;">Women · {standingsRound}</p>
+<p style="font-size:0.78rem; margin:0;" set:html={resultsWomen.replace(/\n/g, "<br>")}></p>
+</div>
+<div class="side-box">
+<h4 class="side-title"><span class="slot-tag">BOX 3</span> Player Profile <span class="wc-badge">105 W</span></h4>
+<p class="name">{todaysPlayer.name}</p>
+<p class="name-meta">{todaysPlayer.meta}</p>
+<p>{todaysPlayer.bio}</p>
+<p class="cta"><a href="/daily/archive">More from the players desk →</a></p>
+</div>
+<div class="side-box featured">
+<h4 class="side-title"><span class="slot-tag">BOX 4</span> From the Archives <span class="wc-badge">93 W</span></h4>
+<div class="arch-img-ph">
+<img src={todaysArchive.imageUrl} alt={todaysArchive.imageAlt} onerror="this.parentElement.innerHTML='[ portrait failed to load ]'"/>
+</div>
+<p style="font-size:0.7rem; font-style:italic; color:#777; text-align:center; margin:0 0 0.25rem;">{todaysArchive.imageCaption}</p>
+<p class="img-credit">Photo: <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Wikimedia Commons</a> · Public domain</p>
+<p class="name">{todaysArchive.name}</p>
+<p class="name-meta">{todaysArchive.meta}</p>
+<p>{todaysArchive.bio}</p>
+<p class="cta"><a href="/daily/archive">More chess history →</a></p>
+</div>
+<div class="side-box featured">
+<h4 class="side-title"><span class="slot-tag">BOX 5</span> {todaysWhatIs.title} <span class="wc-badge">128 W</span></h4>
+<p>{todaysWhatIs.paragraph}</p>
+<p class="cta"><a href={todaysWhatIs.ctaUrl}>{todaysWhatIs.ctaText}</a></p>
+</div>
+<div class="side-box warm" style="text-align:center;">
+<p style="font-family:'Courier New',monospace; font-size:0.6rem; color:#8a6d1d; margin:0 0 0.3rem;"><span class="slot-tag">BOX 6</span> Quote of the Day <span class="wc-badge">13 W</span></p>
+<p class="quote">“{todaysQuote.text}”</p>
+<p class="quote-attr">{todaysQuote.author}</p>
+</div>
+<div class="side-box warm">
+<h4 class="side-title"><span class="slot-tag">BOX 7</span> This Week in History <span class="wc-badge">85 W · 4 events</span></h4>
+<ul class="timeline">
+{todaysThisWeek.events.map((e) => (
+<li><span class="tldate">{e.year}</span><span class="tltext">{e.text}</span></li>
+))}
+</ul>
+</div>
+</aside>
+</div>
+<section class="wide-section">
+<div class="wide-head"><span class="pin">♞</span><h2 class="wide-title">Games of the Week</h2><span class="wide-tag">Annotated</span></div>
+<p class="wide-intro">Two games worth replaying — one from the men’s game, one from the women’s — chosen for their beauty and their place in chess history.</p>
+<div class="two-col">
+<div>
+<div class="game-wrap">
+<div>
+<div class="mini-board"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Chess_pieces_close_up.jpg" alt="Chess pieces, close-up"/></div>
+<p class="mini-caption">Chess pieces.<br>Photo: Aaaatu, CC BY-SA 4.0 — <a href="https://commons.wikimedia.org/wiki/File:Chess_pieces_close_up.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></p>
+</div>
+<div>
+<p class="col-kicker"><span class="slot-tag">GAME 1</span> {todaysGames.men.kicker}</p>
+<h3 class="col-head">{todaysGames.men.players}</h3>
+<p style="font-size:0.78rem; color:#555; margin:0 0 0.5rem;">{todaysGames.men.meta}</p>
+<p class="col-body">{todaysGames.men.body}</p>
+<pre class="moves-pre">{todaysGames.men.pgn}</pre>
+</div>
+</div>
+</div>
+<div>
+<div class="game-wrap">
+<div>
+<div class="mini-board"><img src="https://upload.wikimedia.org/wikipedia/commons/4/40/Schaken.svg" alt="Schaken (chess) - Wikimedia illustration"/></div>
+<p class="mini-caption">Schaken (chess).<br>Public domain (CC0) — <a href="https://commons.wikimedia.org/wiki/File:Schaken.svg" target="_blank" rel="noopener">Wikimedia Commons</a></p>
+</div>
+<div>
+<p class="col-kicker"><span class="slot-tag">GAME 2</span> {todaysGames.women.kicker}</p>
+<h3 class="col-head">{todaysGames.women.players}</h3>
+<p style="font-size:0.78rem; color:#555; margin:0 0 0.5rem;">{todaysGames.women.meta}</p>
+<p class="col-body">{todaysGames.women.body}</p>
+<pre class="moves-pre">{todaysGames.women.pgn}</pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="wide-section">
+<div class="wide-head"><span class="pin">♞</span><h2 class="wide-title">The Long Road to the 64 Squares</h2><span class="wide-tag">History</span></div>
+<p class="wide-intro">Long before Morphy and Fischer, the game was born in India and carried west by Persian courts and Arab geographers. A history told from its source, not from Europe.</p>
+<div class="two-col">
+<div>
+<figure class="origin-fig">
+<div class="fig-img">
+<img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Ladies_playing_Chess%2C_Arki_School_of_Art%2C_attributed_to_Basant_Singh%2C_circa_1930_CE%2C_Bhuri_Singh_Museum%2C_Chamba%2C_Himachal_Pradesh.jpg" alt="Ladies playing chess - Arki School of Art, attributed to Basant Singh, c. 1930 CE"/>
+</div>
+<figcaption>Ladies Playing Chess. Arki School of Art, attributed to Basant Singh, c. 1930 CE. Bhuri Singh Museum, Chamba, Himachal Pradesh. Photo: SpeakingArch, CC BY-SA 4.0 — <a href="https://commons.wikimedia.org/wiki/File:Ladies_playing_Chess,_Arki_School_of_Art,_attributed_to_Basant_Singh,_circa_1930_CE,_Bhuri_Singh_Museum,_Chamba,_Himachal_Pradesh.jpg" target="_blank" rel="noopener">Wikimedia Commons</a>.</figcaption>
+</figure>
+<p class="col-kicker"><span class="slot-tag">PERM A</span> India · Chaturanga</p>
+<h3 class="col-head">A Game Named for an Army</h3>
+<p class="col-body">The oldest known ancestor of chess is chaturanga, played in northern India by the sixth and seventh centuries during the Gupta era. Its name is Sanskrit for “having four limbs” — the four divisions of a classical Indian army: infantry, cavalry, elephantry, and chariotry. Those four arms survive on today’s board as the pawn, the knight, the bishop, and the rook. Most historians regard chaturanga as the common root of chess, Chinese xiangqi, Japanese shogi, and Thai makruk.</p>
+</div>
+<div>
+<figure class="origin-fig">
+<div class="fig-img">
+<img src="https://upload.wikimedia.org/wikipedia/commons/d/d4/Book_of_chess_and_dice%2C_page_0044R._Arab_Muslims_in_Spain.jpg" alt="Arab Muslims in Spain playing chess - from the Book of Chess and Dice"/>
+</div>
+<figcaption>Arab Muslims in Spain playing chess. Page from the Book of Chess and Dice (Libro de los Juegos), c. 1283. Public domain — <a href="https://commons.wikimedia.org/wiki/File:Book_of_chess_and_dice,_page_0044R._Arab_Muslims_in_Spain.jpg" target="_blank" rel="noopener">Wikimedia Commons</a>.</figcaption>
+</figure>
+<p class="col-kicker"><span class="slot-tag">PERM B</span> Persia &amp; Arabia · Shatranj</p>
+<h3 class="col-head">The Geographer Who Wrote It Down</h3>
+<p class="col-body">From India the game travelled to Sassanid Persia, where it became chatrang and entered the education of the nobility; after the Arab conquest the name softened into shatranj. Among those who recorded its story was al-Mas’udi (c. 896–956), the Baghdad-born historian called “the Herodotus of the Arabs.” It was through this Arabic and Persian world that chess crossed into Spain — not a European one.</p>
+</div>
+</div>
+</section>
+<section class="wide-section">
+<div class="wide-head"><span class="pin">♟</span><h2 class="wide-title">Pittsburgh &amp; Pennsylvania</h2><span class="wide-tag">Local Chess</span></div>
+<p class="wide-intro">Coverage close to home. <em>Hand-curated. Updated monthly until mid-July.</em></p>
+<div class="four-col">
+{local.map((s, i) => (
+<div>
+<p class="col-kicker"><span class="slot-tag">LOC {i + 1}</span> {s.data.kicker}</p>
+<h3 class="col-head">{s.data.headline}</h3>
+<p class="col-body" style="font-size:0.82rem;">{s.data.summary}</p>
+</div>
+))}
+</div>
+</section>
+<section class="archive">
+<h4 class="archive-title">Edition Archive</h4>
+<p class="archive-intro">Past editions of The Daily Gambit. Each link opens a self-contained copy — no external rerouting.</p>
+<ul class="archive-list">
+{all.slice(0, 9).map((s) => (
+<li class="archive-item"><span class="archive-date">{s.data.date.toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span><a class="archive-link" href={"/daily/" + s.id}>{s.data.headline}</a></li>
+))}
+</ul>
+<p style="margin: 1rem 0 0;"><a href="/daily/archive" style="font-size:0.78rem; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; color:#8a6d1d; text-decoration:none;">View the full archive →</a></p>
+</section>
+<footer class="foot">
+<div class="rulebold"></div>
+<p>The Daily Gambit is published by The Mind’s Gambit. <a href="/">Return to The Mind’s Gambit →</a></p>
+</footer>
+</div>
+<script is:inline src="https://cdn.jsdelivr.net/npm/chess.js@0.12.0/chess.js"></script>
+<script is:inline>
+(function () {
+  var board = document.querySelector('[data-puzzle-board]');
+  if (!board || typeof Chess === 'undefined') return;
+  var fen = board.getAttribute('data-fen');
+  var moves = (board.getAttribute('data-moves') || '').trim().split(/\s+/).filter(Boolean);
+  if (!fen || moves.length === 0) return;
+  var card = document.querySelector('[data-puzzle-card]');
+  var feedback = card.querySelector('[data-puzzle-feedback]');
+  var titleEl = card.querySelector('[data-puzzle-title]');
+  var game = new Chess(fen);
+  var step = 1;
+  var solved = false;
+  var selected = null;
+  var PIECE_BASE = 'https://cdn.jsdelivr.net/gh/oakmac/chessboardjs@v1.0.0/website/img/chesspieces/wikipedia/';
+  function codeFor(p){ return (p.color === 'w' ? 'w' : 'b') + p.type.toUpperCase(); }
+  function altFor(p){ var names={p:'pawn',n:'knight',b:'bishop',r:'rook',q:'queen',k:'king'}; return (p.color==='w'?'white ':'black ')+names[p.type]; }
+  function cellFor(sq){ return board.querySelector('[data-sq="' + sq + '"]'); }
+  function clearSel(){ if(selected){ var c=cellFor(selected); if(c) c.style.outline=''; selected=null; } }
+  function repaint(){
+    var cells = board.querySelectorAll('[data-sq]');
+    cells.forEach(function(cell){
+      var sq = cell.getAttribute('data-sq');
+      var p = game.get(sq);
+      cell.innerHTML = '';
+      if (p) { var img=document.createElement('img'); img.src=PIECE_BASE+codeFor(p)+'.png'; img.alt=altFor(p); cell.appendChild(img); }
+    });
+  }
+  function setFeedback(msg){ if(feedback) feedback.textContent = msg; }
+  function freezeSolved(lastTo){
+    solved = true; clearSel();
+    var c = cellFor(lastTo); if(c) c.style.boxShadow = 'inset 0 0 0 4px #d6b85a';
+    if (titleEl) { titleEl.innerHTML = ''; var a=document.createElement('a'); a.href='/chess-school/tactics'; a.textContent='Solved! \u2713 Train more \u2192'; a.style.color='#8a6d1d'; a.style.textDecoration='none'; titleEl.appendChild(a); }
+    setFeedback('');
+  }
+  function autoPlay(uci){
+    var mv = game.move({ from: uci.slice(0,2), to: uci.slice(2,4), promotion: uci.slice(4,5) || undefined });
+    if (mv) { repaint(); }
+  }
+  function tryUserMove(from, to){
+    if (solved) return;
+    var expected = moves[step];
+    var promo = expected.length > 4 ? expected.slice(4,5) : undefined;
+    var uci = from + to + (promo || '');
+    if (uci !== expected) { setFeedback('Not quite \u2014 try again.'); return false; }
+    game.move({ from: from, to: to, promotion: promo });
+    repaint(); step++;
+    if (step >= moves.length) { freezeSolved(to); return true; }
+    setFeedback('');
+    var opp = moves[step];
+    setTimeout(function(){ autoPlay(opp); step++; }, 400);
+    return true;
+  }
+  board.addEventListener('click', function(ev){
+    if (solved) return;
+    var cell = ev.target.closest('[data-sq]'); if(!cell) return;
+    var sq = cell.getAttribute('data-sq');
+    var p = game.get(sq);
+    var sideChar = game.turn();
+    if (selected === null) {
+      if (p && p.color === sideChar) { selected = sq; cell.style.outline = '3px solid #d6b85a'; cell.style.outlineOffset = '-3px'; }
+      return;
+    }
+    if (sq === selected) { clearSel(); return; }
+    if (p && p.color === sideChar) { clearSel(); selected = sq; cell.style.outline = '3px solid #d6b85a'; cell.style.outlineOffset = '-3px'; return; }
+    var from = selected; clearSel();
+    tryUserMove(from, sq);
+  });
+})();
+</script>
+</body>
+</html>

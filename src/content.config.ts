@@ -46,11 +46,23 @@ const daily = defineCollection({
     pgn: z.string().optional(),
     // Optional label above the moves box, e.g. the game heading.
     pgnLabel: z.string().optional(),
-    // Optional standings table: a heading plus rows of { player, score }.
+    // ---- Locked v3 mock tile fields (ChessBase-style designed tiles) ----
+    // Editorial tile text shown ON the gradient card. Optional + backward-compatible:
+    // when absent the template falls back to kicker/headline so slot height never collapses.
+    tileKicker: z.string().optional(),   // e.g. "Norway Chess 2026 · Round 6"
+    tileTitle: z.string().optional(),    // editorial hook, e.g. "The Race for the Lead in Stavanger"
+    tileMeta: z.string().optional(),     // e.g. "Stavanger · Norway · June 1"
+    tileVariant: z.enum(['blue', 'red', 'fide', 'industry', 'opening']).optional(),
+    tileGlyph: z.string().optional(),    // single Unicode chess piece, e.g. "♛"
+    // ---- Standings + Results (right-rail Box 1 + Box 2) ----
     standingsTitle: z.string().optional(),
+    standingsRound: z.string().optional(),   // e.g. "Round 5"
     resultsTitle: z.string().optional(),
     results: z.array(z.object({ white: z.string(), black: z.string(), score: z.string(), note: z.string().optional() })).optional(),
     standings: z.array(z.object({ player: z.string(), score: z.string() })).optional(),
+    standingsWomen: z.array(z.object({ player: z.string(), score: z.string() })).optional(),
+    resultsOpen: z.string().optional(),      // multi-line "White – Black: score" block
+    resultsWomen: z.string().optional(),
   }),
 });
 

@@ -1,0 +1,221 @@
+{
+  "_comment": "Daily Gambit — What Is...? rotation. Chess concepts and terms with Wife Test paragraphs (assume the reader has never heard the term before). Day-of-year modulo length picks today's entry. Each entry has a title (matching the existing 'What Is a Gambit?' format), paragraph, and CTA link to the most relevant Chess School page.",
+  "_count": 30,
+  "concepts": [
+    {
+      "term": "Gambit",
+      "title": "What Is a Gambit?",
+      "paragraph": "A gambit is a chess opening where a player deliberately sacrifices material — usually a pawn, sometimes more — in exchange for faster development, better piece activity, or an attack on the enemy king. The word comes from the Italian gambetto, meaning 'a leg trip' or 'a stumble,' from gamba (leg). It first appeared in 1561 in a chess book by the Spanish priest Ruy López de Segura. In everyday English the word has grown well beyond chess — a 'gambit' now describes any opening move in a conversation, negotiation, or political manoeuvre where you give up something small to gain something larger. Famous chess gambits include the King's Gambit, the Queen's Gambit, and the Evans Gambit.",
+      "ctaText": "Want to learn how to play? →",
+      "ctaUrl": "/chess-school/learn-to-play"
+    },
+    {
+      "term": "Zugzwang",
+      "title": "What Is Zugzwang?",
+      "paragraph": "Zugzwang (a German word meaning roughly 'compulsion to move') describes a position in which any legal move a player makes worsens their own position. Normally, having the move is an advantage in chess — you get to set the agenda. Zugzwang inverts that: the player whose turn it is would prefer to skip it entirely but can't, because the rules require you to move. Zugzwang is most common in endgames with few pieces left, where every move carries decisive weight. Whole endgame studies and many real-game victories have been built around forcing the opponent into this awkward state.",
+      "ctaText": "Learn endgame technique →",
+      "ctaUrl": "/chess-school/endgame"
+    },
+    {
+      "term": "Fortress",
+      "title": "What Is a Fortress?",
+      "paragraph": "A fortress is a defensive setup — usually in the endgame — that the stronger side cannot break down, even with extra material. The textbook example is a king and bishop versus a king and rook pawn whose promotion square is the wrong colour for the bishop: no matter how the rook side manoeuvres, they cannot force the win. Recognising a fortress is one of the deepest endgame skills, because it allows a defender to claim a draw from a position that looks lost on paper. Computer chess engines have demonstrated fortresses that even very strong human players had previously believed to be winning.",
+      "ctaText": "Train your endgame →",
+      "ctaUrl": "/chess-school/endgame"
+    },
+    {
+      "term": "Opposition",
+      "title": "What Is the Opposition?",
+      "paragraph": "The opposition is one of the most important concepts in king-and-pawn endgames. Two kings are said to be 'in opposition' when they face each other on the same file, rank, or diagonal with exactly one square between them. Because no king can move into a square attacked by the other, the side NOT to move usually has the advantage — they can force the opposing king to retreat. Mastering the opposition is essential to winning king-and-pawn endgames and is one of the first things every aspiring student of the endgame is taught.",
+      "ctaText": "Train your endgame →",
+      "ctaUrl": "/chess-school/endgame"
+    },
+    {
+      "term": "En Passant",
+      "title": "What Is En Passant?",
+      "paragraph": "En passant (French for 'in passing') is a special pawn capture that can only happen on the move immediately after an enemy pawn advances two squares from its starting position. If your pawn could have captured it on the square it skipped over, you may take it as if it had only advanced one square. The rule was introduced in the fifteenth century after pawns gained the option of moving two squares on their first move, to prevent that new privilege from letting pawns sneak safely past enemy pawns. It is one of the very few rules in chess that beginners are sometimes unaware of, even after years of play.",
+      "ctaText": "Want to learn how to play? →",
+      "ctaUrl": "/chess-school/learn-to-play"
+    },
+    {
+      "term": "Castling",
+      "title": "What Is Castling?",
+      "paragraph": "Castling is a special move that involves both the king and one of the rooks at the same time — the only move in chess that lets a player move two pieces in a single turn. The king moves two squares toward a rook, and that rook hops over to the square the king crossed. Castling can be done on either flank: 'kingside' (short castling, with the rook on h1 or h8) or 'queenside' (long castling, with the rook on a1 or a8). The move is allowed only if neither piece has moved before, the king is not in check, and the squares the king passes through are not attacked.",
+      "ctaText": "Want to learn how to play? →",
+      "ctaUrl": "/chess-school/learn-to-play"
+    },
+    {
+      "term": "Promotion",
+      "title": "What Is Promotion?",
+      "paragraph": "When a pawn reaches the eighth rank — the far end of the board from where it started — it must be promoted, immediately, to a queen, rook, bishop, or knight of the same colour. The choice is the player's, and the pawn is replaced by the new piece on that square. Promotion to anything other than a queen is called 'underpromotion' and is rare in practice, but occasionally a knight promotion is the only way to deliver check or fork two enemy pieces. The rule of promotion is what gives the humble pawn its strategic weight: every pawn is a potential queen, and every pawn structure is also a map of future queens."
+    },
+    {
+      "term": "Fork",
+      "title": "What Is a Fork?",
+      "paragraph": "A fork is a tactic in which a single piece attacks two or more enemy pieces at the same time — forcing the opponent to choose which one to save. The knight is the most famous forking piece because of its leaping move: a single knight can attack king, queen, and rook simultaneously, and the opponent can only move one piece. Pawn forks (attacking two pieces with one pawn move) are also extremely common at every level. Recognising forks — and avoiding leaving your own pieces in positions where they can be forked — is one of the foundational skills of tactical chess.",
+      "ctaText": "Train tactics →",
+      "ctaUrl": "/chess-school/play"
+    },
+    {
+      "term": "Pin",
+      "title": "What Is a Pin?",
+      "paragraph": "A pin is a tactic in which a piece is attacked but cannot move out of the line of attack because doing so would expose a more valuable piece behind it — often the king. If the piece pinned cannot move at all because the piece behind it is the king, it is called an 'absolute pin'; if moving would simply lose material, it is a 'relative pin.' Only long-range pieces (the bishop, rook, and queen) can pin. The pin is one of the most common tactical motifs in chess: at every level, players win material by attacking pinned pieces that have no way to escape.",
+      "ctaText": "Train tactics →",
+      "ctaUrl": "/chess-school/play"
+    },
+    {
+      "term": "Skewer",
+      "title": "What Is a Skewer?",
+      "paragraph": "A skewer is the reverse of a pin. A long-range piece attacks a valuable enemy piece (typically the king or queen) and, when that piece moves out of the way, a less-valuable piece behind it is captured. Skewering a king is especially deadly because the king is forced to move out of check, and whatever was behind it — queen, rook, bishop — is lost. The skewer is sometimes called the 'X-ray attack' because the attacking piece sees through the more valuable piece to the one behind it.",
+      "ctaText": "Train tactics →",
+      "ctaUrl": "/chess-school/play"
+    },
+    {
+      "term": "Discovered Attack",
+      "title": "What Is a Discovered Attack?",
+      "paragraph": "A discovered attack happens when one piece moves out of the way and reveals an attack by another piece that was hiding behind it. Because the moving piece itself can also make threats — capturing material or attacking another square — discovered attacks effectively let a player make two threats in a single move. The most dangerous variant is the 'discovered check,' where the revealed attack is on the enemy king, forcing the opponent to respond to the check while the moving piece grabs material. Even more devastating is the 'double check,' where both the moving piece and the revealed piece give check at the same time.",
+      "ctaText": "Train tactics →",
+      "ctaUrl": "/chess-school/play"
+    },
+    {
+      "term": "Double Check",
+      "title": "What Is a Double Check?",
+      "paragraph": "A double check happens when a single move puts the enemy king in check by two pieces at the same time — usually via a discovered attack, where the moving piece also gives check. The double check is the most powerful single move in chess, because the only legal response to a double check is to move the king. The defender cannot block both checks with one move, and cannot capture both attacking pieces with one move. Even queens are powerless against a well-timed double check. Most quick mating combinations in the masters' games involve a double check at the critical moment.",
+      "ctaText": "Train tactics →",
+      "ctaUrl": "/chess-school/play"
+    },
+    {
+      "term": "Stalemate",
+      "title": "What Is Stalemate?",
+      "paragraph": "Stalemate is the special draw that results when the player to move is not in check but has no legal move available. It is one of the most counterintuitive rules in chess: a player with overwhelming material can still draw the game by accidentally stalemating an opponent who has only a lonely king. Stalemate exists to prevent absurd positions where a king is trapped but not actually checkmated. It is also one of the most important draw resources for the defender: many endgame studies and even practical games are saved at the last moment because the losing side carefully manoeuvres into stalemate.",
+      "ctaText": "Train your endgame →",
+      "ctaUrl": "/chess-school/endgame"
+    },
+    {
+      "term": "Threefold Repetition",
+      "title": "What Is Threefold Repetition?",
+      "paragraph": "If the exact same position occurs three times during a game — with the same player to move and the same possibilities of castling and en passant — either player may claim a draw under the rule of threefold repetition. The three repetitions do not need to occur on consecutive moves. This rule prevents games from continuing indefinitely when neither side can make progress, and is also a key practical defensive resource: a player in a slightly worse position may aim for a repetition of moves to escape with a draw, particularly when low on time on the clock.",
+      "ctaText": "Want to learn how to play? →",
+      "ctaUrl": "/chess-school/learn-to-play"
+    },
+    {
+      "term": "Fifty-Move Rule",
+      "title": "What Is the Fifty-Move Rule?",
+      "paragraph": "Under the fifty-move rule, either player may claim a draw if no pawn has moved and no capture has been made in the past fifty moves by each side. The rule exists to prevent endless 'cat and mouse' endgames where the stronger side cannot demonstrate concrete progress. With the rise of seven-piece endgame tablebases (computer-perfect databases of all positions with seven pieces or fewer), it has become clear that a handful of specific endgames actually require more than fifty moves to win with perfect play — but the rule remains in force for human play, both for practical reasons and because such positions essentially never arise in real games.",
+      "ctaText": "Want to learn how to play? →",
+      "ctaUrl": "/chess-school/learn-to-play"
+    },
+    {
+      "term": "Initiative",
+      "title": "What Is the Initiative?",
+      "paragraph": "Having the initiative means setting the agenda of the game — your opponent is constantly responding to your threats rather than making their own. It is not material; you may even be behind in pawns and pieces and still hold the initiative because your opponent must react to your every move. The initiative is closely related to development and king safety: a player whose pieces are out and whose king is safe can attack, while a player whose pieces are still at home must defend. Many of the most beautiful sacrifices in chess history are gambits for the initiative — giving up material to keep the opponent on the defensive.",
+      "ctaText": "Want to learn how to play? →",
+      "ctaUrl": "/chess-school/learn-to-play"
+    },
+    {
+      "term": "Tempo",
+      "title": "What Is a Tempo?",
+      "paragraph": "A tempo (Italian for 'time') is a single move considered as a unit of time in chess. To 'gain a tempo' is to make a useful move while forcing your opponent to make a useless one — for example, attacking their queen so they must move it instead of completing development. To 'lose a tempo' is the opposite: making a move that achieves nothing while the opponent improves their position. Because chess gives each side equal time and the question of who can finish their plan first is everything, tempi are the secret currency of every opening, middlegame, and endgame.",
+      "ctaText": "Want to learn how to play? →",
+      "ctaUrl": "/chess-school/learn-to-play"
+    },
+    {
+      "term": "Outpost",
+      "title": "What Is an Outpost?",
+      "paragraph": "An outpost is a square — usually in the opponent's half of the board — that is defended by one of your pawns and that the opponent cannot easily attack with their own pawns. A knight or bishop posted on an outpost is extremely powerful: it sits in the middle of enemy territory while the enemy can do nothing to drive it away. The knight is the classic outpost piece because its short, leaping movement is most effective from a stable forward square. Recognising outposts and steering pieces toward them is one of the central skills of positional chess.",
+      "ctaText": "Want to learn how to play? →",
+      "ctaUrl": "/chess-school/learn-to-play"
+    },
+    {
+      "term": "Open File",
+      "title": "What Is an Open File?",
+      "paragraph": "A file is a vertical column of squares — the a-file, b-file, and so on. An 'open file' is one with no pawns on it at all, which makes it a highway for rooks and queens. Controlling an open file with a doubled rook (or rook plus queen) is one of the most desirable strategic goals in the middlegame, because it lets your heavy pieces penetrate to the opponent's back ranks where they can attack pawns or deliver mate. A 'half-open file' is one where only the enemy has pawns; it is less valuable than a fully open file but still a useful artery for attack.",
+      "ctaText": "Want to learn how to play? →",
+      "ctaUrl": "/chess-school/learn-to-play"
+    },
+    {
+      "term": "Passed Pawn",
+      "title": "What Is a Passed Pawn?",
+      "paragraph": "A passed pawn is one with no enemy pawns on the same file or on either adjacent file in front of it — meaning no enemy pawn can block or capture it on its march toward promotion. Because every pawn that reaches the eighth rank becomes a queen, a passed pawn is a constant threat: every move it advances is one move closer to a new queen. In the endgame, when most pieces have been traded off, a passed pawn is often the decisive factor in who wins. The German chess writer Aron Nimzowitsch famously wrote that 'the passed pawn is a criminal that must be kept under lock and key.'",
+      "ctaText": "Train your endgame →",
+      "ctaUrl": "/chess-school/endgame"
+    },
+    {
+      "term": "Doubled Pawns",
+      "title": "What Are Doubled Pawns?",
+      "paragraph": "Doubled pawns are two pawns of the same colour stacked on the same file — almost always a result of a capture with a pawn, since pawns cannot otherwise move sideways. Doubled pawns are generally considered a weakness because they cannot defend each other and the back pawn can be hard to advance. But they can also be useful: doubled pawns guard more squares than a single pawn, and the act of doubling them often opens a useful file for a rook. As with most positional features in chess, whether doubled pawns are an asset or a liability depends entirely on the position.",
+      "ctaText": "Want to learn how to play? →",
+      "ctaUrl": "/chess-school/learn-to-play"
+    },
+    {
+      "term": "Isolated Pawn",
+      "title": "What Is an Isolated Pawn?",
+      "paragraph": "An isolated pawn is one with no friendly pawns on either adjacent file. Because no pawn can defend it, it must be guarded by pieces, and those defending pieces are tied to its protection. The most common case is the 'isolated queen's pawn' (an isolated pawn on d4 for White or d5 for Black), which arises out of openings like the Queen's Gambit and gives one side dynamic piece play in exchange for a long-term structural weakness. Whether an isolated pawn is good or bad depends on who can attack it first and whose pieces have the freer play around it.",
+      "ctaText": "Want to learn how to play? →",
+      "ctaUrl": "/chess-school/learn-to-play"
+    },
+    {
+      "term": "Pawn Chain",
+      "title": "What Is a Pawn Chain?",
+      "paragraph": "A pawn chain is a diagonal line of friendly pawns that defend one another. Because each pawn in the chain (except the base) is protected by the pawn behind it, breaking a pawn chain requires attacking the base — the rearmost pawn, which is the only one without a defender. Pawn chains are a defining feature of closed positions like the French Defence and the King's Indian Defence, where both sides set up long, interlocking chains and the game becomes a strategic battle over which side can break the other's chain first.",
+      "ctaText": "Want to learn how to play? →",
+      "ctaUrl": "/chess-school/learn-to-play"
+    },
+    {
+      "term": "Minority Attack",
+      "title": "What Is a Minority Attack?",
+      "paragraph": "A minority attack is a strategic plan in which one side advances pawns on a flank where they are outnumbered (the 'minority') with the goal of creating weaknesses in the opponent's pawn structure. The classic example arises in the Queen's Gambit Declined Exchange Variation: White advances pawns to b4 and b5 against Black's queenside pawns on a7, b7, and c6, eventually forcing Black to accept either an isolated or doubled pawn. The minority attack shows that the goal of a flank advance need not be to win material directly — it can be to ruin the opponent's structure for the rest of the game.",
+      "ctaText": "Want to learn how to play? →",
+      "ctaUrl": "/chess-school/learn-to-play"
+    },
+    {
+      "term": "Greek Gift Sacrifice",
+      "title": "What Is the Greek Gift Sacrifice?",
+      "paragraph": "The Greek Gift is one of the oldest known sacrificial themes in chess: White (or Black) sacrifices a bishop on h7 (or h2) to draw the enemy king out into the open, then delivers mate with the queen and knight. The name is a reference to the Trojan horse — a gift you take at your peril. The pattern is so common that any player who reaches an intermediate level learns to recognise both how to deliver it and how to defend against it. It is most often launched against a kingside-castled king whose defending knight has moved away from f8.",
+      "ctaText": "Train tactics →",
+      "ctaUrl": "/chess-school/play"
+    },
+    {
+      "term": "Smothered Mate",
+      "title": "What Is Smothered Mate?",
+      "paragraph": "Smothered mate is checkmate delivered by a knight when the enemy king is completely surrounded by its own pieces and has no escape square — even though no enemy piece is attacking those escape squares. The king is 'smothered' by its own defenders. The classic pattern involves the attacking queen sacrificing herself to force the enemy rook into a smothering position, after which the knight delivers mate. Some of the most beautiful brief mating combinations in chess history end in smothered mate.",
+      "ctaText": "Train tactics →",
+      "ctaUrl": "/chess-school/play"
+    },
+    {
+      "term": "Back-Rank Mate",
+      "title": "What Is Back-Rank Mate?",
+      "paragraph": "A back-rank mate is delivered by a rook or queen along the opponent's back rank (the first rank for White, the eighth rank for Black) when the enemy king is trapped behind its own row of pawns, unable to move forward. It is among the most common mating patterns at every level of chess because it punishes a king that has castled but never created an 'escape square' for itself by advancing one of the pawns in front of it. Many tactical combinations in master games end with — or threaten — a back-rank mate.",
+      "ctaText": "Train tactics →",
+      "ctaUrl": "/chess-school/play"
+    },
+    {
+      "term": "Anastasia's Mate",
+      "title": "What Is Anastasia's Mate?",
+      "paragraph": "Anastasia's Mate is a checkmating pattern in which a knight and a rook (or queen) cooperate to trap an enemy king against the edge of the board. The knight blocks the king's only flight square, and the rook delivers the mate along the file or rank. The name comes from a nineteenth-century German novel by Wilhelm Heinse (Anastasia und das Schachspiel, 1803) that featured the pattern. It is one of the standard 'named mates' that every student of tactics is expected to recognise on sight.",
+      "ctaText": "Train tactics →",
+      "ctaUrl": "/chess-school/play"
+    },
+    {
+      "term": "Boden's Mate",
+      "title": "What Is Boden's Mate?",
+      "paragraph": "Boden's Mate is a striking pattern in which two bishops deliver checkmate to a castled king. The two bishops cover the king's escape squares from opposing diagonals, and the king has no legal move. The pattern is named for the nineteenth-century English master Samuel Boden, who delivered it in a famous game against Rudolf Schulder in London in 1853. Like most 'named mates,' the pattern itself is older than the name — but Boden's striking execution earned him the credit.",
+      "ctaText": "Train tactics →",
+      "ctaUrl": "/chess-school/play"
+    },
+    {
+      "term": "Arabian Mate",
+      "title": "What Is the Arabian Mate?",
+      "paragraph": "The Arabian Mate is one of the oldest known mating patterns, going back to the Arabic shatranj literature of the medieval period — hence the name. A knight and a rook combine to mate a king in the corner: the knight covers the king's diagonal escape squares while the rook delivers check on the back rank or final file. Because shatranj was a slower, more positional game than modern chess, mating patterns like this one were prized and recorded by Arab geographers and chess writers of the ninth and tenth centuries.",
+      "ctaText": "Train tactics →",
+      "ctaUrl": "/chess-school/play"
+    },
+    {
+      "term": "Underpromotion",
+      "title": "What Is Underpromotion?",
+      "paragraph": "Underpromotion is the rare practice of promoting a pawn to anything other than a queen — usually a knight, occasionally a rook or bishop. Because the queen is the most powerful piece, promoting to one is almost always the right choice. But every chess player learns at least one situation where underpromotion to a knight is the only winning move — typically because the knight delivers an immediate check or forks two enemy pieces, while a new queen would not. Underpromotion is one of the small ways the game rewards precise calculation over reflex.",
+      "ctaText": "Want to learn how to play? →",
+      "ctaUrl": "/chess-school/learn-to-play"
+    }
+  ]
+}

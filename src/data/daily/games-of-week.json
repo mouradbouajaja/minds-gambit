@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "notes": "8-pair Games of the Week rotation. Pick: weekOfYear (ET) mod 8. Each pair = one game from Mind's Gambit Featured Games archive (men) + one women's chess game (PGNs supplied by Mourad from chessgames.com). All games verified, no fabrication.",
+  "pairs": [
+    {
+      "label": "Pair 1 · Founding Coach Week",
+      "men": {
+        "kicker": "Men · The Opera Game",
+        "players": "Paul Morphy – Duke of Brunswick & Count Isouard",
+        "meta": "Paris Opera House, 1858 · Philidor Defence · 1–0",
+        "body": "The most famous teaching game in chess history. Morphy, age twenty-one, plays the Duke and Count while watching a performance of Norma. In just seventeen moves he demonstrates the eternal principles of opening play: rapid development, central control, decisive use of the king's exposed position. Every chess teacher in the world has shown this game.",
+        "pgn": "1. e4 e5 2. Nf3 d6 3. d4 Bg4 4. dxe5 Bxf3 5. Qxf3 dxe5 6. Bc4 Nf6 7. Qb3 Qe7 8. Nc3 c6 9. Bg5 b5 10. Nxb5 cxb5 11. Bxb5+ Nbd7 12. O-O-O Rd8 13. Rxd7 Rxd7 14. Rd1 Qe6 15. Bxd7+ Nxd7 16. Qb8+ Nxb8 17. Rd8# 1-0"
+      },
+      "women": {
+        "kicker": "Women · Founding Coach Debut",
+        "players": "WGM Maryana Huda – Sopio Gvetadze",
+        "meta": "European Women's Championship, Saint Petersburg 2009 · Nimzo-Indian Defence · 0–1",
+        "body": "Round 10 of a 13-round event. Twenty-one-year-old Maryana Huda (rated 2240) plays a long fighting battle against Georgian master Sopio Gvetadze (2377). 137 points of rating separate them. After sixty-eight moves of pure endgame technique, Maryana loses — but the record is what matters: she was there, at the top of European women's chess, in a thirteen-player Round 10 grind. This game now sits inside The Daily Gambit because her chess is part of ours.",
+        "pgn": "1. d4 Nf6 2. c4 e6 3. Nc3 Bb4 4. e3 O-O 5. Nge2 d5 6. a3 Be7 7. cxd5 exd5 8. g3 Nbd7 9. Bg2 Nb6 10. O-O Re8 11. Nf4 Bf8 12. b3 Bf5 13. Bb2 a5 14. a4 c6 15. Nd3 Ne4 16. Rc1 Nc8 17. Re1 Qg5 18. Nxe4 dxe4 19. Ne5 f6 20. Nc4 Be6 21. f3 f5 22. f4 Qd8 23. Bf1 Qd5 24. Qc2 b5 25. Ne5 Na7 26. Bc3 Qd8 27. Ra1 Bd5 28. Reb1 b4 29. Be1 h6 30. Bh3 Qf6 31. Rb2 Red8 32. Rc1 c5 33. Bf2 Rac8 34. Qd1 cxd4 35. Rxc8 Nxc8 36. exd4 Nb6 37. Qh5 Be6 38. g4 fxg4 39. Bh4 Qxf4 40. Bxd8 gxh3 41. Rf2 Qc1+ 42. Rf1 Qe3+ 43. Kh1 Qd2 44. Qg6 Qg2+ 45. Qxg2 hxg2+ 46. Kxg2 Nd5 47. Nc4 h5 48. Kg3 g6 49. Re1 Bf5 50. h4 Bh6 51. Bg5 Bg7 52. Ne3 Be6 53. Nc4 Nc3 54. Nxa5 Bxd4 55. Be3 Bf6 56. Bd2 Be5+ 57. Bf4 Bg7 58. Bd6 Bf5 59. Bxb4 Be5+ 60. Kg2 Nd5 61. Nc6 Bf6 62. Bd2 Bxh4 63. Rc1 e3 64. Ba5 Be4+ 65. Kf1 Nf4 66. Nd4 Bf2 67. Rc8+ Kh7 68. Rc7+ Kh6 0-1"
+      }
+    },
+    {
+      "label": "Pair 2 · Prodigies at Thirteen",
+      "men": {
+        "kicker": "Men · The Game of the Century",
+        "players": "Donald Byrne – Bobby Fischer",
+        "meta": "Rosenwald Trophy, New York 1956 · Grünfeld Defence · 0–1",
+        "body": "Bobby Fischer was thirteen years old. Donald Byrne was a U.S. champion. On move 17, Fischer played 17…Be6!! — offering his queen for a position of such positional and tactical power that Hans Kmoch christened it the Game of the Century. The Marshall Chess Club, New York, October 17, 1956.",
+        "pgn": "1. Nf3 Nf6 2. c4 g6 3. Nc3 Bg7 4. d4 O-O 5. Bf4 d5 6. Qb3 dxc4 7. Qxc4 c6 8. e4 Nbd7 9. Rd1 Nb6 10. Qc5 Bg4 11. Bg5 Na4 12. Qa3 Nxc3 13. bxc3 Nxe4 14. Bxe7 Qb6 15. Bc4 Nxc3 16. Bc5 Rfe8+ 17. Kf1 Be6 18. Bxb6 Bxc4+ 19. Kg1 Ne2+ 20. Kf1 Nxd4+ 21. Kg1 Ne2+ 22. Kf1 Nc3+ 23. Kg1 axb6 24. Qb4 Ra4 25. Qxb6 Nxd1 26. h3 Rxa2 27. Kh2 Nxf2 28. Re1 Rxe1 29. Qd8+ Bf8 30. Nxe1 Bd5 31. Nf3 Ne4 32. Qb8 b5 33. h4 h5 34. Ne5 Kg7 35. Kg1 Bc5+ 36. Kf1 Ng3+ 37. Ke1 Bb4+ 38. Kd1 Bb3+ 39. Kc1 Ne2+ 40. Kb1 Nc3+ 41. Kc1 Rc2# 0-1"
+      },
+      "women": {
+        "kicker": "Women · The American Pipeline",
+        "players": "Irina Krush – Jennifer Shahade",
+        "meta": "US Women's Championship, Chandler 1997 · Modern Benoni · ½–½",
+        "body": "August 1997. Two future US Women's Champions meet in the Modern Benoni: thirteen-year-old Irina Krush (eventual eight-time US Women's Champion) and Jennifer Shahade at seventeen (eventual two-time US Women's Champion, later author of Chess Bitch). Forty-eight moves, fighting draw — and the early shape of two careers that would define American women's chess for the next thirty years.",
+        "pgn": "1. d4 Nf6 2. c4 c5 3. d5 e6 4. Nc3 exd5 5. cxd5 d6 6. e4 g6 7. Nf3 Bg7 8. Be2 O-O 9. O-O Bg4 10. Bf4 Bxf3 11. Bxf3 a6 12. a4 Qc7 13. e5 dxe5 14. d6 Qa5 15. Bxe5 Nbd7 16. Bg3 Rab8 17. Re1 Qb4 18. Qc2 Rfe8 19. h3 c4 20. Rxe8+ Nxe8 21. Rd1 Nef6 22. Na2 Qc5 23. b4 Qc8 24. Nc3 b5 25. axb5 axb5 26. Ra1 Qe8 27. Bc6 Nh5 28. Bh2 Qd8 29. Re1 Rb6 30. Nd5 Rb8 31. Nc7 Ne5 32. Bxe5 Bxe5 33. Rxe5 Qxd6 34. Qe4 Qxc7 35. Bxb5 Nf6 36. Qe2 Qd6 37. Rc5 Ra8 38. g3 c3 39. Rxc3 Qd4 40. Rc4 Ra1+ 41. Kg2 Qd5+ 42. f3 Qf5 43. Rc2 Nd5 44. Bd3 Qd7 45. b5 Qa7 46. b6 Nxb6 47. Qe8+ Kg7 48. Qe5+ Kg8 1/2-1/2"
+      }
+    },
+    {
+      "label": "Pair 3 · Beating the World #1",
+      "men": {
+        "kicker": "Men · Kasparov's Immortal (Pearl of Wijk)",
+        "players": "Garry Kasparov – Veselin Topalov",
+        "meta": "Hoogovens, Wijk aan Zee 1999 · Pirc Defence · 1–0",
+        "body": "Kasparov hunts Topalov's king from b8 all the way to a3 in a 44-move attacking masterpiece. The 24.Rxd4!! rook sacrifice and the king-march that follows are widely considered one of the greatest combinations ever played in tournament chess. Round 4, January 20, 1999. Kasparov later called it one of the finest games of his career.",
+        "pgn": "1. e4 d6 2. d4 Nf6 3. Nc3 g6 4. Be3 Bg7 5. Qd2 c6 6. f3 b5 7. Nge2 Nbd7 8. Bh6 Bxh6 9. Qxh6 Bb7 10. a3 e5 11. O-O-O Qe7 12. Kb1 a6 13. Nc1 O-O-O 14. Nb3 exd4 15. Rxd4 c5 16. Rd1 Nb6 17. g3 Kb8 18. Na5 Ba8 19. Bh3 d5 20. Qf4+ Ka7 21. Rhe1 d4 22. Nd5 Nbxd5 23. exd5 Qd6 24. Rxd4 cxd4 25. Re7+ Kb6 26. Qxd4+ Kxa5 27. b4+ Ka4 28. Qc3 Qxd5 29. Ra7 Bb7 30. Rxb7 Qc4 31. Qxf6 Kxa3 32. Qxa6+ Kxb4 33. c3+ Kxc3 34. Qa1+ Kd2 35. Qb2+ Kd1 36. Bf1 Rd2 37. Rd7 Rxd7 38. Bxc4 bxc4 39. Qxh8 Rd3 40. Qa8 c3 41. Qa4+ Ke1 42. f4 f5 43. Kc1 Rd2 44. Qa7 1-0"
+      },
+      "women": {
+        "kicker": "Women · Polgar Beats Anand",
+        "players": "Judit Polgar – Viswanathan Anand",
+        "meta": "Hoogovens, Wijk aan Zee 1998 · Sicilian Najdorf · 1–0",
+        "body": "January 22, 1998 — one year before Kasparov's Pearl of Wijk, in the same tournament hall. Judit Polgar grinds Viswanathan Anand, then a world top-five player en route to his first FIDE title in 2000. A long, technical Najdorf — the kind of win that proved Polgar wasn't a one-game phenomenon but a permanent presence in the world elite. (PGN includes Stockfish 9 in-line analysis.)",
+        "pgn": "1.e4 c5 2.Nf3 d6 3.d4 cxd4 4.Nxd4 Nf6 5.Nc3 a6 6.Be3 e5 7.Nf3 Be7 8.Bc4 O-O 9.O-O Be6 10.Qe2 b5 11.Bb3 Bxb3 12.axb3 Nbd7 13.Rfd1 Qc7 14.Bg5 Rfc8 15.Ne1 Qb7 16.Bxf6 Nxf6 17.Nd5 Nxd5 18.Rxd5 Rc5 19.Rad1 Rxd5 20.Rxd5 Rc8 21.c3 b4 22.c4 g6 23.g3 Rc5 24.Rd1 a5 25.Nc2 Kg7 26.Qd3 Rc6 27.Ne3 Qc8 28.Kg2 Qe6 29.Qe2 Bd8 30.Nd5 Rc5 31.Qe3 Be7 32.Rd3 Bd8 33.Qd2 Rc6 34.Qd1 Kg8 35.h4 Kg7 36.h5 Bg5 37.Qf3 Rc8 38.Rd1 Rc6 39.Qe2 Rc8 40.Rh1 Kg8 41.f3 Rb8 42.Qf2 Rb7 43.hxg6 fxg6 44.c5 dxc5 45.Qxc5 Bd8 46.Rc1 Kf7 47.Qe3 Kg7 48.Rc4 Rd7 49.Qc1 h5 50.Rc6 Rd6 51.Rc8 Qd7 52.Qc5 Kh6 53.Rb8 Bf6 54.Qe3+ Bg5 55.f4 exf4 56.Rh8+ 1-0"
+      }
+    },
+    {
+      "label": "Pair 4 · Youth Dethrones Champion",
+      "men": {
+        "kicker": "Men · The Crown Changes Hands",
+        "players": "Ding Liren – Dommaraju Gukesh",
+        "meta": "World Chess Championship, Singapore 2024 · Zukertort Opening · 0–1",
+        "body": "December 12, 2024, Singapore. Game 14, match tied 6½–6½. A rook-and-bishop endgame that looked drawn for the defending champion. In time pressure on move 55, Ding plays 55.Rf2?? — a tragic miscalculation that allows Gukesh to trade pieces into a winning king-and-pawn endgame. Three moves later Ding resigned. Gukesh became the youngest undisputed World Chess Champion in history at eighteen years old.",
+        "pgn": "1. Nf3 d5 2. g3 c5 3. Bg2 Nc6 4. d4 e6 5. O-O cxd4 6. Nxd4 Nge7 7. c4 Nxd4 8. Qxd4 Nc6 9. Qd1 d4 10. e3 Bc5 11. exd4 Bxd4 12. Nc3 O-O 13. Nb5 Bb6 14. b3 a6 15. Nc3 Bd4 16. Bb2 e5 17. Qd2 Be6 18. Nd5 b5 19. cxb5 axb5 20. Nf4 exf4 21. Bxc6 Bxb2 22. Qxb2 Rb8 23. Rfd1 Qb6 24. Bf3 fxg3 25. hxg3 b4 26. a4 bxa3 27. Rxa3 g6 28. Qd4 Qb5 29. b4 Qxb4 30. Qxb4 Rxb4 31. Ra8 Rxa8 32. Bxa8 g5 33. Bd5 Bf5 34. Rc1 Kg7 35. Rc7 Bg6 36. Rc4 Rb1+ 37. Kg2 Re1 38. Rb4 h5 39. Ra4 Re5 40. Bf3 Kh6 41. Kg1 Re6 42. Rc4 g4 43. Bd5 Rd6 44. Bb7 Kg5 45. f3 f5 46. fxg4 hxg4 47. Rb4 Bf7 48. Kf2 Rd2+ 49. Kg1 Kf6 50. Rb6+ Kg5 51. Rb4 Be6 52. Ra4 Rb2 53. Ba8 Kf6 54. Rf4 Ke5 55. Rf2 Rxf2 56. Kxf2 Bd5 57. Bxd5 Kxd5 58. Ke3 Ke5 0-1"
+      },
+      "women": {
+        "kicker": "Women · Polgar Topples Spassky",
+        "players": "Judit Polgar – Boris Spassky",
+        "meta": "Polgar–Spassky match, Budapest 1993 · Ruy Lopez Closed · 1–0",
+        "body": "February 1, 1993, Budapest. Sixteen-year-old Judit Polgar plays a ten-game match against Boris Spassky, the tenth World Champion (1969–72), then fifty-six. She wins 5½–4½. This is Round 2 — the first decisive game of the match. The youngest of the Polgar sisters announces herself to the world by beating a former World Champion in his own city. (PGN includes Stockfish 9 in-line analysis.)",
+        "pgn": "1.e4 e5 2.Nf3 Nc6 3.Bb5 a6 4.Ba4 Nf6 5.O-O Be7 6.Re1 b5 7.Bb3 O-O 8.c3 d6 9.h3 Nb8 10.d4 Nbd7 11.Nbd2 Bb7 12.Bc2 Re8 13.Nf1 Bf8 14.Ng3 g6 15.b3 Bg7 16.d5 Bf8 17.Bg5 h6 18.Be3 c6 19.c4 a5 20.Qd2 Kh7 21.Nh2 b4 22.Ng4 Nxg4 23.hxg4 Qh4 24.g5 c5 25.Nf1 f6 26.g3 Qh3 27.f3 fxg5 28.Re2 Nf6 29.g4 Qxf3 30.Nh2 Qh3 31.Rf1 Nxg4 32.Rf7+ Bg7 33.Nxg4 Qxg4+ 34.Rg2 Qh3 35.Rxb7 Rf8 36.Bxg5 hxg5 37.Qxg5 Qh6 38.Qxh6+ Kxh6 39.Rh2+ Kg5 40.Rxg7 Rf3 1-0"
+      }
+    },
+    {
+      "label": "Pair 5 · Romantic & Soviet Eras",
+      "men": {
+        "kicker": "Men · The Immortal Game",
+        "players": "Adolf Anderssen – Lionel Kieseritzky",
+        "meta": "London 1851 (casual) · King's Gambit Accepted · 1–0",
+        "body": "A casual game played during the London tournament of 1851 that became the symbol of Romantic chess. Anderssen sacrifices both rooks, a bishop, and his queen, then delivers mate with the three minor pieces he has left. Played without clocks, for honor, against the era's tactical master.",
+        "pgn": "1. e4 e5 2. f4 exf4 3. Bc4 Qh4+ 4. Kf1 b5 5. Bxb5 Nf6 6. Nf3 Qh6 7. d3 Nh5 8. Nh4 Qg5 9. Nf5 c6 10. g4 Nf6 11. Rg1 cxb5 12. h4 Qg6 13. h5 Qg5 14. Qf3 Ng8 15. Bxf4 Qf6 16. Nc3 Bc5 17. Nd5 Qxb2 18. Bd6 Bxg1 19. e5 Qxa1+ 20. Ke2 Na6 21. Nxg7+ Kd8 22. Qf6+ Nxf6 23. Be7# 1-0"
+      },
+      "women": {
+        "kicker": "Women · Gaprindashvili at Seventeen",
+        "players": "Nona Gaprindashvili – Dzenite",
+        "meta": "5th Soviet Team Championship Final, Vilnius 1958 · Ruy Lopez Closed · 1–0",
+        "body": "July 9, 1958, Vilnius. Seventeen-year-old Nona Gaprindashvili plays in the Soviet Team Championship Final — the highest level of team chess in the world at the time. Four years later she would dethrone Elisaveta Bykova to become the fifth Women's World Champion, beginning a sixteen-year reign that ended only when Maia Chiburdanidze took the title in 1978.",
+        "pgn": "1.e4 e5 2.Nf3 Nc6 3.Bb5 a6 4.Ba4 Nf6 5.O-O Be7 6.Re1 b5 7.Bb3 d6 8.c3 Bg4 9.d3 O-O 10.Nbd2 Na5 11.Bc2 c5 12.h3 Bh5 13.Nf1 Nc6 14.g4 Bg6 15.Ng3 Re8 16.Kh2 Qc7 17.Qe2 Nd8 18.Rg1 Ne6 19.Nf5 Bf8 20.Bg5 Nxg5 21.Nxg5 h6 22.Nf3 Kh8 23.Rg2 Bh7 24.Rag1 g6 25.Ne3 d5 26.Kh1 d4 27.Nf1 Rac8 28.Ng3 Bg7 29.g5 hxg5 30.Nxg5 Bh6 31.h4 Re7 32.Qf3 Qd6 33.Rh2 Rec7 34.Bb3 Bg8 35.h5 Bxg5 36.hxg6+ Kg7 37.Nf5+ 1-0"
+      }
+    },
+    {
+      "label": "Pair 6 · Beating the Higher-Rated",
+      "men": {
+        "kicker": "Men · The Machine That Taught Itself",
+        "players": "AlphaZero – Stockfish 8",
+        "meta": "DeepMind paper, London 2017 · Queen's Indian Defence · 1–0",
+        "body": "December 2017. DeepMind's AlphaZero — four hours of self-play, no human chess knowledge — crushes Stockfish 8 (the strongest classical engine of its day) by 28 wins to 0 with 72 draws. This is Game 10 of the published sample: a knight sacrifice on h6 to expose the king, then patient piece restriction rather than immediate material recovery. The game that pointed chess forward into the neural-network era.",
+        "pgn": "1. Nf3 Nf6 2. d4 e6 3. c4 b6 4. g3 Bb7 5. Bg2 Be7 6. O-O O-O 7. d5 exd5 8. Nh4 c6 9. cxd5 Nxd5 10. Nf5 Nc7 11. e4 d5 12. exd5 Nxd5 13. Nc3 Nxc3 14. Qg4 g6 15. Nh6+ Kg7 16. bxc3 Bc8 17. Qf4 Qd6 18. Qa4 g5 19. Re1 Kxh6 20. h4 f6 21. Be3 Bf5 22. Rad1 Qa3 23. Qc4 b5 24. hxg5+ fxg5 25. Qh4+ Kg6 26. Qh1 Kg7 27. Be4 Bg6 28. Bxg6 hxg6 29. Qh3 Bf6 30. Kg2 Qxa2 31. Rh1 Qg8 32. c4 Re8 33. Bd4 Bxd4 34. Rxd4 Rd8 35. Rxd8 Qxd8 36. Qe6 Nd7 37. Rd1 Nc5 38. Rxd8 Nxe6 39. Rxa8 Kf6 40. cxb5 cxb5 41. Kf3 Nd4+ 42. Ke4 Nc6 43. Rc8 Ne7 44. Rb8 Nf5 45. g4 Nh6 46. f3 Nf7 47. Ra8 Nd6+ 48. Kd5 Nc4 49. Rxa7 Ne3+ 50. Ke4 Nc4 51. Ra6+ Kg7 52. Rc6 Kf7 53. Rc5 Ke6 54. Rxg5 Kf6 55. Rc5 g5 56. Kd4 1-0"
+      },
+      "women": {
+        "kicker": "Women · India's First Female GM Beats a Male GM",
+        "players": "Humpy Koneru – Evgenij Miroshnichenko",
+        "meta": "Abu Dhabi Open 2007 · King's Indian Fianchetto · 1–0",
+        "body": "Abu Dhabi, August 20, 2007. Humpy Koneru (2572) — India's first female grandmaster, earned in 2002 at fifteen years and one month — defeats Ukrainian GM Evgenij Miroshnichenko, rated 99 points higher at 2671. Koneru went on to be the second-highest-rated woman in history (after Polgar) and a two-time World Rapid Champion (2019, 2024). A working-class champion who has stayed in the women's top five for two decades while raising a family.",
+        "pgn": "1. d4 Nf6 2. Nf3 g6 3. c4 Bg7 4. g3 O-O 5. Bg2 c6 6. Nc3 d6 7. O-O Qa5 8. h3 Qa6 9. Nd2 Nbd7 10. b3 Rb8 11. Bb2 b5 12. e4 e5 13. cxb5 cxb5 14. a4 bxa4 15. Nc4 Qb7 16. Nxd6 Qxb3 17. Nxa4 exd4 18. Bxd4 Qe6 19. Bxa7 Ra8 20. Nc3 Ne8 21. Nxe8 Rxe8 22. e5 Qxe5 23. Bxa8 Qxc3 24. Qa4 Qe5 25. Rac1 Nf6 26. Bc6 Rf8 27. Bc5 Bxh3 28. Bxf8 Bxf8 29. Rfe1 Qg5 30. Bg2 Be6 31. Rb1 Bc5 32. Rxe6 fxe6 33. Rb7 Qc1+ 34. Kh2 Bf8 35. Bh3 Qd2 36. Bxe6+ Kh8 37. Kg2 Qd6 38. Qc4 h5 39. Qc8 1-0"
+      }
+    },
+    {
+      "label": "Pair 7 · Attacking Masters",
+      "men": {
+        "kicker": "Men · The Evergreen Game",
+        "players": "Adolf Anderssen – Jean Dufresne",
+        "meta": "Berlin 1852 (casual) · Evans Gambit · 1–0",
+        "body": "Named 'Evergreen' by Wilhelm Steinitz — a game whose beauty would never fade. Anderssen sacrifices his queen with 19.Rad1!! to set up an irresistible mating net. The companion piece to the Immortal Game, and proof that the same player could conjure brilliance twice.",
+        "pgn": "1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. b4 Bxb4 5. c3 Ba5 6. d4 exd4 7. O-O d3 8. Qb3 Qf6 9. e5 Qg6 10. Re1 Nge7 11. Ba3 b5 12. Qxb5 Rb8 13. Qa4 Bb6 14. Nbd2 Bb7 15. Ne4 Qf5 16. Bxd3 Qh5 17. Nf6+ gxf6 18. exf6 Rg8 19. Rad1 Qxf3 20. Rxe7+ Nxe7 21. Qxd7+ Kxd7 22. Bf5+ Ke8 23. Bd7+ Kf8 24. Bxe7# 1-0"
+      },
+      "women": {
+        "kicker": "Women · Hou Yifan's Promotion Attack",
+        "players": "Hou Yifan – Marie Sebag",
+        "meta": "1st Hangzhou Women's GM Tournament 2011 · Sicilian Canal-Sokolsky · 1–0",
+        "body": "July 15, 2011, Hangzhou. Reigning Women's World Champion Hou Yifan (2575) plays a textbook attacking masterpiece against French No. 1 Marie Sebag (2510). Open lines on the kingside, sustained pressure, and a clean conversion ending in 32.f8=Q+ for mate next move. Hou had been WWC for just one year — she would hold the title four times in seven years. (PGN includes Stockfish 9 in-line analysis.)",
+        "pgn": "1.e4 c5 2.Nf3 d6 3.d4 cxd4 4.Qxd4 Nc6 5.Bb5 Bd7 6.Bxc6 Bxc6 7.Nc3 Nf6 8.Bg5 e6 9.Qd3 Be7 10.Nd4 Qa5 11.Bd2 Qc7 12.O-O-O O-O 13.f4 Rab8 14.f5 Bd7 15.g4 Rfc8 16.g5 Ng4 17.Rhf1 Qc4 18.Qh3 Ne5 19.Nf3 b5 20.f6 Bf8 21.g6 fxg6 22.Nxe5 dxe5 23.f7+ Kh8 24.Rf3 h6 25.Bxh6 gxh6 26.Qg4 g5 27.Qh5 Kg7 28.Rh3 Kf6 29.Rxd7 b4 30.Qxh6+ Bxh6 31.Rxh6+ Kg7 32.f8=Q+ 1-0"
+      }
+    },
+    {
+      "label": "Pair 8 · Now — Norway 2026",
+      "men": {
+        "kicker": "Men · Polgar Breaks the Glass Ceiling",
+        "players": "Judit Polgar – Garry Kasparov",
+        "meta": "Russia vs The Rest of the World, Moscow 2002 · Ruy Lopez Berlin · 1–0",
+        "body": "September 9, 2002. Garry Kasparov is the world's #1 rated player at 2838. Judit Polgar defeats him with the white pieces in the Berlin Defence — cited in every chess history as the moment the highest barrier in the men's game was broken. Round 5 of the Russia vs The Rest of the World match in Moscow. We include this game in the men's column because of who Kasparov was, and what his loss meant.",
+        "pgn": "1. e4 e5 2. Nf3 Nc6 3. Bb5 Nf6 4. O-O Nxe4 5. d4 Nd6 6. Bxc6 dxc6 7. dxe5 Nf5 8. Qxd8+ Kxd8 9. Nc3 h6 10. Rd1+ Ke8 11. h3 Be7 12. Ne2 Nh4 13. Nxh4 Bxh4 14. Be3 Bf5 15. Nd4 Bh7 16. g4 Be7 17. Kg2 h5 18. Nf5 Bf8 19. Kf3 Bg6 20. Rd2 hxg4+ 21. hxg4 Rh3+ 22. Kg2 Rh7 23. Kg3 f6 24. Bf4 Bxf5 25. gxf5 fxe5 26. Re1 Bd6 27. Bxe5 Kd7 28. c4 c5 29. Bxd6 cxd6 30. Re6 Rah8 31. Rexd6+ Kc8 32. R2d5 Rh3+ 33. Kg2 Rh2+ 34. Kf3 R2h3+ 35. Ke4 b6 36. Rc6+ Kb8 37. Rd7 Rh2 38. Ke3 Rf8 39. Rcc7 Rxf5 40. Rb7+ Kc8 41. Rdc7+ Kd8 42. Rxg7 Kc8 1-0"
+      },
+      "women": {
+        "kicker": "Women · The Norway Armageddon",
+        "players": "Ju Wenjun – Divya Deshmukh",
+        "meta": "Norway Chess Armageddon (Women), Oslo · May 25, 2026 · Réti · 0–1",
+        "body": "Eight days ago. The classical game ended drawn; in the Armageddon tiebreak, seventeen-year-old Indian phenomenon Divya Deshmukh (with draw odds as Black) outlasts reigning Women's World Champion Ju Wenjun in a 51-move endgame battle. The same tournament currently dominating The Daily Gambit's lead column. Heart rates above 160 beats per minute — exactly the kind of contest WGM Maryana Huda's 2025 research paper analyzed.",
+        "pgn": "1. Nf3 d5 2. b3 Bg4 3. e3 Nd7 4. Bb2 e6 5. Be2 h6 6. d3 Ngf6 7. Nbd2 Bd6 8. h3 Bf5 9. O-O O-O 10. c4 c6 11. Qc2 Bh7 12. e4 dxe4 13. Nxe4 Be7 14. Rad1 a5 15. Rfe1 Qc7 16. a3 Nxe4 17. dxe4 Bf6 18. Bxf6 Nxf6 19. Bd3 Rfd8 20. e5 Bxd3 21. Rxd3 Rxd3 22. Qxd3 Rd8 23. Qc3 Nd7 24. c5 Nf8 25. Nd2 Rd5 26. b4 axb4 27. axb4 Qd8 28. Ne4 Rd3 29. Qc2 Qd4 30. Qe2 Ng6 31. Nd6 Nf4 32. Qg4 Nd5 33. Qh5 g6 34. Qxh6 Rd1 35. Rxd1 Qxd1+ 36. Kh2 Qd4 37. Qg5 Qxb4 38. g3 Qxc5 39. Kg2 Qb6 40. h4 Qc7 41. h5 Qe7 42. Qg4 Kg7 43. Ne4 Qc7 44. hxg6 Qxe5 45. gxf7+ Kxf7 46. Ng5+ Ke7 47. Nf3 Qf6 48. Qc4 Qf5 49. Qb3 b5 50. Qa3+ Kf7 51. Qc5 Nf4+ 0-1"
+      }
+    }
+  ]
+}

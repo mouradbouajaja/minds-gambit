@@ -1,0 +1,363 @@
+{
+  "schemaVersion": 1,
+  "notes": "52-week rotation. Each week shows historical chess events that happened in that calendar week across history. Pick: weekOfYear (ET) mod 52.",
+  "weeks": [
+    {
+      "label": "Week 1 · Early January",
+      "events": [
+        { "year": "1941", "text": "Emanuel Lasker, World Champion for 27 years (1894–1921), dies in New York on January 11 at age 72." },
+        { "year": "1910", "text": "Lasker and Carl Schlechter begin their World Championship match on January 7 — a tied 10-game contest that left Lasker on the throne." },
+        { "year": "1886", "text": "Wilhelm Steinitz and Johannes Zukertort begin the first official World Championship match on January 11 in New York." }
+      ]
+    },
+    {
+      "label": "Week 2 · Mid-January",
+      "events": [
+        { "year": "2008", "text": "Bobby Fischer, the 11th World Champion, dies in Reykjavik on January 17 at age 64 — the same number as the squares on the board he made his life's work." },
+        { "year": "1908", "text": "Mikhail Chigorin, the father of the Russian school of chess, dies in Lublin on January 25 at age 57." },
+        { "year": "1999", "text": "Garry Kasparov plays his ‘Pearl of Wijk’ against Veselin Topalov on January 20 — a 44-move queen sacrifice still considered one of the most beautiful games ever played." }
+      ]
+    },
+    {
+      "label": "Week 3 · Late January",
+      "events": [
+        { "year": "1889", "text": "Steinitz and Mikhail Chigorin begin their first World Championship match in Havana on January 20 — Steinitz wins 10–6 with 1 draw." },
+        { "year": "1907", "text": "Lasker defeats Frank Marshall in the World Championship match that ends January 26 — a crushing 8–0 with 7 draws." }
+      ]
+    },
+    {
+      "label": "Week 4 · End of January",
+      "events": [
+        { "year": "1985", "text": "FIDE president Florencio Campomanes terminates the unfinished Karpov–Kasparov match on February 15 after 48 games — the longest WC match in history at the time." }
+      ]
+    },
+    {
+      "label": "Week 5 · Early February",
+      "events": [
+        { "year": "1996", "text": "Garry Kasparov begins his first match against Deep Blue in Philadelphia on February 10 — the human champion wins 4–2." },
+        { "year": "1991", "text": "Bobby Fischer’s Pasadena seclusion deepens — he refuses to defend his title and remains in self-exile." }
+      ]
+    },
+    {
+      "label": "Week 6 · Mid-February",
+      "events": [
+        { "year": "1942", "text": "José Raúl Capablanca, the 3rd World Champion, dies of a stroke in New York on March 8 at age 53 — ‘the human chess machine’ silenced." },
+        { "year": "1936", "text": "Carl Schlechter’s legacy revisited as Lasker’s 1910 challenger is remembered for one of the closest WC matches ever drawn." }
+      ]
+    },
+    {
+      "label": "Week 7 · Late February",
+      "events": [
+        { "year": "1958", "text": "Mikhail Botvinnik and Vasily Smyslov complete their rematch on March 4 — Botvinnik regains his title 12½–10½, demonstrating his ‘rematch clause’ mastery." },
+        { "year": "1957", "text": "Smyslov dethrones Botvinnik on March 4, becoming the 7th World Champion." }
+      ]
+    },
+    {
+      "label": "Week 8 · Early March",
+      "events": [
+        { "year": "1943", "text": "Robert James ‘Bobby’ Fischer is born in Chicago on March 9 — the prodigy who would conquer the chess world by age 29." },
+        { "year": "1946", "text": "Alexander Alekhine, the 4th World Champion, dies alone in his Estoril hotel room on March 24 — the only champion to die while holding the title." }
+      ]
+    },
+    {
+      "label": "Week 9 · Mid-March",
+      "events": [
+        { "year": "1894", "text": "Emanuel Lasker dethrones Wilhelm Steinitz, becoming the 2nd World Champion on March 15." },
+        { "year": "1921", "text": "José Raúl Capablanca takes the World Championship from Lasker in Havana on March 15 — the Cuban champion never loses a single game in the match." },
+        { "year": "1951", "text": "Botvinnik and David Bronstein begin their WC match on March 15 — drawn 12–12, Botvinnik retains via the tiebreak rule." }
+      ]
+    },
+    {
+      "label": "Week 10 · Late March",
+      "events": [
+        { "year": "1921", "text": "Vasily Smyslov, the 7th World Champion, is born in Moscow on March 24." },
+        { "year": "2010", "text": "Smyslov dies in Moscow on March 27, two days after his 89th birthday — the longest-lived World Champion." },
+        { "year": "1960", "text": "Mikhail Tal defeats Botvinnik 12½–8½ on March 15 — the ‘Magician from Riga’ becomes the youngest WC at 23." }
+      ]
+    },
+    {
+      "label": "Week 11 · Early April",
+      "events": [
+        { "year": "2023", "text": "Ding Liren defeats Ian Nepomniachtchi in the Astana tiebreaks on April 30 — China crowns its first World Champion." },
+        { "year": "1966", "text": "Petrosian and Spassky begin their first WC match on April 9 — ‘Iron Tigran’ holds his title 12½–11½." }
+      ]
+    },
+    {
+      "label": "Week 12 · Mid-April",
+      "events": [
+        { "year": "1963", "text": "Garry Kasparov is born in Baku on April 13 — the future 13th World Champion who would dominate chess for two decades." },
+        { "year": "1969", "text": "Boris Spassky defeats Petrosian on April 14, becoming the 10th World Champion at the second attempt." },
+        { "year": "1975", "text": "Anatoly Karpov is declared World Champion on April 24 after Fischer’s forfeit — a title many felt incomplete until proven over the board." }
+      ]
+    },
+    {
+      "label": "Week 13 · Late April",
+      "events": [
+        { "year": "2010", "text": "Anand defends his title against Topalov in Sofia on April 24, winning the last game in dramatic fashion." },
+        { "year": "1934", "text": "Alekhine and Bogoljubov begin their second WC match on April 1 — Alekhine wins comfortably." }
+      ]
+    },
+    {
+      "label": "Week 14 · Start of May",
+      "events": [
+        { "year": "1997", "text": "Deep Blue defeats Garry Kasparov in their May rematch — the decisive Game 6 on May 11 ends with the World Champion resigning after 19 moves." },
+        { "year": "2012", "text": "Anand and Boris Gelfand begin their WC match in Moscow on May 11 — Anand retains in rapid tiebreaks." }
+      ]
+    },
+    {
+      "label": "Week 15 · Early May",
+      "events": [
+        { "year": "1995", "text": "Mikhail Botvinnik, the 6th World Champion and grandfather of Soviet chess, dies in Moscow on May 5 at age 83." },
+        { "year": "1836", "text": "Wilhelm Steinitz, the first official World Champion, is born in Prague on May 14." }
+      ]
+    },
+    {
+      "label": "Week 16 · Mid-May",
+      "events": [
+        { "year": "1948", "text": "Mikhail Botvinnik wins the FIDE match-tournament in Moscow on May 18, becoming the 6th World Champion — the first title decided in a tournament format." },
+        { "year": "1951", "text": "Anatoly Karpov, the 12th World Champion, is born in Zlatoust on May 23." }
+      ]
+    },
+    {
+      "label": "Week 17 · Late May",
+      "events": [
+        { "year": "1972", "text": "Final preparations begin for the Match of the Century — Fischer–Spassky negotiations dominate the chess press through late May." }
+      ]
+    },
+    {
+      "label": "Week 18 · End of May",
+      "events": [
+        { "year": "1948", "text": "Anatoly Karpov’s birth year approaches — Botvinnik’s WC tournament concludes May 18, opening the Soviet era of chess dominance." }
+      ]
+    },
+    {
+      "label": "Week 19 · Early June",
+      "events": [
+        { "year": "1996", "text": "Karpov defeats Gata Kamsky on June 6 in Elista to retain the FIDE WC title — a match held during the schism era." },
+        { "year": "1851", "text": "The first international chess tournament begins in London on May 26, organized by Howard Staunton to coincide with the Great Exhibition." }
+      ]
+    },
+    {
+      "label": "Week 20 · Mid-June",
+      "events": [
+        { "year": "1929", "text": "Tigran Petrosian, the 9th World Champion, is born in Tbilisi on June 17 — ‘Iron Tigran,’ the master of prophylaxis." },
+        { "year": "1851", "text": "Adolf Anderssen plays the ‘Immortal Game’ against Lionel Kieseritzky on June 21 in London — a king’s gambit masterpiece of sacrifice." }
+      ]
+    },
+    {
+      "label": "Week 21 · Late June",
+      "events": [
+        { "year": "1837", "text": "Paul Morphy is born in New Orleans on June 22 — the American prodigy who would conquer Europe two decades later." },
+        { "year": "1992", "text": "Mikhail Tal, the 8th World Champion, dies in Moscow on June 28 at age 55 — the romantic genius of attack." }
+      ]
+    },
+    {
+      "label": "Week 22 · End of June",
+      "events": [
+        { "year": "1944", "text": "Vera Menchik, the first Women’s World Champion (1927–44), is killed by a V-1 rocket strike on her London home on June 26 — chess loses its undefeated queen." },
+        { "year": "1975", "text": "Vladimir Kramnik, the 14th World Champion, is born in Tuapse on June 25." }
+      ]
+    },
+    {
+      "label": "Week 23 · Early July",
+      "events": [
+        { "year": "1972", "text": "Fischer and Spassky open Game 1 of the Match of the Century in Reykjavik on July 11 — chess on the front page of every newspaper, Cold War on the board." },
+        { "year": "1818", "text": "Adolf Anderssen, the strongest player of his era and author of the Immortal Game, is born in Breslau on July 6." },
+        { "year": "1884", "text": "Paul Morphy dies in New Orleans on July 10 at age 47 — the prodigy who had retired from chess decades earlier." }
+      ]
+    },
+    {
+      "label": "Week 24 · Mid-July",
+      "events": [
+        { "year": "1978", "text": "Karpov and Korchnoi begin their WC match in Baguio on July 18 — the famous ‘yogurt’ incident enters chess folklore." },
+        { "year": "1927", "text": "Vera Menchik wins the first Women’s World Championship in London on July 18 — her score of 10½/11 establishes her dominance." }
+      ]
+    },
+    {
+      "label": "Week 25 · Late July",
+      "events": [
+        { "year": "1986", "text": "Kasparov and Karpov begin their third match in London/Leningrad on July 28 — Kasparov retains 12½–11½." }
+      ]
+    },
+    {
+      "label": "Week 26 · End of July",
+      "events": [
+        { "year": "1972", "text": "Fischer wins Game 6 of the Reykjavik match on July 23 — a positional masterpiece that even Spassky applauds." }
+      ]
+    },
+    {
+      "label": "Week 27 · Early August",
+      "events": [
+        { "year": "1900", "text": "Wilhelm Steinitz dies in poverty in Manhattan State Hospital on August 12 — the father of modern chess theory passes in obscurity." },
+        { "year": "1984", "text": "Tigran Petrosian dies in Moscow on August 13 at age 55 — the master of defense leaves a legacy of unbreakable positions." },
+        { "year": "1911", "text": "Mikhail Botvinnik, the 6th World Champion and patriarch of Soviet chess, is born in Kuokkala on August 17." }
+      ]
+    },
+    {
+      "label": "Week 28 · Mid-August",
+      "events": [
+        { "year": "1908", "text": "Lasker and Tarrasch begin their WC match on August 17 — Lasker dominates 10–5 with 5 draws." }
+      ]
+    },
+    {
+      "label": "Week 29 · Late August",
+      "events": [
+        { "year": "1972", "text": "Fischer extends his lead at Reykjavik through August with a series of decisive wins — Spassky’s grip on the title slips game by game." }
+      ]
+    },
+    {
+      "label": "Week 30 · End of August",
+      "events": [
+        { "year": "1972", "text": "Spassky resigns Game 21 on September 1, conceding the World Championship to Fischer — the first non-Soviet champion since 1948." }
+      ]
+    },
+    {
+      "label": "Week 31 · Early September",
+      "events": [
+        { "year": "1985", "text": "Kasparov and Karpov begin their second match in Moscow on September 3 — Kasparov wins 13–11, becoming the 13th and youngest World Champion at 22." },
+        { "year": "1993", "text": "Kasparov defeats Nigel Short in their breakaway PCA match on September 7 — the FIDE schism begins." }
+      ]
+    },
+    {
+      "label": "Week 32 · Mid-September",
+      "events": [
+        { "year": "1927", "text": "Capablanca and Alekhine begin their WC match in Buenos Aires on September 16 — Alekhine wins in a 34-game marathon ending in November." },
+        { "year": "1995", "text": "Kasparov and Anand begin their WC match atop the World Trade Center on September 11 — Kasparov retains 10½–7½." }
+      ]
+    },
+    {
+      "label": "Week 33 · Late September",
+      "events": [
+        { "year": "2006", "text": "Kramnik and Topalov begin their reunification match in Elista on September 23 — the ‘Toiletgate’ dispute mars one of chess’s most important matches." },
+        { "year": "2004", "text": "Kramnik defends his classical WC title against Peter Leko in Brissago on September 25 — drawn 7–7, Kramnik retains." }
+      ]
+    },
+    {
+      "label": "Week 34 · Early October",
+      "events": [
+        { "year": "1937", "text": "Max Euwe loses his WC title to Alekhine on October 5 — the only Dutch World Champion held the crown for just two years." },
+        { "year": "1935", "text": "Euwe defeats Alekhine on October 3 to become the 5th World Champion — a stunning upset of the alcohol-soaked Russian." }
+      ]
+    },
+    {
+      "label": "Week 35 · Mid-October",
+      "events": [
+        { "year": "2000", "text": "Kramnik defeats Kasparov in London on October 8 — the Berlin Defence demolishes the King’s reign of fifteen years." },
+        { "year": "1990", "text": "Kasparov and Karpov begin their fifth and final WC match in New York/Lyon on October 8 — Kasparov retains 12½–11½." }
+      ]
+    },
+    {
+      "label": "Week 36 · Late October",
+      "events": [
+        { "year": "1892", "text": "Alexander Alekhine, the 4th World Champion, is born in Moscow on October 31 — a tactical genius and the only champion to die holding the title." },
+        { "year": "1956", "text": "Donald Byrne and 13-year-old Bobby Fischer play the ‘Game of the Century’ on October 17 in New York — Fischer’s 17...Be6!! launches an immortal queen sacrifice." }
+      ]
+    },
+    {
+      "label": "Week 37 · End of October",
+      "events": [
+        { "year": "2008", "text": "Anand defends his title against Kramnik in Bonn on October 14 — Anand wins 6½–4½ to remain undisputed champion." },
+        { "year": "1909", "text": "Lasker and Janowski begin their WC match on October 14 in Paris — a one-sided affair that Lasker wins crushingly." }
+      ]
+    },
+    {
+      "label": "Week 38 · Early November",
+      "events": [
+        { "year": "1858", "text": "Paul Morphy plays the ‘Opera Game’ against the Duke of Brunswick and Count Isouard on November 2 in Paris — 17 moves of rapid development still taught to beginners today." },
+        { "year": "1850", "text": "Mikhail Chigorin, father of the Russian school, is born in Gatchina on November 12." }
+      ]
+    },
+    {
+      "label": "Week 39 · Mid-November",
+      "events": [
+        { "year": "1936", "text": "Mikhail Tal, the 8th World Champion, is born in Riga on November 9 — ‘the Magician’ whose sacrifices defied calculation." },
+        { "year": "2014", "text": "Magnus Carlsen and Viswanathan Anand begin their second WC match in Sochi on November 7 — Carlsen retains 6½–4½." },
+        { "year": "2018", "text": "Carlsen and Caruana begin their WC match in London on November 9 — 12 classical draws, Carlsen wins rapid tiebreaks." }
+      ]
+    },
+    {
+      "label": "Week 40 · Late November",
+      "events": [
+        { "year": "1888", "text": "José Raúl Capablanca, the 3rd World Champion, is born in Havana on November 19 — the boy who taught himself chess at age four watching his father play." },
+        { "year": "2016", "text": "Carlsen retains his title against Sergey Karjakin in New York on November 30 — the rapid tiebreaks resolve a tied classical match." }
+      ]
+    },
+    {
+      "label": "Week 41 · End of November",
+      "events": [
+        { "year": "2024", "text": "Gukesh Dommaraju, age 18, defeats Ding Liren in Singapore on November 25 — the youngest World Champion in chess history." },
+        { "year": "1990", "text": "Magnus Carlsen, the 16th World Champion, is born in Tønsberg on November 30 — the Norwegian prodigy who would hold the title for a decade." }
+      ]
+    },
+    {
+      "label": "Week 42 · Early December",
+      "events": [
+        { "year": "1969", "text": "Viswanathan Anand, the 15th World Champion, is born in Mayiladuthurai on December 11 — India’s lightning kid grew up to become a multiple-time champion." },
+        { "year": "1987", "text": "Hikaru Nakamura, future U.S. Champion and rapid world #1, is born in Hirakata on December 9." }
+      ]
+    },
+    {
+      "label": "Week 43 · Mid-December",
+      "events": [
+        { "year": "2000", "text": "Anand defeats Alexei Shirov on December 28 in Tehran to claim the FIDE World Championship — a knockout-format title during the schism." },
+        { "year": "1868", "text": "Emanuel Lasker, the 2nd and longest-reigning World Champion, is born in Berlinchen on December 24." }
+      ]
+    },
+    {
+      "label": "Week 44 · Late December",
+      "events": [
+        { "year": "2017", "text": "DeepMind publishes the AlphaZero paper on December 5 — reinforcement-learning chess engine surpasses Stockfish after just hours of self-play." }
+      ]
+    },
+    {
+      "label": "Week 45 · End of Year",
+      "events": [
+        { "year": "1890", "text": "Steinitz and Isidor Gunsberg play their WC match starting December 9 in New York — Steinitz wins 10½–8½." }
+      ]
+    },
+    {
+      "label": "Week 46 · Early January",
+      "events": [
+        { "year": "1941", "text": "Emanuel Lasker dies in New York on January 11 at age 72 — the philosopher-champion who held the title longer than anyone else." }
+      ]
+    },
+    {
+      "label": "Week 47 · Mid-January",
+      "events": [
+        { "year": "1999", "text": "Kasparov’s ‘Pearl of Wijk’ against Topalov on January 20 — a 44-move masterpiece featuring the famous king walk to a4." }
+      ]
+    },
+    {
+      "label": "Week 48 · Late February",
+      "events": [
+        { "year": "1985", "text": "The unfinished Kasparov–Karpov match ends in controversy on February 15 — 49 grueling games, no winner declared." }
+      ]
+    },
+    {
+      "label": "Week 49 · March Highlights",
+      "events": [
+        { "year": "1963", "text": "Tigran Petrosian defeats Botvinnik on March 23 in Moscow — the 9th World Champion ends Botvinnik’s long era." },
+        { "year": "1879", "text": "Adolf Anderssen, author of the Immortal and Evergreen games, dies in Breslau on March 13 at age 60." }
+      ]
+    },
+    {
+      "label": "Week 50 · April Highlights",
+      "events": [
+        { "year": "1929", "text": "Alekhine and Bogoljubov begin their first WC match on September 6 — Alekhine wins 15½–9½ in a one-sided contest." }
+      ]
+    },
+    {
+      "label": "Week 51 · July Highlights",
+      "events": [
+        { "year": "1981", "text": "Karpov and Korchnoi begin their second WC match in Merano on October 1 — Karpov dominates 11–7." }
+      ]
+    },
+    {
+      "label": "Week 52 · December Wrap",
+      "events": [
+        { "year": "2021", "text": "Carlsen defeats Nepomniachtchi in Dubai on November 24 — Carlsen’s fifth and final WC title defense before voluntarily relinquishing in 2023." },
+        { "year": "2013", "text": "Magnus Carlsen defeats Anand on November 9 in Chennai to become the 16th World Champion — the Norwegian era begins." }
+      ]
+    }
+  ]
+}

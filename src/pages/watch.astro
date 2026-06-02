@@ -304,5 +304,38 @@ const feed = {
     modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
   </script>
+<style is:global>
+.nav-burger{display:none;background:none;border:0;font-size:1.7rem;line-height:1;cursor:pointer;color:inherit;padding:0 0.4rem;}
+@media (max-width:860px){
+ nav .nav-inner{display:flex !important;align-items:center;flex-wrap:wrap !important;}
+ .nav-burger{display:block;margin-left:auto;order:2;}
+ nav .nav-logo{order:1;}
+ nav .nav-links{display:none !important;order:3;flex-basis:100%;width:100%;flex-direction:column;align-items:flex-start;gap:0.15rem;padding:0.5rem 0;}
+ nav .nav-links.open{display:flex !important;}
+ nav .nav-links li{width:100%;}
+ nav .nav-links li a{display:block;padding:0.55rem 0.2rem;width:100%;}
+ nav .nav-links .dropdown-menu{display:none !important;}
+}
+</style>
+<script is:inline>
+(function(){
+ function init(){
+  var inner=document.querySelector("nav .nav-inner");
+  if(inner && !inner.querySelector(".nav-burger")){
+   var links=inner.querySelector(".nav-links");
+   if(links){
+    var b=document.createElement("button");
+    b.type="button"; b.className="nav-burger"; b.setAttribute("aria-label","Toggle menu"); b.innerHTML=String.fromCharCode(9776);
+    b.addEventListener("click",function(){ links.classList.toggle("open"); });
+    inner.appendChild(b);
+    links.addEventListener("click",function(e){ if(e.target && e.target.closest && e.target.closest("a")) links.classList.remove("open"); });
+   }
+  }
+  var d=document.querySelectorAll("nav a[href='/daily']"); for(var i=0;i<d.length;i++){ d[i].setAttribute("href","/daily-wired"); }
+  var c=document.querySelectorAll("nav a[href*='buymeacoffee']"); for(var k=0;k<c.length;k++){ c[k].textContent="Donate"; c[k].setAttribute("href","/#donate"); }
+ }
+ if(document.readyState!=="loading") init(); else document.addEventListener("DOMContentLoaded",init);
+})();
+</script>
 </body>
 </html>

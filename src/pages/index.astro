@@ -173,6 +173,71 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </style>
 
 
+<!-- FOUNDING COACH WELCOME — WGM Maryana Huda -->
+<section id="founding-coach" class="founding-coach-section" data-reveal>
+  <div class="fc-inner">
+    <div class="fc-card">
+      <span class="fc-pill">Featured Announcement</span>
+      <div class="fc-grid">
+        <a class="fc-photo-wrap" href="/chess-school/grandmasters/maryana-huda">
+          <img class="fc-photo" src="https://image.lichess1.org/display?fmt=webp&h=350&op=thumbnail&path=morshynska1:coach:morshynska1:47WCJA8z.jpg&w=350&sig=7153456a989676933f39b96c09cc68502ebf226c" alt="WGM Maryana Huda" loading="eager" referrerpolicy="no-referrer" />
+          <div class="fc-photo-ring"></div>
+        </a>
+        <div class="fc-content">
+          <p class="fc-eyebrow">Mind&rsquo;s Gambit Welcomes Our Founding Coach</p>
+          <h2 class="fc-name">WGM Maryana Huda</h2>
+          <p class="fc-credentials">Woman Grandmaster &middot; FIDE Trainer &middot; Sport Scientist &middot; Lviv, Ukraine</p>
+          <p class="fc-bio">Maryana joins Mind&rsquo;s Gambit Chess School as our Founding Coach. A FIDE Trainer and Woman Grandmaster based in Lviv, she is also a scholar at the Lviv State University of Physical Culture, where she researches the psychophysiology of chess &mdash; how the format of the game (classical, rapid, blitz) shapes the player&rsquo;s mind, heart, and decisions under pressure. Her work, <em>Time Control as a Stress Factor</em>, was presented at the 2025 IX International Scientific-Practical Conference &ldquo;Physical Activity and Quality of Human Life.&rdquo; She brings to our students deep technical instruction and a rare understanding of how the game tests the whole person.</p>
+          <blockquote class="fc-quote">
+            <p>&ldquo;The shorter the format of the game, the higher the level of emotional and physiological tension. Six of eight chess players we studied in blitz showed heart rates above 160 beats per minute &mdash; the load of an athlete in intense exertion, all while seated at the board.&rdquo;</p>
+            <footer class="fc-quote-attr">A Word From Our Coach &mdash; WGM Maryana Huda, <em>Time Control as a Stress Factor</em> (2025)</footer>
+          </blockquote>
+          <a class="fc-cta cta-btn" href="/chess-school/grandmasters/maryana-huda">
+            <span class="fc-cta-text">Meet Your Coach</span>
+            <span class="fc-cta-arrow">&rarr;</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+.founding-coach-section { padding: 3rem 1.5rem 1.5rem; }
+.fc-inner { max-width: 1280px; margin: 0 auto; }
+.fc-card { position: relative; background: linear-gradient(135deg, rgba(201,168,76,0.13) 0%, rgba(30,34,52,0.78) 60%, rgba(15,17,28,0.92) 100%); border: 1px solid rgba(201,168,76,0.55); border-radius: 18px; padding: 2.2rem 2.4rem 2rem; box-shadow: 0 18px 50px rgba(201,168,76,0.20), 0 10px 28px rgba(0,0,0,0.45); overflow: hidden; }
+.fc-card::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 90% 0%, rgba(201,168,76,0.18) 0%, transparent 55%); pointer-events: none; }
+.fc-pill { display: inline-block; background: #c9a84c; color: #0f111c; padding: 0.32rem 0.95rem; border-radius: 999px; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; font-family: 'Playfair Display', Georgia, serif; margin-bottom: 1.3rem; position: relative; z-index: 1; }
+.fc-grid { display: grid; grid-template-columns: 280px 1fr; gap: 2.4rem; align-items: start; position: relative; z-index: 1; }
+.fc-photo-wrap { position: relative; display: block; width: 280px; height: 280px; border-radius: 50%; overflow: hidden; flex-shrink: 0; box-shadow: 0 14px 36px rgba(0,0,0,0.5), 0 0 0 4px rgba(201,168,76,0.18); transition: transform 0.3s ease, box-shadow 0.3s ease; text-decoration: none; }
+.fc-photo-wrap:hover { transform: translateY(-3px); box-shadow: 0 22px 50px rgba(0,0,0,0.6), 0 0 0 4px rgba(201,168,76,0.35); }
+.fc-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
+.fc-photo-ring { position: absolute; inset: -6px; border-radius: 50%; border: 1px solid rgba(201,168,76,0.4); pointer-events: none; }
+.fc-content { color: #e8e0d0; }
+.fc-eyebrow { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 0.95rem; letter-spacing: 0.18em; text-transform: uppercase; margin: 0 0 0.45rem; font-weight: 700; }
+.fc-name { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(2rem, 3.6vw, 2.85rem); line-height: 1.1; color: #f5ecd1; margin: 0 0 0.55rem; font-weight: 800; }
+.fc-credentials { color: rgba(232,224,208,0.78); font-size: 0.95rem; font-style: italic; margin: 0 0 1.3rem; font-family: 'EB Garamond', Georgia, serif; }
+.fc-bio { color: rgba(232,224,208,0.93); font-size: 1.04rem; line-height: 1.65; font-family: 'EB Garamond', Georgia, serif; margin: 0 0 1.5rem; }
+.fc-bio em { color: #c9a84c; font-style: italic; }
+.fc-quote { margin: 0 0 1.6rem; padding: 1rem 1.3rem; background: rgba(15,17,28,0.55); border-left: 4px solid #c9a84c; border-radius: 4px; }
+.fc-quote p { margin: 0 0 0.7rem; color: #f5ecd1; font-family: 'EB Garamond', Georgia, serif; font-style: italic; font-size: 1.08rem; line-height: 1.55; }
+.fc-quote-attr { font-family: 'Playfair Display', Georgia, serif; font-size: 0.78rem; letter-spacing: 0.05em; color: rgba(201,168,76,0.85); font-style: normal; }
+.fc-quote-attr em { font-style: italic; color: rgba(232,224,208,0.7); }
+.fc-cta { display: inline-flex; align-items: center; gap: 0.55rem; background: #c9a84c; color: #0f111c !important; padding: 0.85rem 1.6rem; border-radius: 8px; text-decoration: none; font-weight: 800; font-family: 'Playfair Display', Georgia, serif; letter-spacing: 0.05em; font-size: 0.95rem; transition: background 0.2s, transform 0.2s, box-shadow 0.2s; box-shadow: 0 8px 22px rgba(201,168,76,0.35); }
+.fc-cta:hover { background: #d4b556; transform: translateY(-2px); box-shadow: 0 14px 30px rgba(201,168,76,0.55); }
+.fc-cta-arrow { font-size: 1.1rem; }
+@media (max-width: 820px) {
+  .founding-coach-section { padding: 2rem 1rem 0.5rem; }
+  .fc-card { padding: 1.6rem 1.3rem 1.6rem; border-radius: 14px; }
+  .fc-grid { grid-template-columns: 1fr; gap: 1.5rem; text-align: center; }
+  .fc-photo-wrap { width: 200px; height: 200px; margin: 0 auto; }
+  .fc-name { font-size: 1.85rem; }
+  .fc-credentials { font-size: 0.88rem; }
+  .fc-bio { font-size: 1rem; text-align: left; }
+  .fc-quote { text-align: left; }
+  .fc-cta { width: 100%; justify-content: center; }
+}
+</style>
 
 
 <!-- VIDEO TILES — Five Doors In -->

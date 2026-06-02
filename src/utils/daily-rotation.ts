@@ -13,6 +13,7 @@ import openingsData from '../data/daily/openings.json';
 import playersData from '../data/daily/players.json';
 import whatIsData from '../data/daily/what-is.json';
 import quotesData from '../data/daily/quotes.json';
+import thisWeekData from '../data/daily/this-week.json';
 
 /**
  * Get day-of-year (1–366) for a given date, in America/New_York time.
@@ -101,6 +102,11 @@ export function pickByWeek<T>(pool: T[], date: Date = new Date()): T {
     throw new Error('pickByWeek: pool is empty');
   }
   return pool[getWeekOfYearET(date) % pool.length];
+}
+
+/** This Week in Chess History — 52 weeks of date-anchored events */
+export function getDailyThisWeek(date?: Date) {
+  return pickByWeek(thisWeekData.weeks, date);
 }
 
 // ============================================================

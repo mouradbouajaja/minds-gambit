@@ -7,6 +7,7 @@ import {
 
 const today = new Date();
 const dateLine = today.toLocaleDateString('en-US', { timeZone: 'America/New_York', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase();
+const editionLabel = (parseInt(today.toLocaleString('en-US', { timeZone: 'America/New_York', hour: '2-digit', hour12: false }), 10) < 12) ? 'Morning Edition' : 'Evening Edition';
 
 const todaysQuote = getDailyQuote(today);
 const todaysPlayer = getDailyPlayer(today);
@@ -289,7 +290,7 @@ section.archive { margin-top: 2rem; border-top: 3px double #1a1a1a; padding-top:
 <span>Price: Free</span>
 </div>
 <header class="masthead">
-<div class="mast-side"><span>{dateLine}</span><span class="mast-edition">Morning Edition</span></div>
+<div class="mast-side"><span>{dateLine}</span><span class="mast-edition">{editionLabel}</span></div>
 <div class="mast-center"><h1 class="nameplate">The Daily Gambit</h1><p class="motto">“All the chess that’s fit to print”</p></div>
 <div class="mast-side mast-right"><span>Chess · Mind · Culture</span><span class="mast-edition">A Mind’s Gambit Publication</span></div>
 </header>

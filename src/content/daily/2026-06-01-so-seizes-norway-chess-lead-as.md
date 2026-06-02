@@ -1,7 +1,7 @@
 ---
 headline: "So Seizes Norway Chess Lead as India's Stars All Fall in Round 6"
 subhead: "Carlsen also rebounds with a win over Firouzja in a decisive three-game sweep"
-summary: "GM (Grandmaster, the highest title FIDE awards) Wesley So, the Philippines-born American, grabbed the sole lead at Norway Chess 2026 by defeating GM Praggnanandhaa Rameshbabu for the second straight round. Carlsen knocked long-time leader Firouzja off the top spot with a clinical endgame win, while Keymer beat World Champion Gukesh Dommaraju. After six rounds, So leads with 11.5 points, 1.5 ahead of Firouzja."
+summary: "GM Wesley So, the Philippines-born American, grabbed the sole lead at Norway Chess 2026 by defeating Praggnanandhaa Rameshbabu for the second straight round. Carlsen knocked long-time leader Firouzja off the top with a clinical endgame win, while Keymer beat World Champion Gukesh Dommaraju. So now leads with 11.5 points, 1.5 ahead of Firouzja."
 section: "tournaments"
 kicker: "Norway Chess 2026"
 tileKicker: "Norway Chess 2026 · Round 6"

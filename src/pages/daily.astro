@@ -13,14 +13,12 @@ import {
 } from '../utils/daily-rotation';
 
 const today = new Date();
-// Anchor "today" to America/New_York — avoids UTC-build vs ET-edition date drift.
 const etISO = today.toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
 const [etY, etM, etD] = etISO.split('-').map(Number);
 const todayMidnight = new Date(etY, etM - 1, etD);
 const dateLine = todayMidnight.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 const shortDate = todayMidnight.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-// Edition counter — auto-increments daily from launch (May 30, 2026 = Vol. 1, No. 1).
 const LAUNCH = new Date(2026, 4, 30);
 const MS_PER_DAY = 86400000;
 let anniversary = new Date(todayMidnight.getFullYear(), 4, 30);
@@ -28,7 +26,6 @@ if (anniversary > todayMidnight) anniversary = new Date(todayMidnight.getFullYea
 const volumeNumber = todayMidnight < LAUNCH ? 1 : (anniversary.getFullYear() - LAUNCH.getFullYear()) + 1;
 const editionNumber = todayMidnight < LAUNCH ? 1 : Math.floor((todayMidnight - anniversary) / MS_PER_DAY) + 1;
 
-// Daily rotation pools.
 const todaysQuote = getDailyQuote(today);
 const todaysPlayer = getDailyPlayer(today);
 const todaysArchive = getDailyArchive(today);
@@ -38,11 +35,9 @@ const todaysBookExcerpt = getDailyBookExcerpt(today);
 const todaysThisWeek = getDailyThisWeek(today);
 const todaysGames = getDailyGamesOfWeek(today);
 
-// Pull all published Daily Gambit stories, newest first.
 const all = (await getCollection('daily', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
-// Latest edition.
 const latestDate = all.length ? all[0].data.date.valueOf() : null;
 const edition = latestDate !== null
   ? all.filter((s) => s.data.date.valueOf() === latestDate)
@@ -58,7 +53,6 @@ const SECTION_LABELS = {
   puzzle: 'Puzzle',
 };
 
-// Tile color + glyph by section (ChessBase-style designed tiles, no photos needed).
 function tileFor(section) {
   const map = {
     world: { color: 'fide', glyph: '♔' },
@@ -71,47 +65,48 @@ function tileFor(section) {
   };
   return map[section] || map.tournaments;
 }
+function tileVariantFor(story) {
+  const fb = tileFor(story.data.section);
+  return { color: story.data.tileVariant || fb.color, glyph: story.data.tileGlyph || fb.glyph };
+}
 function formatStoryDate(d) {
   return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 function shortDateLabel(d) {
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
-// Tile-title generator: short thematic label for the designed tiles.
-// Priority: explicit story.data.tileTitle → kicker if short → first 3-4 words of headline.
+function tileKickerFor(story) {
+  return story.data.tileKicker || story.data.kicker || SECTION_LABELS[story.data.section];
+}
 function tileTitleFor(story) {
   if (story.data.tileTitle) return story.data.tileTitle;
   if (story.data.kicker && story.data.kicker.length <= 28) return story.data.kicker;
   const headline = story.data.headline || '';
   const words = headline.split(/\s+/).filter(Boolean);
-  // Skip common opening words ("The", "A", "An") for tile clarity.
   const start = ['the', 'a', 'an'].includes((words[0] || '').toLowerCase()) ? 1 : 0;
   return words.slice(start, start + 3).join(' ');
 }
 function tileMetaFor(story) {
-  if (story.data.tileMeta) return story.data.tileMeta;
-  return shortDateLabel(story.data.date);
+  return story.data.tileMeta || shortDateLabel(story.data.date);
 }
 
-// Lead story.
 const lead = edition.find((s) => s.data.lead) || edition.find((s) => s.data.section !== 'local') || edition[0] || null;
-// Secondary stories (max 4 in card stack).
 const secondary = edition.filter((s) => s.data.section !== 'local' && s.id !== (lead && lead.id)).slice(0, 4);
-// Local stories pinned across editions (max 4).
 const local = all.filter((s) => s.data.section === 'local').slice(0, 4);
 const hasStories = edition.length > 0;
 
-// Opening Spotlight + Player Profile rendered as cards too — they're rotating features.
 const openingTile = tileFor('openings');
-const playerTile = tileFor('players');
-const leadTile = lead ? tileFor(lead.data.section) : tileFor('world');
+const leadTile = lead ? tileVariantFor(lead) : tileFor('world');
 
-// Editor reference mode: append ?ref=1 to /daily to show slot tags + word-count badges
-// from the locked mock (Reference v3). Production view (no query) hides them.
+const standingsOpen = (lead && lead.data.standings) || [];
+const standingsWomen = (lead && lead.data.standingsWomen) || [];
+const standingsRound = (lead && lead.data.standingsRound) || '';
+const resultsOpen = (lead && lead.data.resultsOpen) || '';
+const resultsWomen = (lead && lead.data.resultsWomen) || '';
+
 const url = Astro.url;
 const refMode = url.searchParams.get('ref') === '1';
 ---
-
 <BaseLayout title="The Daily Gambit — Chess News, Results & Analysis" description="The Daily Gambit: your morning briefing from the chess world — tournament results, player news, opening theory, puzzles, local Pittsburgh & Pennsylvania chess, and analysis. Gathered fresh every day.">
   <div class="tdg-paper">
     <div class:list={["tdg-sheet", refMode && "tdg-reference"]}>
@@ -163,7 +158,7 @@ const refMode = url.searchParams.get('ref') === '1';
             <article class="tdg-lead-card">
               <div class={`tdg-lead-img tdg-tile ${leadTile.color}`}>
                 <span class="tdg-lead-glyph">{leadTile.glyph}</span>
-                <p class="tdg-lead-tile-kicker">{lead.data.kicker || SECTION_LABELS[lead.data.section]}</p>
+                <p class="tdg-lead-tile-kicker">{tileKickerFor(lead)}</p>
                 <h3 class="tdg-lead-tile-title">{tileTitleFor(lead)}</h3>
                 <p class="tdg-lead-tile-meta">{tileMetaFor(lead)}</p>
               </div>
@@ -190,15 +185,15 @@ const refMode = url.searchParams.get('ref') === '1';
             </article>
           )}
 
-          <!-- STORY CARDS — ChessBase content river -->
+          <!-- STORY CARDS — ChessBase content river (locked color order via tileVariant) -->
           {secondary.length > 0 ? secondary.map((s, i) => {
-            const tile = tileFor(s.data.section);
+            const tile = tileVariantFor(s);
             const slotNum = i + 2;
             return (
               <article class="tdg-story-card">
                 <div class={`tdg-thumb tdg-tile ${tile.color}`}>
                   <span class="tdg-tile-glyph">{tile.glyph}</span>
-                  <p class="tdg-tile-kicker">{SECTION_LABELS[s.data.section]}</p>
+                  <p class="tdg-tile-kicker">{tileKickerFor(s)}</p>
                   <h4 class="tdg-tile-title">{tileTitleFor(s)}</h4>
                   <p class="tdg-tile-meta">{tileMetaFor(s)}</p>
                 </div>
@@ -239,7 +234,7 @@ const refMode = url.searchParams.get('ref') === '1';
               <p class="tdg-tile-meta">{todaysOpening.moves} &middot; Today&rsquo;s Pick</p>
             </div>
             <div class="tdg-story-body">
-              <p class="tdg-card-kicker">Feature &middot; Opening Spotlight (rotates daily)</p>
+              <p class="tdg-card-kicker"><span class="tdg-slot-tag">FEATURE</span>Opening Spotlight (rotates daily)</p>
               <h3 class="tdg-story-head">The {todaysOpening.opening}</h3>
               <p class="tdg-card-meta">Today&rsquo;s pick &middot; {todaysOpening.moves}</p>
               {todaysOpening.paragraphs && todaysOpening.paragraphs.length > 0 && (
@@ -248,10 +243,9 @@ const refMode = url.searchParams.get('ref') === '1';
               <a class="tdg-card-more" href="/chess-school/opening-builder">Explore openings &rarr;</a>
             </div>
           </article>
-
           <!-- PUZZLE OF THE DAY — ChessBase-style board card -->
           <section class="tdg-cb-card">
-            <p class="tdg-cb-kicker">Feature &middot; Puzzle of the Day</p>
+            <p class="tdg-cb-kicker"><span class="tdg-slot-tag">FEATURE</span>Puzzle of the Day</p>
             <h3 class="tdg-cb-head" id="tdg-puzzle-caption">Loading today&rsquo;s puzzle&hellip;</h3>
             <p class="tdg-cb-meta">From the Mind&rsquo;s Gambit Tactics Trainer</p>
             <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" />
@@ -267,7 +261,7 @@ const refMode = url.searchParams.get('ref') === '1';
             </div>
           </section>
 
-          <!-- FROM THE BOOK widget (Mourad's manuscript) -->
+          <!-- FROM THE BOOK widget (flex:1 so its bottom aligns with Box 7 in the rail) -->
           <aside class="tdg-book-excerpt">
             <p class="tdg-book-kicker">From the Book &middot; The Mind&rsquo;s Gambit</p>
             <h3 class="tdg-book-title">{todaysBookExcerpt.title}</h3>
@@ -280,7 +274,7 @@ const refMode = url.searchParams.get('ref') === '1';
 
         </div>
 
-        <!-- RIGHT SIDEBAR -->
+        <!-- RIGHT SIDEBAR — all 8 boxes always render in locked order -->
         <aside class="tdg-col-side">
 
           <!-- MG PROMO (Fritz-style) -->
@@ -293,30 +287,68 @@ const refMode = url.searchParams.get('ref') === '1';
             <span class="tdg-promo-cta">Coming soon</span>
           </div>
 
-          <!-- STANDINGS (Box 1) — pulled from lead.data.standings if n8n provides it -->
-          {lead && lead.data.standings && lead.data.standings.length > 0 && (
-            <div class="tdg-side-box">
-              <h4 class="tdg-side-title">{lead.data.standingsTitle || 'Standings'}</h4>
-              <ol class="tdg-standings">
-                {lead.data.standings.map((row, i) => (
-                  <li><span class="tdg-rank">{i + 1}.</span><span class="tdg-player">{row.player}</span><span class="tdg-score">{row.score}</span></li>
-                ))}
-              </ol>
-            </div>
-          )}
-
-          <!-- PLAYER PROFILE -->
+          <!-- BOX 1 — STANDINGS (Open + Women). Always renders; falls back to placeholder. -->
           <div class="tdg-side-box">
-            <h4 class="tdg-side-title">Player Profile</h4>
+            <h4 class="tdg-side-title"><span class="tdg-slot-tag">BOX 1</span>Standings{standingsRound ? ` · ${standingsRound}` : ''}</h4>
+            {standingsOpen.length > 0 ? (
+              <>
+                <p class="tdg-standings-sub">Open</p>
+                <ol class="tdg-standings">
+                  {standingsOpen.map((row, i) => (
+                    <li><span class="tdg-rank">{i + 1}.</span><span class="tdg-player">{row.player}</span><span class="tdg-score">{row.score}</span></li>
+                  ))}
+                </ol>
+              </>
+            ) : (
+              <p class="tdg-side-placeholder">Round standings appear here once the edition is published.</p>
+            )}
+            {standingsWomen.length > 0 && (
+              <>
+                <p class="tdg-standings-sub">Women</p>
+                <ol class="tdg-standings">
+                  {standingsWomen.map((row, i) => (
+                    <li><span class="tdg-rank">{i + 1}.</span><span class="tdg-player">{row.player}</span><span class="tdg-score">{row.score}</span></li>
+                  ))}
+                </ol>
+              </>
+            )}
+          </div>
+
+          <!-- BOX 2 — RESULTS AT A GLANCE (Open + Women). Always renders. -->
+          <div class="tdg-side-box">
+            <h4 class="tdg-side-title"><span class="tdg-slot-tag">BOX 2</span>Results at a Glance</h4>
+            {(resultsOpen || resultsWomen) ? (
+              <>
+                {resultsOpen && (
+                  <>
+                    <p class="tdg-standings-sub">Open{standingsRound ? ` · ${standingsRound}` : ''}</p>
+                    <p class="tdg-results" set:html={resultsOpen.replace(/\n/g, '<br>')}></p>
+                  </>
+                )}
+                {resultsWomen && (
+                  <>
+                    <p class="tdg-standings-sub">Women{standingsRound ? ` · ${standingsRound}` : ''}</p>
+                    <p class="tdg-results" set:html={resultsWomen.replace(/\n/g, '<br>')}></p>
+                  </>
+                )}
+              </>
+            ) : (
+              <p class="tdg-side-placeholder">Round-by-round results appear here once the edition is published.</p>
+            )}
+          </div>
+
+          <!-- BOX 3 — PLAYER PROFILE -->
+          <div class="tdg-side-box">
+            <h4 class="tdg-side-title"><span class="tdg-slot-tag">BOX 3</span>Player Profile</h4>
             <p class="tdg-name">{todaysPlayer.name}</p>
             <p class="tdg-name-meta">{todaysPlayer.meta}</p>
             <p>{todaysPlayer.bio}</p>
             <p class="tdg-side-cta"><a href="/daily/archive">More from the players desk &rarr;</a></p>
           </div>
 
-          <!-- FROM THE ARCHIVES -->
+          <!-- BOX 4 — FROM THE ARCHIVES -->
           <div class="tdg-side-box tdg-featured">
-            <h4 class="tdg-side-title">From the Archives</h4>
+            <h4 class="tdg-side-title"><span class="tdg-slot-tag">BOX 4</span>From the Archives</h4>
             {todaysArchive.imageUrl && (
               <div class="tdg-arch-img">
                 <img src={todaysArchive.imageUrl} alt={todaysArchive.imageAlt || todaysArchive.name} loading="lazy" referrerpolicy="no-referrer" />
@@ -331,22 +363,22 @@ const refMode = url.searchParams.get('ref') === '1';
             <p class="tdg-side-cta"><a href="/daily/archive">More chess history &rarr;</a></p>
           </div>
 
-          <!-- WHAT IS -->
+          <!-- BOX 5 — WHAT IS -->
           <div class="tdg-side-box tdg-featured">
-            <h4 class="tdg-side-title">{todaysWhatIs.title}</h4>
+            <h4 class="tdg-side-title"><span class="tdg-slot-tag">BOX 5</span>{todaysWhatIs.title}</h4>
             <p>{todaysWhatIs.paragraph}</p>
             <p class="tdg-side-cta"><a href={todaysWhatIs.ctaUrl}>{todaysWhatIs.ctaText}</a></p>
           </div>
 
-          <!-- QUOTE -->
+          <!-- BOX 6 — QUOTE -->
           <div class="tdg-side-box tdg-warm tdg-quote-box">
             <p class="tdg-quote">&ldquo;{todaysQuote.text}&rdquo;</p>
             <p class="tdg-quote-attr">&mdash; {todaysQuote.author}</p>
           </div>
 
-          <!-- THIS WEEK IN HISTORY -->
+          <!-- BOX 7 — THIS WEEK IN HISTORY -->
           <div class="tdg-side-box tdg-warm">
-            <h4 class="tdg-side-title">This Week in Chess History</h4>
+            <h4 class="tdg-side-title"><span class="tdg-slot-tag">BOX 7</span>This Week in Chess History</h4>
             <ul class="tdg-timeline">
               {todaysThisWeek.events.map((e) => (
                 <li><span class="tdg-tldate">{e.year}</span><span class="tdg-tltext">{e.text}</span></li>
@@ -357,7 +389,6 @@ const refMode = url.searchParams.get('ref') === '1';
         </aside>
 
       </div>
-
       <!-- GAMES OF THE WEEK (wide section) -->
       <section class="tdg-wide" id="tdg-games">
         <div class="tdg-wide-head">
@@ -481,219 +512,219 @@ const refMode = url.searchParams.get('ref') === '1';
 
     </div>
   </div>
+<style>
+  /* ============================================================
+     THE DAILY GAMBIT — Reference v3 (ChessBase-style cards)
+     Adapted from daily-gambit-reference.html (locked mock).
+     ============================================================ */
+  * { box-sizing: border-box; }
+  .tdg-paper { background: #14141a; padding: 2rem 1rem 4rem; display: flex; justify-content: center; }
+  .tdg-sheet { background: #f5f1e6; color: #1a1a1a; width: 100%; max-width: 1200px; padding: 2rem 2.4rem 2.6rem; box-shadow: 0 24px 60px rgba(0,0,0,0.5); font-family: Georgia, 'Times New Roman', Times, serif; }
 
-  <style>
-    /* ============================================================
-       THE DAILY GAMBIT — Reference v3 (ChessBase-style cards)
-       Adapted from daily-gambit-reference.html (locked mock).
-       ============================================================ */
-    * { box-sizing: border-box; }
-    .tdg-paper { background: #14141a; padding: 2rem 1rem 4rem; display: flex; justify-content: center; }
-    .tdg-sheet { background: #f5f1e6; color: #1a1a1a; width: 100%; max-width: 1200px; padding: 2rem 2.4rem 2.6rem; box-shadow: 0 24px 60px rgba(0,0,0,0.5); font-family: Georgia, 'Times New Roman', Times, serif; }
+  /* Editorial reference markers — visible only in tdg-reference (?ref=1) mode */
+  .tdg-slot-tag, .tdg-wc-badge, .tdg-ref-legend { display: none; }
+  .tdg-reference .tdg-slot-tag, .tdg-reference .tdg-wc-badge, .tdg-reference .tdg-ref-legend { display: inline-block; }
+  .tdg-reference .tdg-ref-legend { display: block; background: #fff7d6; border: 2px solid #b8902a; padding: 0.7rem 1rem; margin-bottom: 1rem; font-size: 0.85rem; line-height: 1.5; color: #2a2a2a; border-radius: 4px; }
+  .tdg-reference .tdg-ref-legend strong { color: #8a6d1d; }
+  .tdg-reference .tdg-ref-legend code { background: #efe7cf; padding: 0.05rem 0.3rem; border-radius: 2px; font-family: 'Courier New', monospace; font-size: 0.78rem; }
+  .tdg-slot-tag { font-family: 'Courier New', monospace; font-size: 0.62rem; background: #2a4d6e; color: white; padding: 0.08rem 0.4rem; margin-right: 0.4rem; vertical-align: middle; border-radius: 2px; }
+  .tdg-wc-badge { font-family: 'Courier New', monospace; font-size: 0.62rem; background: #b8902a; color: white; padding: 0.08rem 0.4rem; margin-left: 0.4rem; vertical-align: middle; border-radius: 2px; }
 
-    /* Editorial reference markers — visible only in tdg-reference (?ref=1) mode */
-    .tdg-slot-tag, .tdg-wc-badge, .tdg-ref-legend { display: none; }
-    .tdg-reference .tdg-slot-tag, .tdg-reference .tdg-wc-badge, .tdg-reference .tdg-ref-legend { display: inline-block; }
-    .tdg-reference .tdg-ref-legend { display: block; background: #fff7d6; border: 2px solid #b8902a; padding: 0.7rem 1rem; margin-bottom: 1rem; font-size: 0.85rem; line-height: 1.5; color: #2a2a2a; border-radius: 4px; }
-    .tdg-reference .tdg-ref-legend strong { color: #8a6d1d; }
-    .tdg-reference .tdg-ref-legend code { background: #efe7cf; padding: 0.05rem 0.3rem; border-radius: 2px; font-family: 'Courier New', monospace; font-size: 0.78rem; }
-    .tdg-slot-tag { font-family: 'Courier New', monospace; font-size: 0.62rem; background: #2a4d6e; color: white; padding: 0.08rem 0.4rem; margin-right: 0.4rem; vertical-align: middle; border-radius: 2px; }
-    .tdg-wc-badge { font-family: 'Courier New', monospace; font-size: 0.62rem; background: #b8902a; color: white; padding: 0.08rem 0.4rem; margin-left: 0.4rem; vertical-align: middle; border-radius: 2px; }
+  /* Masthead */
+  .tdg-strip { display: flex; justify-content: space-between; font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; color: #4a4a4a; border-bottom: 1px solid #1a1a1a; padding-bottom: 0.4rem; }
+  .tdg-masthead { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 1rem; padding: 1.1rem 0 0.6rem; }
+  .tdg-mast-side { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.74rem; letter-spacing: 0.04em; text-transform: uppercase; color: #3a3a3a; }
+  .tdg-mast-right { text-align: right; }
+  .tdg-mast-edition { font-style: italic; text-transform: none; color: #6a6a6a; }
+  .tdg-mast-center { text-align: center; }
+  .tdg-nameplate { font-family: 'Times New Roman', Times, Georgia, serif; font-weight: 800; font-size: clamp(2.4rem, 6vw, 4.6rem); line-height: 0.95; margin: 0; letter-spacing: -0.01em; color: #111; }
+  .tdg-motto { font-style: italic; font-size: 0.92rem; color: #555; margin: 0.4rem 0 0; }
+  .tdg-sectionbar { display: grid; grid-template-columns: repeat(8, 1fr); align-items: center; gap: 0.4rem; border-top: 3px solid #1a1a1a; border-bottom: 1px solid #1a1a1a; padding: 0.6rem 0.2rem; margin-top: 0.6rem; margin-bottom: 1.4rem; }
+  .tdg-sectionbar a { color: #1a1a1a; text-decoration: none; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; text-align: center; overflow: hidden; text-overflow: ellipsis; }
+  .tdg-sectionbar a:hover { color: #8a6d1d; }
+  .tdg-sectionbar a.tdg-archive-link { color: #8a6d1d; }
+  .tdg-sectionbar a.tdg-archive-link:hover { color: #1a1a1a; text-decoration: underline; }
 
-    /* Masthead */
-    .tdg-strip { display: flex; justify-content: space-between; font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; color: #4a4a4a; border-bottom: 1px solid #1a1a1a; padding-bottom: 0.4rem; }
-    .tdg-masthead { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 1rem; padding: 1.1rem 0 0.6rem; }
-    .tdg-mast-side { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.74rem; letter-spacing: 0.04em; text-transform: uppercase; color: #3a3a3a; }
-    .tdg-mast-right { text-align: right; }
-    .tdg-mast-edition { font-style: italic; text-transform: none; color: #6a6a6a; }
-    .tdg-mast-center { text-align: center; }
-    .tdg-nameplate { font-family: 'Times New Roman', Times, Georgia, serif; font-weight: 800; font-size: clamp(2.4rem, 6vw, 4.6rem); line-height: 0.95; margin: 0; letter-spacing: -0.01em; color: #111; }
-    .tdg-motto { font-style: italic; font-size: 0.92rem; color: #555; margin: 0.4rem 0 0; }
-    .tdg-sectionbar { display: grid; grid-template-columns: repeat(8, 1fr); align-items: center; gap: 0.4rem; border-top: 3px solid #1a1a1a; border-bottom: 1px solid #1a1a1a; padding: 0.6rem 0.2rem; margin-top: 0.6rem; margin-bottom: 1.4rem; }
-    .tdg-sectionbar a { color: #1a1a1a; text-decoration: none; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; text-align: center; overflow: hidden; text-overflow: ellipsis; }
-    .tdg-sectionbar a:hover { color: #8a6d1d; }
-    .tdg-sectionbar a.tdg-archive-link { color: #8a6d1d; }
-    .tdg-sectionbar a.tdg-archive-link:hover { color: #1a1a1a; text-decoration: underline; }
+  /* Two-column main grid */
+  .tdg-main-grid { display: grid; grid-template-columns: 2.4fr 1fr; gap: 2rem; align-items: stretch; }
+  .tdg-col-main { grid-column: 1; display: flex; flex-direction: column; }
+  .tdg-col-side { grid-column: 2; display: flex; flex-direction: column; }
 
-    /* Two-column main grid */
-    .tdg-main-grid { display: grid; grid-template-columns: 2.4fr 1fr; gap: 2rem; align-items: stretch; }
-    .tdg-col-main { grid-column: 1; display: flex; flex-direction: column; }
-    .tdg-col-side { grid-column: 2; display: flex; flex-direction: column; }
+  /* LEAD CARD */
+  .tdg-lead-card { margin-bottom: 1.6rem; padding-bottom: 1.4rem; border-bottom: 2px solid #1a1a1a; }
+  .tdg-lead-img { width: 100%; height: 360px; background: linear-gradient(135deg, #6b4e1d, #8a6d2a); display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end; padding: 2.2rem 2.6rem; color: #fff; overflow: hidden; position: relative; margin-bottom: 1rem; }
+  .tdg-lead-glyph { position: absolute; right: -1rem; bottom: -2.4rem; font-size: 18rem; line-height: 1; color: rgba(255,255,255,0.10); pointer-events: none; }
+  .tdg-lead-tile-kicker { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.85); margin: 0 0 0.4rem; position: relative; z-index: 1; }
+  .tdg-lead-tile-title { font-family: Georgia, 'Times New Roman', serif; font-size: 2.4rem; line-height: 1.05; font-weight: 800; margin: 0; color: #fff; position: relative; z-index: 1; max-width: 80%; }
+  .tdg-lead-tile-meta { font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.75); margin: 0.6rem 0 0; position: relative; z-index: 1; }
+  .tdg-lead-head { font-size: 2rem; line-height: 1.1; font-weight: 800; margin: 0 0 0.5rem; color: #111; }
 
-    /* LEAD CARD */
-    .tdg-lead-card { margin-bottom: 1.6rem; padding-bottom: 1.4rem; border-bottom: 2px solid #1a1a1a; }
-    .tdg-lead-img { width: 100%; height: 360px; background: linear-gradient(135deg, #6b4e1d, #8a6d2a); display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end; padding: 2.2rem 2.6rem; color: #fff; overflow: hidden; position: relative; margin-bottom: 1rem; }
-    .tdg-lead-glyph { position: absolute; right: -1rem; bottom: -2.4rem; font-size: 18rem; line-height: 1; color: rgba(255,255,255,0.10); pointer-events: none; }
-    .tdg-lead-tile-kicker { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.85); margin: 0 0 0.4rem; position: relative; z-index: 1; }
-    .tdg-lead-tile-title { font-family: Georgia, 'Times New Roman', serif; font-size: 2.4rem; line-height: 1.05; font-weight: 800; margin: 0; color: #fff; position: relative; z-index: 1; max-width: 80%; }
-    .tdg-lead-tile-meta { font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.75); margin: 0.6rem 0 0; position: relative; z-index: 1; }
-    .tdg-lead-head { font-size: 2rem; line-height: 1.1; font-weight: 800; margin: 0 0 0.5rem; color: #111; }
+  /* STORY CARDS */
+  .tdg-card-kicker { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #8a6d1d; margin: 0 0 0.25rem; }
+  .tdg-card-meta { font-size: 0.74rem; color: #6a6a6a; letter-spacing: 0.04em; text-transform: uppercase; margin: 0 0 0.4rem; }
+  .tdg-card-summary { font-size: 0.94rem; line-height: 1.55; color: #1f1f1f; margin: 0 0 0.5rem; }
+  .tdg-card-more { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #8a6d1d; text-decoration: none; }
+  .tdg-card-more:hover { text-decoration: underline; }
+  .tdg-story-card { display: grid; grid-template-columns: 200px 1fr; gap: 1.2rem; padding: 1.2rem 0; border-bottom: 1px dotted #b5ab8a; }
+  .tdg-story-card .tdg-story-body { display: flex; flex-direction: column; }
+  .tdg-story-head { font-size: 1.25rem; line-height: 1.15; font-weight: 800; margin: 0 0 0.45rem; color: #111; }
 
-    /* STORY CARDS */
-    .tdg-card-kicker { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #8a6d1d; margin: 0 0 0.25rem; }
-    .tdg-card-meta { font-size: 0.74rem; color: #6a6a6a; letter-spacing: 0.04em; text-transform: uppercase; margin: 0 0 0.4rem; }
-    .tdg-card-summary { font-size: 0.94rem; line-height: 1.55; color: #1f1f1f; margin: 0 0 0.5rem; }
-    .tdg-card-more { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #8a6d1d; text-decoration: none; }
-    .tdg-card-more:hover { text-decoration: underline; }
-    .tdg-story-card { display: grid; grid-template-columns: 200px 1fr; gap: 1.2rem; padding: 1.2rem 0; border-bottom: 1px dotted #b5ab8a; }
-    .tdg-story-card .tdg-story-body { display: flex; flex-direction: column; }
-    .tdg-story-head { font-size: 1.25rem; line-height: 1.15; font-weight: 800; margin: 0 0 0.45rem; color: #111; }
+  /* TILE THUMBNAILS (designed art, no photos needed) */
+  .tdg-tile { display: flex; flex-direction: column; align-items: stretch; justify-content: center; padding: 0.7rem 0.8rem; color: #fff; text-align: left; overflow: hidden; position: relative; }
+  .tdg-thumb.tdg-tile { width: 200px; height: 130px; }
+  .tdg-tile-glyph { position: absolute; right: -0.2rem; bottom: -0.6rem; font-size: 4.6rem; line-height: 1; color: rgba(255,255,255,0.18); pointer-events: none; }
+  .tdg-tile-kicker { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.85); margin: 0; position: relative; z-index: 1; }
+  .tdg-tile-title { font-family: Georgia, 'Times New Roman', serif; font-size: 1rem; line-height: 1.12; font-weight: 800; margin: 0.2rem 0 0; color: #fff; position: relative; z-index: 1; }
+  .tdg-tile-meta { font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.75); margin: 0.3rem 0 0; position: relative; z-index: 1; }
+  .tdg-tile.blue { background: linear-gradient(135deg, #0a2e6f 0%, #1e5fc0 100%); }
+  .tdg-tile.red { background: linear-gradient(135deg, #6a0d1c 0%, #b8232e 100%); }
+  .tdg-tile.fide { background: linear-gradient(135deg, #14213d 0%, #2c3e6d 100%); }
+  .tdg-tile.fide .tdg-tile-kicker, .tdg-tile.fide .tdg-lead-tile-kicker { color: #d6b85a; }
+  .tdg-tile.industry { background: linear-gradient(135deg, #1f1f24 0%, #3d3d48 100%); }
+  .tdg-tile.industry .tdg-tile-kicker, .tdg-tile.industry .tdg-lead-tile-kicker { color: #b8902a; }
+  .tdg-tile.opening { background: linear-gradient(135deg, #1d3d2a 0%, #3a6b4a 100%); }
+  .tdg-tile.opening .tdg-tile-kicker, .tdg-tile.opening .tdg-lead-tile-kicker { color: #d6b85a; }
 
-    /* TILE THUMBNAILS (designed art, no photos needed) */
-    .tdg-tile { display: flex; flex-direction: column; align-items: stretch; justify-content: center; padding: 0.7rem 0.8rem; color: #fff; text-align: left; overflow: hidden; position: relative; }
-    .tdg-thumb.tdg-tile { width: 200px; height: 130px; }
-    .tdg-tile-glyph { position: absolute; right: -0.2rem; bottom: -0.6rem; font-size: 4.6rem; line-height: 1; color: rgba(255,255,255,0.18); pointer-events: none; }
-    .tdg-tile-kicker { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.85); margin: 0; position: relative; z-index: 1; }
-    .tdg-tile-title { font-family: Georgia, 'Times New Roman', serif; font-size: 1rem; line-height: 1.12; font-weight: 800; margin: 0.2rem 0 0; color: #fff; position: relative; z-index: 1; }
-    .tdg-tile-meta { font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.75); margin: 0.3rem 0 0; position: relative; z-index: 1; }
-    .tdg-tile.blue { background: linear-gradient(135deg, #0a2e6f 0%, #1e5fc0 100%); }
-    .tdg-tile.red { background: linear-gradient(135deg, #6a0d1c 0%, #b8232e 100%); }
-    .tdg-tile.fide { background: linear-gradient(135deg, #14213d 0%, #2c3e6d 100%); }
-    .tdg-tile.fide .tdg-tile-kicker, .tdg-tile.fide .tdg-lead-tile-kicker { color: #d6b85a; }
-    .tdg-tile.industry { background: linear-gradient(135deg, #1f1f24 0%, #3d3d48 100%); }
-    .tdg-tile.industry .tdg-tile-kicker, .tdg-tile.industry .tdg-lead-tile-kicker { color: #b8902a; }
-    .tdg-tile.opening { background: linear-gradient(135deg, #1d3d2a 0%, #3a6b4a 100%); }
-    .tdg-tile.opening .tdg-tile-kicker, .tdg-tile.opening .tdg-lead-tile-kicker { color: #d6b85a; }
+  /* PUZZLE OF THE DAY — ChessBase-style board card */
+  .tdg-cb-card { margin-top: 1.4rem; padding: 1.4rem; background: #fbf6e7; border: 1px solid #c9b67a; }
+  .tdg-cb-kicker { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #8a6d1d; margin: 0 0 0.4rem; }
+  .tdg-cb-head { font-size: 1.45rem; line-height: 1.15; font-weight: 800; margin: 0 0 0.4rem; color: #111; font-family: Georgia, serif; }
+  .tdg-cb-meta { font-size: 0.78rem; color: #6a6a6a; letter-spacing: 0.04em; text-transform: uppercase; margin: 0 0 1rem; }
+  .tdg-cb-board-wrap { display: grid; grid-template-columns: auto 1fr; gap: 1.4rem; align-items: start; }
+  .tdg-cb-board-frame { position: relative; padding: 1rem; background: #d9c89f; border: 1px solid #1a1a1a; }
+  .tdg-daily-board { width: 320px; height: 320px; border: 2px solid #1a1a1a; }
+  .tdg-cb-info { display: flex; flex-direction: column; gap: 0.4rem; }
+  .tdg-cb-instruction { font-size: 0.94rem; line-height: 1.55; color: #1f1f1f; margin: 0; }
+  .tdg-cb-status { font-size: 0.85rem; line-height: 1.4; min-height: 1.1em; color: #2a2a2a; margin: 0.2rem 0 0; }
+  .tdg-cb-status.tdg-daily-good { color: #2e6b2e; font-weight: 700; }
+  .tdg-cb-status.tdg-daily-bad { color: #a04040; font-style: italic; }
+  .tdg-cb-more { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #8a6d1d; text-decoration: none; margin-top: 0.6rem; display: inline-block; }
+  .tdg-cb-more:hover { text-decoration: underline; }
+  .tdg-cb-card .board-b72b1 { box-sizing: border-box; }
 
-    /* PUZZLE OF THE DAY — ChessBase-style board card */
-    .tdg-cb-card { margin-top: 1.4rem; padding: 1.4rem; background: #fbf6e7; border: 1px solid #c9b67a; }
-    .tdg-cb-kicker { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #8a6d1d; margin: 0 0 0.4rem; }
-    .tdg-cb-head { font-size: 1.45rem; line-height: 1.15; font-weight: 800; margin: 0 0 0.4rem; color: #111; font-family: Georgia, serif; }
-    .tdg-cb-meta { font-size: 0.78rem; color: #6a6a6a; letter-spacing: 0.04em; text-transform: uppercase; margin: 0 0 1rem; }
-    .tdg-cb-board-wrap { display: grid; grid-template-columns: auto 1fr; gap: 1.4rem; align-items: start; }
-    .tdg-cb-board-frame { position: relative; padding: 1rem; background: #d9c89f; border: 1px solid #1a1a1a; }
-    .tdg-daily-board { width: 320px; height: 320px; border: 2px solid #1a1a1a; }
-    .tdg-cb-info { display: flex; flex-direction: column; gap: 0.4rem; }
-    .tdg-cb-instruction { font-size: 0.94rem; line-height: 1.55; color: #1f1f1f; margin: 0; }
-    .tdg-cb-status { font-size: 0.85rem; line-height: 1.4; min-height: 1.1em; color: #2a2a2a; margin: 0.2rem 0 0; }
-    .tdg-cb-status.tdg-daily-good { color: #2e6b2e; font-weight: 700; }
-    .tdg-cb-status.tdg-daily-bad { color: #a04040; font-style: italic; }
-    .tdg-cb-more { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #8a6d1d; text-decoration: none; margin-top: 0.6rem; display: inline-block; }
-    .tdg-cb-more:hover { text-decoration: underline; }
-    .tdg-cb-card .board-b72b1 { box-sizing: border-box; }
+  /* FROM THE BOOK — flex: 1 so bottom aligns with Box 7 in the rail (locked rule #4) */
+  .tdg-book-excerpt { margin-top: 1.4rem; padding: 1.4rem 1.6rem; background: #1a1a1a; color: #f5f1e6; border-left: 4px solid #b8902a; flex: 1 1 auto; display: flex; flex-direction: column; }
+  .tdg-book-excerpt blockquote { flex: 1 1 auto; }
+  .tdg-book-kicker { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #b8902a; margin: 0 0 0.5rem; }
+  .tdg-book-title { font-family: Georgia, serif; font-style: italic; font-size: 1.2rem; line-height: 1.3; font-weight: 600; margin: 0 0 0.7rem; color: #f5f1e6; }
+  .tdg-book-quote { margin: 0 0 0.8rem; padding: 0; font-family: Georgia, serif; font-size: 1rem; line-height: 1.65; color: #e8dfc8; font-style: italic; }
+  .tdg-book-quote p { margin: 0 0 0.7rem; }
+  .tdg-book-quote p:last-child { margin-bottom: 0; }
+  .tdg-book-attr { font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; color: #b8902a; margin: 0; }
+  .tdg-book-cta { display: inline-block; margin-top: 0.6rem; font-size: 0.74rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #b8902a; text-decoration: none; border-bottom: 1px solid #b8902a; padding-bottom: 0.1rem; }
+  /* SIDEBAR BOXES */
+  .tdg-side-box { border: 1px solid #1a1a1a; padding: 0.9rem; margin-bottom: 1.2rem; background: #f5f1e6; }
+  .tdg-side-box.tdg-featured { background: #f3ede0; border-color: #c9b67a; }
+  .tdg-side-box.tdg-warm { background: #efe7cf; }
+  .tdg-side-title { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 800; margin: 0 0 0.6rem; text-align: center; border-bottom: 2px solid #1a1a1a; padding-bottom: 0.35rem; }
+  .tdg-side-box p { font-size: 0.82rem; line-height: 1.5; margin: 0 0 0.5rem; color: #2a2a2a; }
+  .tdg-name { font-size: 1rem; font-weight: 800; color: #111; margin: 0 0 0.15rem; }
+  .tdg-name-meta { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: #8a6d1d; margin: 0 0 0.4rem; }
+  .tdg-arch-img { width: 100%; max-width: 160px; height: 180px; background: #2a2a2a; margin: 0 auto 0.3rem; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .tdg-arch-img img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; display: block; }
+  .tdg-arch-caption { font-size: 0.7rem; font-style: italic; color: #777; text-align: center; margin: 0 0 0.4rem; }
+  .tdg-side-cta { margin: 0.5rem 0 0; font-size: 0.78rem; font-weight: 700; }
+  .tdg-side-cta a { color: #8a6d1d; text-decoration: none; border-bottom: 1px solid #8a6d1d; }
 
-    /* FROM THE BOOK — flex: 1 so bottom aligns with Box 7 in the rail (locked rule #4) */
-    .tdg-book-excerpt { margin-top: 1.4rem; padding: 1.4rem 1.6rem; background: #1a1a1a; color: #f5f1e6; border-left: 4px solid #b8902a; flex: 1 1 auto; display: flex; flex-direction: column; }
-    .tdg-book-excerpt blockquote { flex: 1 1 auto; }
-    .tdg-book-kicker { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #b8902a; margin: 0 0 0.5rem; }
-    .tdg-book-title { font-family: Georgia, serif; font-style: italic; font-size: 1.2rem; line-height: 1.3; font-weight: 600; margin: 0 0 0.7rem; color: #f5f1e6; }
-    .tdg-book-quote { margin: 0 0 0.8rem; padding: 0; font-family: Georgia, serif; font-size: 1rem; line-height: 1.65; color: #e8dfc8; font-style: italic; }
-    .tdg-book-quote p { margin: 0 0 0.7rem; }
-    .tdg-book-quote p:last-child { margin-bottom: 0; }
-    .tdg-book-attr { font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; color: #b8902a; margin: 0; }
-    .tdg-book-cta { display: inline-block; margin-top: 0.6rem; font-size: 0.74rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #b8902a; text-decoration: none; border-bottom: 1px solid #b8902a; padding-bottom: 0.1rem; }
+  /* Standings list + Open/Women sub-labels + placeholders (Box 1 / Box 2) */
+  .tdg-standings-sub { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #8a6d1d; margin: 0.4rem 0 0.3rem; }
+  .tdg-standings { list-style: none; margin: 0 0 0.4rem; padding: 0; font-size: 0.84rem; }
+  .tdg-standings li { display: grid; grid-template-columns: 1.5rem 1fr auto; gap: 0.4rem; padding: 0.22rem 0; border-bottom: 1px dotted #b5ab8a; align-items: baseline; }
+  .tdg-standings li:last-child { border-bottom: none; }
+  .tdg-rank { font-weight: 800; color: #8a6d1d; }
+  .tdg-player { color: #1f1f1f; }
+  .tdg-score { font-weight: 700; color: #1a1a1a; }
+  .tdg-results { font-size: 0.78rem; line-height: 1.5; margin: 0 0 0.4rem; color: #2a2a2a; }
+  .tdg-side-placeholder { font-size: 0.78rem; font-style: italic; color: #777; }
 
-    /* SIDEBAR BOXES */
-    .tdg-side-box { border: 1px solid #1a1a1a; padding: 0.9rem; margin-bottom: 1.2rem; background: #f5f1e6; }
-    .tdg-side-box.tdg-featured { background: #f3ede0; border-color: #c9b67a; }
-    .tdg-side-box.tdg-warm { background: #efe7cf; }
-    .tdg-side-title { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 800; margin: 0 0 0.6rem; text-align: center; border-bottom: 2px solid #1a1a1a; padding-bottom: 0.35rem; }
-    .tdg-side-box p { font-size: 0.82rem; line-height: 1.5; margin: 0 0 0.5rem; color: #2a2a2a; }
-    .tdg-name { font-size: 1rem; font-weight: 800; color: #111; margin: 0 0 0.15rem; }
-    .tdg-name-meta { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: #8a6d1d; margin: 0 0 0.4rem; }
-    .tdg-arch-img { width: 100%; max-width: 160px; height: 180px; background: #2a2a2a; margin: 0 auto 0.3rem; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-    .tdg-arch-img img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; display: block; }
-    .tdg-arch-caption { font-size: 0.7rem; font-style: italic; color: #777; text-align: center; margin: 0 0 0.4rem; }
-    .tdg-side-cta { margin: 0.5rem 0 0; font-size: 0.78rem; font-weight: 700; }
-    .tdg-side-cta a { color: #8a6d1d; text-decoration: none; border-bottom: 1px solid #8a6d1d; }
+  /* Quote box */
+  .tdg-quote-box { text-align: center; }
+  .tdg-quote { font-style: italic; font-size: 0.95rem; line-height: 1.4; margin: 0 0 0.4rem; color: #2a2a2a; }
+  .tdg-quote-attr { font-size: 0.74rem; letter-spacing: 0.05em; text-transform: uppercase; color: #6a6a6a; margin: 0; }
 
-    /* Standings list */
-    .tdg-standings { list-style: none; margin: 0; padding: 0; font-size: 0.84rem; }
-    .tdg-standings li { display: grid; grid-template-columns: 1.5rem 1fr auto; gap: 0.4rem; padding: 0.22rem 0; border-bottom: 1px dotted #b5ab8a; align-items: baseline; }
-    .tdg-standings li:last-child { border-bottom: none; }
-    .tdg-rank { font-weight: 800; color: #8a6d1d; }
-    .tdg-player { color: #1f1f1f; }
-    .tdg-score { font-weight: 700; color: #1a1a1a; }
+  /* Timeline */
+  .tdg-timeline { list-style: none; margin: 0; padding: 0; }
+  .tdg-timeline li { display: flex; gap: 0.6rem; padding: 0.4rem 0; border-bottom: 1px dotted #b5ab8a; }
+  .tdg-timeline li:last-child { border-bottom: none; }
+  .tdg-tldate { flex: none; width: 2.6rem; font-weight: 800; color: #8a6d1d; font-size: 0.78rem; }
+  .tdg-tltext { font-size: 0.76rem; line-height: 1.4; color: #2a2a2a; }
 
-    /* Quote box */
-    .tdg-quote-box { text-align: center; }
-    .tdg-quote { font-style: italic; font-size: 0.95rem; line-height: 1.4; margin: 0 0 0.4rem; color: #2a2a2a; }
-    .tdg-quote-attr { font-size: 0.74rem; letter-spacing: 0.05em; text-transform: uppercase; color: #6a6a6a; margin: 0; }
+  /* PROMO BOX (Fritz-style) — book cover + Coming soon badge (NOT a link until pre-order is live) */
+  .tdg-promo-box { background: #1a1a1a; color: #f5f1e6; padding: 1rem; margin-bottom: 1.2rem; text-align: center; }
+  .tdg-promo-img { width: 100%; max-width: 170px; height: 240px; margin: 0 auto 0.6rem; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 4px 14px rgba(0,0,0,0.55); background: linear-gradient(135deg,#b8902a,#8a6d1d); }
+  .tdg-promo-img img { width: 100%; height: 100%; object-fit: contain; display: block; background: #2a2a2a; }
+  .tdg-promo-box h4 { font-size: 1rem; font-weight: 800; margin: 0 0 0.3rem; color: #f5f1e6; }
+  .tdg-promo-box p { font-size: 0.78rem; line-height: 1.45; margin: 0 0 0.5rem; color: #d8cfb4; }
+  .tdg-promo-cta { display: inline-block; padding: 0.45rem 1.2rem; background: #b8902a; color: #1a1a1a; font-size: 0.74rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 0.3rem; }
 
-    /* Timeline */
-    .tdg-timeline { list-style: none; margin: 0; padding: 0; }
-    .tdg-timeline li { display: flex; gap: 0.6rem; padding: 0.4rem 0; border-bottom: 1px dotted #b5ab8a; }
-    .tdg-timeline li:last-child { border-bottom: none; }
-    .tdg-tldate { flex: none; width: 2.6rem; font-weight: 800; color: #8a6d1d; font-size: 0.78rem; }
-    .tdg-tltext { font-size: 0.76rem; line-height: 1.4; color: #2a2a2a; }
+  /* WIDE SECTIONS */
+  .tdg-wide { margin-top: 2rem; border-top: 3px double #1a1a1a; padding-top: 1.2rem; }
+  .tdg-wide-head { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.4rem; }
+  .tdg-pin { font-size: 1.3rem; color: #8a6d1d; }
+  .tdg-wide-title { font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 800; margin: 0; color: #111; }
+  .tdg-wide-tag { margin-left: auto; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #f5f1e6; background: #8a6d1d; padding: 0.25rem 0.6rem; }
+  .tdg-wide-intro { font-style: italic; font-size: 0.96rem; line-height: 1.5; color: #3a3a3a; margin: 0.5rem 0 1.2rem; max-width: 760px; }
+  .tdg-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .tdg-two-col > div { padding: 0 1.6rem; border-right: 1px solid #c9c0a4; }
+  .tdg-two-col > div:first-child { padding-left: 0; }
+  .tdg-two-col > div:last-child { border-right: none; padding-right: 0; }
+  .tdg-four-col { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+  .tdg-four-col > div { padding: 0 1.2rem; border-right: 1px solid #c9c0a4; }
+  .tdg-four-col > div:first-child { padding-left: 0; }
+  .tdg-four-col > div:last-child { border-right: none; padding-right: 0; }
+  .tdg-col-kicker { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #8a6d1d; margin: 0 0 0.3rem; }
+  .tdg-col-head { font-size: 1.1rem; line-height: 1.15; font-weight: 800; margin: 0 0 0.4rem; color: #111; }
+  .tdg-col-body { font-size: 0.88rem; line-height: 1.5; color: #1f1f1f; margin: 0 0 0.4rem; }
+  .tdg-game-meta { font-size: 0.78rem; color: #555; margin: 0 0 0.5rem; }
+  .tdg-moves-pre { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-size: 0.76rem; line-height: 1.55; color: #2a2a2a; background: #f5f1e6; border: 1px solid #d8cfb4; padding: 0.5rem; margin: 0.4rem 0 0; white-space: pre-wrap; max-height: 240px; overflow: auto; }
 
-    /* PROMO BOX (Fritz-style) — book cover + Coming soon badge (NOT a link until pre-order is live) */
-    .tdg-promo-box { background: #1a1a1a; color: #f5f1e6; padding: 1rem; margin-bottom: 1.2rem; text-align: center; }
-    .tdg-promo-img { width: 100%; max-width: 170px; height: 240px; margin: 0 auto 0.6rem; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 4px 14px rgba(0,0,0,0.55); background: linear-gradient(135deg,#b8902a,#8a6d1d); }
-    .tdg-promo-img img { width: 100%; height: 100%; object-fit: contain; display: block; background: #2a2a2a; }
-    .tdg-promo-box h4 { font-size: 1rem; font-weight: 800; margin: 0 0 0.3rem; color: #f5f1e6; }
-    .tdg-promo-box p { font-size: 0.78rem; line-height: 1.45; margin: 0 0 0.5rem; color: #d8cfb4; }
-    .tdg-promo-cta { display: inline-block; padding: 0.45rem 1.2rem; background: #b8902a; color: #1a1a1a; font-size: 0.74rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 0.3rem; }
+  /* ARCHIVE LIST */
+  .tdg-archive-section { margin-top: 2rem; border-top: 3px double #1a1a1a; padding-top: 1.2rem; }
+  .tdg-archive-title { font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 800; margin: 0; color: #111; }
+  .tdg-archive-intro { font-style: italic; font-size: 0.92rem; color: #555; margin: 0.2rem 0 1rem; }
+  .tdg-archive-list { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 2.4rem; }
+  .tdg-archive-item { display: block; break-inside: avoid; padding: 0.5rem 0; border-bottom: 1px dotted #b5ab8a; }
+  .tdg-archive-date { display: inline-block; min-width: 6rem; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: #8a6d1d; }
+  .tdg-archive-sec { display: inline-block; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #f5f1e6; background: #1a1a1a; padding: 0.1rem 0.4rem; margin-right: 0.4rem; }
+  .tdg-archive-link { font-size: 0.92rem; color: #1a1a1a; text-decoration: none; font-weight: 600; }
+  a.tdg-archive-link:hover { text-decoration: underline; color: #8a6d1d; }
+  .tdg-archive-more { margin: 1rem 0 0; }
+  .tdg-archive-more a { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #8a6d1d; text-decoration: none; }
 
-    /* WIDE SECTIONS */
-    .tdg-wide { margin-top: 2rem; border-top: 3px double #1a1a1a; padding-top: 1.2rem; }
-    .tdg-wide-head { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.4rem; }
-    .tdg-pin { font-size: 1.3rem; color: #8a6d1d; }
-    .tdg-wide-title { font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 800; margin: 0; color: #111; }
-    .tdg-wide-tag { margin-left: auto; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #f5f1e6; background: #8a6d1d; padding: 0.25rem 0.6rem; }
-    .tdg-wide-intro { font-style: italic; font-size: 0.96rem; line-height: 1.5; color: #3a3a3a; margin: 0.5rem 0 1.2rem; max-width: 760px; }
-    .tdg-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
-    .tdg-two-col > div { padding: 0 1.6rem; border-right: 1px solid #c9c0a4; }
-    .tdg-two-col > div:first-child { padding-left: 0; }
-    .tdg-two-col > div:last-child { border-right: none; padding-right: 0; }
-    .tdg-four-col { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
-    .tdg-four-col > div { padding: 0 1.2rem; border-right: 1px solid #c9c0a4; }
-    .tdg-four-col > div:first-child { padding-left: 0; }
-    .tdg-four-col > div:last-child { border-right: none; padding-right: 0; }
-    .tdg-col-kicker { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #8a6d1d; margin: 0 0 0.3rem; }
-    .tdg-col-head { font-size: 1.1rem; line-height: 1.15; font-weight: 800; margin: 0 0 0.4rem; color: #111; }
-    .tdg-col-body { font-size: 0.88rem; line-height: 1.5; color: #1f1f1f; margin: 0 0 0.4rem; }
-    .tdg-game-meta { font-size: 0.78rem; color: #555; margin: 0 0 0.5rem; }
-    .tdg-moves-pre { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-size: 0.76rem; line-height: 1.55; color: #2a2a2a; background: #f5f1e6; border: 1px solid #d8cfb4; padding: 0.5rem; margin: 0.4rem 0 0; white-space: pre-wrap; max-height: 240px; overflow: auto; }
+  /* FOOTER */
+  .tdg-foot { margin-top: 1.8rem; }
+  .tdg-rulebold { height: 3px; background: #1a1a1a; margin-bottom: 0.7rem; }
+  .tdg-foot p { font-size: 0.8rem; color: #444; text-align: center; margin: 0; }
+  .tdg-foot a { color: #8a6d1d; text-decoration: none; font-weight: 700; }
 
-    /* ARCHIVE LIST */
-    .tdg-archive-section { margin-top: 2rem; border-top: 3px double #1a1a1a; padding-top: 1.2rem; }
-    .tdg-archive-title { font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 800; margin: 0; color: #111; }
-    .tdg-archive-intro { font-style: italic; font-size: 0.92rem; color: #555; margin: 0.2rem 0 1rem; }
-    .tdg-archive-list { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 2.4rem; }
-    .tdg-archive-item { display: block; break-inside: avoid; padding: 0.5rem 0; border-bottom: 1px dotted #b5ab8a; }
-    .tdg-archive-date { display: inline-block; min-width: 6rem; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: #8a6d1d; }
-    .tdg-archive-sec { display: inline-block; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #f5f1e6; background: #1a1a1a; padding: 0.1rem 0.4rem; margin-right: 0.4rem; }
-    .tdg-archive-link { font-size: 0.92rem; color: #1a1a1a; text-decoration: none; font-weight: 600; }
-    a.tdg-archive-link:hover { text-decoration: underline; color: #8a6d1d; }
-    .tdg-archive-more { margin: 1rem 0 0; }
-    .tdg-archive-more a { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #8a6d1d; text-decoration: none; }
-
-    /* FOOTER */
-    .tdg-foot { margin-top: 1.8rem; }
-    .tdg-rulebold { height: 3px; background: #1a1a1a; margin-bottom: 0.7rem; }
-    .tdg-foot p { font-size: 0.8rem; color: #444; text-align: center; margin: 0; }
-    .tdg-foot a { color: #8a6d1d; text-decoration: none; font-weight: 700; }
-
-    /* RESPONSIVE */
-    @media (max-width: 860px) {
-      .tdg-sheet { padding: 1.5rem 1.2rem 2rem; }
-      .tdg-masthead { grid-template-columns: 1fr; gap: 0.5rem; text-align: center; }
-      .tdg-mast-side { flex-direction: row; justify-content: center; gap: 1rem; }
-      .tdg-mast-right { text-align: center; }
-      .tdg-main-grid { grid-template-columns: 1fr; }
-      .tdg-col-main, .tdg-col-side { grid-column: auto; }
-      .tdg-story-card { grid-template-columns: 1fr; }
-      .tdg-thumb.tdg-tile { width: 100%; height: 160px; }
-      .tdg-lead-img { height: 240px; padding: 1.4rem 1.6rem; }
-      .tdg-lead-tile-title { font-size: 1.8rem; max-width: 100%; }
-      .tdg-cb-board-wrap { grid-template-columns: 1fr; }
-      .tdg-daily-board { width: 100% !important; max-width: 320px; height: auto; aspect-ratio: 1 / 1; margin: 0 auto; }
-      .tdg-two-col { grid-template-columns: 1fr; }
-      .tdg-two-col > div { padding: 0 0 1.2rem; border-right: none; border-bottom: 1px solid #c9c0a4; }
-      .tdg-two-col > div:last-child { border-bottom: none; padding-bottom: 0; }
-      .tdg-four-col { grid-template-columns: 1fr; gap: 1rem; }
-      .tdg-four-col > div { padding: 0 0 1rem; border-right: none; border-bottom: 1px solid #c9c0a4; }
-      .tdg-four-col > div:last-child { border-bottom: none; padding-bottom: 0; }
-      .tdg-archive-list { columns: 1; }
-    }
-  </style>
-
-  <!-- DAILY PUZZLE: chess.js + chessboard.js + Bunny CDN pool -->
-  <script is:inline src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-  <script is:inline src="https://cdn.jsdelivr.net/npm/chess.js@0.10.3/chess.min.js"></script>
-  <script is:inline src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
-  <script is:inline>
+  /* RESPONSIVE */
+  @media (max-width: 860px) {
+    .tdg-sheet { padding: 1.5rem 1.2rem 2rem; }
+    .tdg-masthead { grid-template-columns: 1fr; gap: 0.5rem; text-align: center; }
+    .tdg-mast-side { flex-direction: row; justify-content: center; gap: 1rem; }
+    .tdg-mast-right { text-align: center; }
+    .tdg-main-grid { grid-template-columns: 1fr; }
+    .tdg-col-main, .tdg-col-side { grid-column: auto; }
+    .tdg-story-card { grid-template-columns: 1fr; }
+    .tdg-thumb.tdg-tile { width: 100%; height: 160px; }
+    .tdg-lead-img { height: 240px; padding: 1.4rem 1.6rem; }
+    .tdg-lead-tile-title { font-size: 1.8rem; max-width: 100%; }
+    .tdg-cb-board-wrap { grid-template-columns: 1fr; }
+    .tdg-daily-board { width: 100% !important; max-width: 320px; height: auto; aspect-ratio: 1 / 1; margin: 0 auto; }
+    .tdg-two-col { grid-template-columns: 1fr; }
+    .tdg-two-col > div { padding: 0 0 1.2rem; border-right: none; border-bottom: 1px solid #c9c0a4; }
+    .tdg-two-col > div:last-child { border-bottom: none; padding-bottom: 0; }
+    .tdg-four-col { grid-template-columns: 1fr; gap: 1rem; }
+    .tdg-four-col > div { padding: 0 0 1rem; border-right: none; border-bottom: 1px solid #c9c0a4; }
+    .tdg-four-col > div:last-child { border-bottom: none; padding-bottom: 0; }
+    .tdg-archive-list { columns: 1; }
+  }
+</style>
+<!-- DAILY PUZZLE: chess.js + chessboard.js + Bunny CDN pool -->
+<script is:inline src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script is:inline src="https://cdn.jsdelivr.net/npm/chess.js@0.10.3/chess.min.js"></script>
+<script is:inline src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+<script is:inline>
   (function() {
     'use strict';
     var POOL_URL = 'https://mindsgambit-cdn.b-cdn.net/puzzles/puzzle-pool.json';
@@ -750,7 +781,7 @@ const refMode = url.searchParams.get('ref') === '1';
     }
     function finish() {
       solved = true;
-      setStatus('Solved ✓  Come back tomorrow for a new one.', 'good');
+      setStatus('Solved ✓ Come back tomorrow for a new one.', 'good');
     }
     function whenReady(cb) {
       if (window.Chess && window.Chessboard && window.jQuery) cb();
@@ -797,5 +828,5 @@ const refMode = url.searchParams.get('ref') === '1';
     }
     whenReady(loadPuzzle);
   })();
-  </script>
+</script>
 </BaseLayout>

@@ -11,14 +11,17 @@ import {
 } from '../utils/daily-rotation';
 
 const today = new Date();
-const dateLine = today.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+// Anchor "today" to America/New_York — avoids UTC-build vs ET-edition date drift (task #207).
+// Without this, a build at 00:30 UTC shows tomorrow's date even though ET is still yesterday.
+const etISO = today.toLocaleDateString('en-CA', { timeZone: 'America/New_York' }); // "2026-06-01"
+const [etY, etM, etD] = etISO.split('-').map(Number);
+const todayMidnight = new Date(etY, etM - 1, etD);
+const dateLine = todayMidnight.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 // Edition counter — auto-increments daily from the launch date (May 30, 2026 = Vol. 1, No. 1).
 // VOL. bumps and NO. resets to 1 on each launch anniversary (May 30).
 const LAUNCH = new Date(2026, 4, 30); // May is month index 4
 const MS_PER_DAY = 86400000;
-const startOfDay = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
-const todayMidnight = startOfDay(today);
-// Most recent launch anniversary (May 30) on or before today.
+// Most recent launch anniversary (May 30) on or before today (ET).
 let anniversary = new Date(todayMidnight.getFullYear(), 4, 30);
 if (anniversary > todayMidnight) anniversary = new Date(todayMidnight.getFullYear() - 1, 4, 30);
 // Before launch, pin to Vol. 1, No. 1.
@@ -614,6 +617,7 @@ const hasStories = edition.length > 0;
           position: game.fen(),
           orientation: userColor === 'w' ? 'white' : 'black',
           draggable: true,
+          showNotation: false,
           onDragStart: onDragStart,
           onDrop: onDrop,
           onSnapEnd: onSnapEnd,

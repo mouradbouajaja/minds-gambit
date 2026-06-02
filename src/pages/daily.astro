@@ -1,6 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import {
+  getDailyArchive,
+  getDailyBookExcerpt,
+  getDailyOpening,
+  getDailyPlayer,
+  getDailyWhatIs,
+  getDailyQuote,
+} from '../utils/daily-rotation';
 
 const today = new Date();
 const dateLine = today.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -18,17 +26,13 @@ const volumeNumber = todayMidnight < LAUNCH ? 1 : (anniversary.getFullYear() - L
 const editionNumber = todayMidnight < LAUNCH ? 1 : Math.floor((todayMidnight - anniversary) / MS_PER_DAY) + 1;
 import ChessBoard from '../components/daily/ChessBoard.astro';
 
-// Quote of the Day: one chess quote per weekday (0 = Sunday ... 6 = Saturday).
-const QUOTES = [
-  { text: '"All that matters on the chessboard is good moves."', author: '— Bobby Fischer' },
-  { text: '"There are two types of sacrifices: correct ones and mine."', author: '— Mikhail Tal' },
-  { text: '"A good player is always lucky."', author: '— Jose Raul Capablanca' },
-  { text: '"The blunders are all there on the board, waiting to be made."', author: '— Savielly Tartakower' },
-  { text: '"Chess is the art which expresses the science of logic."', author: '— Mikhail Botvinnik' },
-  { text: "\"You need to be focused on the most important things, and let go of the things that you can't control.\"", author: '— Magnus Carlsen' },
-  { text: '"When you see a good move, look for a better one."', author: '— Emanuel Lasker' },
-];
-const todaysQuote = QUOTES[today.getDay()];
+// Daily rotation pools — picked by dayOfYear (ET) from JSON files in src/data/daily/.
+const todaysQuote = getDailyQuote(today);
+const todaysPlayer = getDailyPlayer(today);
+const todaysArchive = getDailyArchive(today);
+const todaysWhatIs = getDailyWhatIs(today);
+const todaysOpening = getDailyOpening(today);
+const todaysBookExcerpt = getDailyBookExcerpt(today);
 
 // Pull all published Daily Gambit stories, newest first.
 const all = (await getCollection('daily', ({ data }) => !data.draft))
@@ -69,7 +73,7 @@ const hasStories = edition.length > 0;
     <div class="tdg-sheet">
 
       <div class="tdg-strip">
-        <span>Vol. {volumeNumber} — No. {editionNumber}</span>>
+        <span>Vol. {volumeNumber} — No. {editionNumber}</span>
         <span>The Mind's Gambit</span>
         <span>Price: Free</span>
       </div>
@@ -136,14 +140,43 @@ const hasStories = edition.length > 0;
             </ul>
             <p class="tdg-boxnote">Norway Chess 2026. Drawn classical games are decided by an Armageddon tiebreak, so a player can score 1½–1 without winning the main game — see the explainer below.</p>
           </div>
-          <div class="tdg-box tdg-profile"><h4 class="tdg-boxtitle">Player Profile</h4><p class="tdg-profile-name">Judit Polgar</p><p class="tdg-profile-meta">Hungary · b. 1976 · Peak rating 2735</p><p class="tdg-boxtext">The strongest female chess player in history and the only woman ever to crack the world's top ten, reaching No. 8 in 2005. Trained from childhood by her father Laszlo in a famous experiment in early education, she skipped the women-only circuit entirely and made her name against the men. Over her career she defeated eleven players who held the world title, including Garry Kasparov, Magnus Carlsen, Anatoly Karpov, and Viswanathan Anand. She retired from competitive play in 2014 and now coaches and promotes chess in schools.</p><p class="tdg-cta"><a href="/daily/archive">More from the players desk &rarr;</a></p></div><div class="tdg-box tdg-archives"><h4 class="tdg-boxtitle">From the Archives</h4><figure class="tdg-archfig"><img class="tdg-archimg" src="https://upload.wikimedia.org/wikipedia/commons/4/46/Paul_Morphy_1859_photo_portrait.jpg" alt="Paul Morphy, photographed in 1859" loading="lazy" /><figcaption class="tdg-archcap">Paul Morphy, photographed in 1859.</figcaption></figure><p class="tdg-profile-name">Paul Morphy</p><p class="tdg-profile-meta">New Orleans · 1837&ndash;1884 · The Pride and Sorrow of Chess</p><p class="tdg-boxtext">A century before Fischer, an American from New Orleans was the strongest player alive. Largely self-taught, Morphy crushed Europe&rsquo;s best on a single 1858 tour, grasping rapid development and open lines decades ahead of his time. He retired from chess at 22, never playing seriously again. His brief, brilliant career &mdash; and the quiet decline that followed &mdash; earned him the title &ldquo;the Pride and Sorrow of Chess.&rdquo;</p><p class="tdg-cta"><a href="/daily/archive">More chess history &rarr;</a></p></div><div class="tdg-box tdg-explainer">
-            <h4 class="tdg-boxtitle">What Is a Gambit?</h4>
-            <p class="tdg-boxtext">A gambit is a chess opening where a player deliberately sacrifices material — usually a pawn, sometimes more — in exchange for faster development, better piece activity, or an attack on the enemy king. The word comes from the Italian gambetto, meaning "a leg trip" or "a stumble," from gamba (leg). It first appeared in 1561 in a chess book by the Spanish priest Ruy López de Segura. In everyday English the word has grown well beyond chess — a "gambit" now describes any opening move in a conversation, negotiation, or political maneuver where you give up something small to gain something larger. Famous chess gambits include the King's Gambit, the Queen's Gambit, and the Evans Gambit.</p>
-            <p class="tdg-cta"><a href="/chess-school/learn-to-play">Want to learn how to play? →</a></p>
+          <div class="tdg-box tdg-profile">
+            <h4 class="tdg-boxtitle">Player Profile</h4>
+            <p class="tdg-profile-name">{todaysPlayer.name}</p>
+            <p class="tdg-profile-meta">{todaysPlayer.meta}</p>
+            <p class="tdg-boxtext">{todaysPlayer.bio}</p>
+            <p class="tdg-cta"><a href="/daily/archive">More from the players desk &rarr;</a></p>
+          </div>
+          <div class="tdg-box tdg-archives">
+            <h4 class="tdg-boxtitle">From the Archives</h4>
+            {todaysArchive.imageUrl && (
+              <figure class="tdg-archfig">
+                <img class="tdg-archimg" src={todaysArchive.imageUrl} alt={todaysArchive.imageAlt || todaysArchive.name} loading="lazy" />
+                <figcaption class="tdg-archcap">{todaysArchive.imageCaption || todaysArchive.name}</figcaption>
+              </figure>
+            )}
+            <p class="tdg-profile-name">{todaysArchive.name}</p>
+            <p class="tdg-profile-meta">{todaysArchive.meta}</p>
+            <p class="tdg-boxtext">{todaysArchive.bio}</p>
+            <p class="tdg-cta"><a href="/daily/archive">More chess history &rarr;</a></p>
+          </div>
+          <div class="tdg-box tdg-explainer">
+            <h4 class="tdg-boxtitle">{todaysWhatIs.title}</h4>
+            <p class="tdg-boxtext">{todaysWhatIs.paragraph}</p>
+            <p class="tdg-cta"><a href={todaysWhatIs.ctaUrl}>{todaysWhatIs.ctaText}</a></p>
           </div>
           <div class="tdg-box tdg-quotebox">
-            <p class="tdg-quote">{todaysQuote.text}</p>
-            <p class="tdg-quoteattr">{todaysQuote.author}</p></div><div class="tdg-box tdg-thisweek"><h4 class="tdg-boxtitle">This Week in Chess History</h4><ul class="tdg-timeline"><li><span class="tdg-tldate">1837</span><span class="tdg-tltext">Paul Morphy is born in New Orleans on June 22 — the prodigy who would conquer Europe two decades later.</span></li><li><span class="tdg-tldate">1858</span><span class="tdg-tltext">Morphy plays his famous “Opera Game” in Paris, a model of rapid development still taught to beginners today.</span></li><li><span class="tdg-tldate">1972</span><span class="tdg-tltext">Bobby Fischer defeats Boris Spassky in Reykjavik to become World Champion, at the height of the Cold War.</span></li><li><span class="tdg-tldate">1997</span><span class="tdg-tltext">IBM’s Deep Blue beats Garry Kasparov in a match — the first time a computer bested a reigning world champion.</span></li></ul>
+            <p class="tdg-quote">"{todaysQuote.text}"</p>
+            <p class="tdg-quoteattr">— {todaysQuote.author}</p>
+          </div>
+          <div class="tdg-box tdg-thisweek">
+            <h4 class="tdg-boxtitle">This Week in Chess History</h4>
+            <ul class="tdg-timeline">
+              <li><span class="tdg-tldate">1837</span><span class="tdg-tltext">Paul Morphy is born in New Orleans on June 22 — the prodigy who would conquer Europe two decades later.</span></li>
+              <li><span class="tdg-tldate">1858</span><span class="tdg-tltext">Morphy plays his famous "Opera Game" in Paris, a model of rapid development still taught to beginners today.</span></li>
+              <li><span class="tdg-tldate">1972</span><span class="tdg-tltext">Bobby Fischer defeats Boris Spassky in Reykjavik to become World Champion, at the height of the Cold War.</span></li>
+              <li><span class="tdg-tldate">1997</span><span class="tdg-tltext">IBM's Deep Blue beats Garry Kasparov in a match — the first time a computer bested a reigning world champion.</span></li>
+            </ul>
           </div>
         </aside>
         <article class="tdg-lead">
@@ -155,21 +188,21 @@ const hasStories = edition.length > 0;
               <p class="tdg-byline">By The Daily Gambit Desk{lead.data.sourceName ? ' · ' : ''}{lead.data.sourceName && <span class="tdg-dateline">{lead.data.sourceName}</span>}</p>
               <p class="tdg-body tdg-dropcap">{lead.data.summary}</p>
               {lead.data.results && lead.data.results.length > 0 && (
-<div class="tdg-standings">
-<p class="tdg-standings-title">{lead.data.resultsTitle || 'Results'}</p>
-<table class="tdg-standings-table">
-<tbody>
-{lead.data.results.map((g) => (
-<tr>
-<td class="tdg-standings-player">{g.white} – {g.black}</td>
-<td class="tdg-standings-score">{g.score}</td>
-</tr>
-))}
-</tbody>
-</table>
-</div>
-)}
-{lead.data.standings && lead.data.standings.length > 0 && (
+                <div class="tdg-standings">
+                  <p class="tdg-standings-title">{lead.data.resultsTitle || 'Results'}</p>
+                  <table class="tdg-standings-table">
+                    <tbody>
+                      {lead.data.results.map((g) => (
+                        <tr>
+                          <td class="tdg-standings-player">{g.white} – {g.black}</td>
+                          <td class="tdg-standings-score">{g.score}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+              {lead.data.standings && lead.data.standings.length > 0 && (
                 <div class="tdg-standings">
                   <p class="tdg-standings-title">{lead.data.standingsTitle || 'Standings'}</p>
                   <table class="tdg-standings-table">
@@ -215,21 +248,21 @@ const hasStories = edition.length > 0;
                 <h3 class="tdg-storyhead">{s.data.headline}</h3>
                 <p class="tdg-body">{s.data.summary}</p>
                 {s.data.results && s.data.results.length > 0 && (
-<div class="tdg-standings">
-<p class="tdg-standings-title">{s.data.resultsTitle || 'Results'}</p>
-<table class="tdg-standings-table">
-<tbody>
-{s.data.results.map((g) => (
-<tr>
-<td class="tdg-standings-player">{g.white} – {g.black}</td>
-<td class="tdg-standings-score">{g.score}</td>
-</tr>
-))}
-</tbody>
-</table>
-</div>
-)}
-{s.data.standings && s.data.standings.length > 0 && (
+                  <div class="tdg-standings">
+                    <p class="tdg-standings-title">{s.data.resultsTitle || 'Results'}</p>
+                    <table class="tdg-standings-table">
+                      <tbody>
+                        {s.data.results.map((g) => (
+                          <tr>
+                            <td class="tdg-standings-player">{g.white} – {g.black}</td>
+                            <td class="tdg-standings-score">{g.score}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+                {s.data.standings && s.data.standings.length > 0 && (
                   <div class="tdg-standings">
                     <p class="tdg-standings-title">{s.data.standingsTitle || 'Standings'}</p>
                     <table class="tdg-standings-table">
@@ -265,13 +298,29 @@ const hasStories = edition.length > 0;
               </article>
             </>
           )}
-          <div class="tdg-rule"></div><article class="tdg-story"><p class="tdg-kicker">Opening Spotlight</p><h3 class="tdg-storyhead">The Sicilian Defence</h3><p class="tdg-body">Begun with 1.e4 c5, the Sicilian is the most popular and most analysed reply to White&rsquo;s king-pawn opening, favoured at every level from club play to the World Championship. Instead of mirroring White symmetrically, Black strikes at the centre from the side, accepting an unbalanced position in return for active, fighting chances. The resulting positions are sharp and double-edged, which is exactly why ambitious players reach for it when they need to win with the black pieces.</p><p class="tdg-body">Its many branches &mdash; the Najdorf, the Dragon, the Scheveningen, the Sveshnikov, and the Taimanov among them &mdash; each carry their own deep body of theory and their own devotees. Bobby Fischer and Garry Kasparov both leaned on the Najdorf in their title runs, and the opening remains a proving ground where preparation and nerve
+          <div class="tdg-rule"></div>
+          <article class="tdg-story">
+            <p class="tdg-kicker">Opening Spotlight</p>
+            <h3 class="tdg-storyhead">The {todaysOpening.opening}</h3>
+            {todaysOpening.paragraphs && todaysOpening.paragraphs.map((p) => (
+              <p class="tdg-body">{p}</p>
+            ))}
+          </article>
+          <div class="tdg-rule"></div>
+          <aside class="tdg-bookexcerpt">
+            <p class="tdg-book-kicker">From the Book · The Mind's Gambit</p>
+            <h3 class="tdg-book-title">{todaysBookExcerpt.title}</h3>
+            <blockquote class="tdg-book-quote">
+              {todaysBookExcerpt.paragraphs && todaysBookExcerpt.paragraphs.map((p) => <p>{p}</p>)}
+            </blockquote>
+            <p class="tdg-book-attr">— Mourad Bouajaja, <em>The Mind's Gambit</em> ({todaysBookExcerpt.chapter})</p>
+          </aside>
         </section>
 
 
       </main>
 
-      <section class="tdg-games" id="tdg-games"><div class="tdg-gameshead"><span class="tdg-pin">♞</span><h2 class="tdg-localtitle">Games of the Week</h2><span class="tdg-localtag">Annotated</span></div><p class="tdg-localintro">Two games worth replaying — one from the men's game, one from the women's — chosen for their beauty and their place in chess history. Set up a board and follow along.</p><div class="tdg-gamesgrid"><article class="tdg-game"><p class="tdg-kicker">Men · The Game of the Century</p><h3 class="tdg-storyhead">Donald Byrne – Bobby Fischer</h3><p class="tdg-game-meta">Rosenwald Trophy, New York 1956 · Grünfeld Defence · <strong>0–1</strong></p><p class="tdg-body">A 13-year-old Fischer unleashes 17…Be6!!, offering his queen to launch an unstoppable attack with his minor pieces — still the most famous queen sacrifice ever played by a child prodigy.</p><div class="tdg-moves"><p class="tdg-moves-title">Full Game</p><pre class="tdg-moves-pre">1.Nf3 Nf6 2.c4 g6 3.Nc3 Bg7 4.d4 O-O 5.Bf4 d5 6.Qb3 dxc4 7.Qxc4 c6 8.e4 Nbd7 9.Rd1 Nb6 10.Qc5 Bg4 11.Bg5 Na4 12.Qa3 Nxc3 13.bxc3 Nxe4 14.Bxe7 Qb6 15.Bc4 Nxc3 16.Bc5 Rfe8+ 17.Kf1 Be6 18.Bxb6 Bxc4+ 19.Kg1 Ne2+ 20.Kf1 Nxd4+ 21.Kg1 Ne2+ 22.Kf1 Nc3+ 23.Kg1 axb6 24.Qb4 Ra4 25.Qxb6 Nxd1 26.h3 Rxa2 27.Kh2 Nxf2 28.Re1 Rxe1 29.Qd8+ Bf8 30.Nxe1 Bd5 31.Nf3 Ne4 32.Qb8 b5 33.h4 h5 34.Ne5 Kg7 35.Kg1 Bc5+ 36.Kf1 Ng3+ 37.Ke1 Bb4+ 38.Kd1 Bb3+ 39.Kc1 Ne2+ 40.Kb1 Nc3+ 41.Kc1 Rc2# 0-1</pre></div></article><article class="tdg-game"><p class="tdg-kicker">Women · A Historic First</p><h3 class="tdg-storyhead">Judit Polgar – Garry Kasparov</h3><p class="tdg-game-meta">Russia vs. The Rest of the World, Moscow 2002 · Ruy Lopez · <strong>1–0</strong></p><p class="tdg-body">The day Judit Polgar became the first woman to beat a reigning world No. 1 in a classical game. A crisp Berlin endgame, patiently converted, that broke a barrier many thought permanent.</p><div class="tdg-moves"><p class="tdg-moves-title">Full Game</p><pre class="tdg-moves-pre">1.e4 e5 2.Nf3 Nc6 3.Bb5 Nf6 4.O-O Nxe4 5.d4 Nd6 6.Bxc6 dxc6 7.dxe5 Nf5 8.Qxd8+ Kxd8 9.Nc3 h6 10.Rd1+ Ke8 11.h3 Be7 12.Ne2 Nh4 13.Nxh4 Bxh4 14.Be3 Bf5 15.Nd4 Bh7 16.g4 Be7 17.Kg2 h5 18.Nf5 Bf8 19.Kf3 Bg6 20.Rd2 hxg4+ 21.hxg4 Rh3+ 22.Kg2 Rh7 23.Kg3 f6 24.Bf4 Bxf5 25.gxf5 fxe5 26.Re1 Bd6 27.Bxe5 Kd7 28.c4 c5 29.Bxd6 cxd6 30.Re6 Rah8 31.Rexd6+ Kc8 32.R2d5 Rh3+ 33.Kg2 Rh2+ 34.Kf3 R2h3+ 35.Ke4 b6 36.Rc6+ Kb8 37.Rd7 Rh2 38.Ke3 Rf8 39.Rcc7 Rxf5 40.Rb7+ Kc8 41.Rdc7+ Kd8 42.Rxg7 Kc8 1-0</pre></div></article></div></section><section class="tdg-origins" id="tdg-origins"><div class="tdg-gameshead"><span class="tdg-pin">♞</span><h2 class="tdg-localtitle">The Long Road to the 64 Squares</h2><span class="tdg-localtag">History</span></div><p class="tdg-localintro">Long before Morphy and Fischer, before Spain and Italy ever saw a board, the game was born in India and carried west by Persian courts and Arab geographers. A history told from its source, not from Europe.</p><div class="tdg-originsgrid"><div class="tdg-originscol"><p class="tdg-kicker">India · Chaturanga</p><h3 class="tdg-storyhead">A Game Named for an Army</h3><p class="tdg-body">The oldest known ancestor of chess is chaturanga, played in northern India by the sixth and seventh centuries during the Gupta era. Its name is Sanskrit for “having four limbs” — the four divisions of a classical Indian army: infantry, cavalry, elephantry, and chariotry. Those four arms survive on today’s board as the pawn, the knight, the bishop, and the rook. The word itself is older than the game, appearing in the Mahabharata as a term for an army drawn up for battle, and a clear reference to the game by name turns up in Bana’s Harshacharita around 625 AD. Most historians regard chaturanga as the common root not only of chess but of xiangqi in China, shogi in Japan, and makruk in Thailand.</p></div><div class="tdg-originscol"><p class="tdg-kicker">Persia &amp; Arabia · Shatranj</p><h3 class="tdg-storyhead">The Geographer Who Wrote It Down</h3><p class="tdg-body">From India the game travelled to Sassanid Persia, where it became chatrang and entered the education of the nobility; after the Arab conquest, lacking the Persian sounds, the name softened into shatranj. Among those who recorded its story was al-Mas‘udi (c. 896–956), the Baghdad-born historian and traveller later called “the Herodotus of the Arabs.” In his sweeping chronicle The Meadows of Gold he placed the game’s invention squarely in India and gathered the lore around it. It was through this Arabic and Persian world — not a European one — that the game finally crossed into Spain and Sicily, and only then began its long transformation into the chess Morphy would one day master.</p></div></div></section><section class="tdg-local" id="tdg-local">
+      <section class="tdg-games" id="tdg-games"><div class="tdg-gameshead"><span class="tdg-pin">♞</span><h2 class="tdg-localtitle">Games of the Week</h2><span class="tdg-localtag">Annotated</span></div><p class="tdg-localintro">Two games worth replaying — one from the men's game, one from the women's — chosen for their beauty and their place in chess history. Set up a board and follow along.</p><div class="tdg-gamesgrid"><article class="tdg-game"><p class="tdg-kicker">Men · The Game of the Century</p><h3 class="tdg-storyhead">Donald Byrne – Bobby Fischer</h3><p class="tdg-game-meta">Rosenwald Trophy, New York 1956 · Grünfeld Defence · <strong>0–1</strong></p><p class="tdg-body">A 13-year-old Fischer unleashes 17…Be6!!, offering his queen to launch an unstoppable attack with his minor pieces — still the most famous queen sacrifice ever played by a child prodigy.</p><div class="tdg-moves"><p class="tdg-moves-title">Full Game</p><pre class="tdg-moves-pre">1.Nf3 Nf6 2.c4 g6 3.Nc3 Bg7 4.d4 O-O 5.Bf4 d5 6.Qb3 dxc4 7.Qxc4 c6 8.e4 Nbd7 9.Rd1 Nb6 10.Qc5 Bg4 11.Bg5 Na4 12.Qa3 Nxc3 13.bxc3 Nxe4 14.Bxe7 Qb6 15.Bc4 Nxc3 16.Bc5 Rfe8+ 17.Kf1 Be6 18.Bxb6 Bxc4+ 19.Kg1 Ne2+ 20.Kf1 Nxd4+ 21.Kg1 Ne2+ 22.Kf1 Nc3+ 23.Kg1 axb6 24.Qb4 Ra4 25.Qxb6 Nxd1 26.h3 Rxa2 27.Kh2 Nxf2 28.Re1 Rxe1 29.Qd8+ Bf8 30.Nxe1 Bd5 31.Nf3 Ne4 32.Qb8 b5 33.h4 h5 34.Ne5 Kg7 35.Kg1 Bc5+ 36.Kf1 Ng3+ 37.Ke1 Bb4+ 38.Kd1 Bb3+ 39.Kc1 Ne2+ 40.Kb1 Nc3+ 41.Kc1 Rc2# 0-1</pre></div></article><article class="tdg-game"><p class="tdg-kicker">Women · A Historic First</p><h3 class="tdg-storyhead">Judit Polgar – Garry Kasparov</h3><p class="tdg-game-meta">Russia vs. The Rest of the World, Moscow 2002 · Ruy Lopez · <strong>1–0</strong></p><p class="tdg-body">The day Judit Polgar became the first woman to beat a reigning world No. 1 in a classical game. A crisp Berlin endgame, patiently converted, that broke a barrier many thought permanent.</p><div class="tdg-moves"><p class="tdg-moves-title">Full Game</p><pre class="tdg-moves-pre">1.e4 e5 2.Nf3 Nc6 3.Bb5 Nf6 4.O-O Nxe4 5.d4 Nd6 6.Bxc6 dxc6 7.dxe5 Nf5 8.Qxd8+ Kxd8 9.Nc3 h6 10.Rd1+ Ke8 11.h3 Be7 12.Ne2 Nh4 13.Nxh4 Bxh4 14.Be3 Bf5 15.Nd4 Bh7 16.g4 Be7 17.Kg2 h5 18.Nf5 Bf8 19.Kf3 Bg6 20.Rd2 hxg4+ 21.hxg4 Rh3+ 22.Kg2 Rh7 23.Kg3 f6 24.Bf4 Bxf5 25.gxf5 fxe5 26.Re1 Bd6 27.Bxe5 Kd7 28.c4 c5 29.Bxd6 cxd6 30.Re6 Rah8 31.Rexd6+ Kc8 32.R2d5 Rh3+ 33.Kg2 Rh2+ 34.Kf3 R2h3+ 35.Ke4 b6 36.Rc6+ Kb8 37.Rd7 Rh2 38.Ke3 Rf8 39.Rcc7 Rxf5 40.Rb7+ Kc8 41.Rdc7+ Kd8 42.Rxg7 Kc8 1-0</pre></div></article></div></section><section class="tdg-origins" id="tdg-origins"><div class="tdg-gameshead"><span class="tdg-pin">♞</span><h2 class="tdg-localtitle">The Long Road to the 64 Squares</h2><span class="tdg-localtag">History</span></div><p class="tdg-localintro">Long before Morphy and Fischer, before Spain and Italy ever saw a board, the game was born in India and carried west by Persian courts and Arab geographers. A history told from its source, not from Europe.</p><div class="tdg-originsgrid"><div class="tdg-originscol"><p class="tdg-kicker">India · Chaturanga</p><h3 class="tdg-storyhead">A Game Named for an Army</h3><p class="tdg-body">The oldest known ancestor of chess is chaturanga, played in northern India by the sixth and seventh centuries during the Gupta era. Its name is Sanskrit for "having four limbs" — the four divisions of a classical Indian army: infantry, cavalry, elephantry, and chariotry. Those four arms survive on today's board as the pawn, the knight, the bishop, and the rook. The word itself is older than the game, appearing in the Mahabharata as a term for an army drawn up for battle, and a clear reference to the game by name turns up in Bana's Harshacharita around 625 AD. Most historians regard chaturanga as the common root not only of chess but of xiangqi in China, shogi in Japan, and makruk in Thailand.</p></div><div class="tdg-originscol"><p class="tdg-kicker">Persia &amp; Arabia · Shatranj</p><h3 class="tdg-storyhead">The Geographer Who Wrote It Down</h3><p class="tdg-body">From India the game travelled to Sassanid Persia, where it became chatrang and entered the education of the nobility; after the Arab conquest, lacking the Persian sounds, the name softened into shatranj. Among those who recorded its story was al-Mas'udi (c. 896–956), the Baghdad-born historian and traveller later called "the Herodotus of the Arabs." In his sweeping chronicle The Meadows of Gold he placed the game's invention squarely in India and gathered the lore around it. It was through this Arabic and Persian world — not a European one — that the game finally crossed into Spain and Sicily, and only then began its long transformation into the chess Morphy would one day master.</p></div></div></section><section class="tdg-local" id="tdg-local">
         <div class="tdg-localhead">
           <span class="tdg-pin">♟</span>
           <h2 class="tdg-localtitle">Pittsburgh &amp; Pennsylvania</h2>
@@ -359,8 +408,8 @@ const hasStories = edition.length > 0;
     .tdg-mast-center { text-align: center; }
     .tdg-nameplate { font-family: 'Times New Roman', Times, Georgia, serif; font-weight: 800; font-size: clamp(2.4rem, 6vw, 4.6rem); line-height: 0.95; margin: 0; letter-spacing: -0.01em; color: #111; }
     .tdg-motto { font-style: italic; font-size: 0.92rem; color: #555; margin: 0.4rem 0 0; }
-    .tdg-sectionbar { display: flex; justify-content: center; flex-wrap: wrap; gap: 0.2rem 1.6rem; border-top: 3px solid #1a1a1a; border-bottom: 1px solid #1a1a1a; padding: 0.5rem 0; margin-top: 0.6rem; margin-bottom: 1.4rem; }
-    .tdg-sectionbar a { color: #1a1a1a; text-decoration: none; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    .tdg-sectionbar { display: grid; grid-template-columns: repeat(8, 1fr); align-items: center; gap: 0.4rem; border-top: 3px solid #1a1a1a; border-bottom: 1px solid #1a1a1a; padding: 0.6rem 0.2rem; margin-top: 0.6rem; margin-bottom: 1.4rem; }
+    .tdg-sectionbar a { color: #1a1a1a; text-decoration: none; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; text-align: center; overflow: hidden; text-overflow: ellipsis; }
     .tdg-sectionbar a:hover { color: #8a6d1d; }
     .tdg-sectionbar a.tdg-sectionbar-archive { color: #8a6d1d; }
     .tdg-sectionbar a.tdg-sectionbar-archive:hover { color: #1a1a1a; text-decoration: underline; }
@@ -412,6 +461,13 @@ const hasStories = edition.length > 0;
     .tdg-quotebox { text-align: center; background: #efe7cf; }
     .tdg-quote { font-style: italic; font-size: 1rem; line-height: 1.4; margin: 0 0 0.4rem; color: #2a2a2a; }
     .tdg-quoteattr { font-size: 0.78rem; letter-spacing: 0.05em; text-transform: uppercase; color: #6a6a6a; margin: 0; }
+    .tdg-bookexcerpt { margin: 1rem 0 0; padding: 1rem 1.2rem; background: #1a1a1a; color: #f5f1e6; border-left: 4px solid #b8902a; break-inside: avoid; }
+    .tdg-book-kicker { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #b8902a; margin: 0 0 0.5rem; }
+    .tdg-book-title { font-family: Georgia, serif; font-style: italic; font-size: 1.05rem; line-height: 1.3; font-weight: 600; margin: 0 0 0.6rem; color: #f5f1e6; }
+    .tdg-book-quote { margin: 0 0 0.7rem; padding: 0; font-family: Georgia, serif; font-size: 0.95rem; line-height: 1.6; color: #e8dfc8; font-style: italic; }
+    .tdg-book-quote p { margin: 0 0 0.6rem; }
+    .tdg-book-quote p:last-child { margin-bottom: 0; }
+    .tdg-book-attr { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: #b8902a; margin: 0; }
     .tdg-local { margin-top: 1.8rem; border-top: 3px double #1a1a1a; padding-top: 1.2rem; }
     .tdg-localhead { display: flex; align-items: center; gap: 0.7rem; }
     .tdg-pin { font-size: 1.3rem; color: #8a6d1d; }
@@ -426,7 +482,7 @@ const hasStories = edition.length > 0;
     .tdg-rulebold { height: 3px; background: #1a1a1a; margin-bottom: 0.7rem; }
     .tdg-foot p { font-size: 0.8rem; color: #444; text-align: center; margin: 0; }
     .tdg-foot a { color: #8a6d1d; text-decoration: none; font-weight: 700; }
-    .tdg-archive { margin-top: 1.8rem; border-top: 3px double #1a1a1a; padding-top: 1.2rem; }
+    section.tdg-archive { margin-top: 1.8rem; border-top: 3px double #1a1a1a; padding-top: 1.2rem; }
     .tdg-archive-title { font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 800; margin: 0; color: #111; }
     .tdg-archive-intro { font-style: italic; font-size: 0.92rem; color: #555; margin: 0.2rem 0 1rem; }
     .tdg-archive-list { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 2.4rem; }

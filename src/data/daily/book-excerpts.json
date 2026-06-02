@@ -1,0 +1,270 @@
+{
+  "_comment": "Daily Gambit — From the Book rotation. Excerpts from Mourad Bouajaja's manuscript The Mind's Gambit (Chapter 1: The Number / Chapter 2: The Myth of the Mad Genius). Each entry is structured as 3 paragraphs to fit the locked widget layout. Day-of-year modulo length picks today's entry. Source: Final Versions folder, Drive — `Chapter 01 - Final.docx` + `Chapter 02 - Final.docx` (read 2026-06-01).",
+  "_count": 26,
+  "_source": {
+    "chapter1": "https://drive.google.com/file/d/1jrxjPeI-THmDotL0fU49qxp7poGdQBIx/view",
+    "chapter2": "https://drive.google.com/file/d/1VPkLZtQmoCAVKwPI1lzzFkEEHCyq8zup/view"
+  },
+  "excerpts": [
+    {
+      "id": 1,
+      "chapter": "Chapter 1: The Number",
+      "title": "The Weight of Four Digits",
+      "paragraphs": [
+        "In competitive chess, your identity is a number. Your Elo rating — a four-digit figure calculated from wins, losses, and draws — follows you everywhere.",
+        "It appears next to your name in tournament pairings. It determines who you play, which section you enter, whether you qualify for an invitation. It signals, to anyone who cares to look, exactly where you stand in the vast hierarchy of the game.",
+        "There is no hiding."
+      ]
+    },
+    {
+      "id": 2,
+      "chapter": "Chapter 1: The Number",
+      "title": "Honesty Can Cut",
+      "paragraphs": [
+        "For many players, this radical transparency is part of chess's appeal. The rating system is honest in a way that much of life is not.",
+        "It does not care about your pedigree, your connections, or your confidence. It measures only one thing: your results against other rated players, weighted by their own strength.",
+        "But honesty can cut. When you lose a game, the number drops — publicly, immediately, irrevocably — and for a certain kind of mind, that drop can feel like a verdict."
+      ]
+    },
+    {
+      "id": 3,
+      "chapter": "Chapter 1: The Number",
+      "title": "The Number Became the Player",
+      "paragraphs": [
+        "Arpad Elo himself understood the psychological implications of his invention. He warned that the rating should be understood as a measure of performance in rated games over a particular period — not as a measure of a player's inherent worth.",
+        "The chess world largely ignored the caveat.",
+        "The number became the player, and the player became the number."
+      ]
+    },
+    {
+      "id": 4,
+      "chapter": "Chapter 1: The Number",
+      "title": "Uncle Arbi",
+      "paragraphs": [
+        "The test of my resolve was administered by the coffee-house patron \"Uncle Arbi,\" a man of aristocratic bearing whose appearance in the coffee house was met with a certain respect.",
+        "I courageously requested a game of chess against him, which he won five times in a row, each time accompanied by stifled giggles emanating from the patrons.",
+        "I left the coffee house that day in a state of public ridicule, embarrassed by his rebuke: \"Come back in six months, young man.\""
+      ]
+    },
+    {
+      "id": 5,
+      "chapter": "Chapter 1: The Number",
+      "title": "Megrine",
+      "paragraphs": [
+        "In Megrine, life revolved around the coffee house — a microcosm of sociology itself. At \"Uncle Mohamed's,\" the air was thick with the haze of tobacco smoke and the clicking of dominoes — a sanctuary where the employed, the studious, and the unemployed were equals.",
+        "While the elder patrons engaged in robust political debate, I was drawn to the intense focus of the chess games.",
+        "My father had taught me the basic moves during the long, anticipatory days of Ramadan."
+      ]
+    },
+    {
+      "id": 6,
+      "chapter": "Chapter 1: The Number",
+      "title": "The Combinatorial Explosion",
+      "paragraphs": [
+        "Consider what a chess game actually requires of the human mind. For five hours — sometimes six, sometimes seven in the most critical encounters — you must hold in your working memory a constantly shifting web of possibilities.",
+        "The pieces on the board, some thirty or fewer by the middlegame, generate a combinatorial explosion of potential moves that dwarfs any human's capacity for exhaustive calculation.",
+        "The number of possible games of chess exceeds the number of atoms in the observable universe."
+      ]
+    },
+    {
+      "id": 7,
+      "chapter": "Chapter 1: The Number",
+      "title": "Fifty Thousand Patterns",
+      "paragraphs": [
+        "No human plays chess by brute-force calculation. Instead, masters rely on pattern recognition — the ability to look at a position and instantly recognize familiar structures, typical plans, known tactical motifs.",
+        "Herbert Simon and William Chase, in their pioneering Carnegie Mellon research in the 1970s, estimated that a chess master stores roughly fifty thousand position-patterns in long-term memory.",
+        "This library is the master's primary tool, and building it is the work of a lifetime."
+      ]
+    },
+    {
+      "id": 8,
+      "chapter": "Chapter 1: The Number",
+      "title": "Time Trouble",
+      "paragraphs": [
+        "The clock introduces a second layer of pressure: not only must you find the best move, but you must find it within a finite and shrinking time budget.",
+        "The experience of being in time trouble — down to your last few minutes with a complex position still on the board — is one of the most psychologically intense experiences in competitive sport.",
+        "Your heart rate spikes. Your hands shake. The quality of your thinking degrades precisely when you need it most."
+      ]
+    },
+    {
+      "id": 9,
+      "chapter": "Chapter 1: The Number",
+      "title": "The Stillness",
+      "paragraphs": [
+        "The writer Brin-Jonathan Butler covered the 2016 World Chess Championship in New York and described the physical transformation he witnessed in the players over the course of a single game day.",
+        "\"You could actually see Magnus Carlsen age almost a decade,\" he wrote. \"On some dark level, it's as grueling as anything I've witnessed ringside for hundreds of title fights in boxing.\"",
+        "The stillness of the chess player is not the stillness of relaxation. It is the stillness of a body under siege from within."
+      ]
+    },
+    {
+      "id": 10,
+      "chapter": "Chapter 1: The Number",
+      "title": "The One-on-One",
+      "paragraphs": [
+        "There is another dimension of chess that distinguishes it from most forms of competition and intensifies its psychological demands: the radical intimacy of the one-on-one encounter.",
+        "In tennis or boxing, you face a single opponent, but the engagement is mediated by physical space and the distraction of exertion. In chess, you sit three feet from another person for five hours, in silence, engaged in a sustained attempt to outthink them.",
+        "The game is a conversation conducted in moves, and like all conversations, it reveals character."
+      ]
+    },
+    {
+      "id": 11,
+      "chapter": "Chapter 1: The Number",
+      "title": "The Tournament Room",
+      "paragraphs": [
+        "What follows is, for the next four or five hours, a room full of people engaged in one of the most intense cognitive activities human beings routinely undertake, in an environment that looks like a standardized test.",
+        "A visitor from another planet, seeing only the physical scene — the motionless bodies, the occasional hand reaching forward, the staggering quiet — might conclude that nothing whatsoever was happening.",
+        "They would be wrong. Inside each player, a drama is unfolding."
+      ]
+    },
+    {
+      "id": 12,
+      "chapter": "Chapter 1: The Number",
+      "title": "The Recognition",
+      "paragraphs": [
+        "I know this compulsion from the inside, but it helped to see it named by a stranger. About nine months ago, I stumbled across a Reddit thread titled \"Why is it so easy to be obsessed with Chess?\" and one post in particular stopped me cold.",
+        "The user wrote about the mental exhaustion, the anger at yourself for losing, the inability to walk away even though some part of you knows this is a pointless waste of time.",
+        "Reading that, sitting in my living room at one in the morning, I felt something between recognition and unease."
+      ]
+    },
+    {
+      "id": 13,
+      "chapter": "Chapter 1: The Number",
+      "title": "The Post-Mortem",
+      "paragraphs": [
+        "There is a ritual in competitive chess that illustrates the social dynamics of the community with particular clarity: the post-mortem. After a game ends, it is customary for the two players to remain at the board and analyze the game together.",
+        "In principle, the post-mortem is a mutual exercise in learning — a generous exchange of insights between two minds that have just spent hours in combat.",
+        "In practice, it is also a social performance, a continuation of the competition by other means."
+      ]
+    },
+    {
+      "id": 14,
+      "chapter": "Chapter 1: The Number",
+      "title": "You Are Your Rating",
+      "paragraphs": [
+        "There is a phrase that circulates in chess culture that captures this dynamic with uncomfortable precision: \"You are your rating.\" It is said sometimes as a boast, sometimes as a lament, sometimes as a warning.",
+        "In all cases, it reflects the degree to which the chess community has allowed a statistical measure to become a measure of human value.",
+        "In chess, the measure is unusually precise, unusually public, and unusually difficult to escape."
+      ]
+    },
+    {
+      "id": 15,
+      "chapter": "Chapter 1: The Number",
+      "title": "The Mirror",
+      "paragraphs": [
+        "Chess is a mirror. That is its therapeutic promise and its psychological risk.",
+        "It reflects your thinking back to you with a clarity that few other activities can match. Your patterns of aggression and caution, your tolerance for risk, your response to failure — all of it is recorded in the notation of the game, available for review.",
+        "For some people, this mirror is healing. For others, it is punishing."
+      ]
+    },
+    {
+      "id": 16,
+      "chapter": "Chapter 1: The Number",
+      "title": "Stuyvesant Town",
+      "paragraphs": [
+        "During my stay in the United States from 2007 to 2009, while working on my Master's degree in International Affairs at The New School in New York City, I lived in the community of Stuyvesant Town and took solace in the inner community park.",
+        "It was there, at the stone tables along First Avenue, that the process continued as I joined another community of residents and eventually progressed from observer to competitor.",
+        "A testament to the chessboard's continued power to traverse borders, cultures and generations."
+      ]
+    },
+    {
+      "id": 17,
+      "chapter": "Chapter 2: The Myth of the Mad Genius",
+      "title": "The Story Chess Tells About Itself",
+      "paragraphs": [
+        "There is a story the chess world tells about itself, and it goes something like this: chess drives people mad. The game is so deep, so demanding, so consuming in its complexity that the minds drawn to it are inevitably pushed toward the edge of sanity — and sometimes over it.",
+        "The greatest players, in this telling, are the most vulnerable, because their genius brings them closest to the abyss. The price of mastery is, sooner or later, the mind itself.",
+        "This is a powerful narrative. It is also, in its essentials, a myth."
+      ]
+    },
+    {
+      "id": 18,
+      "chapter": "Chapter 2: The Myth of the Mad Genius",
+      "title": "Morphy's Tragedy",
+      "paragraphs": [
+        "Morphy's psychological decline began after he stopped playing chess, not while he was playing it. His distress appears to have been related not to the cognitive demands of the game but to the social consequences of his fame.",
+        "He was the inability to be seen as anything other than a chess player, the frustration of a man who wanted a respectable career and found that the world would only recognize him for a game he no longer wished to play.",
+        "Morphy's tragedy was fundamentally a tragedy of identity, not of intellect."
+      ]
+    },
+    {
+      "id": 19,
+      "chapter": "Chapter 2: The Myth of the Mad Genius",
+      "title": "What the Myth Was For",
+      "paragraphs": [
+        "The construction of Morphy as a cautionary figure served several purposes for the chess community. It elevated the game: if chess could destroy a mind as brilliant as Morphy's, then chess must be profoundly powerful.",
+        "It romanticized the chess player: the image of the tortured genius gave competitive players a dramatic identity that distinguished them from participants in other intellectual pursuits.",
+        "And it provided an explanation for failure that absolved the community of responsibility."
+      ]
+    },
+    {
+      "id": 20,
+      "chapter": "Chapter 2: The Myth of the Mad Genius",
+      "title": "Steinitz Was Failed",
+      "paragraphs": [
+        "Steinitz was in his mid-sixties when he was institutionalized — an age at which cognitive decline from any number of causes is entirely ordinary.",
+        "He had spent decades in financial insecurity and social conflict. He had experienced the profound psychological blow of losing the championship that defined his identity. None of these factors required chess as an explanation.",
+        "Yet chess was the explanation the chess world chose, because chess was the explanation the myth demanded."
+      ]
+    },
+    {
+      "id": 21,
+      "chapter": "Chapter 2: The Myth of the Mad Genius",
+      "title": "Lombroso's Long Shadow",
+      "paragraphs": [
+        "The myth of the mad chess genius did not develop in cultural isolation. It drew strength from a broader intellectual movement of the nineteenth and early twentieth centuries: the theory that genius and insanity were biologically linked.",
+        "The most influential proponent of this theory was the Italian criminologist Cesare Lombroso, whose 1891 work The Man of Genius argued that exceptional intellectual ability and mental illness were both expressions of a common neurological condition.",
+        "Modern neuroscience has largely discredited Lombroso's theory — but its shadow lingers in chess culture."
+      ]
+    },
+    {
+      "id": 22,
+      "chapter": "Chapter 2: The Myth of the Mad Genius",
+      "title": "The Queen's Gambit",
+      "paragraphs": [
+        "The Netflix series The Queen's Gambit (2020) offered a sympathetic and beautifully produced version of the myth. Its protagonist, Beth Harmon, is a chess genius who struggles with addiction and emotional instability — a character whose brilliance and suffering are presented as inseparable.",
+        "The series was enormously popular and brought more new players to chess than any cultural event in decades.",
+        "But it also reinforced, for a global audience, the idea that chess genius and psychological vulnerability are two sides of the same coin."
+      ]
+    },
+    {
+      "id": 23,
+      "chapter": "Chapter 2: The Myth of the Mad Genius",
+      "title": "The Silencing Effect",
+      "paragraphs": [
+        "When a culture normalizes psychological distress as an inevitable consequence of engagement, it creates what sociologists call a \"silencing effect.\" People who are struggling do not speak about their struggles, because the culture has already told them that struggling is normal.",
+        "The player who lies awake at night replaying games does not mention it, because everyone replays games. The player who feels a wave of self-loathing after a loss does not seek help.",
+        "Because intensity is what the culture celebrates."
+      ]
+    },
+    {
+      "id": 24,
+      "chapter": "Chapter 2: The Myth of the Mad Genius",
+      "title": "Not the Sixty-Four Squares",
+      "paragraphs": [
+        "The myth of the mad genius obscures this distinction. By locating the source of psychological harm in the game itself, the myth directs attention away from the structures that actually determine whether the experience of chess is healthy or harmful.",
+        "It is not the sixty-four squares that cause suffering.",
+        "It is the rating system that quantifies human worth, the tournament culture that rewards endurance over wellbeing, the absence of psychological support at every level of the game — and the stories a community tells itself about what it means to play."
+      ]
+    },
+    {
+      "id": 25,
+      "chapter": "Chapter 2: The Myth of the Mad Genius",
+      "title": "A Different Question",
+      "paragraphs": [
+        "What would it mean to tell a different story? Not a story that denies the existence of psychological suffering among chess players — the suffering is real.",
+        "But a story that locates the sources of that suffering accurately, in the structures and cultures that surround the game, rather than in some mystical property of the game itself.",
+        "A different story would ask not \"what is it about chess that drives people mad?\" but \"what is it about the culture of chess that fails to protect the people who play it?\""
+      ]
+    },
+    {
+      "id": 26,
+      "chapter": "Chapter 2: The Myth of the Mad Genius",
+      "title": "A Story About Power",
+      "paragraphs": [
+        "The myth of the mad chess genius is, in the end, a story about power. It is a story that serves the interests of a culture that prefers dramatic narratives to structural analysis.",
+        "That would rather celebrate the suffering of individuals than examine the institutional failures that produce it. It is a story that flatters the chess world by suggesting that its game is uniquely dangerous, uniquely profound.",
+        "And it is a story that, for all its romantic appeal, has caused real harm to real people — people whose suffering was not a feature of the game but a consequence of the world around it."
+      ]
+    }
+  ]
+}

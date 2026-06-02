@@ -1,3 +1,53 @@
+import { readFileSync, readdirSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
+
+// Word-count limits are MAXIMUMS that protect the fixed layout boxes.
+// Shorter is fine; an edition only fails if text would overflow a box.
+const NL = '\n';
+const HERE = dirname(fileURLToPath(import.meta.url));
+const DIR = join(HERE, '..', 'src', 'content', 'daily');
+const MAX = { leadHead: 16, leadSummary: 58, storyHead: 12, storySummary: 48 };
+
+function wc(s) { return String(s || '').trim().split(/\s+/).filter(Boolean).length; }
+function field(raw, key) {
+  const m = raw.match(new RegExp('^' + key + ':[ \\t]*(.*)$', 'm'));
+  if (!m) return '';
+  let v = m[1].trim();
+  if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) v = v.slice(1, -1);
+  return v;
+}
+function flag(raw, key) { return new RegExp('^' + key + ':\\s*true\\s*$', 'm').test(raw); }
+function dateOf(raw) { const m = raw.match(/^date:\s*(\d{4}-\d{2}-\d{2})/m); return m ? m[1] : ''; }
+
+const files = readdirSync(DIR).filter((f) => /\.mdx?$/.test(f) && !f.startsWith('_'));
+const entries = files
+  .map((f) => { const raw = readFileSync(join(DIR, f), 'utf8'); return { f, raw, date: dateOf(raw), draft: flag(raw, 'draft'), lead: flag(raw, 'lead') }; })
+  .filter((e) => e.date && !e.draft);
+
+if (!entries.length) { console.log('[validate-edition] No editions found; skipping.'); process.exit(0); }
+
+const latest = entries.map((e) => e.date).sort().reverse()[0];
+const edition = entries.filter((e) => e.date === latest);
+console.log('[validate-edition] Validating latest edition: ' + latest + ' (' + edition.length + ' files)');
+
+const errors = [];
+for (const e of edition) {
+  const hMax = e.lead ? MAX.leadHead : MAX.storyHead;
+  const sMax = e.lead ? MAX.leadSummary : MAX.storySummary;
+  const role = e.lead ? 'LEAD' : 'STORY';
+  const h = wc(field(e.raw, 'headline'));
+  const s = wc(field(e.raw, 'summary'));
+  if (h > hMax) errors.push('  - ' + e.f + ' [' + role + ' headline] ' + h + ' words, max ' + hMax);
+  if (s > sMax) errors.push('  - ' + e.f + ' [' + role + ' summary] ' + s + ' words, max ' + sMax);
+}
+
+if (errors.length) {
+  console.error('[validate-edition] FAILED - text over the box limit:' + NL + errors.join(NL));
+  process.exit(1);
+}
+console.log('[validate-edition] PASS - ' + edition.length + ' files within box limits.');
+process.exit(0);
 // scripts/validate-edition.js
 // Build-time word-count enforcement for The Daily Gambit (v3 ChessBase card spec).
 //

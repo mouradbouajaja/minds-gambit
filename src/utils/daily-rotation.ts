@@ -14,6 +14,7 @@ import playersData from '../data/daily/players.json';
 import whatIsData from '../data/daily/what-is.json';
 import quotesData from '../data/daily/quotes.json';
 import thisWeekData from '../data/daily/this-week.json';
+import gamesOfWeekData from '../data/daily/games-of-week.json';
 
 /**
  * Get day-of-year (1–366) for a given date, in America/New_York time.
@@ -107,6 +108,11 @@ export function pickByWeek<T>(pool: T[], date: Date = new Date()): T {
 /** This Week in Chess History — 52 weeks of date-anchored events */
 export function getDailyThisWeek(date?: Date) {
   return pickByWeek(thisWeekData.weeks, date);
+}
+
+/** Games of the Week — 8 themed pairs (Men + Women), verified PGNs only */
+export function getDailyGamesOfWeek(date?: Date) {
+  return pickByWeek(gamesOfWeekData.pairs, date);
 }
 
 // ============================================================

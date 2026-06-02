@@ -1,7 +1,7 @@
 ---
 headline: "Argentina's Faustino Oro Becomes Second-Youngest Grandmaster in History at 12"
 subhead: "The 'Messi of Chess' sealed his final norm at the Sardinia World Chess Festival in May"
-summary: "Faustino Oro, a 12-year-old prodigy from Buenos Aires, has earned the GM (Grandmaster) title at 12 years, six months, and 26 days — the second-youngest in chess history. The \"Messi of Chess\" secured his final norm at the Sardinia World Chess Festival, trailing only Abhimanyu Mishra."
+summary: "Faustino Oro, a 12-year-old from Buenos Aires, has earned the GM title at 12 years, six months, and 26 days — the second-youngest ever. The \"Messi of Chess\" sealed his final norm at the Sardinia World Chess Festival, trailing only Abhimanyu Mishra."
 section: "players"
 kicker: "Sardinia World Chess Festival"
 tileKicker: "GM Title News"

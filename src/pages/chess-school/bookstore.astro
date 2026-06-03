@@ -1,0 +1,379 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export const prerender = true;
+---
+
+<BaseLayout title="Chess School — Mind's Gambit" description="Train, play, learn, and analyze. Free, ad-free, open-source-powered. Daily tactical puzzles, lessons with grandmasters, 5.94 million puzzles to grind, and our games library of 14.8 million master games.">
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><img src="/images/logo.jpg" alt="Mind's Gambit" style="height:55px;width:55px;border-radius:50%;object-fit:cover;border:2px solid #c8a84e;margin-left:10px;vertical-align:middle;" /></a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/#book">The Book</a></li>
+      <li><a href="/watch">Documentary</a></li>
+      <li><a href="/blog">Blog</a></li>
+      <li><a href="/chess-school">Chess School</a></li>
+      <li><a href="/#about">About</a></li>
+      <li><a href="/#contact">Contact</a></li>
+      <li><a href="https://buymeacoffee.com/mouradbouajaja" target="_blank" rel="noopener" class="nav-btn">&#9749; Buy Me a Coffee</a></li>
+    </ul>
+  </div>
+</nav>
+<main style='min-height:100vh;padding-bottom:20px'><header style='max-width:1000px;margin:0 auto;padding:56px 20px 26px;text-align:center'><h1 style='color:#f0ece4;font-size:2.4rem;margin:0 0 12px'>The Mind’s Gambit Bookstore</h1><p style='color:#b8b2a6;font-size:1.08rem;line-height:1.65;max-width:660px;margin:0 auto'>Free chess classics from the golden age — books to read here, at your leisure. Every title is in the public domain, streamed page by page from the Internet Archive. No account, no cost, no catch.</p></header><section id='bs-reader' style='max-width:1000px;margin:0 auto;padding:0 20px 14px'><div style='display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:0 0 10px'><p style='color:#c9c3b6;margin:0'><strong style='color:#d4af37'>Now reading: </strong><span id='bs-now'>Chess Fundamentals</span></p><a id='bs-ext' href='https://archive.org/details/chess-fundamentals' target='_blank' rel='noopener' style='color:#8a8478;font-size:.9rem;text-decoration:none'>Open on Archive.org &nearr;</a></div><iframe id='bs-frame' src='https://archive.org/embed/chess-fundamentals' style='width:100%;height:72vh;min-height:480px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:#000' allowfullscreen frameborder='0'></iframe><p style='color:#8a8478;font-size:.88rem;margin:8px 0 0'>Tip: the reader has its own fullscreen, zoom and page-turn controls — click inside and read like a real book.</p></section><section style='max-width:1000px;margin:0 auto;padding:24px 20px 30px'><h2 style='color:#d4af37;font-size:1.5rem;margin:0 0 6px'>The Shelf</h2><p style='color:#b8b2a6;margin:0 0 20px'>Pick a book — it opens in the reader above. More titles are added as we find them.</p><div style='display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px'><div data-bsid='chess-fundamentals' data-bst='Chess Fundamentals' role='button' tabindex='0' style='cursor:pointer;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:8px'><span style='font-size:1.7rem'>📖</span><strong style='color:#f0ece4;font-size:1.06rem;line-height:1.35'>Chess Fundamentals</strong><span style='color:#d4af37;font-size:.88rem'>José Raúl Capablanca · 1921</span><span style='color:#b8b2a6;font-size:.93rem;line-height:1.55;flex:1'>The world champion’s timeless course — many still call it the best first chess book ever written.</span><span style='color:#d4af37;font-weight:700'>Read here &rarr;</span></div><div data-bsid='15748865AJoseRaulMyChessCareer_201906' data-bst='My Chess Career' role='button' tabindex='0' style='cursor:pointer;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:8px'><span style='font-size:1.7rem'>📖</span><strong style='color:#f0ece4;font-size:1.06rem;line-height:1.35'>My Chess Career</strong><span style='color:#d4af37;font-size:.88rem'>José Raúl Capablanca · 1920</span><span style='color:#b8b2a6;font-size:.93rem;line-height:1.55;flex:1'>Capablanca tells his own story, game by game, with the calm that made him a legend.</span><span style='color:#d4af37;font-weight:700'>Read here &rarr;</span></div><div data-bsid='commonsenseinche00laskrich' data-bst='Common Sense in Chess' role='button' tabindex='0' style='cursor:pointer;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:8px'><span style='font-size:1.7rem'>📖</span><strong style='color:#f0ece4;font-size:1.06rem;line-height:1.35'>Common Sense in Chess</strong><span style='color:#d4af37;font-size:.88rem'>Emanuel Lasker · 1910</span><span style='color:#b8b2a6;font-size:.93rem;line-height:1.55;flex:1'>Famous lectures from the man who held the world title for 27 years — chess as clear thinking.</span><span style='color:#d4af37;font-weight:700'>Read here &rarr;</span></div><div data-bsid='chessstrategy01lask' data-bst='Chess Strategy' role='button' tabindex='0' style='cursor:pointer;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:8px'><span style='font-size:1.7rem'>📖</span><strong style='color:#f0ece4;font-size:1.06rem;line-height:1.35'>Chess Strategy</strong><span style='color:#d4af37;font-size:.88rem'>Edward Lasker · 1917</span><span style='color:#b8b2a6;font-size:.93rem;line-height:1.55;flex:1'>The beloved classic on planning: what to do when there is nothing obvious to do.</span><span style='color:#d4af37;font-weight:700'>Read here &rarr;</span></div><div data-bsid='chessandcheckersthewaytomastership' data-bst='Chess and Checkers: The Way to Mastership' role='button' tabindex='0' style='cursor:pointer;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:8px'><span style='font-size:1.7rem'>📖</span><strong style='color:#f0ece4;font-size:1.06rem;line-height:1.35'>Chess and Checkers: The Way to Mastership</strong><span style='color:#d4af37;font-size:.88rem'>Edward Lasker · 1918</span><span style='color:#b8b2a6;font-size:.93rem;line-height:1.55;flex:1'>Written for complete beginners — a warm, patient introduction to both great board games.</span><span style='color:#d4af37;font-weight:700'>Read here &rarr;</span></div><div data-bsid='modernchessinst00steigoog' data-bst='The Modern Chess Instructor' role='button' tabindex='0' style='cursor:pointer;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:8px'><span style='font-size:1.7rem'>📖</span><strong style='color:#f0ece4;font-size:1.06rem;line-height:1.35'>The Modern Chess Instructor</strong><span style='color:#d4af37;font-size:.88rem'>Wilhelm Steinitz · 1889</span><span style='color:#b8b2a6;font-size:.93rem;line-height:1.55;flex:1'>The first world champion sets down, in his own hand, the principles that built modern chess.</span><span style='color:#d4af37;font-weight:700'>Read here &rarr;</span></div><div data-bsid='morphysgamesofch00frer' data-bst='Morphy’s Games of Chess' role='button' tabindex='0' style='cursor:pointer;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:8px'><span style='font-size:1.7rem'>📖</span><strong style='color:#f0ece4;font-size:1.06rem;line-height:1.35'>Morphy’s Games of Chess</strong><span style='color:#d4af37;font-size:.88rem'>Thomas Frère · 1859</span><span style='color:#b8b2a6;font-size:.93rem;line-height:1.55;flex:1'>Printed while Morphy was still conquering the world — his games, fresh from the board.</span><span style='color:#d4af37;font-weight:700'>Read here &rarr;</span></div><div data-bsid='morphy.life.p.1926' data-bst='The Life of Paul Morphy' role='button' tabindex='0' style='cursor:pointer;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:8px'><span style='font-size:1.7rem'>📖</span><strong style='color:#f0ece4;font-size:1.06rem;line-height:1.35'>The Life of Paul Morphy</strong><span style='color:#d4af37;font-size:.88rem'>Regina Morphy-Voitier · 1926</span><span style='color:#b8b2a6;font-size:.93rem;line-height:1.55;flex:1'>The story of chess’s first great genius — told by his own niece.</span><span style='color:#d4af37;font-weight:700'>Read here &rarr;</span></div></div></section><section style='max-width:1000px;margin:0 auto;padding:6px 20px 70px'><p style='color:#8a8478;font-size:.9rem;text-align:center;line-height:1.6'>All titles on this shelf are in the public domain. Scans and reader courtesy of the <a href='https://archive.org' target='_blank' rel='noopener' style='color:#b8b2a6'>Internet Archive</a>, a non-profit library — consider supporting them.</p></section></main><script is:inline>(function(){var f=document.getElementById('bs-frame'),now=document.getElementById('bs-now'),ext=document.getElementById('bs-ext');document.querySelectorAll('[data-bsid]').forEach(function(c){c.addEventListener('click',function(){var id=c.getAttribute('data-bsid');f.src='https://archive.org/embed/'+id;now.textContent=c.getAttribute('data-bst');ext.href='https://archive.org/details/'+id;document.getElementById('bs-reader').scrollIntoView({behavior:'smooth'});});});})();</script>
+<footer class="page-footer">
+  <p class="footer-disclaimer">Mind&rsquo;s Gambit Chess School stands on the shoulders of the open chess community. The engine is <a href="https://stockfishchess.org/" target="_blank" rel="noopener">Stockfish</a> &mdash; the world&rsquo;s strongest &mdash; free under the GNU GPL v3 license. Puzzles come from the public-domain Lichess Open Puzzle Database (CC0). The board you play on uses the open-source chess.js and chessboard.js libraries. Optional coach commentary on the Analyze page is powered by Anthropic Claude. We&rsquo;re grateful to every contributor whose work makes this possible.</p>
+  <p class="footer-credit">&copy; 2026 Mourad Bouajaja. Mind&rsquo;s Gambit Chess School is a production of &copy; MYB Studio LLC.</p>
+</footer>
+<!-- ============================================================
+     MIND'S GAMBIT FAQ BOT — Static keyword-search bot.
+     Free. No API calls. Edit the FAQ_DATA array below to add Q&As.
+============================================================ -->
+<button id="mg-faq-bubble" type="button" aria-label="Need help? Open Mind's Gambit Help" title="Click me for help &mdash; technical questions, engine issues, account, anything.">
+  <span class="mg-faq-bubble-icon">&#9819;</span>
+  <span class="mg-faq-bubble-label">Need help?</span>
+  <span class="mg-faq-bubble-dot"></span>
+</button>
+
+<div id="mg-faq-panel" hidden>
+  <header class="mg-faq-header">
+    <div>
+      <div class="mg-faq-title">Mind&rsquo;s Gambit Help</div>
+      <div class="mg-faq-subtitle">Ask anything &middot; instant answers</div>
+    </div>
+    <button id="mg-faq-close" type="button" aria-label="Close">&times;</button>
+  </header>
+  <div class="mg-faq-messages" id="mg-faq-messages"></div>
+  <form class="mg-faq-form" id="mg-faq-form" autocomplete="off">
+    <input type="text" id="mg-faq-input" placeholder="Type your question&hellip;" maxlength="200" autocomplete="off" />
+    <button type="submit" aria-label="Send">&#10142;</button>
+  </form>
+  <div class="mg-faq-suggested" id="mg-faq-suggested"></div>
+</div>
+
+<script is:inline>
+(function() {
+  'use strict';
+
+  var FAQ_DATA = [
+    { keywords: ['daily puzzle', 'puzzle of the day', 'today puzzle', 'how puzzle work'],
+      q: 'How does the Daily Puzzle work?',
+      a: 'Every visitor sees the <strong>same puzzle each day</strong>. You and a friend will see the same puzzle on the same day &mdash; perfect for friendly competition. Tomorrow it rotates automatically. We have a library of nearly 6 million puzzles, so you&rsquo;ll never run out.' },
+    { keywords: ['games library', 'opening tree', 'browse games', 'master games', '15 million games', 'historical games', 'play through games', 'pgn library'],
+      q: 'What is Our Games Library?',
+      a: '<strong>Our Games Library</strong> is the network&rsquo;s collection of 14.8 million chess games &mdash; from the oldest games on record (1485) to last week&rsquo;s grandmaster tournaments &mdash; organized like a ChessBase opening tree. Open any opening code (A00 to E99) and play through the games on the board, right here. No downloads, no signup. Find it under <a href="/chess-school/games">Chess School &rarr; Our Games Library</a> or in the 03 Learn section of this hub.' },
+    { keywords: ['account', 'login', 'sign up', 'signup', 'register'],
+      q: 'Do I need an account?',
+      a: '<strong>No.</strong> Mind&rsquo;s Gambit Chess School works without any signup. Your puzzle streak, rating, name, and stats are saved on this device so they&rsquo;re waiting for you next time you visit. Nothing to remember, nothing to log in to.' },
+    { keywords: ['elo', 'rating', 'how rating work'],
+      q: 'How does the rating work?',
+      a: 'Your rating starts at <strong>1200</strong> and goes up when you win, down when you lose. Beating a stronger engine setting earns you a bigger jump. Losing to a weaker one costs you more points. We also remember your <strong>peak rating</strong> &mdash; the highest you&rsquo;ve ever reached. You never lose your peak, even if your current rating drops.' },
+    { keywords: ['stockfish', 'engine', 'what engine'],
+      q: 'What is Stockfish?',
+      a: '<strong>Stockfish</strong> is the strongest chess engine in the world &mdash; the same engine grandmasters use to study their games. Mind&rsquo;s Gambit uses Stockfish everywhere: as your opponent on the Play page, and as the reviewer on the Analyze page. Completely free for you.' },
+    { keywords: ['progress', 'save', 'data', 'sync', 'devices'],
+      q: 'How is my progress saved?',
+      a: 'Everything is saved <strong>on this device</strong>. No accounts. No tracking. The trade-off: if you switch to a different device or clear your browser data, your stats start fresh. That&rsquo;s the price of no-signup. We&rsquo;re building optional cross-device sync as a future feature for anyone who wants it.' },
+    { keywords: ['coach', 'lesson', 'book', 'teacher', 'grandmaster'],
+      q: 'Can I book a lesson with a coach?',
+      a: 'Yes. Click <a href="/chess-school/grandmasters">Grandmasters</a> in the nav (or the tile on the Chess School hub). Each coach has their own profile with hourly rate, languages, and a contact button. Currently featuring <strong>WGM Maryana Huda</strong> with more titled players joining soon.' },
+    { keywords: ['become coach', 'apply', 'titled', 'join roster'],
+      q: 'How do I become a coach on Mind\'s Gambit?',
+      a: 'If you’re a titled player (GM, IM, WGM, WIM, FM, WFM, NM, CM), visit the <a href="/chess-school/grandmasters">Grandmasters page</a> and click <strong>"Apply as a Founding Coach"</strong>. <strong>Free for 6 months</strong> — you keep 100% of your lesson fees, no exclusivity required.' },
+    { keywords: ['free', 'cost', 'price', 'how much'],
+      q: 'Is Mind\'s Gambit free?',
+      a: 'All the puzzle, engine, and analysis features are <strong>completely free</strong>. No ads, no subscriptions, no upsells. Only paid feature: one-on-one lessons with our titled coaches, which goes directly to the coach.' },
+    { keywords: ['tactics trainer', 'tactics by theme', 'pin fork', 'training'],
+      q: 'How does the Tactics Trainer work?',
+      a: 'Pick a tactical theme &mdash; pin, fork, mate-in-2, endgame, and many more &mdash; then practice puzzles with that pattern. <strong>73 themes</strong> to choose from, across nearly 6 million puzzles. Your accuracy is tracked while you train.' },
+    { keywords: ['train now', 'random puzzle', 'just train'],
+      q: 'What is Train Now?',
+      a: '<strong>Train Now</strong> is the fastest way to start practicing: one click, random puzzle loads, solve it, next puzzle auto-loads. No theme filter, no menus. Tracks your solved / attempted / accuracy stats per session.' },
+    { keywords: ['analysis', 'analyze game', 'pgn', 'review game'],
+      q: 'How does Game Analysis work?',
+      a: 'Paste your game on the <a href="/chess-school/analyze">Analyze page</a>. Your game will be reviewed by the <strong>latest and strongest engine on the planet, Stockfish 17</strong> &mdash; the Mind&rsquo;s Gambit preferred engine. You&rsquo;ll see a clear breakdown of every move: <strong>Blunder</strong>, <strong>Mistake</strong>, <strong>Inaccuracy</strong>, or <strong>Best Move</strong> &mdash; plus the better move you could have played. Everything in plain English you can follow, whether you&rsquo;re 8 or 80.' },
+    { keywords: ['pgn', 'pgn format', 'where to get pgn', 'export game', 'download game'],
+      q: 'Where do I get my game file (PGN)?',
+      a: 'Every chess platform lets you export your game as a small text file called a PGN. Look for an <strong>Export</strong>, <strong>Download</strong>, or <strong>Share</strong> option in your game view &mdash; it&rsquo;s usually one click. For games played over the board, you can type the moves into any analysis tool. PGN is just a simple format that lists every move &mdash; like a written transcript of the game.' },
+    { keywords: ['streak', 'daily streak', 'streak count'],
+      q: 'How does the daily streak work?',
+      a: 'Solve the Daily Puzzle on consecutive days to build a streak. Miss a day and the streak resets to 1 (not zero &mdash; not a punishment, just an honest signal). Your streak is saved on this device.' },
+    { keywords: ['play another person', 'pass and play', 'two player', 'with friend'],
+      q: 'Can I play vs another person?',
+      a: '<strong>Yes! Pass and Play lets two people share one device - free, no account. Find it in the Play section below.' },
+    { keywords: ['mobile', 'phone', 'iphone', 'android'],
+      q: 'Does it work on mobile?',
+      a: 'Yes. All pages are responsive. The board is drag-and-drop on touch. Daily Puzzle, Train Now, Tactics, Play, and Analysis all work on phone. If anything looks broken on your device, please email mourad@mindsgambit.com.' },
+    { keywords: ['browser', 'safari', 'chrome', 'firefox'],
+      q: 'Which browser should I use?',
+      a: 'Any modern browser: Chrome, Edge, Firefox, Safari. Older browsers may feel slower because the chess engine runs right on your device.' },
+    { keywords: ['stockfish 17', 'latest stockfish', 'engine version', 'how strong engine'],
+      q: 'How strong is the engine?',
+      a: 'On the <strong>Play page</strong>, the engine is rated around 3300 &mdash; strong enough to beat almost any human player. On the <strong>Analyze page</strong>, we use <strong>Stockfish 17</strong>, the latest and strongest version, around 3700 strength &mdash; far above any human grandmaster. You get top-tier analysis for free.' },
+    { keywords: ['compare', 'different from', 'other sites', 'why mind', 'why choose'],
+      q: 'What makes Mind\'s Gambit different?',
+      a: 'Three things: (1) <strong>no ads, no upsells, no tracking</strong> &mdash; we have nothing to sell you; (2) <strong>connected to The Mind&rsquo;s Gambit book and documentary</strong>, so chess sits alongside writing about chess; (3) we feature a <strong>small, hand-picked roster of titled coaches</strong> &mdash; not thousands of unverified profiles. We&rsquo;re building a focused, intellectual home for chess.' },
+    { keywords: ['founder', 'who built', 'mourad', 'mourad bouajaja'],
+      q: 'Who built this?',
+      a: '<a href="/#about">Mourad Bouajaja</a> — author of <em>The Mind’s Gambit: Chess, Madness, and the Battle for the Mind</em>, documentary maker, chess player. Mind’s Gambit Chess School is a production of MYB Studio LLC.' },
+    { keywords: ['book', 'the book', 'where to buy'],
+      q: 'Where can I read The Mind\'s Gambit book?',
+      a: 'Visit <a href="/#book">The Book section</a> on the homepage for sample chapters and purchase links. The chess school is named after the book; the book is built on the documentary; everything connects.' },
+    { keywords: ['documentary', 'watch', 'episodes', 'video'],
+      q: 'How do I watch the documentary?',
+      a: 'Go to <a href="/watch">/watch</a> (Documentary). The Mind’s Gambit is a 10-episode documentary series chronicling the intellectual journey behind the book. Episodes are also available on YouTube.' },
+    { keywords: ['donate', 'support', 'buy coffee'],
+      q: 'How can I support Mind\'s Gambit?',
+      a: 'If any of this has helped you, you can <a href="https://buymeacoffee.com/mouradbouajaja" target="_blank" rel="noopener">buy us a coffee</a>. There’s also a tip jar in the top nav of every page (the gold button). Beyond money: tell a chess friend about us. Word of mouth is the only marketing we do.' },
+    { keywords: ['bug', 'report', 'error', 'broken', 'not working'],
+      q: 'Something is broken — how do I report it?',
+      a: 'Email <a href="mailto:mourad@mindsgambit.com">mourad@mindsgambit.com</a> with: (1) which page, (2) what device/browser, (3) what you expected, (4) what happened. Screenshots help a lot. We fix things fast.' },
+    { keywords: ['engine stall', 'engine stuck', 'engine not moving', 'engine freeze', 'stockfish stuck', 'stockfish not moving', 'engine slow', 'no engine move', 'engine took'],
+      q: 'The engine is stalling or not making a move',
+      a: 'Try these in order: (1) <strong>refresh the page</strong> &mdash; this fixes most stalls; (2) <strong>lower the engine strength</strong> &mdash; on the highest levels, the engine can take 10-20 seconds to think; (3) try a modern browser (Chrome, Edge, Firefox, Safari). If it keeps happening, email <a href="mailto:mourad@mindsgambit.com">mourad@mindsgambit.com</a> with what device and browser you&rsquo;re using and we&rsquo;ll figure it out.' },
+    { keywords: ['board not loading', 'board blank', 'board missing', 'pieces missing', 'board white', 'board empty'],
+      q: 'The chess board is not loading',
+      a: 'Try: (1) <strong>hard refresh</strong> (Ctrl+Shift+R on Windows, Cmd+Shift+R on Mac); (2) <strong>turn off any ad-blocker</strong> on this site &mdash; some block the chess board files; (3) check your browser settings allow scripts. If the board still doesn&rsquo;t load, email <a href="mailto:mourad@mindsgambit.com">mourad@mindsgambit.com</a> with a screenshot.' },
+    { keywords: ['puzzle stuck', 'puzzle not solving', 'puzzle frozen', 'cant solve', 'wrong answer'],
+      q: 'The puzzle is stuck or my answer was marked wrong',
+      a: 'Each puzzle has <strong>one specific solution</strong>. Even if your move looks good, only the intended sequence counts as solved &mdash; this is how tactical training works. Click <strong>Hint</strong> or <strong>Show Solution</strong> to see the answer. If you think a puzzle is genuinely broken, email <a href="mailto:mourad@mindsgambit.com">mourad@mindsgambit.com</a> with the puzzle ID and we&rsquo;ll review it.' },
+    { keywords: ['lost progress', 'rating reset', 'stats gone', 'lost streak'],
+      q: 'I lost my rating / streak / stats',
+      a: 'Your progress is stored <strong>on this device only</strong>. It resets if you: (1) clear your browser data, (2) switch to a different browser or device, (3) open the site in private/incognito mode. We&rsquo;re building optional cross-device sync as a future feature. For now, stick to the same browser on the same device to keep your progress.' },
+    { keywords: ['credits', 'open source', 'attribution', 'license', 'legal', 'powered by', 'technical', 'what powers', 'under the hood'],
+      q: 'Credits & legal &mdash; what powers Mind\'s Gambit?',
+      a: 'Mind&rsquo;s Gambit is built on the world&rsquo;s top open-source chess engine, <strong>Stockfish</strong> (free under the GPL v3 license). Our <strong>Mind&rsquo;s Gambit Training Boards</strong> use trusted open-source libraries for piece movement and rendering. Puzzles are sourced from public-domain chess databases. Optional coach commentary on the Analyze page is powered by <strong>Anthropic Claude</strong>. Everything is free for you to use here. Full attribution and license notices appear in the page footers as required by the underlying licenses.' },
+    { keywords: ['contact', 'email', 'reach out'],
+      q: 'How do I contact Mourad?',
+      a: 'Email <a href="mailto:mourad@mindsgambit.com">mourad@mindsgambit.com</a>. Or use the <a href="/#contact">Contact section</a> on the homepage.' },
+    { keywords: ['privacy', 'tracking', 'cookies', 'data'],
+      q: 'Does Mind\'s Gambit track me?',
+      a: '<strong>No tracking, no analytics, no ads.</strong> Your puzzle progress and rating live on <em>your</em> device &mdash; we never see them. When you use Game Analysis, the chess position is sent to the engine so it can compute the review &mdash; nothing about you personally is sent or stored.' }
+  ];
+
+  var bubble = document.getElementById('mg-faq-bubble');
+  var panel = document.getElementById('mg-faq-panel');
+  var closeBtn = document.getElementById('mg-faq-close');
+  var form = document.getElementById('mg-faq-form');
+  var input = document.getElementById('mg-faq-input');
+  var messagesEl = document.getElementById('mg-faq-messages');
+  var suggestedEl = document.getElementById('mg-faq-suggested');
+
+  if (!bubble || !panel) return;
+
+  function openPanel() {
+    panel.removeAttribute('hidden');
+    panel.classList.add('mg-faq-open');
+    input.focus();
+    if (!messagesEl.children.length) greet();
+  }
+  function closePanel() {
+    panel.setAttribute('hidden', '');
+    panel.classList.remove('mg-faq-open');
+  }
+  bubble.addEventListener('click', function() {
+    if (panel.hasAttribute('hidden')) openPanel(); else closePanel();
+  });
+  closeBtn.addEventListener('click', closePanel);
+
+  function addMessage(text, sender) {
+    var div = document.createElement('div');
+    div.className = 'mg-faq-msg mg-faq-msg-' + sender;
+    div.innerHTML = text;
+    messagesEl.appendChild(div);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function score(query, keywords) {
+    var q = query.toLowerCase();
+    var s = 0;
+    for (var i = 0; i < keywords.length; i++) {
+      var k = keywords[i].toLowerCase();
+      if (q.indexOf(k) !== -1) s += k.length * 2;
+      var words = k.split(/\s+/);
+      for (var w = 0; w < words.length; w++) {
+        if (words[w].length >= 3 && q.indexOf(words[w]) !== -1) s += 1;
+      }
+    }
+    return s;
+  }
+
+  function answer(query) {
+    var best = null;
+    var bestScore = 0;
+    for (var i = 0; i < FAQ_DATA.length; i++) {
+      var s = score(query, FAQ_DATA[i].keywords);
+      if (s > bestScore) { bestScore = s; best = FAQ_DATA[i]; }
+    }
+    if (best && bestScore >= 3) return best.a;
+    return null;
+  }
+
+  function greet() {
+    addMessage('Hi &mdash; welcome to <strong>Mind&rsquo;s Gambit Help</strong>. I&rsquo;m here for <em>anything</em> you run into on the site:<br><br>&bull; <strong>Technical issues</strong> &mdash; engine stalling, board not loading, puzzle stuck, page broken<br>&bull; <strong>How things work</strong> &mdash; Daily Puzzle, ELO rating, Train Now, Tactics, Analysis<br>&bull; <strong>Account &amp; data</strong> &mdash; progress saving, switching devices, privacy<br>&bull; <strong>Coaches &amp; lessons</strong> &mdash; booking a titled coach, becoming a coach<br>&bull; <strong>Anything else</strong> &mdash; the book, documentary, contact Mourad<br><br>Type your question below, or pick one of these to get started:', 'bot');
+    showSuggestions(['Engine is stalling / not moving', 'How does the Daily Puzzle work?', 'How does the ELO rating work?', 'Can I book a lesson with a coach?', 'Is Mind&rsquo;s Gambit free?', 'Something is broken &mdash; how do I report it?']);
+  }
+
+  function showSuggestions(questions) {
+    suggestedEl.innerHTML = '';
+    for (var i = 0; i < questions.length; i++) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'mg-faq-suggest';
+      btn.textContent = questions[i];
+      (function(q) { btn.addEventListener('click', function() { handleQuery(q); }); })(questions[i]);
+      suggestedEl.appendChild(btn);
+    }
+  }
+
+  function handleQuery(query) {
+    suggestedEl.innerHTML = '';
+    addMessage(query, 'user');
+    var a = answer(query);
+    if (a) {
+      setTimeout(function() { addMessage(a, 'bot'); }, 200);
+    } else {
+      setTimeout(function() {
+        addMessage('I don’t have a stock answer for that one yet. Email <a href="mailto:mourad@mindsgambit.com">mourad@mindsgambit.com</a> and Mourad will reply personally — he usually answers within a day.', 'bot');
+        var sample = [];
+        var pool = FAQ_DATA.slice();
+        for (var i = 0; i < 4 && pool.length; i++) {
+          var idx = Math.floor(Math.random() * pool.length);
+          sample.push(pool[idx].q);
+          pool.splice(idx, 1);
+        }
+        showSuggestions(sample);
+      }, 200);
+    }
+  }
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var q = input.value.trim();
+    if (!q) return;
+    input.value = '';
+    handleQuery(q);
+  });
+})();
+</script>
+
+<style>
+#mg-faq-bubble { position: fixed; bottom: 20px; right: 20px; width: 86px; min-height: 88px; padding: 10px 8px 8px; border-radius: 18px; background: linear-gradient(135deg, #c9a84c, #d4b556); border: 0; cursor: pointer; box-shadow: 0 8px 22px rgba(201,168,76,0.45), 0 4px 10px rgba(0,0,0,0.3); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; z-index: 10000; transition: transform 0.2s, box-shadow 0.2s; font-family: 'EB Garamond', Georgia, serif; }
+#mg-faq-bubble:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(201,168,76,0.6), 0 6px 14px rgba(0,0,0,0.35); }
+.mg-faq-bubble-icon { font-size: 32px; color: #0f111c; line-height: 1; }
+.mg-faq-bubble-label { font-size: 0.78rem; font-weight: 700; color: #0f111c; letter-spacing: 0.02em; line-height: 1; white-space: nowrap; }
+.mg-faq-bubble-dot { position: absolute; top: 6px; right: 6px; width: 10px; height: 10px; background: #ef4444; border-radius: 50%; border: 2px solid #d4b556; }
+#mg-faq-panel { position: fixed; bottom: 92px; right: 20px; width: 360px; max-width: calc(100vw - 40px); height: 540px; max-height: calc(100vh - 120px); background: #0f111c; border: 1px solid rgba(201,168,76,0.4); border-radius: 16px; display: flex; flex-direction: column; box-shadow: 0 18px 50px rgba(0,0,0,0.55); z-index: 10000; font-family: 'EB Garamond', Georgia, serif; overflow: hidden; }
+#mg-faq-panel[hidden] { display: none !important; }
+.mg-faq-header { padding: 14px 18px; background: rgba(201,168,76,0.12); border-bottom: 1px solid rgba(201,168,76,0.25); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+.mg-faq-title { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1rem; font-weight: 700; letter-spacing: 0.05em; }
+.mg-faq-subtitle { color: rgba(232,224,208,0.55); font-size: 0.78rem; font-style: italic; margin-top: 2px; }
+#mg-faq-close { background: transparent; border: 0; color: rgba(232,224,208,0.7); font-size: 26px; line-height: 1; cursor: pointer; padding: 0 4px; }
+#mg-faq-close:hover { color: #c9a84c; }
+.mg-faq-messages { flex: 1 1 auto; min-height: 0; padding: 16px 14px; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; gap: 10px; background: rgba(15,17,28,0.95); scrollbar-width: thin; scrollbar-color: rgba(201,168,76,0.4) transparent; }
+.mg-faq-messages::-webkit-scrollbar { width: 8px; }
+.mg-faq-messages::-webkit-scrollbar-track { background: transparent; }
+.mg-faq-messages::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.35); border-radius: 4px; }
+.mg-faq-messages::-webkit-scrollbar-thumb:hover { background: rgba(201,168,76,0.6); }
+.mg-faq-msg { padding: 10px 14px; border-radius: 12px; font-size: 0.92rem; line-height: 1.45; max-width: 88%; word-wrap: break-word; }
+.mg-faq-msg-bot { background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.22); color: rgba(232,224,208,0.92); align-self: flex-start; }
+.mg-faq-msg-user { background: #c9a84c; color: #0f111c; align-self: flex-end; }
+.mg-faq-msg-bot a { color: #c9a84c; text-decoration: underline; }
+.mg-faq-msg-bot strong { color: #c9a84c; }
+.mg-faq-msg-bot em { color: rgba(232,224,208,0.65); font-style: italic; }
+.mg-faq-form { display: flex; gap: 8px; padding: 12px 14px; border-top: 1px solid rgba(201,168,76,0.2); background: rgba(15,17,28,0.95); flex-shrink: 0; }
+#mg-faq-input { flex: 1; background: rgba(30,34,52,0.55); border: 1px solid rgba(201,168,76,0.25); border-radius: 8px; padding: 9px 12px; color: #e8e0d0; font-family: 'EB Garamond', Georgia, serif; font-size: 0.95rem; box-sizing: border-box; }
+#mg-faq-input:focus { outline: none; border-color: #c9a84c; }
+.mg-faq-form button[type="submit"] { background: #c9a84c; color: #0f111c; border: 0; width: 40px; height: 40px; border-radius: 8px; font-size: 18px; cursor: pointer; font-weight: 700; }
+.mg-faq-form button[type="submit"]:hover { background: #d4b556; }
+.mg-faq-suggested { padding: 0 14px 12px; display: flex; flex-wrap: wrap; gap: 6px; background: rgba(15,17,28,0.95); flex-shrink: 0; max-height: 96px; overflow-y: auto; }
+.mg-faq-suggest { background: rgba(30,34,52,0.6); border: 1px solid rgba(201,168,76,0.25); color: #c9a84c; padding: 6px 10px; border-radius: 99px; font-size: 0.78rem; font-family: 'EB Garamond', Georgia, serif; cursor: pointer; transition: all 0.15s; }
+.mg-faq-suggest:hover { background: rgba(201,168,76,0.15); border-color: #c9a84c; }
+@media (max-width: 480px) {
+  #mg-faq-panel { width: calc(100vw - 24px); right: 12px; bottom: 108px; height: calc(100vh - 140px); }
+  #mg-faq-bubble { right: 14px; bottom: 14px; width: 74px; min-height: 78px; }
+  .mg-faq-bubble-icon { font-size: 28px; }
+  .mg-faq-bubble-label { font-size: 0.7rem; }
+}
+</style>
+
+</BaseLayout>
+
+<style is:global>
+nav { background: rgba(15,17,28,0.95); border-bottom: 1px solid rgba(201,168,76,0.2); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
+.nav-inner { max-width: 1200px; margin: 0 auto; padding: 0.75rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+.nav-links { display: flex; gap: 2rem; list-style: none; margin: 0; padding: 0; align-items: center; }
+.nav-links a { color: #e8e0d0; text-decoration: none; font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; font-family: 'Playfair Display', Georgia, serif; transition: color 0.3s; }
+.nav-links a:hover { color: #c9a84c; }
+.nav-btn { background: #c9a84c !important; color: #0f111c !important; padding: 0.5rem 1.25rem; border-radius: 4px; font-weight: 600; }
+
+.hero { max-width: 1200px; margin: 0 auto; padding: 4rem 1.5rem 1.5rem; text-align: center; }
+.eyebrow { color: #c9a84c; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.25em; display: block; margin-bottom: 1.25rem; }
+.hero h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 4rem; color: #e8e0d0; line-height: 1.05; margin: 0 0 1.25rem; }
+.hero .lead { color: rgba(232,224,208,0.78); font-size: 1.2rem; font-family: 'EB Garamond', Georgia, serif; line-height: 1.55; max-width: 720px; margin: 0 auto 2rem; }
+
+.train-now-wrap { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+.train-now-btn { display: inline-flex; align-items: center; gap: 0.75rem; background: linear-gradient(135deg, #c9a84c, #d4b556); color: #0f111c; padding: 1.1rem 2.5rem; border-radius: 12px; font-family: 'Playfair Display', Georgia, serif; font-size: 1.1rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; box-shadow: 0 14px 36px rgba(201,168,76,0.4); text-decoration: none; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.train-now-btn:hover { transform: translateY(-2px); box-shadow: 0 20px 44px rgba(201,168,76,0.55); }
+.train-now-icon { font-size: 1.6rem; }
+.train-now-sub { color: rgba(232,224,208,0.5); font-size: 0.85rem; font-style: italic; letter-spacing: 0.04em; }
+
+.gm-hero { max-width: 1200px; margin: 2rem auto; padding: 0 1.5rem; }
+.gm-hero-inner { display: grid; grid-template-columns: 200px 1fr auto; gap: 2rem; align-items: center; background: linear-gradient(135deg, rgba(201,168,76,0.22), rgba(20,22,32,0.85)); border: 1px solid rgba(201,168,76,0.5); border-radius: 18px; padding: 2.25rem 2.5rem; text-decoration: none; color: inherit; box-shadow: 0 18px 50px rgba(0,0,0,0.4); transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.gm-hero-inner:hover { transform: translateY(-3px); box-shadow: 0 24px 56px rgba(201,168,76,0.2), 0 18px 50px rgba(0,0,0,0.5); }
+.gm-avatar { width: 170px; height: 170px; border-radius: 14px; background: linear-gradient(135deg, #c9a84c, #8a6f2a); display: flex; align-items: center; justify-content: center; font-size: 5.5rem; color: #0f111c; border: 3px solid rgba(201,168,76,0.6); }
+.gm-content { font-family: 'EB Garamond', Georgia, serif; }
+.gm-eyebrow { color: #c9a84c; font-family: 'Playfair Display', Georgia, serif; font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; display: block; margin-bottom: 0.6rem; }
+.gm-content h2 { font-family: 'Playfair Display', Georgia, serif; color: #e8e0d0; font-size: 1.85rem; margin: 0 0 0.7rem; line-height: 1.15; }
+.gm-content p { color: rgba(232,224,208,0.78); font-size: 1.02rem; line-height: 1.55; margin: 0 0 1rem; max-width: 600px; }
+.gm-features { list-style: none; padding: 0; margin: 0; display: flex; gap: 1.5rem; font-size: 0.85rem; color: rgba(232,224,208,0.6); flex-wrap: wrap; }
+.gm-features li::before { content: '\25C6 '; color: rgba(201,168,76,0.7); margin-right: 0.4rem; }
+.gm-cta { background: #c9a84c; color: #0f111c; padding: 0.95rem 1.6rem; border-radius: 10px; font-family: 'Playfair Display', Georgia, serif; font-size: 0.92rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; display: inline-block; }
+
+.grid-section { max-width: 1200px; margin: 2.5rem auto 1.25rem; padding: 0 1.5rem; }
+.section-head { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1.1rem; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(201,168,76,0.15); flex-wrap: wrap; }
+.section-num { color: rgba(201,168,76,0.5); font-family: 'Playfair Display', Georgia, serif; font-size: 1rem; }
+.section-title { color: #c9a84c; font-family: 'Playfair Display', Georgia, serif; font-size: 1.25rem; letter-spacing: 0.16em; text-transform: uppercase; margin: 0; }
+.section-sub { color: rgba(232,224,208,0.5); font-size: 0.85rem; font-style: italic; margin-left: auto; }
+
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+.tile { background: linear-gradient(135deg, rgba(30,34,52,0.6), rgba(20,22,32,0.85)); border: 1px solid rgba(201,168,76,0.2); border-radius: 12px; padding: 1.25rem 1.4rem; min-height: 170px; position: relative; cursor: pointer; transition: all 0.25s ease; display: flex; flex-direction: column; text-decoration: none; color: inherit; }
+.tile:hover { border-color: rgba(201,168,76,0.5); transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.5); }
+.tile-soon { opacity: 0.78; cursor: default; }
+.tile-soon:hover { transform: none; border-color: rgba(201,168,76,0.2); box-shadow: none; }
+.tile-faded { opacity: 0.45; }
+.tile-icon { font-size: 1.85rem; color: #c9a84c; line-height: 1; margin-bottom: 0.6rem; }
+.tile h3 { font-family: 'Playfair Display', Georgia, serif; color: #e8e0d0; font-size: 1.15rem; margin: 0 0 0.45rem; }
+.tile p { font-size: 0.9rem; color: rgba(232,224,208,0.7); line-height: 1.5; margin: 0 0 0.5rem; font-family: 'EB Garamond', Georgia, serif; flex-grow: 1; }
+.tile p .powered { color: rgba(232,224,208,0.45); font-size: 0.78rem; font-style: italic; display: block; margin-top: 0.4rem; }
+.tile-cta { color: #c9a84c; font-size: 0.78rem; font-family: 'Playfair Display', Georgia, serif; letter-spacing: 0.1em; text-transform: uppercase; margin-top: auto; }
+.tile-soon .tile-cta { color: rgba(201,168,76,0.5); font-style: italic; }
+.badge { position: absolute; top: 0.85rem; right: 0.85rem; font-size: 0.65rem; padding: 0.2rem 0.55rem; border-radius: 99px; letter-spacing: 0.14em; text-transform: uppercase; font-family: 'Playfair Display', Georgia, serif; font-weight: 600; }
+.badge-live { color: #a7f3d0; background: rgba(74,222,128,0.15); border: 1px solid rgba(74,222,128,0.45); }
+.badge-new { color: #fbbf24; background: rgba(251,191,36,0.15); border: 1px solid rgba(251,191,36,0.45); }
+.badge-soon { color: #c9a84c; background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.4); }
+
+.manifesto { max-width: 900px; margin: 2.5rem auto 1.5rem; padding: 2.5rem 1.5rem; text-align: center; }
+.manifesto h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.85rem; color: #c9a84c; margin: 0 0 1rem; }
+.manifesto p { color: rgba(232,224,208,0.82); font-size: 1.08rem; font-family: 'EB Garamond', Georgia, serif; line-height: 1.7; margin: 0 0 1.1rem; }
+.manifesto p strong { color: #c9a84c; font-weight: 600; }
+.manifesto-support { color: rgba(232,224,208,0.72) !important; font-size: 1.02rem !important; font-style: italic; padding-top: 0.6rem; border-top: 1px solid rgba(201,168,76,0.18); margin-top: 1.4rem !important; }
+.manifesto-coffee-cta { display: inline-block; margin-top: 0.6rem; background: linear-gradient(135deg, #c9a84c, #d4b556); color: #0f111c; padding: 0.85rem 1.6rem; border-radius: 10px; font-family: 'EB Garamond', Georgia, serif; font-weight: 700; font-size: 1.02rem; text-decoration: none; box-shadow: 0 8px 22px rgba(201,168,76,0.32); transition: transform 0.18s, box-shadow 0.18s; }
+.manifesto-coffee-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(201,168,76,0.48); }
+.footer-disclaimer { color: rgba(232,224,208,0.35); font-size: 0.78rem; font-family: 'EB Garamond', Georgia, serif; line-height: 1.55; max-width: 760px; margin: 0 auto 0.8rem; padding: 0 1rem; }
+.footer-disclaimer a { color: rgba(201,168,76,0.6); text-decoration: underline; }
+.footer-disclaimer a:hover { color: #c9a84c; }
+
+.page-footer { margin-top: 1rem; padding: 2rem 1.5rem; text-align: center; border-top: 1px solid rgba(201,168,76,0.1); }
+.footer-credit { color: rgba(232,224,208,0.4); font-size: 0.82rem; font-family: 'EB Garamond', Georgia, serif; }
+
+@media (max-width: 820px) {
+  .hero h1 { font-size: 2.6rem; }
+  .hero .lead { font-size: 1.05rem; }
+  .gm-hero-inner { grid-template-columns: 1fr; gap: 1.25rem; text-align: center; padding: 1.5rem; }
+  .gm-avatar { margin: 0 auto; width: 130px; height: 130px; font-size: 4rem; }
+  .gm-features { justify-content: center; }
+  .section-sub { width: 100%; margin-left: 0; }
+}
+</style>

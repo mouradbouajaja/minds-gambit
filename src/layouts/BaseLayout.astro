@@ -173,6 +173,7 @@ const { title = "Mourad Bouajaja — The Mind's Gambit", description = "Chess, M
   }
   var d=document.querySelectorAll("nav a[href='/daily']"); for(var i=0;i<d.length;i++) d[i].setAttribute("href","/daily-wired");
   var c=document.querySelectorAll("nav a[href*='buymeacoffee']"); for(var k=0;k<c.length;k++){ c[k].textContent="Donate"; c[k].setAttribute("href","/#donate"); }
+ document.querySelectorAll("a[href*='buymeacoffee']").forEach(function(a){ if(a.closest("nav")) return; if(a.dataset.mgPp) return; a.dataset.mgPp="1"; var pp=a.cloneNode(true); pp.dataset.mgPp="1"; pp.setAttribute("href","https://www.paypal.com/paypalme/BeinM64"); pp.setAttribute("target","_blank"); pp.setAttribute("rel","noopener"); pp.innerHTML="&#128153; PayPal &#8594;"; pp.style.marginLeft="10px"; pp.style.marginTop="10px"; a.insertAdjacentElement("afterend",pp); });
  }
  if(document.readyState!=="loading") init(); else document.addEventListener("DOMContentLoaded",init);
 })();

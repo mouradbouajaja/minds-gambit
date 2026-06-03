@@ -1,0 +1,432 @@
+---
+
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+
+
+
+export const prerender = true;
+
+
+
+// ============================================================
+
+//  QUEEN’S INDIAN DEFENSE — COMPLETE REPERTOIRE — Course landing page
+
+//  Route: /chess-school/opening-builder/queens-indian
+
+//
+
+//  Eight-chapter Chessable-style course covering the Queen’s Indian
+
+//  from E12 to E19. Cards link to chapter detail pages at
+
+//  /chess-school/opening-builder/queens-indian/chapter?id=<chapterId>.
+
+// ============================================================
+
+
+
+const CHAPTERS = [
+  { id: 'fianchetto-ba6', num: 1, title: 'The Fianchetto: 4…Ba6', tagline: 'The modern main line — c4 under attack from move four', lines: 1, eco: 'E15' },
+  { id: 'fianchetto-bb7', num: 2, title: 'The Classical: 4…Bb7', tagline: 'The long diagonal and the thematic …Ne4 trade', lines: 1, eco: 'E17—E19' },
+  { id: 'petrosian', num: 3, title: 'The Petrosian (4.a3)', tagline: 'Kasparov'+String.fromCharCode(8217)+'s weapon — defused with …d5 and …c5', lines: 1, eco: 'E12' },
+  { id: 'nc3', num: 4, title: 'The 4.Nc3 System', tagline: 'Transpose to your Nimzo — or stay home with …Bb7', lines: 1, eco: 'E12' },
+  { id: 'quiet-e3', num: 5, title: 'The Quiet 4.e3', tagline: 'The club favorite — and Black'+String.fromCharCode(8217)+'s most comfortable game', lines: 1, eco: 'E14' }
+];
+
+---
+
+
+
+<BaseLayout
+
+  title="The Queen’s Indian Defense — Complete Repertoire — Mind's Gambit"
+
+  description="A complete Queen’s Indian Defense repertoire for Black against 1.d4 (3.Nf3). Eight chapters covering every major White system from the Exchange to the King's Indian Attack. Free, no ads, no subscriptions."
+
+>
+
+
+
+<nav>
+
+  <div class="nav-inner">
+
+    <a href="/" class="nav-logo"><img src="/images/logo.jpg" alt="Mind's Gambit" style="height:55px;width:55px;border-radius:50%;object-fit:cover;border:2px solid #c8a84e;margin-left:10px;vertical-align:middle;" /></a>
+
+    <ul class="nav-links">
+
+      <li><a href="/">Home</a></li>
+
+      <li><a href="/#book">The Book</a></li>
+
+      <li><a href="/watch">Documentary</a></li>
+
+      <li><a href="/blog">Blog</a></li>
+
+      <li><a href="/chess-school">Chess School</a></li>
+
+      <li><a href="/#about">About</a></li>
+
+      <li><a href="/#contact">Contact</a></li>
+
+      <li><a href="https://buymeacoffee.com/mouradbouajaja" target="_blank" rel="noopener" class="nav-btn">&#9749; Buy Me a Coffee</a></li>
+
+    </ul>
+
+  </div>
+
+</nav>
+
+
+
+<section class="page">
+
+  <a href="/chess-school/opening-builder" class="back-link">&larr; Back to Repertoire Catalog</a>
+
+  <span class="eyebrow">Mind&rsquo;s Gambit Chess School &middot; Complete Repertoire</span>
+
+  <h1>The Queen’s Indian Defense</h1>
+
+  <p class="subtitle">ECO E12&ndash;E19 &middot; Black against 1.d4 (3.Nf3) &middot; 5 chapters &middot; MG Recommended</p>
+
+
+
+  <div class="course-layout">
+
+    <div class="course-main">
+
+      <p class="course-overview">The Queen’s Indian Defense is the quiet twin of the Nimzo-Indian: when White avoids the pin with 3.Nf3, the b7 bishop takes the longest diagonal on the board instead. Karpov trusted it for thirty years. Together with the Nimzo-Indian guide, it completes your answer to 1.d4 — every line engine-verified. This MG complete repertoire covers every system you&rsquo;ll see at club level and most of what you&rsquo;ll see at master level &mdash; eight chapters built around mainstream theory, organized in the order you&rsquo;ll actually meet them across the board. Drill the mainlines, study the typical plans, refer back as you build games.</p>
+
+
+
+      <div class="mg-badge-block">
+
+        <span class="mg-badge-chip">&#10038; MG Recommended &middot; Quickstarter level</span>
+
+        <p class="mg-badge-note">Depth will deepen with each weekly update. Eight chapters live now, sub-variations and master games landing on a rolling schedule.</p>
+
+      </div>
+
+
+
+      <section class="chapter-grid">
+
+        {CHAPTERS.map((c) => (
+
+          <a class="chapter-card" href={`/chess-school/opening-builder/queens-indian/chapter?id=${c.id}`} data-chapter-id={c.id}>
+
+            <div class="chapter-num">{c.num}</div>
+
+            <h3 class="chapter-title">{c.title}</h3>
+
+            <p class="chapter-tagline">{c.tagline}</p>
+
+            <div class="chapter-meta">
+
+              <span class="chapter-subvariations">{c.lines} lines</span>
+
+              <span class="chapter-eco">{c.eco}</span>
+
+            </div>
+
+            <div class="chapter-progress" data-chapter-id={c.id}>
+
+              <div class="chapter-progress-bar"><div class="chapter-progress-fill" style="width:0%"></div></div>
+
+              <span class="chapter-progress-label">Not started</span>
+
+            </div>
+
+          </a>
+
+        ))}
+
+      </section>
+
+    </div>
+
+
+
+    <aside class="course-sidebar">
+
+      <div class="widget-card">
+
+        <h3 class="widget-title">Your Progress</h3>
+
+        <div class="widget-stats">
+
+          <div class="widget-stat"><span class="widget-stat-num" id="chapters-started">0</span><span class="widget-stat-label">started</span></div>
+
+          <div class="widget-stat"><span class="widget-stat-num" id="chapters-completed">0</span><span class="widget-stat-label">completed</span></div>
+
+          <div class="widget-stat"><span class="widget-stat-num">8</span><span class="widget-stat-label">total</span></div>
+
+        </div>
+
+        <p class="widget-foot" id="progress-note">Start anywhere &mdash; the Fianchetto chapters (1–2) are the heart of the system.</p>
+
+      </div>
+
+
+
+      <div class="widget-card">
+
+        <h3 class="widget-title">Time Planner</h3>
+
+        <p class="widget-body">Drill 5 minutes a day. Review the variations you learned 1 day ago, 3 days ago, 7 days ago. Drill mainlines until they&rsquo;re automatic, then return for deeper sub-variations.</p>
+
+      </div>
+
+
+
+      <div class="widget-card widget-help">
+
+        <h3 class="widget-title">Need help?</h3>
+
+        <p class="widget-body">Email <a href="mailto:mourad@mindsgambit.com">mourad@mindsgambit.com</a> with any Queen’s Indian question. Replies usually within a day.</p>
+
+      </div>
+
+    </aside>
+
+  </div>
+
+
+
+  <footer class="page-footer">
+
+    <p class="footer-credit">&copy; 2026 Mourad Bouajaja. Mind&rsquo;s Gambit Chess School is a production of &copy; MYB Studio LLC.</p>
+
+  </footer>
+
+</section>
+
+
+
+<!-- ============================================================
+
+     PROGRESS LOGIC  reads localStorage `mg_qid_progress`
+
+     and updates the per-chapter progress bars + the sidebar
+
+     counters. Schema: { "<chapterId>": { started: bool,
+
+     completed: bool, percent: 0-100 } }.
+
+============================================================ -->
+
+<script is:inline>
+
+(function() {
+
+  'use strict';
+
+  function loadProgress() {
+
+    try {
+
+      var raw = localStorage.getItem('mg_qid_progress');
+
+      return raw ? JSON.parse(raw) : {};
+
+    } catch (e) { return {}; }
+
+  }
+
+  var progress = loadProgress();
+
+  var started = 0, completed = 0;
+
+  var cards = document.querySelectorAll('.chapter-card');
+
+  for (var i = 0; i < cards.length; i++) {
+
+    var id = cards[i].getAttribute('data-chapter-id');
+
+    var p = progress[id];
+
+    if (!p) continue;
+
+    if (p.started) started++;
+
+    if (p.completed) completed++;
+
+    var pct = typeof p.percent === 'number' ? Math.max(0, Math.min(100, p.percent)) : (p.completed ? 100 : (p.started ? 25 : 0));
+
+    var fill = cards[i].querySelector('.chapter-progress-fill');
+
+    var label = cards[i].querySelector('.chapter-progress-label');
+
+    if (fill) fill.style.width = pct + '%';
+
+    if (label) label.textContent = p.completed ? 'Completed' : (p.started ? (pct + '% complete') : 'Not started');
+
+  }
+
+  var s = document.getElementById('chapters-started');
+
+  var c = document.getElementById('chapters-completed');
+
+  if (s) s.textContent = String(started);
+
+  if (c) c.textContent = String(completed);
+
+  var note = document.getElementById('progress-note');
+
+  if (note && started > 0) {
+
+    note.textContent = completed === 8
+
+      ? 'Repertoire complete. Cycle back for sub-variations as they ship.'
+
+      : 'Keep going  drill the chapters you started before opening new ones.';
+
+  }
+
+})();
+
+</script>
+
+
+
+<style>
+
+/* Override global card-reveal animation — these are course catalog tiles, always visible */
+
+.chapter-card { opacity: 1 !important; transform: none !important; }
+
+.eyebrow { display: block; font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.18em; margin-top: 1.5rem; }
+
+.page { max-width: 1200px; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+
+.back-link { display: inline-block; color: rgba(232,224,208,0.65); text-decoration: none; font-family: 'EB Garamond', Georgia, serif; font-size: 0.95rem; margin: 1rem 0 0; transition: color 0.18s; }
+
+.back-link:hover { color: #c9a84c; }
+
+.page h1 { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 2.6rem; margin: 0.6rem 0 0.4rem; letter-spacing: 0.01em; }
+
+.subtitle { color: rgba(232,224,208,0.72); font-family: 'EB Garamond', Georgia, serif; font-size: 1.02rem; margin: 0 0 1.5rem; font-style: italic; }
+
+
+
+/* Two-column layout */
+
+.course-layout { display: grid; grid-template-columns: 1fr 300px; gap: 2rem; margin-top: 1rem; align-items: start; }
+
+@media (max-width: 900px) { .course-layout { grid-template-columns: 1fr; } }
+
+
+
+.course-overview { color: rgba(232,224,208,0.85); font-family: 'EB Garamond', Georgia, serif; font-size: 1.08rem; line-height: 1.7; margin: 0 0 1.5rem; max-width: 820px; }
+
+
+
+/* MG Recommended badge block */
+
+.mg-badge-block { background: linear-gradient(135deg, rgba(201,168,76,0.12), rgba(91,133,195,0.07)); border: 1px solid rgba(201,168,76,0.4); border-radius: 12px; padding: 1rem 1.2rem; margin: 0 0 2rem; }
+
+.mg-badge-chip { display: inline-block; font-family: 'Playfair Display', Georgia, serif; font-size: 0.75rem; padding: 4px 11px; border-radius: 99px; letter-spacing: 0.1em; text-transform: uppercase; background: rgba(201,168,76,0.22); color: #c9a84c; border: 1px solid rgba(201,168,76,0.45); margin-bottom: 0.55rem; font-weight: 600; }
+
+.mg-badge-note { color: rgba(232,224,208,0.78); font-family: 'EB Garamond', Georgia, serif; font-size: 0.95rem; line-height: 1.55; margin: 0.4rem 0 0; font-style: italic; }
+
+
+
+/* ---------- chapter grid ---------- */
+
+.chapter-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; margin: 0 0 2rem; }
+
+@media (max-width: 900px) { .chapter-grid { grid-template-columns: repeat(2, 1fr); } }
+
+@media (max-width: 600px) { .chapter-grid { grid-template-columns: 1fr; } }
+
+
+
+.chapter-card { position: relative; display: flex; flex-direction: column; background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(30,34,52,0.65)); border: 1px solid rgba(201,168,76,0.3); border-radius: 12px; padding: 1.2rem 1.2rem 1rem; text-decoration: none; transition: transform 0.18s, border-color 0.18s, box-shadow 0.18s; min-height: 200px; }
+
+.chapter-card:hover { transform: translateY(-3px); border-color: rgba(201,168,76,0.65); box-shadow: 0 14px 28px rgba(0,0,0,0.4); }
+
+
+
+.chapter-num { position: absolute; top: 0.9rem; left: 0.9rem; width: 2rem; height: 2rem; border-radius: 50%; background: rgba(201,168,76,0.18); border: 1px solid rgba(201,168,76,0.55); color: #c9a84c; font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; letter-spacing: 0; }
+
+
+
+.chapter-title { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1.18rem; line-height: 1.25; margin: 0 0 0.4rem; padding-left: 2.6rem; min-height: 2.4em; }
+
+.chapter-tagline { color: rgba(232,224,208,0.78); font-family: 'EB Garamond', Georgia, serif; font-size: 0.92rem; line-height: 1.5; margin: 0 0 0.9rem; flex: 1; }
+
+
+
+.chapter-meta { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-bottom: 0.7rem; }
+
+.chapter-subvariations { color: rgba(232,224,208,0.55); font-family: 'EB Garamond', Georgia, serif; font-size: 0.82rem; font-style: italic; }
+
+.chapter-eco { background: rgba(201,168,76,0.15); color: rgba(201,168,76,0.9); font-family: 'Courier New', monospace; font-size: 0.72rem; padding: 3px 7px; border-radius: 4px; white-space: nowrap; }
+
+
+
+.chapter-progress { display: flex; flex-direction: column; gap: 0.3rem; margin-top: auto; }
+
+.chapter-progress-bar { width: 100%; height: 6px; background: rgba(15,17,28,0.7); border: 1px solid rgba(201,168,76,0.18); border-radius: 99px; overflow: hidden; }
+
+.chapter-progress-fill { height: 100%; background: linear-gradient(90deg, #c9a84c, #d4b556); border-radius: 99px; transition: width 0.3s; }
+
+.chapter-progress-label { color: rgba(232,224,208,0.55); font-family: 'EB Garamond', Georgia, serif; font-size: 0.78rem; font-style: italic; }
+
+
+
+/* ---------- sidebar widgets ---------- */
+
+.course-sidebar { display: flex; flex-direction: column; gap: 1rem; position: sticky; top: 1rem; }
+
+@media (max-width: 900px) { .course-sidebar { position: static; } }
+
+
+
+.widget-card { background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(30,34,52,0.55)); border: 1px solid rgba(201,168,76,0.25); border-radius: 12px; padding: 1.1rem 1.1rem 1rem; }
+
+.widget-title { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1.05rem; margin: 0 0 0.7rem; letter-spacing: 0.04em; }
+
+.widget-body { color: rgba(232,224,208,0.78); font-family: 'EB Garamond', Georgia, serif; font-size: 0.92rem; line-height: 1.55; margin: 0; }
+
+.widget-body a { color: #c9a84c; }
+
+.widget-foot { color: rgba(232,224,208,0.6); font-family: 'EB Garamond', Georgia, serif; font-size: 0.85rem; line-height: 1.5; margin: 0.7rem 0 0; font-style: italic; border-top: 1px solid rgba(201,168,76,0.15); padding-top: 0.6rem; }
+
+
+
+.widget-stats { display: flex; justify-content: space-around; gap: 0.5rem; }
+
+.widget-stat { display: flex; flex-direction: column; align-items: center; gap: 0.15rem; }
+
+.widget-stat-num { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1.8rem; font-weight: 700; line-height: 1; }
+
+.widget-stat-label { color: rgba(232,224,208,0.6); font-family: 'EB Garamond', Georgia, serif; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; }
+
+
+
+.widget-help { background: linear-gradient(135deg, rgba(91,133,195,0.10), rgba(30,34,52,0.55)); border-color: rgba(91,133,195,0.32); }
+
+
+
+.page-footer { margin-top: 2.5rem; padding: 1.5rem 1rem; text-align: center; border-top: 1px solid rgba(201,168,76,0.1); }
+
+.footer-credit { color: rgba(232,224,208,0.4); font-size: 0.82rem; font-family: 'EB Garamond', Georgia, serif; }
+
+
+
+@media (max-width: 600px) {
+
+  .page h1 { font-size: 2rem; }
+
+  .chapter-title { font-size: 1.08rem; min-height: 0; }
+
+}
+
+</style>
+
+
+
+</BaseLayout>
+

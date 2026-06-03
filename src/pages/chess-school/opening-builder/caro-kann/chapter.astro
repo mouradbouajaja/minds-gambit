@@ -381,6 +381,264 @@ export const prerender = true;
   }
 };
 
+
+
+  // ------------------------------------------------------------
+
+  // Chapter order for prev/next navigation.
+
+  // ------------------------------------------------------------
+
+  var ORDER = ['exchange', 'advance', 'mccutcheon', 'classical', 'tarrasch', 'two-knights', 'schlechter', 'kia'];
+
+
+
+  // ------------------------------------------------------------
+
+  // Parse ?id= from URL.
+
+  // ------------------------------------------------------------
+
+  function getChapterId() {
+
+    var m = location.search.match(/[?&]id=([^&]+)/);
+
+    return m ? decodeURIComponent(m[1]).toLowerCase().trim() : null;
+
+  }
+
+
+
+  var chapterId = getChapterId();
+
+  var chapter = chapterId ? CHAPTERS[chapterId] : null;
+
+
+
+  if (!chapter) {
+
+    document.getElementById('chapter-title').textContent = 'Chapter not found';
+
+    document.getElementById('chapter-eco').textContent = '';
+
+    document.getElementById('chapter-setup').textContent = '';
+
+    document.getElementById('not-found').hidden = false;
+
+    return;
+
+  }
+
+
+
+  // ------------------------------------------------------------
+
+  // Render header.
+
+  // ------------------------------------------------------------
+
+  document.getElementById('chapter-title').textContent = chapter.title;
+
+  document.getElementById('chapter-eyebrow').innerHTML =
+
+    'Caro-Kann Repertoire &middot; Chapter ' + chapter.num + ' of 8';
+
+  document.getElementById('chapter-eco').textContent = 'ECO ' + chapter.eco;
+
+  document.getElementById('chapter-setup').textContent =
+
+    'Black against 1.e4 e6 2.d4 d5 3.' + chapter.firstMove.replace(/^3\./, '');
+
+  document.title = chapter.title + ' — Caro-Kann Repertoire — Mind\'s Gambit';
+
+
+
+  document.getElementById('chapter-content').hidden = false;
+
+
+
+  // Intro
+
+  document.getElementById('chapter-intro').innerHTML = chapter.intro;
+
+
+
+  // ------------------------------------------------------------
+
+  // Render sub-variations.
+
+  // ------------------------------------------------------------
+
+  var subList = document.getElementById('subvariation-list');
+
+  for (var i = 0; i < chapter.subVariations.length; i++) {
+
+    var sv = chapter.subVariations[i];
+
+    var li = document.createElement('li');
+
+    li.className = 'subvariation-card';
+
+
+
+    var header = document.createElement('div');
+
+    header.className = 'subvar-header';
+
+    var nameEl = document.createElement('h3');
+
+    nameEl.className = 'subvar-name';
+
+    nameEl.textContent = sv.name;
+
+    header.appendChild(nameEl);
+
+    li.appendChild(header);
+
+
+
+    var moves = document.createElement('div');
+
+    moves.className = 'subvar-mainline';
+
+    moves.textContent = sv.mainline;
+
+    li.appendChild(moves);
+
+
+
+    var label = document.createElement('p');
+
+    label.className = 'subvar-label';
+
+    label.textContent = sv.label;
+
+    li.appendChild(label);
+
+
+
+    var drillRow = document.createElement('div');
+
+    drillRow.className = 'subvar-cta-row';
+
+    var drillLink = document.createElement('a');
+
+    drillLink.className = 'cta-primary';
+
+    drillLink.href = '/chess-school/opening-builder/drill?mainline=' + encodeURIComponent(sv.mainline) + '&name=' + encodeURIComponent(chapter.title + ' · ' + sv.name) + '&side=black&parent=' + encodeURIComponent(chapterId);
+
+    drillLink.textContent = 'Drill this line →';
+
+    drillRow.appendChild(drillLink);
+
+    li.appendChild(drillRow);
+
+
+
+    subList.appendChild(li);
+
+  }
+
+
+
+  // ------------------------------------------------------------
+
+  // Render studied-by.
+
+  // ------------------------------------------------------------
+
+  var studiedList = document.getElementById('studied-by');
+
+  for (var j = 0; j < chapter.studiedBy.length; j++) {
+
+    var s = chapter.studiedBy[j];
+
+    var sli = document.createElement('li');
+
+    var nameEl2 = document.createElement('strong');
+
+    nameEl2.className = 'master';
+
+    nameEl2.textContent = s.master;
+
+    var snoteEl = document.createElement('span');
+
+    snoteEl.className = 'note';
+
+    snoteEl.textContent = s.note;
+
+    sli.appendChild(nameEl2);
+
+    sli.appendChild(document.createTextNode(' '));
+
+    sli.appendChild(snoteEl);
+
+    studiedList.appendChild(sli);
+
+  }
+
+
+
+  // ------------------------------------------------------------
+
+  // Prev / Next chapter navigation.
+
+  // ------------------------------------------------------------
+
+  var idx = ORDER.indexOf(chapterId);
+
+  var prev = document.getElementById('prev-chapter');
+
+  var next = document.getElementById('next-chapter');
+
+  if (idx > 0) {
+
+    prev.href = '/chess-school/opening-builder/caro-kann/chapter?id=' + ORDER[idx - 1];
+
+    prev.textContent = '← ' + CHAPTERS[ORDER[idx - 1]].title;
+
+  } else {
+
+    prev.classList.add('disabled');
+
+    prev.removeAttribute('href');
+
+    prev.textContent = '← First chapter';
+
+  }
+
+  if (idx < ORDER.length - 1) {
+
+    next.href = '/chess-school/opening-builder/caro-kann/chapter?id=' + ORDER[idx + 1];
+
+    next.textContent = CHAPTERS[ORDER[idx + 1]].title + ' →';
+
+  } else {
+
+    next.classList.add('disabled');
+
+    next.removeAttribute('href');
+
+    next.textContent = 'Last chapter →';
+
+  }
+
+
+
+  // ------------------------------------------------------------
+
+  // Progress widget (localStorage mg_carokann_progress).
+
+  // ------------------------------------------------------------
+
+  function loadProgress() {
+
+    try {
+
+      var raw = localStorage.getItem('mg_carokann_progress');
+
+      return raw ? JSON.parse(raw) : {};
+
     } catch (e) { return {}; }
 
   }

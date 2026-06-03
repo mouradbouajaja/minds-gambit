@@ -9,7 +9,7 @@ const teacher = {
   fideTitle: "Woman Grandmaster",
   trainerTitle: "FIDE Trainer (2022)",
   tagline: "Quality professional coaching for all levels, including for players with serious tournament goals.",
-  photo: "https://image.online1.org/display?fmt=webp&h=350&op=thumbnail&path=morshynska1:coach:morshynska1:47WCJA8z.jpg&w=350&sig=7153456a989676933f39b96c09cc68502ebf226c",
+  photo: "https://image.lichess1.org/display?fmt=webp&h=350&op=thumbnail&path=morshynska1:coach:morshynska1:47WCJA8z.jpg&w=350&sig=7153456a989676933f39b96c09cc68502ebf226c",
   location: "Morshyn, Lviv region — Ukraine",
   fideRating: 2179,
   nationalRating: 2283,
@@ -18,8 +18,8 @@ const teacher = {
   availability: "Accepting students",
   languages: ["English", "Spanish", "Ukrainian", "Russian", "Catalan"],
   email: "gudachess@gmail.com",
-  onlineCoach: "https://mindsgambit.com/coach/Morshynska1",
-  onlineProfile: "https://mindsgambit.com/@/Morshynska1",
+  lichessCoach: "https://lichess.org/coach/Morshynska1",
+  lichessProfile: "https://lichess.org/@/Morshynska1",
   twitchProfile: "https://twitch.tv/maryanahuda"
 };
 
@@ -39,9 +39,9 @@ const specialties = [
 ];
 
 const freeStudies = [
-  { title: "Lecture on the Center for beginners", url: "https://mindsgambit.com/study/oPTsIN7c", chapters: 2 },
-  { title: "Lecture on Piece Development for beginners", url: "https://mindsgambit.com/study/b0ZqKFLd", chapters: 4 },
-  { title: "Practice Exercises", url: "https://mindsgambit.com/study/g7rXay67", chapters: 4 }
+  { title: "Lecture on the Center for beginners", url: "https://lichess.org/study/oPTsIN7c", chapters: 2 },
+  { title: "Lecture on Piece Development for beginners", url: "https://lichess.org/study/b0ZqKFLd", chapters: 4 },
+  { title: "Practice Exercises", url: "https://lichess.org/study/g7rXay67", chapters: 4 }
 ];
 ---
 
@@ -95,7 +95,7 @@ const freeStudies = [
             <span class="btn-text">Book by Email</span>
             <span class="btn-shimmer"></span>
           </a>
-          <a href="/#contact" class="btn-secondary cta-btn">Book a Lesson &rarr;</a>
+          <a href={teacher.lichessCoach} class="btn-secondary cta-btn">Book a Lesson &rarr;</a>
         </div>
       </div>
     </header>
@@ -214,7 +214,7 @@ const freeStudies = [
             <span class="btn-text">Email Maryana Directly</span>
             <span class="btn-shimmer"></span>
           </a>
-          <a href="/#contact" class="btn-secondary btn-large cta-btn">Book a Lesson &rarr;</a>
+          <a href={teacher.lichessCoach} class="btn-secondary btn-large cta-btn">Book a Lesson &rarr;</a>
         </div>
         <p class="cta-fineprint">Or reach the Mind's Gambit team at <a href="mailto:Mourad@mindsgambit.com">Mourad@mindsgambit.com</a> for an introduction.</p>
       </div>
@@ -654,7 +654,7 @@ nav { background: rgba(15,17,28,0.92); border-bottom: 1px solid rgba(201,168,76,
 .photo-ring {
   position: absolute; inset: -6px; border-radius: 20px;
   background: conic-gradient(from 0deg, #c9a84c, #f4d989, #c9a84c, #b88a30, #c9a84c);
-  animation: rotateRing 12s linear infinite;
+  animation: none;
   z-index: 1;
 }
 @keyframes rotateRing { to { transform: rotate(360deg); } }
@@ -797,7 +797,7 @@ nav { background: rgba(15,17,28,0.92); border-bottom: 1px solid rgba(201,168,76,
 .pricing-section::before {
   content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
   background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 50%);
-  animation: rotateRing 25s linear infinite; pointer-events: none;
+  animation: none; pointer-events: none;
 }
 .pricing-section > * { position: relative; }
 .pricing-section h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 2rem; color: #c9a84c; margin: 0 0 2rem; text-align: center; padding-bottom: 0; }

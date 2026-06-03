@@ -249,6 +249,8 @@ const BLACK_VS_D4 = [
           {o.id === 'london' && <span class="mg-new-badge">MG London Complete &middot; NEW</span>}
           {o.id === 'colle-zukertort' && <span class="mg-new-badge">MG Colle Complete &middot; NEW</span>}
           {o.id === 'ruy-lopez' && <span class="mg-new-badge">MG Ruy Lopez Complete &middot; NEW</span>}
+          {o.id === 'english' && <span class="mg-new-badge">MG English Complete &middot; NEW</span>}
+          {o.id === 'kia' && <span class="mg-new-badge">MG KIA Complete &middot; NEW</span>}
           <header class="opening-card-header">
             <h3 class="opening-name">{o.name}</h3>
             <span class="opening-eco">{o.eco}</span>
@@ -256,7 +258,7 @@ const BLACK_VS_D4 = [
           <div class="opening-moves">{o.moves}</div>
           <span class="opening-style">{o.style}</span>
           <p class="opening-description">{o.description}</p>
-          {['italian','queens-gambit','london','colle-zukertort','ruy-lopez'].includes(o.id) ? (
+          {['italian','queens-gambit','london','colle-zukertort','ruy-lopez','english','kia'].includes(o.id) ? (
             <div class="opening-cta-row opening-cta-row-three">
               <a class="opening-cta-primary opening-cta-flagship" href={'/chess-school/opening-builder/' + o.id}>Complete Repertoire</a>
             <a class="opening-cta-primary" href={`/chess-school/opening-builder/study?id=${o.id}`}>Study Guide</a>
@@ -287,6 +289,8 @@ const BLACK_VS_D4 = [
           {o.id === 'french' && <span class="mg-new-badge">MG French Complete &middot; NEW</span>}
           {o.id === 'caro-kann' && <span class="mg-new-badge">MG Caro-Kann Complete &middot; NEW</span>}
           {o.id === 'sicilian' && <span class="mg-new-badge">MG Sicilian Complete &middot; NEW</span>}
+          {o.id === 'berlin' && <span class="mg-new-badge">MG Berlin Complete &middot; NEW</span>}
+          {o.id === 'scandinavian' && <span class="mg-new-badge">MG Scandinavian Complete &middot; NEW</span>}
           {o.id === 'italian' && <span class="mg-new-badge">MG Italian Complete &middot; NEW</span>}
           <header class="opening-card-header">
             <h3 class="opening-name">{o.name}</h3>
@@ -295,7 +299,7 @@ const BLACK_VS_D4 = [
           <div class="opening-moves">{o.moves}</div>
           <span class="opening-style">{o.style}</span>
           <p class="opening-description">{o.description}</p>
-          {['french','caro-kann','sicilian'].includes(o.id) ? (
+          {['french','caro-kann','sicilian','berlin','scandinavian'].includes(o.id) ? (
             <div class="opening-cta-row opening-cta-row-three">
               <a class="opening-cta-primary opening-cta-flagship" href={'/chess-school/opening-builder/' + o.id}>Complete Repertoire</a>
               <a class="opening-cta-secondary" href={`/chess-school/opening-builder/study?id=${o.id}`}>Study Guide</a>
@@ -326,6 +330,9 @@ const BLACK_VS_D4 = [
           {o.id === 'nimzo' && <span class="mg-new-badge">MG Nimzo Complete &middot; NEW</span>}
           {o.id === 'queens-indian' && <span class="mg-new-badge">MG Queens Indian Complete &middot; NEW</span>}
           {o.id === 'qgd' && <span class="mg-new-badge">MG QGD Complete &middot; NEW</span>}
+          {o.id === 'slav' && <span class="mg-new-badge">MG Slav Complete &middot; NEW</span>}
+          {o.id === 'kid' && <span class="mg-new-badge">MG KID Complete &middot; NEW</span>}
+          {o.id === 'bogo-indian' && <span class="mg-new-badge">MG Bogo-Indian Complete &middot; NEW</span>}
           <header class="opening-card-header">
             <h3 class="opening-name">{o.name}</h3>
             <span class="opening-eco">{o.eco}</span>
@@ -333,7 +340,7 @@ const BLACK_VS_D4 = [
           <div class="opening-moves">{o.moves}</div>
           <span class="opening-style">{o.style}</span>
           <p class="opening-description">{o.description}</p>
-          {['nimzo','queens-indian','qgd'].includes(o.id) ? (
+          {['nimzo','queens-indian','qgd','slav','kid','bogo-indian'].includes(o.id) ? (
             <div class="opening-cta-row opening-cta-row-three">
               <a class="opening-cta-primary opening-cta-flagship" href={'/chess-school/opening-builder/' + o.id}>Complete Repertoire</a>
             <a class="opening-cta-primary" href={`/chess-school/opening-builder/study?id=${o.id}`}>Study Guide</a>

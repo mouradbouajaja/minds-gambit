@@ -43,7 +43,7 @@ export const prerender = true;
 </style>
 <div id="tb-app">
 <h1>Teaching Board</h1>
-<p class="tb-hint">Drag pieces to play. <b>Right-click&dash;drag</b> to draw arrows; right-click a square to highlight. Use <b>Fullscreen</b> for lessons. <span id="tb-status" style="color:#e07a5f;"></span></p>
+<p class="tb-hint">Drag pieces to play. <b>Right-click-drag</b> to draw arrows; right-click a square to highlight. Use <b>Fullscreen</b> for lessons. <span id="tb-status" style="color:#e07a5f;"></span></p>
 <div id="tb-bar">
 <button id="tb-prev">&#9664; Prev</button>
 <button id="tb-next">Next &#9654;</button>
@@ -65,7 +65,7 @@ export const prerender = true;
 <script type="module" is:inline>
 import {Chessground} from 'https://cdn.jsdelivr.net/npm/chessground@9.2.1/dist/chessground.min.js';
 import {Chess} from 'https://cdn.jsdelivr.net/npm/chess.js@1.4.0/dist/esm/chess.js';
-['base','brown','cburnett'].forEach(n=>{var l=document.createElement('link');l.rel='stylesheet';l.href='https://cdn.jsdelivr.net/npm/chessground@9.2.1/assets/chessground.'+n+'.css';document.head.appendChild(l);});
+['base','brown','cburnett'].forEach(n=>{var l=document.createElement('link');l.rel='stylesheet';l.href='https://cdn.jsdelivr.net/npm/chessground@9.2.1/assets/chessground.'+n+'.css';l.onload=function(){try{cg&&cg.redrawAll();}catch(e){}};document.head.appendChild(l);});
 const $=id=>document.getElementById(id);
 const game=new Chess();
 let fens=[game.fen()], sans=[], ptr=0, orientation='white', cg;
@@ -79,6 +79,7 @@ function goto(p){p=Math.max(0,Math.min(fens.length-1,p));ptr=p;rebuild();refresh
 function onMove(o,d){if(!atEnd())return;const ms=game.moves({verbose:true}).filter(m=>m.from===o&&m.to===d);if(!ms.length){refresh();return;}const promo=ms.some(m=>m.promotion)?'q':undefined;const mv=game.move({from:o,to:d,promotion:promo});if(!mv){refresh();return;}sans=sans.slice(0,ptr);sans.push(mv.san);fens=fens.slice(0,ptr+1);fens.push(game.fen());ptr=fens.length-1;refresh();}
 cg=Chessground($('tb-board'),{orientation,turnColor:tc(),movable:{free:false,color:tc(),dests:dests(),showDests:true},drawable:{enabled:true,visible:true},animation:{enabled:true,duration:200},events:{move:onMove}});
 refresh();
+function _rd(){try{cg.redrawAll();}catch(e){}}setTimeout(_rd,150);setTimeout(_rd,500);setTimeout(_rd,1200);window.addEventListener('load',_rd);
 $('tb-prev').onclick=()=>goto(ptr-1);
 $('tb-next').onclick=()=>goto(ptr+1);
 $('tb-flip').onclick=()=>{orientation=orientation==='white'?'black':'white';cg.set({orientation});};

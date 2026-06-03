@@ -1,602 +1,1353 @@
 ---
+
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+
 
 export const prerender = true;
 
+
+
 // ============================================================
+
 //  OPENING REPERTOIRE BUILDER — Study Guide (Phase 2.5)
+
 //  Route: /chess-school/opening-builder/study?id=<openingId>
+
 //
+
 //  Pre-drill study page: strategic overview, annotated mainline,
+
 //  and recommended masters to study. Eight openings get full
+
 //  guides (the MG Recommended set); the rest see a placeholder
+
 //  with a direct link to the drill.
+
 // ============================================================
+
 ---
 
+
+
 <BaseLayout
+
   title="Study Guide  Opening Repertoire Builder  Mind's Gambit"
+
   description="Study chess opening ideas, annotated mainlines, and master games before drilling. Free."
+
 >
 
+
+
 <nav>
+
   <div class="nav-inner">
+
     <a href="/" class="nav-logo"><img src="/images/logo.jpg" alt="Mind's Gambit" style="height:55px;width:55px;border-radius:50%;object-fit:cover;border:2px solid #c8a84e;margin-left:10px;vertical-align:middle;" /></a>
+
     <ul class="nav-links">
+
       <li><a href="/">Home</a></li>
+
       <li><a href="/#book">The Book</a></li>
+
       <li><a href="/watch">Documentary</a></li>
+
       <li><a href="/blog">Blog</a></li>
+
       <li><a href="/chess-school">Chess School</a></li>
+
       <li><a href="/#about">About</a></li>
+
       <li><a href="/#contact">Contact</a></li>
+
       <li><a href="https://buymeacoffee.com/mouradbouajaja" target="_blank" rel="noopener" class="nav-btn">&#9749; Buy Me a Coffee</a></li>
+
     </ul>
+
   </div>
+
 </nav>
 
+
+
 <section class="page">
+
   <a href="/chess-school/opening-builder" class="back-link">&larr; Back to Repertoire Catalog</a>
+
   <span class="eyebrow" id="study-eyebrow">Mind&rsquo;s Gambit Chess School  Study Guide</span>
+
   <h1 id="opening-title">Loading study guide&hellip;</h1>
+
   <p class="subtitle"><span id="opening-eco">&mdash;</span> &middot; <span id="opening-side">&mdash;</span></p>
 
+
+
   <div class="study-layout">
+
     <!-- Variations sidebar (populated by JS when an entry exists) -->
+
     <aside class="variations-sidebar" id="variations-sidebar" hidden>
+
       <div class="variations-header">
+
         <h2>Main Variations</h2>
+
         <p class="variations-intro" id="variations-intro"></p>
+
       </div>
+
       <ul class="variations-list" id="variations-list"></ul>
+
       <p class="variations-footer">Sub-variations are beyond the scope of this section. Mind&rsquo;s Gambit may add a full exhaustive opening database in a future update.</p>
+
     </aside>
 
+
+
     <div class="study-main">
+
       <!-- "Opening not found" fallback -->
+
       <div id="not-found" class="not-found" hidden>
+
         <h2>Opening not found</h2>
+
         <p>Pick one from the repertoire builder and try again.</p>
+
         <a href="/chess-school/opening-builder" class="cta-primary">&larr; Back to the Repertoire Catalog</a>
+
       </div>
+
+
 
       <!-- Full study content (rendered when STUDY_GUIDES has an entry) -->
+
       <div id="study-content" hidden>
+
         <!-- Strategic overview -->
+
         <section class="study-section">
+
           <h2>Strategic overview</h2>
+
           <div id="overview-text"></div>
+
         </section>
+
+
 
         <!-- Annotated mainline -->
+
         <section class="study-section">
+
           <h2>Annotated mainline</h2>
+
           <p class="section-intro">The canonical mainline with the strategic <em>why</em> behind each move.</p>
+
           <ol class="annotated-moves" id="annotated-moves"></ol>
+
         </section>
+
+
 
         <!-- Studied by (masters) -->
+
         <section class="study-section">
+
           <h2>Studied by</h2>
+
           <p class="section-intro">Players whose games &amp; books are worth your time on this opening.</p>
+
           <ul class="studied-by" id="studied-by"></ul>
+
         </section>
 
+
+
         <!-- CTA -->
+
         <div class="cta-block">
+
           <p class="cta-prompt">Read the overview, studied the mainline, looked at the masters? Time to drill.</p>
+
           <a id="drill-link" class="cta-primary" href="#">Start drilling &rarr;</a>
+
         </div>
+
       </div>
+
+
 
       <!-- Placeholder for openings without a full study guide yet -->
+
       <div id="placeholder" class="placeholder" hidden>
+
         <p class="placeholder-msg">The full study guide for this opening is being prepared. Strategic ideas, annotated moves, and recommended masters are coming in the next update.</p>
+
         <p class="placeholder-msg">Meanwhile you can drill the mainline now:</p>
+
         <a id="drill-link-placeholder" class="cta-primary" href="#">Drill mainline &rarr;</a>
+
       </div>
+
     </div>
+
   </div>
 
+
+
   <footer class="page-footer">
+
     <p class="footer-credit">&copy; 2026 Mourad Bouajaja. Mind&rsquo;s Gambit Chess School is a production of &copy; MYB Studio LLC.</p>
+
   </footer>
+
 </section>
 
+
+
 <!-- ============================================================
+
      STUDY GUIDE LOGIC
+
 ============================================================ -->
+
 <script is:inline>
+
 (function() {
+
   'use strict';
 
+
+
   // ------------------------------------------------------------
+
   // Openings catalog (mirrors drill.astro — 18 entries).
+
   // ------------------------------------------------------------
+
   var OPENINGS = {
+
     'ruy-lopez':       { name: 'Ruy Lopez (Spanish Opening)', eco: 'C60C99', side: 'white',
+
                          mainLine: 'e4 e5 Nf3 Nc6 Bb5 a6 Ba4 Nf6 O-O Be7 Re1 b5 Bb3 d6 c3' },
+
     'italian':         { name: 'Italian Game', eco: 'C50C59', side: 'white',
+
                          mainLine: 'e4 e5 Nf3 Nc6 Bc4 Bc5 c3 Nf6 d3 d6 O-O O-O Re1 a6 h3' },
+
     'queens-gambit':   { name: "Queen's Gambit", eco: 'D06D69', side: 'white',
+
                          mainLine: 'd4 d5 c4 e6 Nc3 Nf6 cxd5 exd5 Bg5 Be7 e3 c6 Bd3 O-O Nf3' },
+
     'english':         { name: 'English Opening', eco: 'A10A39', side: 'white',
+
                          mainLine: 'c4 e5 Nc3 Nf6 Nf3 Nc6 g3 d5 cxd5 Nxd5 Bg2 Nb6 O-O Be7 d3' },
+
     'london':          { name: 'London System', eco: 'D02 / A45', side: 'white',
+
                          mainLine: 'd4 d5 Bf4 Nf6 e3 e6 Nf3 Bd6 Bg3 O-O Bd3 c5 c3 Nc6 Nbd2' },
+
     'colle-zukertort': { name: 'Colle-Zukertort', eco: 'D04D05', side: 'white',
+
                          mainLine: 'd4 d5 Nf3 Nf6 e3 e6 Bd3 c5 b3 Nc6 Bb2 Bd6 O-O O-O Nbd2 b6' },
+
     'kia':             { name: "King's Indian Attack", eco: 'A07A08', side: 'white',
+
                          mainLine: 'Nf3 d5 g3 Nf6 Bg2 c5 O-O Nc6 d3 e6 Nbd2 Be7 e4 O-O Re1' },
+
     'sicilian':        { name: 'Sicilian Defense', eco: 'B20B99', side: 'black',
+
                          mainLine: 'e4 c5 Nf3 d6 d4 cxd4 Nxd4 Nf6 Nc3 a6 Be2 e5 Nb3 Be7 O-O' },
+
     'french':          { name: 'French Defense', eco: 'C00C19', side: 'black',
+
                          mainLine: 'e4 e6 d4 d5 Nd2 c5 exd5 exd5 Ngf3 Nc6 Bb5 Bd6 dxc5 Bxc5 O-O' },
+
     'caro-kann':       { name: 'Caro-Kann Defense', eco: 'B10B19', side: 'black',
+
                          mainLine: 'e4 c6 d4 d5 Nc3 dxe4 Nxe4 Bf5 Ng3 Bg6 h4 h6 Nf3 Nd7 h5 Bh7' },
+
     'berlin':          { name: 'Berlin Defense', eco: 'C65C67', side: 'black',
+
                          mainLine: 'e4 e5 Nf3 Nc6 Bb5 Nf6 O-O Nxe4 d4 Nd6 Bxc6 dxc6 dxe5 Nf5' },
+
     'kid':             { name: "King's Indian Defense", eco: 'E60E99', side: 'black',
+
                          mainLine: 'd4 Nf6 c4 g6 Nc3 Bg7 e4 d6 Nf3 O-O Be2 e5 O-O Nc6 d5 Ne7' },
+
     'qgd':             { name: "Queen's Gambit Declined", eco: 'D30D69', side: 'black',
+
                          mainLine: 'd4 d5 c4 e6 Nc3 Nf6 Bg5 Be7 e3 O-O Nf3 Nbd7 Rc1 c6 Bd3 dxc4' },
+
     'slav':            { name: 'Slav Defense', eco: 'D10D19', side: 'black',
+
                          mainLine: 'd4 d5 c4 c6 Nf3 Nf6 Nc3 dxc4 a4 Bf5 e3 e6 Bxc4 Bb4 O-O' },
+
     'nimzo':           { name: 'Nimzo-Indian Defense', eco: 'E20E59', side: 'black',
+
                          mainLine: 'd4 Nf6 c4 e6 Nc3 Bb4 e3 O-O Bd3 d5 Nf3 c5 O-O Nc6 a3 Bxc3' },
+
     'scandinavian':    { name: 'Scandinavian Defense', eco: 'B01', side: 'black',
+
                          mainLine: 'e4 d5 exd5 Qxd5 Nc3 Qa5 d4 Nf6 Nf3 c6 Bc4 Bf5 Bd2 e6 Nd5' },
+
     'queens-indian':   { name: "Queen's Indian Defense", eco: 'E12-E19', side: 'black',
+
                          mainLine: 'd4 Nf6 c4 e6 Nf3 b6 g3 Ba6 b3 Bb4+ Bd2 Be7 Bg2 c6 O-O d5' },
+
     'bogo-indian':     { name: 'Bogo-Indian Defense', eco: 'E11', side: 'black',
+
                          mainLine: 'd4 Nf6 c4 e6 Nf3 Bb4+ Bd2 a5 Nc3 O-O e3 d5 a3 Bxc3 Bxc3 dxc4' }
+
   };
 
+
+
   // ------------------------------------------------------------
+
   // Full study guides — eight MG Recommended openings.
+
   // Each guide: overview (HTML string), annotated moves array,
+
   // studiedBy array of master notes.
+
   // ------------------------------------------------------------
+
   var STUDY_GUIDES = {
+
     'italian': {
+
       overview: "<p>The Italian Game is the most popular White opening at every level below master. The bishop on c4 trains on f7 — Black's weakest square — and a piece-based attack often follows. Modern theory has shifted from the sharp Evans Gambit toward the Giuoco Pianissimo: slow, positional, building pressure piece by piece.</p><p>Magnus Carlsen revived the Italian at the elite level in the 2010s; it now appears in nearly every world-class tournament. Perfect for the player who wants classical principles and clear plans rather than a 30-move memorized line.</p>",
+
       annotated: [
+
         { move: '1.e4',   note: "Stakes the central claim and opens lines for the king's bishop and queen." },
+
         { move: '1...e5', note: 'Classical reply. Black mirrors the central claim.' },
+
         { move: '2.Nf3',  note: "Develops with tempo, attacks Black's e5 pawn." },
+
         { move: '2...Nc6', note: 'Defends e5 and develops a piece.' },
+
         { move: '3.Bc4',  note: "The Italian. Bishop trains on f7, the weakest square in Black's camp." },
+
         { move: '3...Bc5', note: 'Symmetric development. Black mirrors.' },
+
         { move: '4.c3',   note: 'Quiet. Supports a later d4 push and clears space for the queen.' },
+
         { move: '4...Nf6', note: 'Develops and attacks e4.' },
+
         { move: '5.d3',   note: 'The Pianissimo (very slow) approach. Keeps the bishop on c4 instead of d3.' },
+
         { move: '5...d6', note: 'Symmetric. Black plays a complete mirror system.' },
+
         { move: '6.O-O',  note: 'Tucks the king to safety, prepares Re1 and h3.' },
+
         { move: '6...O-O', note: 'Black follows suit.' },
+
         { move: '7.Re1',  note: 'Steps onto the e-file. Supports an eventual e4-e5 break or the Nbd2-Nf1-Ng3 maneuver.' },
+
         { move: '7...a6', note: 'Quiet move. Prepares ...Ba7 to dodge any Na4 trade, and a future ...b5.' },
+
         { move: '8.h3',   note: 'The thematic "Italian luft." Prevents ...Bg4 pinning the knight and prepares the Nf1 maneuver.' }
+
       ],
+
       studiedBy: [
+
         { master: 'Magnus Carlsen',   note: 'Revived the Italian at world-championship level after a century of being considered "drawish." Watch his 2018 match games vs Caruana for the modern treatment.' },
+
         { master: 'Fabiano Caruana',  note: 'Co-author of modern Italian theory; the elite reference for serious students of this opening.' },
+
         { master: 'Hikaru Nakamura',  note: 'Modern aggressive treatments at the GM streamer level; accessible study material on his YouTube channel.' }
+
       ]
+
     },
 
+
+
     'queens-gambit': {
+
       overview: "<p>The Queen's Gambit is the most respected positional opening in chess history. White offers the c-pawn to lure Black's d-pawn from the center; whether Black accepts or declines, White builds a structural advantage that's been the foundation of world champions from Karpov to Carlsen.</p><p>The Exchange Variation shown here simplifies — White trades on d5, locks the Carlsbad pawn structure, and grinds with the minority attack on the queenside. Strategically rich, technically demanding, the calling card of patient positional players.</p>",
+
       annotated: [
+
         { move: '1.d4',   note: "Claims the dark central square and opens the c1-bishop's diagonal." },
+
         { move: '1...d5', note: 'Symmetric. Fights for the center.' },
+
         { move: '2.c4',   note: 'The Gambit. Offers the pawn but Black usually declines.' },
+
         { move: '2...e6', note: 'Declines with the Queen\'s Gambit Declined (QGD). Solid, supports d5.' },
+
         { move: '3.Nc3',  note: 'Adds a defender of e4 and prepares future cxd5.' },
+
         { move: '3...Nf6', note: 'Develops, defends e4 from any future Ne4 idea.' },
+
         { move: '4.cxd5', note: 'The Exchange. Locks the structure into the Carlsbad pattern.' },
+
         { move: '4...exd5', note: 'Forced — the alternative ...Nxd5 leaves a passive position.' },
+
         { move: '5.Bg5',  note: 'Pins the knight on f6 to add pressure on d5.' },
+
         { move: '5...Be7', note: 'Develops, prepares to break the pin if needed.' },
+
         { move: '6.e3',   note: "Solid. Doesn't block the c1-bishop's diagonal." },
+
         { move: '6...c6', note: 'Solidifies the pawn chain.' },
+
         { move: '7.Bd3',  note: 'Standard development square.' },
+
         { move: '7...O-O', note: 'Tucks the king.' },
+
         { move: '8.Nf3',  note: "Completes development. White's plan: Rb1, b4-b5  the famous minority attack to weaken Black's queenside." }
+
       ],
+
       studiedBy: [
+
         { master: 'Vladimir Kramnik', note: 'Defended his world title with the Queen\'s Gambit; his 2000 match games vs Kasparov are textbook QGD.' },
+
         { master: 'Anatoly Karpov',   note: 'Made the Carlsbad structure his trademark; the minority attack technique is named for his approach.' },
+
         { master: 'Magnus Carlsen',   note: 'Plays the Queen\'s Gambit (both sides) at elite tournaments; uses the Exchange for safe technical wins.' }
+
       ]
+
     },
 
+
+
     'london': {
+
       overview: "<p>The London System is the lowest-theory weapon in modern chess. White plays the same setup  d4, Bf4, e3, Nf3, c3, Nbd2, Bd3, O-O  against almost any Black system. You learn one structure, you play it for decades.</p><p>Magnus Carlsen plays it at world-championship level; it's not just a beginner system but a respectable line that's nearly impossible to refute. Perfect for the busy player who wants results without 100 hours of theory.</p>",
+
       annotated: [
+
         { move: '1.d4',   note: 'Claims the center.' },
+
         { move: '1...d5', note: 'Symmetric defense.' },
+
         { move: '2.Bf4',  note: 'The London move. Bishop steps out before being blocked by the e-pawn.' },
+
         { move: '2...Nf6', note: 'Standard development.' },
+
         { move: '3.e3',   note: 'Solid. Supports d4 and prepares the system.' },
+
         { move: '3...e6', note: 'Symmetric, prepares ...Bd6.' },
+
         { move: '4.Nf3',  note: 'Develops.' },
+
         { move: '4...Bd6', note: "Black's most direct challenge to the London bishop on f4." },
+
         { move: '5.Bg3',  note: 'Steps the bishop aside to avoid a trade.' },
+
         { move: '5...O-O', note: 'Tucks the king.' },
+
         { move: '6.Bd3',  note: 'Standard bishop placement, eyes h7.' },
+
         { move: "6...c5", note: "Black's only real challenge: hits White's d4." },
+
         { move: '7.c3',   note: 'Supports d4. Maintains the structure.' },
+
         { move: '7...Nc6', note: 'Develops, increases pressure on d4.' },
+
         { move: '8.Nbd2', note: "Completes development. White's plan: Ne5, f4, and a kingside attack with Bxh7+ tactics if Black is careless." }
+
       ],
+
       studiedBy: [
+
         { master: 'Magnus Carlsen', note: 'Plays the London at world-championship level (including the 2021 Carlsen-Nepomniachtchi match). The single biggest reason it\'s no longer "anti-chess."' },
+
         { master: 'Gata Kamsky',    note: 'One of the first elite players to make the London a primary weapon in tournament chess.' },
+
         { master: 'Eric Hansen',    note: 'Popularized the modern London at the GM streamer level; his Chessbrah videos are accessible study material.' }
+
       ]
+
     },
 
+
+
     'colle-zukertort': {
+
       overview: "<p>The Colle-Zukertort is the London's cousin  same one-system-vs-anything philosophy, but with the queen's bishop fianchettoed on b2 instead of f4. The b2-bishop pressures the long diagonal, especially after a future e4 break in the center.</p><p>Edgar Colle popularized it in the 1920s; Zukertort added the fianchetto refinement. A perfect 'one-system-fits-all' weapon for club players who want to think in plans rather than memorize moves.</p>",
+
       annotated: [
+
         { move: '1.d4',   note: 'Claim the center.' },
+
         { move: '1...d5', note: 'Symmetric.' },
+
         { move: '2.Nf3',  note: 'Develops. Avoids early commitments.' },
+
         { move: '2...Nf6', note: 'Symmetric.' },
+
         { move: '3.e3',   note: 'Solid. Prepares the Colle setup.' },
+
         { move: '3...e6', note: 'Standard reply.' },
+
         { move: '4.Bd3',  note: 'Develops on the active diagonal; eyes h7.' },
+
         { move: '4...c5', note: "Black's challenge to d4. Same idea as in the London." },
+
         { move: '5.b3',   note: 'The Zukertort refinement. Prepares the Bb2 fianchetto.' },
+
         { move: '5...Nc6', note: 'Develops, presses d4.' },
+
         { move: '6.Bb2',  note: 'The bishop battery. Eyes g7 once Black castles, and controls the long diagonal e5-h8.' },
+
         { move: '6...Bd6', note: 'Develops actively.' },
+
         { move: '7.O-O',  note: 'King safety first.' },
+
         { move: '7...O-O', note: 'Symmetric.' },
+
         { move: '8.Nbd2', note: "Completes development. White's plan: Ne5, f4, Bxh7+ sacrifice ideas, or the slower e3-e4 break." },
+
         { move: '8...b6', note: 'Black prepares a queenside fianchetto with ...Bb7, fighting for the long diagonal as well.' }
+
       ],
+
       studiedBy: [
+
         { master: 'Susan Polgar',          note: 'Wrote extensively on the Colle system; her training material includes Colle-Zukertort lines for amateurs.' },
+
         { master: 'Daniel King',           note: 'Modern explainer of the Colle on his Power Play DVD series; clear video lessons.' },
+
         { master: 'Edgar Colle (historical)', note: "The opening's namesake. His 1925-1932 games are the foundational text; many available in old tournament books." }
+
       ]
+
     },
 
+
+
     'french': {
+
       overview: "<p>The French Defense is Black's most strategically rich answer to 1.e4. Black gives up space (the e5 chain after 3.e5 leaves Black cramped) in exchange for a solid structure and clear counterplay against d4.</p><p>The Tarrasch (3.Nd2) shown here is White's main system at club level: flexible, safe, avoids the sharp theory of the Winawer (3.Nc3 Bb4). For Black, the open-game Tarrasch leads to balanced middlegames where deep understanding beats memorization. Mourad's lifelong defense.</p>",
+
       annotated: [
+
         { move: '1.e4',   note: 'White claims center.' },
+
         { move: '1...e6', note: 'The French. Modest, prepares ...d5 with full support.' },
+
         { move: '2.d4',   note: 'Standard.' },
+
         { move: '2...d5', note: "The French structure. Direct challenge to White's center." },
+
         { move: '3.Nd2',  note: 'The Tarrasch. Avoids the pin from ...Bb4 (Winawer line).' },
+
         { move: '3...c5', note: 'The open Tarrasch. Hits d4 immediately.' },
+
         { move: '4.exd5', note: 'Concedes the center but keeps the structure clean.' },
+
         { move: '4...exd5', note: 'Black now has an isolated queen pawn (IQP) on d5 in return for open lines and active piece play.' },
+
         { move: '5.Ngf3', note: 'Develops.' },
+
         { move: '5...Nc6', note: 'Develops, defends d5.' },
+
         { move: '6.Bb5',  note: 'Pins the knight, prepares Bxc6 followed by exploitation of doubled c-pawns.' },
+
         { move: '6...Bd6', note: 'Active development, eyes h2.' },
+
         { move: '7.dxc5', note: 'Locks the structure. Removes pressure on d4.' },
+
         { move: '7...Bxc5', note: 'Black recaptures actively.' },
+
         { move: '8.O-O',  note: 'White is fully developed. Plans Nb3-Nbd4 maneuvers and exploitation of the IQP later.' }
+
       ],
+
       studiedBy: [
+
         { master: 'Artur Yusupov',  note: 'His training manuals (especially the "Build Up Your Chess" series) are the gold standard for understanding French structures. Recommended by Mourad personally.' },
+
         { master: 'Jacob Aagaard',  note: 'Modern French theory in his "Attacking Chess" and "Grandmaster Repertoire" series. Rigorous, deep coverage.' },
+
         { master: 'Alexei Shirov',  note: 'Sharpest French practitioner of the modern era; his games show the dynamic possibilities Black has in supposedly "passive" structures.' }
+
       ]
+
     },
 
+
+
     'caro-kann': {
+
       overview: "<p>The Caro-Kann is the Karpov defense  solid, classical, no holes in the position. Black plays ...c6 to prepare ...d5 without blocking the queen's diagonal (the way ...e6 does in the French).</p><p>The Classical line (3.Nc3 dxe4) trades minor pieces and heads to a slightly passive but rock-solid endgame. Black accepts a small space disadvantage in exchange for zero pawn weaknesses. Hard to lose with.</p>",
+
       annotated: [
+
         { move: '1.e4',   note: 'Standard.' },
+
         { move: '1...c6', note: 'The Caro-Kann move. Prepares ...d5 with full pawn support.' },
+
         { move: '2.d4',   note: 'Standard.' },
+
         { move: '2...d5', note: 'Black challenges the center, fully supported.' },
+
         { move: '3.Nc3',  note: 'Defends e4 and prepares the Classical line.' },
+
         { move: '3...dxe4', note: 'Black takes. The simplifying line.' },
+
         { move: '4.Nxe4', note: 'Recaptures.' },
+
         { move: '4...Bf5', note: 'The Classical. Develops the bishop outside the pawn chain  the whole point of the Caro structure (solving the "bad bishop" problem the French has).' },
+
         { move: '5.Ng3',  note: 'Attacks the bishop.' },
+
         { move: '5...Bg6', note: 'Retreats. Bishop is safe and well-placed.' },
+
         { move: '6.h4',   note: 'Kingside attack. Threatens h5 trapping the bishop.' },
+
         { move: '6...h6', note: 'Prophylaxis. Prevents Nh5 with discovered-attack ideas.' },
+
         { move: '7.Nf3',  note: 'Develops.' },
+
         { move: '7...Nd7', note: 'Prepares ...Ngf6 without blocking the bishop.' },
+
         { move: '8.h5',   note: 'Restricts the bishop to h7.' },
+
         { move: '8...Bh7', note: 'The "passive" but solid Caro setup. Plans: ...Ngf6, ...e6, ...Bd6, castle, slow grind.' }
+
       ],
+
       studiedBy: [
+
         { master: 'Anatoly Karpov',     note: 'THE Caro-Kann expert of all time. His treatises (e.g. "Karpov on the Caro-Kann") are the foundational text.' },
+
         { master: 'Vasyl Ivanchuk',     note: 'Modern elite practitioner; his games show dynamic possibilities in supposedly "drawing" structures.' },
+
         { master: 'Daniel Naroditsky',  note: 'Modern Caro-Kann advocate at the streamer level; his speed-run lessons explain the strategic ideas in plain language.' }
+
       ]
+
     },
 
+
+
     'nimzo': {
+
       overview: "<p>The Nimzo-Indian is the most respected Black defense against 1.d4. Aron Nimzowitsch's lasting gift to chess theory: pin White's knight on c3, double White's pawns when White breaks the pin, and fight for the dark squares forever after.</p><p>Often paired with the Queen's Indian (when White avoids 3.Nc3 with 3.Nf3) to form a complete Black repertoire vs 1.d4. WGM Maryana Huda guided Mourad to this defense; the strategic depth rewards study.</p>",
+
       annotated: [
+
         { move: '1.d4',   note: 'White claim.' },
+
         { move: '1...Nf6', note: "Indian setup. Doesn't commit the d-pawn, keeps options open." },
+
         { move: '2.c4',   note: 'Standard.' },
+
         { move: '2...e6', note: 'Prepares ...d5 or ...Bb4 (Nimzo).' },
+
         { move: '3.Nc3',  note: 'The natural developing move. Triggers the Nimzo.' },
+
         { move: '3...Bb4', note: 'The Nimzo. Pins the knight, eyes c3 for the doubled-pawn idea.' },
+
         { move: '4.e3',   note: 'The Rubinstein. Most popular at all levels. Solid, prepares Bd3 and Nf3.' },
+
         { move: '4...O-O', note: 'King safety first.' },
+
         { move: '5.Bd3',  note: 'Standard development.' },
+
         { move: '5...d5', note: 'Stakes the center.' },
+
         { move: '6.Nf3',  note: 'Develops.' },
+
         { move: '6...c5', note: 'Challenges d4. The main move at master level.' },
+
         { move: '7.O-O',  note: 'Tucks the king.' },
+
         { move: '7...Nc6', note: 'Develops, presses d4.' },
+
         { move: '8.a3',   note: 'The big question. Asks the bishop to commit.' },
+
         { move: '8...Bxc3', note: 'The famous trade. White gets the bishop pair but doubled c-pawns; Black accepts the structural concession for long-term dark-square control.' }
+
       ],
+
       studiedBy: [
+
         { master: 'Aron Nimzowitsch (historical)', note: 'Invented the defense. His "My System" and "Chess Praxis" are the foundational texts and still relevant today.' },
+
         { master: 'Vladimir Kramnik',              note: 'Modern interpreter; played the Nimzo at world-championship level. His 2006 match games vs Topalov are textbook.' },
+
         { master: 'WGM Maryana Huda',              note: 'Mind\'s Gambit founding coach. Recommends the Nimzo as the cornerstone of an intermediate Black repertoire vs 1.d4. (Endorsement pending coach approval.)' }
+
       ]
+
     },
 
+
+
     'queens-indian': {
+
       overview: "<p>The Queen's Indian is the Nimzo's natural pair: Black plays the QID when White avoids the Nimzo with 3.Nf3 instead of 3.Nc3. Fianchetto the queen's bishop to b7 (or even ...Ba6 to challenge White's c4 pawn) and contest the long diagonal.</p><p>Anatoly Karpov played the QID his entire career. Combined with the Nimzo, you have a complete vs-d4 repertoire that works against any sensible White setup.</p>",
+
       annotated: [
+
         { move: '1.d4',   note: 'Standard.' },
+
         { move: '1...Nf6', note: 'Flexible.' },
+
         { move: '2.c4',   note: 'Standard.' },
+
         { move: '2...e6', note: 'Prepares ...d5 or Nimzo/QID.' },
+
         { move: '3.Nf3',  note: 'White avoids the Nimzo. Triggers the QID.' },
+
         { move: '3...b6', note: "The Queen's Indian. Prepares ...Bb7 (or ...Ba6) to contest the long diagonal." },
+
         { move: '4.g3',   note: "White's main response. Prepares to challenge Black's fianchettoed bishop with Bg2." },
+
         { move: "4...Ba6", note: "The Kasparov / Petrosian move. Hits White's c4 pawn  sharp, modern." },
+
         { move: '5.b3',   note: 'Defends c4, prepares Bb2.' },
+
         { move: '5...Bb4+', note: 'Forces an early decision  the bishop trade or block.' },
+
         { move: '6.Bd2',  note: 'Blocks the check.' },
+
         { move: '6...Be7', note: 'Bishop retreats; the b4 sortie did its job by tying down the c1-bishop.' },
+
         { move: '7.Bg2',  note: 'Completes the fianchetto.' },
+
         { move: '7...c6', note: 'Solidifies d5 in preparation for the eventual ...d5 push.' },
+
         { move: '8.O-O',  note: 'King safety.' },
+
         { move: '8...d5', note: 'Stakes the center. Equalizes structurally.' }
+
       ],
+
       studiedBy: [
+
         { master: 'Anatoly Karpov',  note: 'Played the QID at world-championship level for decades. The cleanest model for solid QID treatment.' },
+
         { master: 'Vasyl Ivanchuk',  note: 'Modern QID dynamism; shows the imbalanced middlegame possibilities.' },
+
         { master: 'Daniil Dubov',    note: "Modern d4 specialist who plays both sides; his games illustrate the QID's flexibility. (Recommended by Mourad.)" }
+
       ]
+
     }
+
   };
 
+
+
   // ------------------------------------------------------------
+
   // VARIATIONS sidebar data — alternative move-orders / sub-lines
+
   // shown beside the main study guide. Keys match openingId.
-  // ------------------------------------------------------------
-  var VARIATIONS = {
-    'italian': {
-      note: '3...Bc5 leads to the mainlines featured in the study guide. The variations below are alternative third moves Black may try.',
-      items: [
-        { name: 'Giuoco Piano', move: '3...Bc5' },
-        { name: 'Two Knights Defense', move: '3...Nf6' },
-        { name: 'Hungarian Defense', move: '3...Be7' },
-        { name: 'Evans Gambit', move: '4.b4' },
-        { name: 'Italian Gambit', move: '4.d4' }
-      ]
-    },
-    'queens-gambit': {
-      note: 'Black has several second-move replies. The Exchange Variation in the study guide arises from the QGD with Nc3-cxd5 structure.',
-      items: [
-        { name: 'Queen’s Gambit Accepted (QGA)', move: '2...dxc4' },
-        { name: 'QGD Orthodox', move: '2...e6 3.Nc3 Nf6' },
-        { name: 'Slav Defense', move: '2...c6' },
-        { name: 'Semi-Slav', move: '2...e6 3.Nc3 c6' },
-        { name: 'Tarrasch Defense', move: '2...e6 3.Nc3 c5' },
-        { name: 'Albin Counter-Gambit', move: '2...e5' }
-      ]
-    },
-    'london': {
-      note: 'The London is a setup, not a forced sequence. These are the most common modern interpretations.',
-      items: [
-        { name: 'Classical London with c4', move: '3.e3 ... c4 later' },
-        { name: 'London with Nb3 (Capablanca)', move: '3.Nb3 setup' },
-        { name: 'Pereyra Attack', move: '3.e3 ... h4 aggressive' },
-        { name: 'Anti-King’s Indian London', move: 'system vs ...g6' }
-      ]
-    },
-    'colle-zukertort': {
-      note: 'The Colle family. The Zukertort fianchetto (b3, Bb2) is the modern preference; the Koltanowski (c3) is the classical Colle.',
-      items: [
-        { name: 'Zukertort Main', move: '5.b3 then 6.Bb2' },
-        { name: 'Colle-Koltanowski', move: '5.c3 instead of 5.b3' },
-        { name: 'Phoenix Attack', move: 'Bxh7+ sacrifice ideas' },
-        { name: 'Anti-Indian Colle', move: 'system vs ...Nf6/...g6' }
-      ]
-    },
-    'french': {
-      note: 'White’s third move defines the entire game. The Tarrasch (in the study guide) is the most common at club level; the Winawer is the sharpest, the Advance the most closed.',
-      items: [
-        { name: 'Advance Variation', move: '3.e5' },
-        { name: 'Tarrasch', move: '3.Nd2' },
-        { name: 'Classical', move: '3.Nc3 Nf6' },
-        { name: 'Winawer', move: '3.Nc3 Bb4' },
-        { name: 'Exchange', move: '3.exd5 exd5' }
-      ]
-    },
-    'caro-kann': {
-      note: 'The Classical (in the study guide) is the mainline. The Advance closes the structure; the Panov-Botvinnik leads to an IQP fight.',
-      items: [
-        { name: 'Classical', move: '3.Nc3 dxe4 4.Nxe4 Bf5' },
-        { name: 'Advance Variation', move: '3.e5' },
-        { name: 'Exchange', move: '3.exd5 cxd5' },
-        { name: 'Panov-Botvinnik Attack', move: '3.exd5 cxd5 4.c4' },
-        { name: 'Two Knights', move: '3.Nc3 dxe4 4.Nxe4 Nf6' },
-        { name: 'Karpov Variation', move: '4...Nd7' }
-      ]
-    },
-    'nimzo': {
-      note: 'White’s fourth move defines the system. The Rubinstein (in the study guide) is most common at club level; the Classássical Qc2 is favored at top level.',
-      items: [
-        { name: 'Rubinstein', move: '4.e3' },
-        { name: 'Sämisch', move: '4.a3 Bxc3+ 5.bxc3' },
-        { name: 'Classical', move: '4.Qc2' },
-        { name: 'Three Knights', move: '4.Nf3' },
-        { name: 'Leningrad', move: '4.Bg5' }
-      ]
-    },
-    'queens-indian': {
-      note: 'Black chooses between two main bishop deployments. The Kasparov …Ba6 (in the study guide) is sharp; the Classical …Bb7 is solid.',
-      items: [
-        { name: 'Kasparov / Petrosian', move: '4...Ba6' },
-        { name: 'Classical', move: '4...Bb7' },
-        { name: 'Petrosian System (White)', move: '4.a3' },
-        { name: 'Nimzo Transposition', move: '3.Nc3 Bb4 territory' }
-      ]
-    }
-  };
 
   // ------------------------------------------------------------
-  // Parse ?id= from URL.
+
+  var VARIATIONS = {
+
+    'italian': {
+
+      note: '3...Bc5 leads to the mainlines featured in the study guide. The variations below are alternative third moves Black may try.',
+
+      items: [
+
+        { name: 'Giuoco Piano', move: '3...Bc5' },
+
+        { name: 'Two Knights Defense', move: '3...Nf6' },
+
+        { name: 'Hungarian Defense', move: '3...Be7' },
+
+        { name: 'Evans Gambit', move: '4.b4' },
+
+        { name: 'Italian Gambit', move: '4.d4' }
+
+      ]
+
+    },
+
+    'queens-gambit': {
+
+      note: 'Black has several second-move replies. The Exchange Variation in the study guide arises from the QGD with Nc3-cxd5 structure.',
+
+      items: [
+
+        { name: 'Queen’s Gambit Accepted (QGA)', move: '2...dxc4' },
+
+        { name: 'QGD Orthodox', move: '2...e6 3.Nc3 Nf6' },
+
+        { name: 'Slav Defense', move: '2...c6' },
+
+        { name: 'Semi-Slav', move: '2...e6 3.Nc3 c6' },
+
+        { name: 'Tarrasch Defense', move: '2...e6 3.Nc3 c5' },
+
+        { name: 'Albin Counter-Gambit', move: '2...e5' }
+
+      ]
+
+    },
+
+    'london': {
+
+      note: 'The London is a setup, not a forced sequence. These are the most common modern interpretations.',
+
+      items: [
+
+        { name: 'Classical London with c4', move: '3.e3 ... c4 later' },
+
+        { name: 'London with Nb3 (Capablanca)', move: '3.Nb3 setup' },
+
+        { name: 'Pereyra Attack', move: '3.e3 ... h4 aggressive' },
+
+        { name: 'Anti-King’s Indian London', move: 'system vs ...g6' }
+
+      ]
+
+    },
+
+    'colle-zukertort': {
+
+      note: 'The Colle family. The Zukertort fianchetto (b3, Bb2) is the modern preference; the Koltanowski (c3) is the classical Colle.',
+
+      items: [
+
+        { name: 'Zukertort Main', move: '5.b3 then 6.Bb2' },
+
+        { name: 'Colle-Koltanowski', move: '5.c3 instead of 5.b3' },
+
+        { name: 'Phoenix Attack', move: 'Bxh7+ sacrifice ideas' },
+
+        { name: 'Anti-Indian Colle', move: 'system vs ...Nf6/...g6' }
+
+      ]
+
+    },
+
+    'french': {
+
+      note: 'White’s third move defines the entire game. The Tarrasch (in the study guide) is the most common at club level; the Winawer is the sharpest, the Advance the most closed.',
+
+      items: [
+
+        { name: 'Advance Variation', move: '3.e5' },
+
+        { name: 'Tarrasch', move: '3.Nd2' },
+
+        { name: 'Classical', move: '3.Nc3 Nf6' },
+
+        { name: 'Winawer', move: '3.Nc3 Bb4' },
+
+        { name: 'Exchange', move: '3.exd5 exd5' }
+
+      ]
+
+    },
+
+    'caro-kann': {
+
+      note: 'The Classical (in the study guide) is the mainline. The Advance closes the structure; the Panov-Botvinnik leads to an IQP fight.',
+
+      items: [
+
+        { name: 'Classical', move: '3.Nc3 dxe4 4.Nxe4 Bf5' },
+
+        { name: 'Advance Variation', move: '3.e5' },
+
+        { name: 'Exchange', move: '3.exd5 cxd5' },
+
+        { name: 'Panov-Botvinnik Attack', move: '3.exd5 cxd5 4.c4' },
+
+        { name: 'Two Knights', move: '3.Nc3 dxe4 4.Nxe4 Nf6' },
+
+        { name: 'Karpov Variation', move: '4...Nd7' }
+
+      ]
+
+    },
+
+    'nimzo': {
+
+      note: 'White’s fourth move defines the system. The Rubinstein (in the study guide) is most common at club level; the Classássical Qc2 is favored at top level.',
+
+      items: [
+
+        { name: 'Rubinstein', move: '4.e3' },
+
+        { name: 'Sämisch', move: '4.a3 Bxc3+ 5.bxc3' },
+
+        { name: 'Classical', move: '4.Qc2' },
+
+        { name: 'Three Knights', move: '4.Nf3' },
+
+        { name: 'Leningrad', move: '4.Bg5' }
+
+      ]
+
+    },
+
+    'queens-indian': {
+
+      note: 'Black chooses between two main bishop deployments. The Kasparov …Ba6 (in the study guide) is sharp; the Classical …Bb7 is solid.',
+
+      items: [
+
+        { name: 'Kasparov / Petrosian', move: '4...Ba6' },
+
+        { name: 'Classical', move: '4...Bb7' },
+
+        { name: 'Petrosian System (White)', move: '4.a3' },
+
+        { name: 'Nimzo Transposition', move: '3.Nc3 Bb4 territory' }
+
+      ]
+
+    }
+
+  };
+
+
+
   // ------------------------------------------------------------
+
+  // Parse ?id= from URL.
+
+  // ------------------------------------------------------------
+
   function getOpeningId() {
+
     var m = location.search.match(/[?&]id=([^&]+)/);
+
     return m ? decodeURIComponent(m[1]).toLowerCase().trim() : null;
+
   }
+
+
 
   var openingId = getOpeningId();
+
   var opening = openingId ? OPENINGS[openingId] : null;
 
-  // ------------------------------------------------------------
-  // Not found? Bail.
-  // ------------------------------------------------------------
-  if (!opening) {
-    document.getElementById('opening-title').textContent = 'Opening not found';
-    document.getElementById('opening-eco').textContent = '';
-    document.getElementById('opening-side').textContent = '';
-    document.getElementById('not-found').hidden = false;
-    return;
-  }
+
 
   // ------------------------------------------------------------
-  // Render header.
+
+  // Not found? Bail.
+
   // ------------------------------------------------------------
+
+  if (!opening) {
+
+    document.getElementById('opening-title').textContent = 'Opening not found';
+
+    document.getElementById('opening-eco').textContent = '';
+
+    document.getElementById('opening-side').textContent = '';
+
+    document.getElementById('not-found').hidden = false;
+
+    return;
+
+  }
+
+
+
+  // ------------------------------------------------------------
+
+  // Render header.
+
+  // ------------------------------------------------------------
+
   document.getElementById('opening-title').textContent = opening.name;
+
   document.getElementById('opening-eco').textContent = 'ECO ' + opening.eco;
+
   document.getElementById('opening-side').textContent =
+
     opening.side === 'white' ? 'You play White' : 'You play Black';
 
+
+
   var guide = STUDY_GUIDES[openingId];
+
   var drillHref = '/chess-school/opening-builder/drill?id=' + encodeURIComponent(openingId);
 
+
+
   // ------------------------------------------------------------
+
   // Render variations sidebar (if data exists for this opening).
+
   // ------------------------------------------------------------
+
   var variationsBox = document.getElementById('variations-sidebar');
+
   var variationsIntro = document.getElementById('variations-intro');
+
   var variationsList = document.getElementById('variations-list');
+
   var variationsData = VARIATIONS[openingId];
 
+
+
   if (variationsBox && variationsData) {
+
     variationsIntro.innerHTML = variationsData.note;
+
     variationsList.innerHTML = '';
+
     variationsData.items.forEach(function(item) {
+
       var li = document.createElement('li');
+
       li.className = 'variation-item';
+
       var btn = document.createElement('button');
+
       btn.type = 'button';
+
       btn.className = 'variation-toggle';
+
       btn.setAttribute('aria-expanded', 'false');
+
       btn.innerHTML = '<span class="variation-name">' + item.name + '</span><span class="variation-chevron">&rsaquo;</span>';
+
       var moveBox = document.createElement('div');
+
       moveBox.className = 'variation-move';
+
       moveBox.hidden = true;
+
       moveBox.textContent = item.move;
+
       btn.addEventListener('click', function() {
+
         var expanded = btn.getAttribute('aria-expanded') === 'true';
+
         btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+
         moveBox.hidden = expanded;
+
       });
+
       li.appendChild(btn);
+
       li.appendChild(moveBox);
+
       variationsList.appendChild(li);
+
     });
+
     variationsBox.hidden = false;
+
   }
 
+
+
   // ------------------------------------------------------------
+
   // No full guide yet? Show placeholder.
-  // ------------------------------------------------------------
-  if (!guide) {
-    document.getElementById('placeholder').hidden = false;
-    var phLink = document.getElementById('drill-link-placeholder');
-    if (phLink) phLink.href = drillHref;
-    return;
-  }
 
   // ------------------------------------------------------------
-  // Render full study guide.
+
+  if (!guide) {
+
+    document.getElementById('placeholder').hidden = false;
+
+    var phLink = document.getElementById('drill-link-placeholder');
+
+    if (phLink) phLink.href = drillHref;
+
+    return;
+
+  }
+
+
+
   // ------------------------------------------------------------
+
+  // Render full study guide.
+
+  // ------------------------------------------------------------
+
   document.getElementById('study-content').hidden = false;
 
+
+
   // Overview (HTML).
+
   document.getElementById('overview-text').innerHTML = guide.overview;
 
+
+
   // Annotated moves.
+
   var movesList = document.getElementById('annotated-moves');
+
   for (var i = 0; i < guide.annotated.length; i++) {
+
     var entry = guide.annotated[i];
+
     var li = document.createElement('li');
+
     var moveEl = document.createElement('strong');
+
     moveEl.className = 'move';
+
     moveEl.textContent = entry.move;
+
     var noteEl = document.createElement('span');
+
     noteEl.className = 'note';
+
     noteEl.textContent = entry.note;
+
     li.appendChild(moveEl);
+
     li.appendChild(document.createTextNode(' '));
+
     li.appendChild(noteEl);
+
     movesList.appendChild(li);
+
   }
+
+
 
   // Studied by.
+
   var studiedList = document.getElementById('studied-by');
+
   for (var j = 0; j < guide.studiedBy.length; j++) {
+
     var s = guide.studiedBy[j];
+
     var sli = document.createElement('li');
+
     var nameEl = document.createElement('strong');
+
     nameEl.className = 'master';
+
     nameEl.textContent = s.master;
+
     var snoteEl = document.createElement('span');
+
     snoteEl.className = 'note';
+
     snoteEl.textContent = s.note;
+
     sli.appendChild(nameEl);
+
     sli.appendChild(document.createTextNode(' '));
+
     sli.appendChild(snoteEl);
+
     studiedList.appendChild(sli);
+
   }
 
+
+
   // Drill CTA link.
+
   var drillLink = document.getElementById('drill-link');
+
   if (drillLink) drillLink.href = drillHref;
+
 })();
+
 </script>
 
+
+
 <style>
+
 /* ---------- page chrome (mirrors drill.astro / opening-builder.astro) ---------- */
+
 .eyebrow { display: block; font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.18em; margin-top: 1.5rem; }
+
 .page { max-width: 1150px; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+
 .back-link { display: inline-block; color: rgba(232,224,208,0.65); text-decoration: none; font-family: 'EB Garamond', Georgia, serif; font-size: 0.95rem; margin: 1rem 0 0; transition: color 0.18s; }
+
 .back-link:hover { color: #c9a84c; }
+
 .page h1 { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 2.4rem; margin: 0.6rem 0 0.4rem; letter-spacing: 0.01em; }
+
 .subtitle { color: rgba(232,224,208,0.72); font-family: 'EB Garamond', Georgia, serif; font-size: 1.02rem; margin: 0 0 1.5rem; font-style: italic; }
 
+
+
 /* ---------- two-column layout (sidebar + content). Stacks on mobile. ---------- */
+
 .study-layout { display: grid; grid-template-columns: 260px 1fr; gap: 2rem; margin-top: 1.5rem; }
+
 @media (max-width: 900px) { .study-layout { grid-template-columns: 1fr; } }
 
+
+
 /* ---------- variations sidebar ---------- */
+
+.variations-sidebar { background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(30,34,52,0.55)); border: 1px solid rgba(201,168,76,0.25); border-radius: 12px; padding: 1.1rem 1rem 1rem; align-self: start; position: sticky; top: 1rem; }
+
+.variations-header { margin-bottom: 0.8rem; }
+
+.variations-header h2 { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1.05rem; margin: 0 0 0.4rem; letter-spacing: 0.04em; }
+
+.variations-intro { color: rgba(232,224,208,0.7); font-family: 'EB Garamond', Georgia, serif; font-size: 0.84rem; line-height: 1.5; margin: 0; font-style: italic; }
+
+.variations-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.35rem; }
+
+.variation-item {}
+
+.variation-toggle { width: 100%; display: flex; justify-content: space-between; align-items: center; background: rgba(15,17,28,0.6); border: 1px solid rgba(201,168,76,0.22); color: #e8e0d0; padding: 0.55rem 0.7rem; border-radius: 8px; cursor: pointer; font-family: 'EB Garamond', Georgia, serif; font-size: 0.92rem; transition: background 0.15s, border-color 0.15s; }
+
+.variation-toggle:hover { background: rgba(201,168,76,0.12); border-color: rgba(201,168,76,0.45); }
+
+.variation-toggle[aria-expanded="true"] { background: rgba(201,168,76,0.15); border-color: rgba(201,168,76,0.55); color: #c9a84c; }
+
+.variation-name { flex: 1; text-align: left; }
+
+.variation-chevron { color: rgba(201,168,76,0.7); font-weight: 700; transition: transform 0.2s; transform: rotate(0deg); display: inline-block; }
+
+.variation-toggle[aria-expanded="true"] .variation-chevron { transform: rotate(90deg); color: #c9a84c; }
+
+.variation-move { padding: 0.45rem 0.7rem 0.65rem; color: #c9a84c; font-family: 'Courier New', monospace; font-size: 0.95rem; font-weight: 600; }
+
+.variations-footer { margin: 0.9rem 0 0; padding-top: 0.7rem; border-top: 1px solid rgba(201,168,76,0.15); color: rgba(232,224,208,0.5); font-family: 'EB Garamond', Georgia, serif; font-size: 0.78rem; font-style: italic; line-height: 1.5; }
+
+
+
+/* On mobile, sidebar above content and not sticky */
+
+@media (max-width: 900px) {
+
+  .variations-sidebar { position: static; }
+
+}
+
+
+
+/* ---------- not-found fallback ---------- */
+
+.not-found { background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(30,34,52,0.55)); border: 1px solid rgba(201,168,76,0.28); border-radius: 12px; padding: 2rem 1.5rem; text-align: center; margin: 2rem 0; }
+
+.not-found h2 { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1.6rem; margin: 0 0 0.6rem; }
+
+.not-found p { color: rgba(232,224,208,0.78); font-family: 'EB Garamond', Georgia, serif; margin: 0 0 1.4rem; }
+
+
+
+/* ---------- study sections ---------- */
+
+.study-section { margin: 0 0 2.4rem; padding-bottom: 1.4rem; border-bottom: 1px solid rgba(201,168,76,0.12); }
+
+.study-section:last-of-type { border-bottom: 0; }
+
+.study-section h2 { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1.5rem; margin: 0 0 0.5rem; padding-bottom: 0.3rem; border-bottom: 2px solid rgba(201,168,76,0.35); display: inline-block; }
+
+.section-intro { color: rgba(232,224,208,0.65); font-family: 'EB Garamond', Georgia, serif; font-size: 0.96rem; font-style: italic; margin: 0.8rem 0 1rem; max-width: 780px; }
+
+.section-intro em { color: #c9a84c; font-style: italic; }
+
+
+
+/* Overview prose */
+
+#overview-text p { color: rgba(232,224,208,0.85); font-family: 'EB Garamond', Georgia, serif; font-size: 1.05rem; line-height: 1.7; margin: 0.8rem 0 0; max-width: 780px; }
+
+#overview-text p:first-child { margin-top: 0.6rem; }
+
+
+
+/* Annotated mainline */
+
+.annotated-moves { list-style: none; counter-reset: annotated-counter; padding: 0; margin: 0.5rem 0 0; display: flex; flex-direction: column; gap: 0.55rem; }
+
+.annotated-moves li { counter-increment: annotated-counter; position: relative; padding: 0.7rem 0.9rem 0.7rem 2.4rem; background: linear-gradient(135deg, rgba(201,168,76,0.06), rgba(30,34,52,0.55)); border: 1px solid rgba(201,168,76,0.18); border-radius: 8px; color: rgba(232,224,208,0.85); font-family: 'EB Garamond', Georgia, serif; font-size: 1rem; line-height: 1.55; }
+
+.annotated-moves li::before { content: counter(annotated-counter); position: absolute; left: 0.7rem; top: 0.7rem; color: rgba(201,168,76,0.55); font-family: 'Courier New', monospace; font-size: 0.78rem; font-weight: 700; min-width: 1.4rem; }
+
+.annotated-moves .move { display: inline; font-family: 'Courier New', monospace; color: #c9a84c; font-weight: 700; font-size: 0.98rem; letter-spacing: 0.02em; margin-right: 0.45rem; }
+
+.annotated-moves .note { color: rgba(232,224,208,0.82); }
+
+
+
+/* Studied by */
+
+.studied-by { list-style: none; padding: 0; margin: 0.5rem 0 0; display: flex; flex-direction: column; gap: 0.7rem; }
+
+.studied-by li { padding: 0.85rem 1rem; background: linear-gradient(135deg, rgba(201,168,76,0.06), rgba(30,34,52,0.55)); border: 1px solid rgba(201,168,76,0.18); border-radius: 8px; color: rgba(232,224,208,0.82); font-family: 'EB Garamond', Georgia, serif; font-size: 1rem; line-height: 1.6; }
+
+.studied-by .master { display: block; font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.2rem; }
+
+.studied-by .note { color: rgba(232,224,208,0.82); }
+
+
+
+/* CTA block at the bottom */
+
+.cta-block { background: linear-gradient(135deg, rgba(201,168,76,0.12), rgba(91,133,195,0.06)); border: 1px solid rgba(201,168,76,0.35); border-radius: 14px; padding: 1.6rem 1.5rem; margin: 2rem 0 1rem; text-align: center; }
+
+.cta-prompt { color: rgba(232,224,208,0.85); font-family: 'EB Garamond', Georgia, serif; font-size: 1.05rem; margin: 0 0 1rem; font-style: italic; }
+
+.cta-primary { display: inline-block; background: #c9a84c; color: #0f111c; border: 0; padding: 12px 24px; border-radius: 8px; font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: 1.05rem; letter-spacing: 0.02em; text-align: center; text-decoration: none; cursor: pointer; transition: transform 0.14s, box-shadow 0.18s; }
+
+.cta-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(201,168,76,0.4); }
+
+
+
+/* Placeholder for openings without a guide yet */
+
+.placeholder { background: linear-gradient(135deg, rgba(91,133,195,0.10), rgba(30,34,52,0.55)); border: 1px solid rgba(91,133,195,0.32); border-radius: 14px; padding: 2.2rem 1.6rem; margin: 1.5rem 0; text-align: center; }
+
+.placeholder-msg { color: rgba(232,224,208,0.78); font-family: 'EB Garamond', Georgia, serif; font-size: 1.02rem; line-height: 1.6; margin: 0 0 1rem; max-width: 620px; margin-left: auto; margin-right: auto; }
+
+
+
+.page-footer { margin-top: 2.5rem; padding: 1.5rem 1rem; text-align: center; border-top: 1px solid rgba(201,168,76,0.1); }
+
+.footer-credit { color: rgba(232,224,208,0.4); font-size: 0.82rem; font-family: 'EB Garamond', Georgia, serif; }
+
+
+
+/* Responsive */
+
+@media (max-width: 600px) {
+
+  .page h1 { font-size: 1.85rem; }
+
+  .study-section h2 { font-size: 1.3rem; }
+
+  .annotated-moves li { padding-left: 2.1rem; font-size: 0.95rem; }
+
+  .annotated-moves .move { display: block; margin: 0 0 0.2rem; }
+
+  .studied-by .master { font-size: 1rem; }
+
+  .cta-block { padding: 1.3rem 1rem; }
+
+  .cta-primary { padding: 11px 18px; font-size: 1rem; }
+
+}
+
+</style>
+
+
+
+</BaseLayout>
+
+
+<style is:global>/* variation buttons are JS-created, scoped styles miss them */
 .variations-sidebar { background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(30,34,52,0.55)); border: 1px solid rgba(201,168,76,0.25); border-radius: 12px; padding: 1.1rem 1rem 1rem; align-self: start; position: sticky; top: 1rem; }
 .variations-header { margin-bottom: 0.8rem; }
 .variations-header h2 { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1.05rem; margin: 0 0 0.4rem; letter-spacing: 0.04em; }
@@ -611,64 +1362,5 @@ export const prerender = true;
 .variation-toggle[aria-expanded="true"] .variation-chevron { transform: rotate(90deg); color: #c9a84c; }
 .variation-move { padding: 0.45rem 0.7rem 0.65rem; color: #c9a84c; font-family: 'Courier New', monospace; font-size: 0.95rem; font-weight: 600; }
 .variations-footer { margin: 0.9rem 0 0; padding-top: 0.7rem; border-top: 1px solid rgba(201,168,76,0.15); color: rgba(232,224,208,0.5); font-family: 'EB Garamond', Georgia, serif; font-size: 0.78rem; font-style: italic; line-height: 1.5; }
-
-/* On mobile, sidebar above content and not sticky */
-@media (max-width: 900px) {
-  .variations-sidebar { position: static; }
-}
-
-/* ---------- not-found fallback ---------- */
-.not-found { background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(30,34,52,0.55)); border: 1px solid rgba(201,168,76,0.28); border-radius: 12px; padding: 2rem 1.5rem; text-align: center; margin: 2rem 0; }
-.not-found h2 { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1.6rem; margin: 0 0 0.6rem; }
-.not-found p { color: rgba(232,224,208,0.78); font-family: 'EB Garamond', Georgia, serif; margin: 0 0 1.4rem; }
-
-/* ---------- study sections ---------- */
-.study-section { margin: 0 0 2.4rem; padding-bottom: 1.4rem; border-bottom: 1px solid rgba(201,168,76,0.12); }
-.study-section:last-of-type { border-bottom: 0; }
-.study-section h2 { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1.5rem; margin: 0 0 0.5rem; padding-bottom: 0.3rem; border-bottom: 2px solid rgba(201,168,76,0.35); display: inline-block; }
-.section-intro { color: rgba(232,224,208,0.65); font-family: 'EB Garamond', Georgia, serif; font-size: 0.96rem; font-style: italic; margin: 0.8rem 0 1rem; max-width: 780px; }
-.section-intro em { color: #c9a84c; font-style: italic; }
-
-/* Overview prose */
-#overview-text p { color: rgba(232,224,208,0.85); font-family: 'EB Garamond', Georgia, serif; font-size: 1.05rem; line-height: 1.7; margin: 0.8rem 0 0; max-width: 780px; }
-#overview-text p:first-child { margin-top: 0.6rem; }
-
-/* Annotated mainline */
-.annotated-moves { list-style: none; counter-reset: annotated-counter; padding: 0; margin: 0.5rem 0 0; display: flex; flex-direction: column; gap: 0.55rem; }
-.annotated-moves li { counter-increment: annotated-counter; position: relative; padding: 0.7rem 0.9rem 0.7rem 2.4rem; background: linear-gradient(135deg, rgba(201,168,76,0.06), rgba(30,34,52,0.55)); border: 1px solid rgba(201,168,76,0.18); border-radius: 8px; color: rgba(232,224,208,0.85); font-family: 'EB Garamond', Georgia, serif; font-size: 1rem; line-height: 1.55; }
-.annotated-moves li::before { content: counter(annotated-counter); position: absolute; left: 0.7rem; top: 0.7rem; color: rgba(201,168,76,0.55); font-family: 'Courier New', monospace; font-size: 0.78rem; font-weight: 700; min-width: 1.4rem; }
-.annotated-moves .move { display: inline; font-family: 'Courier New', monospace; color: #c9a84c; font-weight: 700; font-size: 0.98rem; letter-spacing: 0.02em; margin-right: 0.45rem; }
-.annotated-moves .note { color: rgba(232,224,208,0.82); }
-
-/* Studied by */
-.studied-by { list-style: none; padding: 0; margin: 0.5rem 0 0; display: flex; flex-direction: column; gap: 0.7rem; }
-.studied-by li { padding: 0.85rem 1rem; background: linear-gradient(135deg, rgba(201,168,76,0.06), rgba(30,34,52,0.55)); border: 1px solid rgba(201,168,76,0.18); border-radius: 8px; color: rgba(232,224,208,0.82); font-family: 'EB Garamond', Georgia, serif; font-size: 1rem; line-height: 1.6; }
-.studied-by .master { display: block; font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.2rem; }
-.studied-by .note { color: rgba(232,224,208,0.82); }
-
-/* CTA block at the bottom */
-.cta-block { background: linear-gradient(135deg, rgba(201,168,76,0.12), rgba(91,133,195,0.06)); border: 1px solid rgba(201,168,76,0.35); border-radius: 14px; padding: 1.6rem 1.5rem; margin: 2rem 0 1rem; text-align: center; }
-.cta-prompt { color: rgba(232,224,208,0.85); font-family: 'EB Garamond', Georgia, serif; font-size: 1.05rem; margin: 0 0 1rem; font-style: italic; }
-.cta-primary { display: inline-block; background: #c9a84c; color: #0f111c; border: 0; padding: 12px 24px; border-radius: 8px; font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: 1.05rem; letter-spacing: 0.02em; text-align: center; text-decoration: none; cursor: pointer; transition: transform 0.14s, box-shadow 0.18s; }
-.cta-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(201,168,76,0.4); }
-
-/* Placeholder for openings without a guide yet */
-.placeholder { background: linear-gradient(135deg, rgba(91,133,195,0.10), rgba(30,34,52,0.55)); border: 1px solid rgba(91,133,195,0.32); border-radius: 14px; padding: 2.2rem 1.6rem; margin: 1.5rem 0; text-align: center; }
-.placeholder-msg { color: rgba(232,224,208,0.78); font-family: 'EB Garamond', Georgia, serif; font-size: 1.02rem; line-height: 1.6; margin: 0 0 1rem; max-width: 620px; margin-left: auto; margin-right: auto; }
-
-.page-footer { margin-top: 2.5rem; padding: 1.5rem 1rem; text-align: center; border-top: 1px solid rgba(201,168,76,0.1); }
-.footer-credit { color: rgba(232,224,208,0.4); font-size: 0.82rem; font-family: 'EB Garamond', Georgia, serif; }
-
-/* Responsive */
-@media (max-width: 600px) {
-  .page h1 { font-size: 1.85rem; }
-  .study-section h2 { font-size: 1.3rem; }
-  .annotated-moves li { padding-left: 2.1rem; font-size: 0.95rem; }
-  .annotated-moves .move { display: block; margin: 0 0 0.2rem; }
-  .studied-by .master { font-size: 1rem; }
-  .cta-block { padding: 1.3rem 1rem; }
-  .cta-primary { padding: 11px 18px; font-size: 1rem; }
-}
+.variations-sidebar { position: static; }
 </style>
-
-</BaseLayout>

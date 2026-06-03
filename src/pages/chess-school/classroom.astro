@@ -31,7 +31,7 @@ export const prerender = true;
 <div style="background:#0f1117;border:1px solid rgba(212,175,55,0.3);border-radius:14px;padding:1.6rem;margin:2rem 0;">
 <h2 style="color:#d4af37;font-size:1.3rem;margin:0 0 0.6rem;">Enter the Live Room</h2>
 <p style="color:#c3ccda;line-height:1.6;margin:0 0 1rem;">Click below to join the classroom. Allow your microphone (and camera if you like) when your browser asks. Your coach lets students in when the lesson begins.</p>
-<button id="mg-enter" type="button" style="background:#d4af37;color:#0a1a33;font-weight:700;border:0;border-radius:10px;padding:0.9rem 1.8rem;font-size:1.05rem;cursor:pointer;">Enter the Classroom &rarr;</button>
+<div id="mg-controls"></div>
 <a href="/chess-school/teaching-board" target="_blank" rel="noopener" style="display:inline-block;margin-left:0.6rem;background:transparent;border:2px solid #d4af37;color:#f0ece4;font-weight:700;border-radius:10px;padding:0.9rem 1.4rem;text-decoration:none;">Open Teaching Board &#8599;</a>
 <div id="mg-room" style="margin-top:1.2rem;border-radius:12px;overflow:hidden;"></div>
 </div>
@@ -51,12 +51,15 @@ export const prerender = true;
 </section>
 <script is:inline>
 (function(){
- var btn=document.getElementById("mg-enter"); if(!btn) return;
- btn.addEventListener("click",function(){
-  btn.disabled=true; btn.textContent="Loading room...";
-  function start(){ try{ new JitsiMeetExternalAPI("meet.jit.si",{roomName:"MindsGambitChessSchool",parentNode:document.getElementById("mg-room"),width:"100%",height:620,configOverwrite:{prejoinPageEnabled:true}}); btn.style.display="none"; }catch(e){ window.open("https://meet.jit.si/MindsGambitChessSchool","_blank"); btn.disabled=false; btn.textContent="Enter the Classroom"; } }
-  if(window.JitsiMeetExternalAPI){ start(); } else { var sc=document.createElement("script"); sc.src="https://meet.jit.si/external_api.js"; sc.onload=start; sc.onerror=function(){ window.open("https://meet.jit.si/MindsGambitChessSchool","_blank"); }; document.body.appendChild(sc); }
- });
+ var room=new URLSearchParams(location.search).get("room");
+ var controls=document.getElementById("mg-controls");
+ var roomDiv=document.getElementById("mg-room");
+ if(!controls) return;
+ function rnd(){return "mg-"+Math.random().toString(36).slice(2,8)+Math.random().toString(36).slice(2,6);}
+ function joinRoom(name,hideEl){ function start(){ try{ new JitsiMeetExternalAPI("meet.jit.si",{roomName:name,parentNode:roomDiv,width:"100%",height:620,configOverwrite:{prejoinPageEnabled:true}}); if(hideEl)hideEl.style.display="none"; }catch(e){ window.open("https://meet.jit.si/"+name,"_blank"); } } if(window.JitsiMeetExternalAPI){start();} else { var sc=document.createElement("script"); sc.src="https://meet.jit.si/external_api.js"; sc.onload=start; sc.onerror=function(){window.open("https://meet.jit.si/"+name,"_blank");}; document.body.appendChild(sc); } }
+ function mkBtn(t){ var b=document.createElement("button"); b.type="button"; b.textContent=t; b.style.cssText="background:#d4af37;color:#0a1a33;font-weight:700;border:0;border-radius:10px;padding:0.9rem 1.8rem;font-size:1.05rem;cursor:pointer;"; return b; }
+ if(room){ var p=document.createElement("p"); p.style.cssText="color:#c3ccda;margin:0 0 0.8rem;"; p.textContent="You have a private lesson link. Click to join, and your coach will admit you from the waiting room."; var jb=mkBtn("Join the Lesson"); jb.onclick=function(){joinRoom(room,jb);}; controls.appendChild(p); controls.appendChild(jb); }
+ else { var p2=document.createElement("p"); p2.style.cssText="color:#c3ccda;margin:0 0 0.8rem;"; p2.innerHTML="<b>Coaches:</b> start a private lesson, then copy the link and send it to your student."; var sb=mkBtn("Start a Private Lesson"); var box=document.createElement("div"); box.style.cssText="margin-top:0.9rem;display:none;"; sb.onclick=function(){ var name=rnd(); var url=location.origin+location.pathname+"?room="+name; history.replaceState(null,"",url); box.innerHTML="<div style='color:#9a968c;font-size:0.85rem;margin-bottom:0.4rem;'>Share this private link with your student:</div><div style='display:flex;gap:0.5rem;flex-wrap:wrap;'><input id='mg-url' readonly style='flex:1;min-width:220px;background:#101010;color:#e9e6df;border:1px solid #33332f;border-radius:6px;padding:0.5rem;font-size:0.85rem;'><button id='mg-copy' style='background:transparent;border:2px solid #d4af37;color:#f0ece4;font-weight:700;border-radius:8px;padding:0.5rem 1rem;cursor:pointer;'>Copy</button></div>"; box.style.display="block"; document.getElementById("mg-url").value=url; document.getElementById("mg-copy").onclick=function(){ var i=document.getElementById("mg-url"); i.select(); try{document.execCommand("copy");}catch(e){} this.textContent="Copied!"; }; joinRoom(name,sb); }; controls.appendChild(p2); controls.appendChild(sb); controls.appendChild(box); }
 })();
 </script>
 <footer class="page-footer">

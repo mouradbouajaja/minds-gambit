@@ -50,7 +50,7 @@ export const prerender = true;
 <button id="tb-flip">&#8645; Flip</button>
 <button id="tb-reset">&#8634; Reset</button>
 <button id="tb-clear">&#10005; Clear arrows</button>
-<button id="tb-full">&#9974; Fullscreen</button>
+<button id="tb-full">&#9974; Fullscreen</button><span id="tb-timer" style="margin-left:auto;display:flex;align-items:center;gap:.4rem;font-family:monospace;"><select id="tb-tmin" style="background:#2a2a28;color:#e9e6df;border:1px solid #3d3d3a;border-radius:6px;padding:.35rem;"><option>15</option><option selected>30</option><option>45</option><option>60</option></select><button id="tb-tstart">&#9654; Start</button><span id="tb-tdisp" style="font-size:1.15rem;color:#d4af37;min-width:64px;text-align:center;">30:00</span></span>
 </div>
 <div id="tb-layout">
 <div id="tb-board"></div>
@@ -89,6 +89,7 @@ $('tb-full').onclick=()=>{const a=$('tb-app');if(!document.fullscreenElement){a.
 document.addEventListener('fullscreenchange',()=>setTimeout(()=>{cg.redrawAll&&cg.redrawAll();},150));
 $('tb-loadfen').onclick=()=>{const f=$('tb-fen').value.trim();if(!f)return;try{game.load(f);fens=[game.fen()];sans=[];ptr=0;refresh();$('tb-status').textContent='';}catch(e){$('tb-status').textContent='Invalid FEN';}};
 $('tb-loadpgn').onclick=()=>{const p=$('tb-pgn').value.trim();if(!p)return;try{const g=new Chess();g.loadPgn(p);const hist=g.history();game.reset();fens=[game.fen()];sans=[];for(const s of hist){const mv=game.move(s);sans.push(mv.san);fens.push(game.fen());}ptr=fens.length-1;refresh();$('tb-status').textContent='';}catch(e){$('tb-status').textContent='Could not read PGN';}};
+var tInt=null,tLeft=parseInt($('tb-tmin').value)*60;function _fmt(s){var m=Math.floor(s/60),x=s%60;return m+':'+(x<10?'0':'')+x;}$('tb-tdisp').textContent=_fmt(tLeft);$('tb-tmin').onchange=function(){if(!tInt){tLeft=parseInt(this.value)*60;$('tb-tdisp').style.color='#d4af37';$('tb-tdisp').textContent=_fmt(tLeft);}};$('tb-tstart').onclick=function(){if(tInt){clearInterval(tInt);tInt=null;this.innerHTML='&#9654; Start';return;}if(tLeft<=0){tLeft=parseInt($('tb-tmin').value)*60;$('tb-tdisp').style.color='#d4af37';}this.innerHTML='&#10073;&#10073; Pause';var self=this;tInt=setInterval(function(){tLeft--;$('tb-tdisp').textContent=_fmt(tLeft);if(tLeft<=0){clearInterval(tInt);tInt=null;self.innerHTML='&#9654; Start';$('tb-tdisp').textContent='Time!';$('tb-tdisp').style.color='#e07a5f';}},1000);};
 </script>
 <footer class="page-footer">
   <p class="footer-disclaimer">Mind&rsquo;s Gambit Chess School stands on the shoulders of the open chess community. The engine is <a href="https://stockfishchess.org/" target="_blank" rel="noopener">Stockfish</a> &mdash; the world&rsquo;s strongest &mdash; free under the GNU GPL v3 license. Puzzles come from the public-domain Lichess Open Puzzle Database (CC0). The board you play on uses the open-source chess.js and chessboard.js libraries. Optional coach commentary on the Analyze page is powered by Anthropic Claude. We&rsquo;re grateful to every contributor whose work makes this possible.</p>

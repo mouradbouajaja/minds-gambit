@@ -1,0 +1,1381 @@
+---
+
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+
+
+
+export const prerender = true;
+
+
+
+// ============================================================
+
+//  QUEEN’S GAMBIT — Chapter detail page
+
+//  Route: /chess-school/opening-builder/queens-gambit/chapter?id=<chapterId>
+
+//
+
+//  Reads ?id= from URL and renders the corresponding chapter
+
+//  from the embedded CHAPTERS object. Each chapter exposes
+
+//  its sub-variations, a strategic intro, and a "studied by"
+
+//  master list.
+
+// ============================================================
+
+---
+
+
+
+<BaseLayout
+
+  title="Queen’s Gambit Chapter — Mind's Gambit"
+
+  description="A chapter of the Mind's Gambit Queen’s Gambit complete repertoire. Mainline moves, strategic ideas, recommended masters."
+
+>
+
+
+
+<nav>
+
+  <div class="nav-inner">
+
+    <a href="/" class="nav-logo"><img src="/images/logo.jpg" alt="Mind's Gambit" style="height:55px;width:55px;border-radius:50%;object-fit:cover;border:2px solid #c8a84e;margin-left:10px;vertical-align:middle;" /></a>
+
+    <ul class="nav-links">
+
+      <li><a href="/">Home</a></li>
+
+      <li><a href="/#book">The Book</a></li>
+
+      <li><a href="/watch">Documentary</a></li>
+
+      <li><a href="/blog">Blog</a></li>
+
+      <li><a href="/chess-school">Chess School</a></li>
+
+      <li><a href="/#about">About</a></li>
+
+      <li><a href="/#contact">Contact</a></li>
+
+      <li><a href="https://buymeacoffee.com/mouradbouajaja" target="_blank" rel="noopener" class="nav-btn">&#9749; Buy Me a Coffee</a></li>
+
+    </ul>
+
+  </div>
+
+</nav>
+
+
+
+<section class="page">
+
+  <a href="/chess-school/opening-builder/queens-gambit" class="back-link">&larr; Back to Queen’s Gambit Repertoire</a>
+
+  <span class="eyebrow" id="chapter-eyebrow">Queen’s Gambit Repertoire</span>
+
+  <h1 id="chapter-title">Loading chapter&hellip;</h1>
+
+  <p class="subtitle"><span id="chapter-eco">&mdash;</span> &middot; <span id="chapter-setup">&mdash;</span></p>
+
+
+
+  <div class="chapter-layout">
+
+    <div class="chapter-main">
+
+      <!-- Not-found fallback -->
+
+      <div id="not-found" class="not-found" hidden>
+
+        <h2>Chapter not found</h2>
+
+        <p>Pick a chapter from the Queen’s Gambit course landing page and try again.</p>
+
+        <a href="/chess-school/opening-builder/queens-gambit" class="cta-primary">&larr; Back to the Queen’s Gambit course</a>
+
+      </div>
+
+
+
+      <!-- Full chapter content -->
+
+      <div id="chapter-content" hidden>
+
+        <!-- Strategic intro -->
+
+        <section class="study-section">
+
+          <h2>Strategic overview</h2>
+
+          <div id="chapter-intro"></div>
+
+        </section>
+
+
+
+        <!-- Sub-variations -->
+
+        <section class="study-section">
+
+          <h2>Sub-variations</h2>
+
+          <p class="section-intro">Each sub-variation below is a complete mainline you can drill independently. Drill them in order; once you know all three (or four), you&rsquo;re ready for any club opponent in this chapter.</p>
+
+          <ul class="subvariation-list" id="subvariation-list"></ul>
+
+        </section>
+
+
+
+        <!-- Master Games (PGN-driven) -->
+
+        <section class="study-section master-games" id="master-games-section" hidden>
+
+          <span class="eyebrow master-games-eyebrow">From the 8-million game archive</span>
+
+          <h2>Master Games</h2>
+
+          <p class="section-intro">Curated games where strong players battled this exact line.</p>
+
+          <ul class="master-games-list" id="master-games-list"></ul>
+
+          <div class="master-games-viewer" id="master-games-viewer" hidden>
+
+            <div class="mg-board-wrap">
+
+              <div id="master-board" class="master-board"></div>
+
+              <div class="mg-controls">
+
+                <button class="mg-btn" id="mg-start" type="button" title="Start">|&#9664;</button>
+
+                <button class="mg-btn" id="mg-prev" type="button" title="Previous">&#9664;</button>
+
+                <button class="mg-btn" id="mg-next" type="button" title="Next">&#9654;</button>
+
+                <button class="mg-btn" id="mg-end" type="button" title="End">&#9654;|</button>
+
+              </div>
+
+              <p class="mg-game-header" id="mg-game-header"></p>
+
+            </div>
+
+            <div class="mg-moves" id="mg-moves"></div>
+
+          </div>
+
+        </section>
+
+
+
+        <!-- Studied by -->
+
+        <section class="study-section">
+
+          <h2>Studied by</h2>
+
+          <p class="section-intro">Recommended teachers for this variation:</p>
+
+          <ul class="studied-by" id="studied-by"></ul>
+
+        </section>
+
+
+
+        <!-- Chapter navigation footer -->
+
+        <nav class="chapter-nav">
+
+          <a id="prev-chapter" class="chapter-nav-btn chapter-nav-prev" href="#">&larr; Previous chapter</a>
+
+          <a class="chapter-nav-back" href="/chess-school/opening-builder/queens-gambit">Back to course</a>
+
+          <a id="next-chapter" class="chapter-nav-btn chapter-nav-next" href="#">Next chapter &rarr;</a>
+
+        </nav>
+
+      </div>
+
+    </div>
+
+
+
+    <aside class="chapter-sidebar">
+
+      <div class="widget-card" id="progress-widget" hidden>
+
+        <h3 class="widget-title">Chapter progress</h3>
+
+        <div class="chapter-progress-bar"><div class="chapter-progress-fill" id="sidebar-progress-fill" style="width:0%"></div></div>
+
+        <p class="widget-body" id="sidebar-progress-label">Not started</p>
+
+        <button id="mark-complete" class="cta-secondary" type="button">Mark chapter as complete</button>
+
+      </div>
+
+
+
+      <div class="widget-card widget-help">
+
+        <h3 class="widget-title">If you get stuck</h3>
+
+        <p class="widget-body">Email <a href="mailto:Mourad@mindsgambit.com">Mourad@mindsgambit.com</a> with the line you&rsquo;re struggling with. He&rsquo;ll usually reply within a day with the strategic idea behind the move.</p>
+
+      </div>
+
+    </aside>
+
+  </div>
+
+
+
+  <footer class="page-footer">
+
+    <p class="footer-credit">&copy; 2026 Mourad Bouajaja. Mind&rsquo;s Gambit Chess School is a production of &copy; MYB Studio LLC.</p>
+
+  </footer>
+
+</section>
+
+
+
+<!-- ============================================================
+
+     CHESS LIBS (for Master Games board) — same CDNs as drill.astro
+
+============================================================ -->
+
+<link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" />
+
+<script is:inline src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script is:inline src="https://cdn.jsdelivr.net/npm/chess.js@0.10.3/chess.min.js"></script>
+
+<script is:inline src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+
+
+
+<!-- ============================================================
+
+     CHAPTER LOGIC
+
+============================================================ -->
+
+<script is:inline>
+
+(function() {
+
+  'use strict';
+
+
+
+  // ------------------------------------------------------------
+
+  // CHAPTER DATA — eight Queen’s Gambit chapters, verbatim.
+
+  // ------------------------------------------------------------
+
+  var CHAPTERS = {
+  'orthodox': {
+    num: 1, title: 'The Orthodox QGD', eco: 'D35—D67', firstMove: '2…e6 (Declined)',
+    intro: '<p>The most respected answer to the Queen’s Gambit, and the position that defined classical chess for a century. Black builds a fortress with …e6; White develops with Bg5, e3 and Nf3, takes the center, and presses forever. Know the famous freeing maneuver (…Nd5, the Capablanca recipe) — it is exactly what Black is playing for, and exactly what you must be ready to meet.</p><p><strong>Strategic priority:</strong> Two plans, one repertoire: against the Orthodox setup keep the bind and trade at YOUR moment; or choose the Exchange Variation and play the minority attack — b4-b5 against the c6 chain — one of the clearest winning plans in all of chess.</p>',
+    subVariations: [
+    { id: 'orthodox-main', name: 'Orthodox main line (Rubinstein setup)', mainline: 'd4 d5 c4 e6 Nc3 Nf6 Bg5 Be7 e3 O-O Nf3 Nbd7 Rc1 c6 Bd3 dxc4 Bxc4 Nd5', label: 'The hundred-year main line. Black frees the position with the Capablanca maneuver — and White keeps the lasting pull the engine confirms.' },
+    { id: 'orthodox-exchange', name: 'Exchange Variation + minority attack', mainline: 'd4 d5 c4 e6 Nc3 Nf6 cxd5 exd5 Bg5 c6 e3 Be7 Bd3 Nbd7 Qc2 O-O Nge2', label: 'Fix the structure early, castle either side, and start the famous b4-b5 minority attack. A complete plan from move five.' }
+    ],
+    studiedBy: [
+      { master: 'José Raúl Capablanca', note: 'The freeing …Nd5 maneuver carries his name — study his QGD games and you study the opening itself.' },
+      { master: 'Anatoly Karpov', note: 'Played both sides of the Orthodox at world-championship level — the model of how White keeps the grip.' }
+    ]
+  },
+  'accepted': {
+    num: 2, title: 'The Accepted (2…dxc4)', eco: 'D20—D29', firstMove: '2…dxc4 (Accepted)',
+    intro: '<p>Black takes the pawn — and learns why the Queen’s Gambit is not really a gambit. White always regains c4, and the only question is how much center White gets in exchange for the lost time. Both recipes here are sound: the classical e3 system, or the ambitious e4 space grab.</p><p><strong>Strategic priority:</strong> Do not rush to recapture — develop first, take c4 when it suits you, and remember the b3 retreat square for the bishop. Black’s …b5 expansion always loosens the queenside; your play comes against exactly those squares.</p>',
+    subVariations: [
+    { id: 'qga-classical', name: 'Classical 3.Nf3 and 4.e3', mainline: 'd4 d5 c4 dxc4 Nf3 Nf6 e3 e6 Bxc4 c5 O-O a6 Qe2 b5 Bb3 Bb7', label: 'The timeless recipe: regain the pawn, castle, meet …c5 with calm development. Dead level by the engine — and far easier to play as White.' },
+    { id: 'qga-central', name: 'The 3.e4 center grab', mainline: 'd4 d5 c4 dxc4 e4 e5 Nf3 exd4 Bxc4 Nc6 O-O Be6', label: 'The ambitious modern try: take the whole center at once. Black must give back the pawn under pressure — engine-verified White edge.' }
+    ],
+    studiedBy: [
+      { master: 'Akiba Rubinstein', note: 'The great technician of the early 1900s — his handling of the Accepted defined how White converts the time advantage.' },
+      { master: 'Vladimir Kramnik', note: 'Built a world-championship career on exactly these clean, slightly-better White structures.' }
+    ]
+  },
+  'slav': {
+    num: 3, title: 'The Slav (2…c6)', eco: 'D10—D19', firstMove: '2…c6 (Slav)',
+    intro: '<p>Black defends d5 without locking in the light-squared bishop — the Slav is the Caro-Kann player’s home against 1.d4, and it is genuinely solid. White’s classical answer: develop, let Black take on c4, then reclaim it with a4 and e3 while the bishop pair and center promise a long-term pull.</p><p><strong>Strategic priority:</strong> Know the move order exactly: 3.Nf3, 4.Nc3, and after …dxc4 play 5.a4 before recapturing — it stops …b5 forever. Against the symmetrical Exchange, play for the tiny edges: better bishop, better rook, better endgame.</p>',
+    subVariations: [
+    { id: 'slav-main', name: 'Czech main line 4…dxc4 5.a4 Bf5', mainline: 'd4 d5 c4 c6 Nf3 Nf6 Nc3 dxc4 a4 Bf5 e3 e6 Bxc4 Bb4 O-O O-O Qe2', label: 'The classical tabiya: White prepares e4 with Qe2 and keeps the center promise. A small, stable, engine-confirmed plus.' },
+    { id: 'slav-exchange', name: 'Exchange Slav', mainline: 'd4 d5 c4 c6 cxd5 cxd5 Nc3 Nf6 Nf3 Nc6 Bf4 Bf5 e3 e6 Bb5', label: 'Symmetry with a tempo. Equal by the engine — but the side with the plan wins these positions, and the plan is in this chapter.' }
+    ],
+    studiedBy: [
+      { master: 'Max Euwe', note: 'His 1935 world-championship battles with Alekhine ran straight through these Slav main lines.' },
+      { master: 'Alexander Alekhine', note: 'Played the Slav structures from both sides — the proof of how much life hides in the symmetric pawn chains.' }
+    ]
+  },
+  'semi-slav': {
+    num: 4, title: 'The Semi-Slav', eco: 'D43—D47', firstMove: '2…c6 with …e6',
+    intro: '<p>The most combative of Black’s defenses: …c6 plus …e6 threatens to hold c4 with …b5 and counterattack. Theory here can become an arms race — so this repertoire chooses the sound, lower-maintenance paths: the classical Meran structure, or the calm Qc2 system that simply develops and castles.</p><p><strong>Strategic priority:</strong> Choose your weapon by temperament. The Meran line is principled and well-mapped; the Qc2 system avoids the sharpest preparation entirely and keeps a small pull — both engine-verified.</p>',
+    subVariations: [
+    { id: 'semislav-meran', name: 'Meran structure 5.e3 Nbd7 6.Bd3', mainline: 'd4 d5 c4 c6 Nf3 Nf6 Nc3 e6 e3 Nbd7 Bd3 dxc4 Bxc4 b5 Bd3 Bb7 O-O a6', label: 'The classical Meran: Black expands, White strikes back in the center with e4 at the right moment. Balanced and rich — the fight is on YOUR terms.' },
+    { id: 'semislav-qc2', name: 'The calm 6.Qc2', mainline: 'd4 d5 c4 c6 Nf3 Nf6 Nc3 e6 e3 Nbd7 Qc2 Bd6 Bd3 O-O O-O dxc4 Bxc4 b5 Bd3', label: 'Sidestep the heaviest theory: develop, castle, keep the e4 break in reserve. The engine gives White a comfortable plus with zero memorization risk.' }
+    ],
+    studiedBy: [
+      { master: 'Mikhail Botvinnik', note: 'The sharpest Semi-Slav system bears his name — know the structures even when you choose the calmer path.' },
+      { master: 'Viswanathan Anand', note: 'His world-championship Merans showed how deep this structure runs — and why respecting it pays.' }
+    ]
+  },
+  'tarrasch': {
+    num: 5, title: 'The Tarrasch (3…c5)', eco: 'D32—D34', firstMove: '3…c5 (Tarrasch)',
+    intro: '<p>Black frees the position immediately and accepts an isolated d5 pawn for active pieces. Tarrasch himself thought freedom was worth a pawn weakness — and the classical answer ever since Rubinstein and Schlechter is the kingside fianchetto: the g2 bishop stares at the isolani for the rest of the game.</p><p><strong>Strategic priority:</strong> One setup to remember forever: cxd5, Nf3, g3, Bg2, O-O, Bg5. Blockade d4, pile on the d5 pawn, trade the right minor pieces — the endgame is your friend in every line.</p>',
+    subVariations: [
+    { id: 'tarrasch-rubinstein', name: 'Rubinstein-Schlechter g3 system', mainline: 'd4 d5 c4 e6 Nc3 c5 cxd5 exd5 Nf3 Nc6 g3 Nf6 Bg2 Be7 O-O O-O Bg5 c4', label: 'The classical antidote. Black releases the tension with …c4; White switches to the dark squares and the e4 break. Engine-verified edge.' }
+    ],
+    studiedBy: [
+      { master: 'Siegbert Tarrasch', note: 'The namesake believed piece freedom outweighed the isolani — a debate this chapter lets you win in practice.' },
+      { master: 'Akiba Rubinstein', note: 'His g3 system against the Tarrasch remains the standard answer a century later.' }
+    ]
+  },
+  'sidelines': {
+    num: 6, title: 'The Albin and the Chigorin', eco: 'D07—D08', firstMove: '2…e5 / 2…Nc6',
+    intro: '<p>Two romantic sidelines that live on surprise value. The Albin Counter-Gambit (2…e5) sets real traps — including the famous knight-promotion trick — and the Chigorin (2…Nc6) develops pieces at the cost of structure. Met calmly, both leave White simply better; this chapter is the calm.</p><p><strong>Strategic priority:</strong> Against the Albin: do NOT touch the d4 pawn with e3 — play Nf3, a3 and Nbd2 and the gambit runs out of ideas. Against the Chigorin: take on f3 doubling be damned — the bishop pair and the center decide.</p>',
+    subVariations: [
+    { id: 'albin', name: 'Albin Counter-Gambit (answered)', mainline: 'd4 d5 c4 e5 dxe5 d4 Nf3 Nc6 a3 Bg4 Nbd2 Qe7 h3 Bxf3 Nxf3', label: 'The safe recipe: a3 stops every …Bb4 trick, the famous e3 trap never happens, and the engine gives White close to a winning pull.' },
+    { id: 'chigorin', name: 'Chigorin Defense (answered)', mainline: 'd4 d5 c4 Nc6 Nf3 Bg4 cxd5 Bxf3 gxf3 Qxd5 e3 e5 Nc3 Bb4 Bd2 Bxc3 bxc3 Qd6', label: 'Black trades both bishops for knights — White accepts doubled pawns, takes the bishop pair and the big center, and stands clearly better.' }
+    ],
+    studiedBy: [
+      { master: 'Mikhail Chigorin', note: 'The great romantic — his defense still wins club games on surprise. After this chapter, not against you.' }
+    ]
+  }
+};
+
+
+
+  // ------------------------------------------------------------
+
+  // Chapter order for prev/next navigation.
+
+  // ------------------------------------------------------------
+
+  var ORDER = ['exchange', 'advance', 'mccutcheon', 'classical', 'tarrasch', 'two-knights', 'schlechter', 'kia'];
+
+
+
+  // ------------------------------------------------------------
+
+  // Parse ?id= from URL.
+
+  // ------------------------------------------------------------
+
+  function getChapterId() {
+
+    var m = location.search.match(/[?&]id=([^&]+)/);
+
+    return m ? decodeURIComponent(m[1]).toLowerCase().trim() : null;
+
+  }
+
+
+
+  var chapterId = getChapterId();
+
+  var chapter = chapterId ? CHAPTERS[chapterId] : null;
+
+
+
+  if (!chapter) {
+
+    document.getElementById('chapter-title').textContent = 'Chapter not found';
+
+    document.getElementById('chapter-eco').textContent = '';
+
+    document.getElementById('chapter-setup').textContent = '';
+
+    document.getElementById('not-found').hidden = false;
+
+    return;
+
+  }
+
+
+
+  // ------------------------------------------------------------
+
+  // Render header.
+
+  // ------------------------------------------------------------
+
+  document.getElementById('chapter-title').textContent = chapter.title;
+
+  document.getElementById('chapter-eyebrow').innerHTML =
+
+    'Queen’s Gambit Repertoire &middot; Chapter ' + chapter.num + ' of 8';
+
+  document.getElementById('chapter-eco').textContent = 'ECO ' + chapter.eco;
+
+  document.getElementById('chapter-setup').textContent =
+
+    'White with 1.d4 d5 2.c4 · ' + chapter.firstMove;
+
+  document.title = chapter.title + ' — Queen’s Gambit Repertoire — Mind\'s Gambit';
+
+
+
+  document.getElementById('chapter-content').hidden = false;
+
+
+
+  // Intro
+
+  document.getElementById('chapter-intro').innerHTML = chapter.intro;
+
+
+
+  // ------------------------------------------------------------
+
+  // Render sub-variations.
+
+  // ------------------------------------------------------------
+
+  var subList = document.getElementById('subvariation-list');
+
+  for (var i = 0; i < chapter.subVariations.length; i++) {
+
+    var sv = chapter.subVariations[i];
+
+    var li = document.createElement('li');
+
+    li.className = 'subvariation-card';
+
+
+
+    var header = document.createElement('div');
+
+    header.className = 'subvar-header';
+
+    var nameEl = document.createElement('h3');
+
+    nameEl.className = 'subvar-name';
+
+    nameEl.textContent = sv.name;
+
+    header.appendChild(nameEl);
+
+    li.appendChild(header);
+
+
+
+    var moves = document.createElement('div');
+
+    moves.className = 'subvar-mainline';
+
+    moves.textContent = sv.mainline;
+
+    li.appendChild(moves);
+
+
+
+    var label = document.createElement('p');
+
+    label.className = 'subvar-label';
+
+    label.textContent = sv.label;
+
+    li.appendChild(label);
+
+
+
+    var drillRow = document.createElement('div');
+
+    drillRow.className = 'subvar-cta-row';
+
+    var drillLink = document.createElement('a');
+
+    drillLink.className = 'cta-primary';
+
+    drillLink.href = '/chess-school/opening-builder/drill?mainline=' + encodeURIComponent(sv.mainline) + '&name=' + encodeURIComponent(chapter.title + ' · ' + sv.name) + '&side=black&parent=' + encodeURIComponent(chapterId);
+
+    drillLink.textContent = 'Drill this line →';
+
+    drillRow.appendChild(drillLink);
+
+    li.appendChild(drillRow);
+
+
+
+    subList.appendChild(li);
+
+  }
+
+
+
+  // ------------------------------------------------------------
+
+  // Render studied-by.
+
+  // ------------------------------------------------------------
+
+  var studiedList = document.getElementById('studied-by');
+
+  for (var j = 0; j < chapter.studiedBy.length; j++) {
+
+    var s = chapter.studiedBy[j];
+
+    var sli = document.createElement('li');
+
+    var nameEl2 = document.createElement('strong');
+
+    nameEl2.className = 'master';
+
+    nameEl2.textContent = s.master;
+
+    var snoteEl = document.createElement('span');
+
+    snoteEl.className = 'note';
+
+    snoteEl.textContent = s.note;
+
+    sli.appendChild(nameEl2);
+
+    sli.appendChild(document.createTextNode(' '));
+
+    sli.appendChild(snoteEl);
+
+    studiedList.appendChild(sli);
+
+  }
+
+
+
+  // ------------------------------------------------------------
+
+  // Prev / Next chapter navigation.
+
+  // ------------------------------------------------------------
+
+  var idx = ORDER.indexOf(chapterId);
+
+  var prev = document.getElementById('prev-chapter');
+
+  var next = document.getElementById('next-chapter');
+
+  if (idx > 0) {
+
+    prev.href = '/chess-school/opening-builder/queens-gambit/chapter?id=' + ORDER[idx - 1];
+
+    prev.textContent = '← ' + CHAPTERS[ORDER[idx - 1]].title;
+
+  } else {
+
+    prev.classList.add('disabled');
+
+    prev.removeAttribute('href');
+
+    prev.textContent = '← First chapter';
+
+  }
+
+  if (idx < ORDER.length - 1) {
+
+    next.href = '/chess-school/opening-builder/queens-gambit/chapter?id=' + ORDER[idx + 1];
+
+    next.textContent = CHAPTERS[ORDER[idx + 1]].title + ' →';
+
+  } else {
+
+    next.classList.add('disabled');
+
+    next.removeAttribute('href');
+
+    next.textContent = 'Last chapter →';
+
+  }
+
+
+
+  // ------------------------------------------------------------
+
+  // Progress widget (localStorage mg_queensgambit_progress).
+
+  // ------------------------------------------------------------
+
+  function loadProgress() {
+
+    try {
+
+      var raw = localStorage.getItem('mg_queensgambit_progress');
+
+      return raw ? JSON.parse(raw) : {};
+
+    } catch (e) { return {}; }
+
+  }
+
+  function saveProgress(p) {
+
+    try { localStorage.setItem('mg_queensgambit_progress', JSON.stringify(p)); } catch (e) {}
+
+  }
+
+  var progress = loadProgress();
+
+  if (!progress[chapterId]) progress[chapterId] = { started: true, completed: false, percent: 15 };
+
+  else progress[chapterId].started = true;
+
+  saveProgress(progress);
+
+
+
+  var widget = document.getElementById('progress-widget');
+
+  widget.hidden = false;
+
+  var fill = document.getElementById('sidebar-progress-fill');
+
+  var label2 = document.getElementById('sidebar-progress-label');
+
+  function renderProgress() {
+
+    var p = progress[chapterId] || {};
+
+    var pct = typeof p.percent === 'number' ? Math.max(0, Math.min(100, p.percent)) : (p.completed ? 100 : 15);
+
+    fill.style.width = pct + '%';
+
+    label2.textContent = p.completed ? 'Chapter complete.' : 'Reading in progress (' + pct + '%)';
+
+  }
+
+  renderProgress();
+
+
+
+  var btn = document.getElementById('mark-complete');
+
+  btn.addEventListener('click', function() {
+
+    progress[chapterId].completed = !progress[chapterId].completed;
+
+    progress[chapterId].percent = progress[chapterId].completed ? 100 : 25;
+
+    saveProgress(progress);
+
+    renderProgress();
+
+    btn.textContent = progress[chapterId].completed ? 'Mark as not complete' : 'Mark chapter as complete';
+
+  });
+
+
+
+  // ------------------------------------------------------------
+
+  // MASTER GAMES — load PGN, parse, render list + embedded board.
+
+  // ------------------------------------------------------------
+
+  (function initMasterGames() {
+
+    var section = document.getElementById('master-games-section');
+
+    var listEl = document.getElementById('master-games-list');
+
+    var viewerEl = document.getElementById('master-games-viewer');
+
+    if (!section || !listEl) return;
+
+
+
+    var games = [];          // parsed games {headers, moves}
+
+    var currentGame = null;  // chess.js instance for current game
+
+    var history = [];        // SAN history of current game
+
+    var verbose = [];        // verbose history (for FEN replay)
+
+    var ply = 0;             // current half-move index (0..history.length)
+
+    var board = null;        // chessboardjs instance
+
+    var replay = null;       // chess.js replay instance
+
+
+
+    // --- Parse PGN string into games array ----------------------
+
+    function parsePgn(text) {
+
+      if (!text || typeof text !== 'string') return [];
+
+      // Normalise line endings
+
+      var norm = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim();
+
+      // Split on blank-line + [Event boundary, but keep [Event with each chunk
+
+      var chunks = norm.split(/\n\n(?=\[Event )/);
+
+      var out = [];
+
+      for (var i = 0; i < chunks.length; i++) {
+
+        var chunk = chunks[i].trim();
+
+        if (!chunk) continue;
+
+        var headers = {};
+
+        var headerRegex = /\[(\w+)\s+"([^"]*)"\]/g;
+
+        var m;
+
+        while ((m = headerRegex.exec(chunk)) !== null) {
+
+          headers[m[1]] = m[2];
+
+        }
+
+        // Moves section: everything after the last "]\n" header
+
+        var movesText = chunk.replace(/\[(\w+)\s+"([^"]*)"\]\s*/g, '').trim();
+
+        if (!movesText) continue;
+
+        out.push({ headers: headers, moves: movesText, raw: chunk });
+
+      }
+
+      return out;
+
+    }
+
+
+
+    function safeFetchPgn(url) {
+
+      return fetch(url, { cache: 'no-cache' }).then(function(r) {
+
+        if (!r.ok) throw new Error('not found');
+
+        return r.text();
+
+      });
+
+    }
+
+
+
+    function fmtPlayer(name, elo) {
+
+      if (!name) return '?';
+
+      return elo ? name + ' (' + elo + ')' : name;
+
+    }
+
+    function fmtYear(headers) {
+
+      if (headers.Year) return headers.Year;
+
+      if (headers.Date) {
+
+        var y = (headers.Date.split('.')[0] || '').replace(/\?/g, '');
+
+        if (y) return y;
+
+      }
+
+      return '';
+
+    }
+
+    function resultClass(r) {
+
+      if (r === '1-0') return 'mg-result-white';
+
+      if (r === '0-1') return 'mg-result-black';
+
+      return 'mg-result-draw';
+
+    }
+
+    function fmtResult(r) {
+
+      if (r === '1/2-1/2') return '½-½';
+
+      return r || '*';
+
+    }
+
+
+
+    // --- Render the games list ---------------------------------
+
+    function renderList() {
+
+      listEl.innerHTML = '';
+
+      var limit = Math.min(games.length, 10);
+
+      for (var i = 0; i < limit; i++) {
+
+        (function(idx) {
+
+          var g = games[idx];
+
+          var h = g.headers;
+
+          var row = document.createElement('li');
+
+          row.className = 'mg-row';
+
+          row.tabIndex = 0;
+
+
+
+          var line1 = document.createElement('div');
+
+          line1.className = 'mg-row-players';
+
+          line1.innerHTML =
+
+            '<span class="mg-white">' + fmtPlayer(h.White, h.WhiteElo) + '</span>' +
+
+            ' <span class="mg-vs">vs</span> ' +
+
+            '<span class="mg-black">' + fmtPlayer(h.Black, h.BlackElo) + '</span>' +
+
+            ' <span class="mg-result ' + resultClass(h.Result) + '">' + fmtResult(h.Result) + '</span>';
+
+          row.appendChild(line1);
+
+
+
+          var line2 = document.createElement('div');
+
+          line2.className = 'mg-row-meta';
+
+          var yr = fmtYear(h);
+
+          var bits = [];
+
+          if (yr) bits.push(yr);
+
+          if (h.Event) bits.push(h.Event);
+
+          if (h.ECO) bits.push('ECO ' + h.ECO);
+
+          line2.textContent = bits.join(' · ');
+
+          row.appendChild(line2);
+
+
+
+          row.addEventListener('click', function() { selectGame(idx, row); });
+
+          row.addEventListener('keydown', function(e) {
+
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectGame(idx, row); }
+
+          });
+
+          listEl.appendChild(row);
+
+        })(i);
+
+      }
+
+    }
+
+
+
+    // --- Select a game, build a chess.js replay (loadPgn) -------
+
+    function selectGame(idx, rowEl) {
+
+      var g = games[idx];
+
+      if (!g) return;
+
+      var rows = listEl.querySelectorAll('.mg-row');
+
+      for (var k = 0; k < rows.length; k++) rows[k].classList.remove('mg-row-active');
+
+      if (rowEl) rowEl.classList.add('mg-row-active');
+
+
+
+      try {
+
+        currentGame = new Chess();
+
+        var ok = currentGame.load_pgn(g.moves, { sloppy: true });
+
+        if (!ok) {
+
+          // Try loading the raw chunk (some PGNs need headers)
+
+          currentGame = new Chess();
+
+          ok = currentGame.load_pgn(g.raw, { sloppy: true });
+
+        }
+
+        if (!ok) throw new Error('parse failed');
+
+        history = currentGame.history();
+
+        verbose = currentGame.history({ verbose: true });
+
+        ply = history.length;
+
+      } catch (err) {
+
+        return;
+
+      }
+
+
+
+      viewerEl.hidden = false;
+
+      var hdr = document.getElementById('mg-game-header');
+
+      if (hdr) {
+
+        hdr.innerHTML =
+
+          '<strong>' + fmtPlayer(g.headers.White, g.headers.WhiteElo) + '</strong> vs ' +
+
+          '<strong>' + fmtPlayer(g.headers.Black, g.headers.BlackElo) + '</strong> &middot; ' +
+
+          fmtResult(g.headers.Result) + (fmtYear(g.headers) ? ' &middot; ' + fmtYear(g.headers) : '');
+
+      }
+
+
+
+      if (!board && typeof ChessBoard !== 'undefined' && window.jQuery) {
+
+        board = ChessBoard('master-board', {
+
+          position: 'start',
+
+          pieceTheme: 'https://cdn.jsdelivr.net/gh/oakmac/chessboardjs@v1.0.0/website/img/chesspieces/wikipedia/{piece}.png',
+
+          showNotation: true
+
+        });
+
+      }
+
+      renderMoves();
+
+      goToPly(ply);
+
+      // Scroll the viewer into view on mobile
+
+      viewerEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+    }
+
+
+
+    function renderMoves() {
+
+      var movesEl = document.getElementById('mg-moves');
+
+      if (!movesEl) return;
+
+      movesEl.innerHTML = '';
+
+      for (var i = 0; i < history.length; i++) {
+
+        if (i % 2 === 0) {
+
+          var num = document.createElement('span');
+
+          num.className = 'mg-move-num';
+
+          num.textContent = (i / 2 + 1) + '.';
+
+          movesEl.appendChild(num);
+
+        }
+
+        (function(idx) {
+
+          var mv = document.createElement('span');
+
+          mv.className = 'mg-move';
+
+          mv.textContent = history[idx];
+
+          mv.addEventListener('click', function() { goToPly(idx + 1); });
+
+          movesEl.appendChild(mv);
+
+        })(i);
+
+      }
+
+    }
+
+
+
+    function goToPly(target) {
+
+      if (!history.length) return;
+
+      target = Math.max(0, Math.min(history.length, target));
+
+      ply = target;
+
+      // Replay from start
+
+      replay = new Chess();
+
+      for (var i = 0; i < ply; i++) {
+
+        replay.move(history[i], { sloppy: true });
+
+      }
+
+      if (board) board.position(replay.fen(), false);
+
+      // Highlight current move
+
+      var marks = document.querySelectorAll('#mg-moves .mg-move');
+
+      for (var k = 0; k < marks.length; k++) marks[k].classList.remove('mg-move-active');
+
+      if (ply > 0 && marks[ply - 1]) {
+
+        marks[ply - 1].classList.add('mg-move-active');
+
+        marks[ply - 1].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+
+      }
+
+    }
+
+
+
+    function bindControls() {
+
+      var s = document.getElementById('mg-start');
+
+      var p = document.getElementById('mg-prev');
+
+      var n = document.getElementById('mg-next');
+
+      var e = document.getElementById('mg-end');
+
+      if (s) s.addEventListener('click', function() { goToPly(0); });
+
+      if (p) p.addEventListener('click', function() { goToPly(ply - 1); });
+
+      if (n) n.addEventListener('click', function() { goToPly(ply + 1); });
+
+      if (e) e.addEventListener('click', function() { goToPly(history.length); });
+
+
+
+      document.addEventListener('keydown', function(ev) {
+
+        if (viewerEl.hidden) return;
+
+        var tag = (ev.target && ev.target.tagName) || '';
+
+        if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+
+        if (ev.key === 'ArrowLeft') { ev.preventDefault(); goToPly(ply - 1); }
+
+        else if (ev.key === 'ArrowRight') { ev.preventDefault(); goToPly(ply + 1); }
+
+        else if (ev.key === 'Home') { ev.preventDefault(); goToPly(0); }
+
+        else if (ev.key === 'End') { ev.preventDefault(); goToPly(history.length); }
+
+      });
+
+    }
+
+
+
+    // Kick it off
+
+    var pgnUrl = '/pgn/queens-gambit-' + chapterId + '.pgn';
+
+    safeFetchPgn(pgnUrl).then(function(text) {
+
+      games = parsePgn(text);
+
+      if (!games.length) return; // hide section silently
+
+      section.hidden = false;
+
+      renderList();
+
+      bindControls();
+
+    }).catch(function() {
+
+      // Silent fail — section remains hidden
+
+    });
+
+  })();
+
+})();
+
+</script>
+
+
+
+<style>
+
+.eyebrow { display: block; font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.18em; margin-top: 1.5rem; }
+
+.page { max-width: 1200px; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+
+.back-link { display: inline-block; color: rgba(232,224,208,0.65); text-decoration: none; font-family: 'EB Garamond', Georgia, serif; font-size: 0.95rem; margin: 1rem 0 0; transition: color 0.18s; }
+
+.back-link:hover { color: #c9a84c; }
+
+.page h1 { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 2.4rem; margin: 0.6rem 0 0.4rem; letter-spacing: 0.01em; }
+
+.subtitle { color: rgba(232,224,208,0.72); font-family: 'EB Garamond', Georgia, serif; font-size: 1.02rem; margin: 0 0 1.5rem; font-style: italic; }
+
+
+
+/* Layout */
+
+.chapter-layout { display: grid; grid-template-columns: 1fr 300px; gap: 2rem; margin-top: 1rem; align-items: start; }
+
+@media (max-width: 900px) { .chapter-layout { grid-template-columns: 1fr; } }
+
+
+
+/* Not-found */
+
+.not-found { background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(30,34,52,0.55)); border: 1px solid rgba(201,168,76,0.28); border-radius: 12px; padding: 2rem 1.5rem; text-align: center; margin: 2rem 0; }
+
+.not-found h2 { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1.6rem; margin: 0 0 0.6rem; }
+
+.not-found p { color: rgba(232,224,208,0.78); font-family: 'EB Garamond', Georgia, serif; margin: 0 0 1.4rem; }
+
+
+
+/* Section headings */
+
+.study-section { margin: 0 0 2.4rem; padding-bottom: 1.4rem; border-bottom: 1px solid rgba(201,168,76,0.12); }
+
+.study-section:last-of-type { border-bottom: 0; }
+
+.study-section h2 { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1.5rem; margin: 0 0 0.5rem; padding-bottom: 0.3rem; border-bottom: 2px solid rgba(201,168,76,0.35); display: inline-block; }
+
+.section-intro { color: rgba(232,224,208,0.65); font-family: 'EB Garamond', Georgia, serif; font-size: 0.96rem; font-style: italic; margin: 0.8rem 0 1rem; max-width: 780px; }
+
+
+
+/* Intro prose */
+
+#chapter-intro p { color: rgba(232,224,208,0.85); font-family: 'EB Garamond', Georgia, serif; font-size: 1.05rem; line-height: 1.7; margin: 0.8rem 0 0; max-width: 820px; }
+
+#chapter-intro p:first-child { margin-top: 0.6rem; }
+
+
+
+/* Sub-variation cards */
+
+.subvariation-list { list-style: none; padding: 0; margin: 0.5rem 0 0; display: flex; flex-direction: column; gap: 0.9rem; }
+
+.subvariation-card { background: linear-gradient(135deg, rgba(201,168,76,0.07), rgba(30,34,52,0.6)); border: 1px solid rgba(201,168,76,0.25); border-radius: 10px; padding: 1rem 1.1rem 1rem; transition: border-color 0.18s; }
+
+.subvariation-card:hover { border-color: rgba(201,168,76,0.5); }
+
+.subvar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+
+.subvar-name { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1.1rem; margin: 0; line-height: 1.3; }
+
+.subvar-mainline { font-family: 'Courier New', monospace; color: #e8e0d0; background: rgba(15,17,28,0.6); padding: 7px 11px; border-radius: 6px; font-size: 0.9rem; border: 1px solid rgba(201,168,76,0.15); margin: 0 0 0.6rem; word-break: break-word; line-height: 1.5; }
+
+.subvar-label { color: rgba(232,224,208,0.78); font-family: 'EB Garamond', Georgia, serif; font-size: 0.95rem; line-height: 1.55; margin: 0 0 0.75rem; font-style: italic; }
+
+.subvar-cta-row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+
+
+/* Studied by */
+
+.studied-by { list-style: none; padding: 0; margin: 0.5rem 0 0; display: flex; flex-direction: column; gap: 0.7rem; }
+
+.studied-by li { padding: 0.85rem 1rem; background: linear-gradient(135deg, rgba(201,168,76,0.06), rgba(30,34,52,0.55)); border: 1px solid rgba(201,168,76,0.18); border-radius: 8px; color: rgba(232,224,208,0.82); font-family: 'EB Garamond', Georgia, serif; font-size: 1rem; line-height: 1.6; }
+
+.studied-by .master { display: block; font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.2rem; }
+
+.studied-by .note { color: rgba(232,224,208,0.82); }
+
+
+
+/* Chapter nav footer */
+
+.chapter-nav { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin: 2rem 0 1rem; padding: 1.2rem 0; border-top: 1px solid rgba(201,168,76,0.18); border-bottom: 1px solid rgba(201,168,76,0.18); flex-wrap: wrap; }
+
+.chapter-nav-btn { background: rgba(201,168,76,0.1); color: #c9a84c; padding: 9px 14px; border-radius: 7px; border: 1px solid rgba(201,168,76,0.35); font-family: 'EB Garamond', Georgia, serif; font-size: 0.95rem; text-decoration: none; transition: background 0.15s, border-color 0.15s; flex: 1 1 auto; max-width: 40%; text-align: center; }
+
+.chapter-nav-btn:hover { background: rgba(201,168,76,0.2); border-color: rgba(201,168,76,0.6); }
+
+.chapter-nav-btn.disabled { opacity: 0.35; cursor: not-allowed; pointer-events: none; }
+
+.chapter-nav-back { color: rgba(232,224,208,0.65); font-family: 'EB Garamond', Georgia, serif; font-size: 0.9rem; text-decoration: underline; text-decoration-color: rgba(201,168,76,0.4); }
+
+.chapter-nav-back:hover { color: #c9a84c; }
+
+
+
+/* CTAs */
+
+.cta-primary { display: inline-block; background: #c9a84c; color: #0f111c; border: 0; padding: 9px 17px; border-radius: 7px; font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: 0.92rem; letter-spacing: 0.02em; text-align: center; text-decoration: none; cursor: pointer; transition: transform 0.14s, box-shadow 0.18s; }
+
+.cta-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 18px rgba(201,168,76,0.4); }
+
+.cta-secondary { display: inline-block; background: transparent; color: #c9a84c; padding: 9px 14px; border-radius: 7px; border: 1px solid rgba(201,168,76,0.5); font-family: 'EB Garamond', Georgia, serif; font-size: 0.92rem; text-decoration: none; cursor: pointer; transition: background 0.15s; margin-top: 0.7rem; width: 100%; box-sizing: border-box; }
+
+.cta-secondary:hover { background: rgba(201,168,76,0.12); }
+
+
+
+/* Sidebar */
+
+.chapter-sidebar { display: flex; flex-direction: column; gap: 1rem; position: sticky; top: 1rem; }
+
+@media (max-width: 900px) { .chapter-sidebar { position: static; } }
+
+.widget-card { background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(30,34,52,0.55)); border: 1px solid rgba(201,168,76,0.25); border-radius: 12px; padding: 1.1rem 1.1rem 1rem; }
+
+.widget-title { font-family: 'Playfair Display', Georgia, serif; color: #c9a84c; font-size: 1.05rem; margin: 0 0 0.7rem; letter-spacing: 0.04em; }
+
+.widget-body { color: rgba(232,224,208,0.78); font-family: 'EB Garamond', Georgia, serif; font-size: 0.92rem; line-height: 1.55; margin: 0; }
+
+.widget-body a { color: #c9a84c; }
+
+.widget-help { background: linear-gradient(135deg, rgba(91,133,195,0.10), rgba(30,34,52,0.55)); border-color: rgba(91,133,195,0.32); }
+
+
+
+.chapter-progress-bar { width: 100%; height: 6px; background: rgba(15,17,28,0.7); border: 1px solid rgba(201,168,76,0.18); border-radius: 99px; overflow: hidden; margin-bottom: 0.5rem; }
+
+.chapter-progress-fill { height: 100%; background: linear-gradient(90deg, #c9a84c, #d4b556); border-radius: 99px; transition: width 0.3s; }
+
+
+
+.page-footer { margin-top: 2.5rem; padding: 1.5rem 1rem; text-align: center; border-top: 1px solid rgba(201,168,76,0.1); }
+
+.footer-credit { color: rgba(232,224,208,0.4); font-size: 0.82rem; font-family: 'EB Garamond', Georgia, serif; }
+
+
+
+@media (max-width: 600px) {
+
+  .page h1 { font-size: 1.85rem; }
+
+  .study-section h2 { font-size: 1.3rem; }
+
+  .chapter-nav-btn { max-width: 100%; flex: 1 1 100%; }
+
+  .subvar-mainline { font-size: 0.82rem; }
+
+}
+
+
+
+/* ============================================================
+
+   MASTER GAMES SECTION
+
+============================================================ */
+
+.master-games-eyebrow { margin: 0 0 0.4rem; display: block; }
+
+.master-games-list { list-style: none; padding: 0; margin: 1rem 0 1.4rem; display: flex; flex-direction: column; gap: 0.55rem; }
+
+.mg-row { background: linear-gradient(135deg, rgba(201,168,76,0.06), rgba(30,34,52,0.55)); border: 1px solid rgba(201,168,76,0.2); border-radius: 8px; padding: 0.7rem 0.9rem; cursor: pointer; transition: border-color 0.15s, background 0.15s; outline: none; }
+
+.mg-row:hover, .mg-row:focus { border-color: rgba(201,168,76,0.55); background: linear-gradient(135deg, rgba(201,168,76,0.1), rgba(30,34,52,0.62)); }
+
+.mg-row-active { border-color: #c9a84c; background: linear-gradient(135deg, rgba(201,168,76,0.16), rgba(30,34,52,0.65)); }
+
+.mg-row-players { font-family: 'EB Garamond', Georgia, serif; color: #e8e0d0; font-size: 1.02rem; line-height: 1.4; }
+
+.mg-white, .mg-black { color: #e8e0d0; font-weight: 600; }
+
+.mg-vs { color: rgba(232,224,208,0.5); font-style: italic; font-size: 0.9rem; margin: 0 0.2rem; }
+
+.mg-result { margin-left: 0.55rem; font-family: 'Courier New', monospace; font-size: 0.88rem; padding: 1px 7px; border-radius: 4px; border: 1px solid transparent; }
+
+.mg-result-white { color: #c9a84c; border-color: rgba(201,168,76,0.4); background: rgba(201,168,76,0.08); }
+
+.mg-result-black { color: rgba(232,224,208,0.62); border-color: rgba(232,224,208,0.18); background: rgba(15,17,28,0.4); }
+
+.mg-result-draw { color: rgba(232,224,208,0.7); border-color: rgba(232,224,208,0.22); background: rgba(15,17,28,0.4); }
+
+.mg-row-meta { color: rgba(232,224,208,0.6); font-family: 'EB Garamond', Georgia, serif; font-size: 0.88rem; margin-top: 0.25rem; font-style: italic; }
+
+
+
+.master-games-viewer { display: grid; grid-template-columns: 400px 1fr; gap: 1.2rem; margin-top: 1.2rem; padding-top: 1.2rem; border-top: 1px dashed rgba(201,168,76,0.2); align-items: start; }
+
+.mg-board-wrap { display: flex; flex-direction: column; gap: 0.6rem; }
+
+.master-board { width: 400px; max-width: 100%; }
+
+.mg-controls { display: flex; gap: 0.4rem; justify-content: center; }
+
+.mg-btn { background: rgba(201,168,76,0.1); color: #c9a84c; border: 1px solid rgba(201,168,76,0.4); padding: 6px 12px; border-radius: 6px; font-family: 'Courier New', monospace; font-size: 0.95rem; cursor: pointer; transition: background 0.15s, border-color 0.15s; min-width: 42px; }
+
+.mg-btn:hover { background: rgba(201,168,76,0.22); border-color: rgba(201,168,76,0.7); }
+
+.mg-game-header { color: rgba(232,224,208,0.78); font-family: 'EB Garamond', Georgia, serif; font-size: 0.95rem; margin: 0.3rem 0 0; text-align: center; line-height: 1.45; }
+
+.mg-game-header strong { color: #c9a84c; font-weight: 600; }
+
+.mg-moves { background: rgba(15,17,28,0.6); border: 1px solid rgba(201,168,76,0.18); border-radius: 8px; padding: 0.8rem; font-family: 'Courier New', monospace; font-size: 0.92rem; line-height: 1.9; color: rgba(232,224,208,0.85); max-height: 420px; overflow-y: auto; }
+
+.mg-move-num { color: rgba(232,224,208,0.45); margin-right: 0.25rem; margin-left: 0.4rem; }
+
+.mg-move-num:first-child { margin-left: 0; }
+
+.mg-move { cursor: pointer; padding: 1px 5px; border-radius: 4px; margin-right: 0.15rem; transition: background 0.12s, color 0.12s; }
+
+.mg-move:hover { background: rgba(201,168,76,0.18); color: #c9a84c; }
+
+.mg-move-active { background: #c9a84c; color: #0f111c; font-weight: 700; }
+
+
+
+@media (max-width: 900px) {
+
+  .master-games-viewer { grid-template-columns: 1fr; }
+
+  .master-board { width: 100%; max-width: 360px; margin: 0 auto; }
+
+  .mg-moves { max-height: 240px; }
+
+}
+
+</style>
+
+
+
+</BaseLayout>
+

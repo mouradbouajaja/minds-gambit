@@ -4,7 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 export const prerender = true;
 ---
 
-<BaseLayout title="Game Analysis — Mind's Gambit Chess School" description="Paste a PGN. Get a computer evaluation of every move. Find your blunders, mistakes, and the best move you missed. Powered by Stockfish 17 NNUE via the Lichess Cloud Eval API.">
+<BaseLayout title="Game Analysis — Mind's Gambit Chess School" description="Paste a PGN. Get a computer evaluation of every move. Find your blunders, mistakes, and the best move you missed. Powered by Stockfish 17 NNUE in your browser.">
 
 <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" />
 
@@ -46,7 +46,7 @@ export const prerender = true;
       <button class="ctrl-btn" id="btn-load-example" type="button">Load Example Game</button>
       <button class="ctrl-btn ctrl-btn-primary" id="btn-analyze" type="button">Analyze Game &rarr;</button>
     </div>
-    <p class="input-note">Tip: Most online platforms (Lichess, Chess.com, etc.) let you download a game as PGN. Drop the full text here.</p>
+    <p class="input-note">Tip: Most online chess platforms let you download a game as PGN. Drop the full text here.</p>
   </div>
 
   <!-- ANALYSIS STATE -->
@@ -104,7 +104,7 @@ export const prerender = true;
   </div>
 
   <p class="attribution">
-    Primary engine: <strong>Stockfish 17 NNUE</strong> via the <a href="https://lichess.org/api" target="_blank" rel="noopener">Lichess Cloud Eval API</a> — free, no account needed, world-class strength. Positions Lichess hasn&rsquo;t analyzed yet fall back to a local Stockfish in your browser. All open-source, all GPL v3. No tracking. No data leaves your browser except the position FENs sent to Lichess for evaluation.
+    Powered by <strong>Stockfish 17 NNUE</strong> &mdash; world-class analysis, free, no account needed. No tracking; nothing leaves your browser except position data sent for cloud evaluation. <a href="/credits">Credits &amp; licenses</a>.
   </p>
 
   <footer class="page-footer">
@@ -771,7 +771,7 @@ export const prerender = true;
       a: 'Your progress is stored <strong>on this device only</strong>. It resets if you: (1) clear your browser data, (2) switch to a different browser or device, (3) open the site in private/incognito mode. We&rsquo;re building optional cross-device sync as a future feature. For now, stick to the same browser on the same device to keep your progress.' },
     { keywords: ['credits', 'open source', 'attribution', 'license', 'legal', 'powered by', 'technical', 'what powers', 'under the hood'],
       q: 'Credits & legal &mdash; what powers Mind\'s Gambit?',
-      a: 'Mind&rsquo;s Gambit is built on the world&rsquo;s top open-source chess engine, <strong>Stockfish</strong> (free under the GPL v3 license). Our <strong>Mind&rsquo;s Gambit Training Boards</strong> use trusted open-source libraries for piece movement and rendering. Puzzles are sourced from public-domain chess databases. Optional coach commentary on the Analyze page is powered by <strong>Anthropic Claude</strong>. Everything is free for you to use here. Full attribution and license notices appear in the page footers as required by the underlying licenses.' },
+      a: 'Mind&rsquo;s Gambit is built on the world&rsquo;s top open-source chess engine, <strong>Stockfish</strong> (free under the GPL v3 license). Our <strong>Mind&rsquo;s Gambit Training Boards</strong> use trusted open-source libraries for piece movement and rendering. Puzzles are sourced from public-domain chess databases. Everything is free for you to use here. Full attribution and license notices appear in the page footers as required by the underlying licenses.' },
     { keywords: ['contact', 'email', 'reach out'],
       q: 'How do I contact Mourad?',
       a: 'Email <a href="mailto:mourad@mindsgambit.com">mourad@mindsgambit.com</a>. Or use the <a href="/#contact">Contact section</a> on the homepage.' },

@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+export const prerender = true;
+---
+
+<BaseLayout title="Credits &amp; Licenses — Mind’s Gambit" description="Open-source software credits and license notices for mindsgambit.com.">
+<main style='max-width:720px;margin:0 auto;padding:70px 20px 90px;color:#c9c3b6;font-size:.98rem;line-height:1.7'>
+  <h1 style='color:#f0ece4;font-size:1.9rem;margin:0 0 8px;font-family:"Playfair Display",Georgia,serif'>Credits &amp; Licenses</h1>
+  <p style='color:#8a8478;margin:0 0 30px'>Mind’s Gambit is built with the help of open-source software. License notices follow.</p>
+  <h2 style='color:#e8e0d0;font-size:1.1rem;margin:26px 0 6px'>Chess engine</h2>
+  <p><a href='https://stockfishchess.org/' target='_blank' rel='noopener' style='color:#c9a84c'>Stockfish</a>, licensed under the GNU General Public License v3. Source code: <a href='https://github.com/official-stockfish/Stockfish' target='_blank' rel='noopener' style='color:#c9a84c'>github.com/official-stockfish/Stockfish</a>. The in-browser build we serve is stockfish.js, also GPL v3; corresponding source: <a href='https://github.com/lichess-org/stockfish.js' target='_blank' rel='noopener' style='color:#c9a84c'>github.com/lichess-org/stockfish.js</a>.</p>
+  <h2 style='color:#e8e0d0;font-size:1.1rem;margin:26px 0 6px'>Board &amp; rules libraries</h2>
+  <p>chess.js (BSD-2-Clause), chessboard.js (MIT), and chessground (GPL-3.0; source: <a href='https://github.com/lichess-org/chessground' target='_blank' rel='noopener' style='color:#c9a84c'>github.com/lichess-org/chessground</a>).</p>
+  <h2 style='color:#e8e0d0;font-size:1.1rem;margin:26px 0 6px'>Data</h2>
+  <p>Puzzle and game data come from community chess databases released into the public domain (CC0).</p>
+  <h2 style='color:#e8e0d0;font-size:1.1rem;margin:26px 0 6px'>Films &amp; books</h2>
+  <p>All films and books offered on this site are in the public domain. Restorations by MYB Studio LLC.</p>
+  <p style='margin-top:40px'><a href='/chess-school' style='color:#c9a84c'>&larr; Back to the Chess School</a></p>
+</main>
+</BaseLayout>

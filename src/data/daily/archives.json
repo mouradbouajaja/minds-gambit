@@ -117,92 +117,666 @@
     {
       "name": "Gioachino Greco",
       "meta": "Italy · 1600–1634 · The Calabrian",
-      "imageUrl": "",
-      "imageAlt": "",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/4/4c/Greco_book.jpg",
+      "imageAlt": "Gioachino Greco — portrait",
       "imageCaption": "",
       "bio": "Italian chess master from Calabria (in the south of Italy) and one of the earliest professional players whose work survives. Greco travelled across Europe — Rome, Paris, London, Madrid — playing for nobility and writing manuscripts that recorded entire games rather than just opening moves, a major innovation for the time. His manuscripts captured the romantic, sacrificial style of seventeenth-century chess and remained the standard text on opening theory until Philidor's work nearly a century later. He died young, reportedly in Spanish-held territory in the West Indies."
     },
-    { "name": "Louis-Charles Mahé de La Bourdonnais", "meta": "France · 1795–1840 · The Unofficial Champion", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "French chess master generally regarded as the strongest player in the world during the 1820s and 30s. Famous for his 1834 match against Alexander McDonnell of Britain — 85 games played in London over months, the first major international match recorded move by move. La Bourdonnais died in poverty in London at age 45." },
-    { "name": "Alexander McDonnell", "meta": "Ireland · 1798–1835 · The Belfast Master", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Irish-born chess master who in 1834 played the legendary 85-game match against La Bourdonnais — one of the foundational events in modern chess history. McDonnell died at age 36, shortly after the match concluded." },
-    { "name": "Pierre Saint-Amant", "meta": "France · 1800–1872 · Staunton's Rival", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "French chess master who in 1843 played a famous match in Paris against Howard Staunton of England. Saint-Amant edited the world's first chess magazine, Le Palamède, and helped establish chess as an internationally followed sport in the mid-nineteenth century." },
-    { "name": "Daniel Harrwitz", "meta": "Germany · 1823–1884 · Romantic-Era Master", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "German chess master who played in many of the strongest European events of the mid-nineteenth century. Lost a famous match to Paul Morphy in Paris in 1858 and authored several important opening books." },
-    { "name": "Johannes Zukertort", "meta": "Poland / Germany / England · 1842–1888 · Steinitz's Rival", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Polish-born German chess master who lost the first official World Championship match to Wilhelm Steinitz in 1886 (United States). Zukertort was considered one of the two best players in the world for much of the 1880s." },
-    { "name": "Mikhail Chigorin", "meta": "Russia · 1850–1908 · Father of Russian Chess", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Russian master who played two World Championship matches against Steinitz (1889 in Havana, 1892 in Havana). Chigorin's romantic, attacking style shaped a century of Russian chess, and is often called the founder of the Russian chess school." },
-    { "name": "Siegbert Tarrasch", "meta": "Germany · 1862–1934 · Praeceptor Germaniae", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "German chess master and physician known as the 'Praeceptor Germaniae' (Teacher of Germany). Tarrasch's classical principles dominated chess thinking in the early twentieth century. He played a World Championship match against Lasker in 1908." },
-    { "name": "Frank Marshall", "meta": "United States · 1877–1944 · The American Champion", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "American chess master and United States Chess Champion from 1909 to 1936. Marshall founded the Marshall Chess Club in New York in 1915 — still one of the world's most famous chess clubs. His 1918 'Marshall Attack' in the Ruy Lopez bears his name." },
-    { "name": "Carl Schlechter", "meta": "Austria · 1874–1918 · The Drawing Master", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Austrian chess master who came within one game of the 1910 World Championship against Lasker — drawing the match 5-5. Schlechter was famous for his solid, drawish style. He died in Budapest in 1918 from malnutrition during the post-war chaos." },
-    { "name": "Géza Maróczy", "meta": "Hungary · 1870–1951 · The Maróczy Bind", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Hungarian chess master who was among the world's top three players in the early 1900s. The 'Maróczy Bind' — a pawn structure with c4 and e4 against the Sicilian — bears his name. He nearly played a World Championship match with Lasker." },
-    { "name": "Richard Réti", "meta": "Czechoslovakia · 1889–1929 · Founder of Hypermodernism", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Czech-Hungarian chess master and theorist who led the hypermodern revolution in the 1920s alongside Nimzowitsch. His 1924 defeat of Capablanca in New York ended Capablanca's eight-year unbeaten streak. The Réti Opening (1.Nf3) is named after him." },
-    { "name": "Savielly Tartakower", "meta": "Poland / France · 1887–1956 · The Sage", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Polish-French chess master, journalist, and author of countless witty chess aphorisms. Tartakower was a top player for three decades and a beloved chess writer. The Tartakower Variation in the Queen's Gambit Declined is named after him." },
-    { "name": "Rudolf Spielmann", "meta": "Austria · 1883–1942 · The Last Romantic", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Austrian chess master known as the 'last knight of the King's Gambit.' Spielmann played in the romantic, attacking style of the nineteenth century even as positional chess took over. He died in Stockholm during the Second World War." },
-    { "name": "Akiba Rubinstein", "meta": "Poland · 1880–1961 · The Unfortunate Genius", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Polish grandmaster widely considered the strongest player never to play for the World Championship. In 1912 he finished first in five consecutive major tournaments. A 1914 title match with Lasker was cancelled by the First World War. Suffered from severe agoraphobia in later life." },
-    { "name": "Ossip Bernstein", "meta": "Ukraine / France · 1882–1962 · The Lawyer-Champion", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Ukrainian-French chess master, lawyer, and businessman. Bernstein was among the world's top 10 in the early 1900s and continued playing into his 70s, drawing famously with Botvinnik in 1954. He fled the Russian Revolution and later Nazi-occupied France." },
-    { "name": "Salo Flohr", "meta": "Czechoslovakia / USSR · 1908–1983 · The Tactician", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Czech-Soviet chess master who was considered an heir-apparent to Alekhine in the late 1930s. The planned 1939 Flohr-Alekhine title match was cancelled by the Second World War. Flohr later moved to the Soviet Union and became a respected chess journalist." },
-    { "name": "Reuben Fine", "meta": "United States · 1914–1993 · The Triple Master", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "American grandmaster who tied for first at the 1938 AVRO tournament — at the time the strongest tournament ever held. Fine declined to participate in the 1948 World Championship tournament and devoted himself to psychology, becoming a noted Freudian analyst." },
-    { "name": "Samuel Reshevsky", "meta": "United States (born Poland) · 1911–1992 · The Prodigy", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Polish-American grandmaster who was a child prodigy giving simultaneous exhibitions across Europe at age six. Reshevsky was the strongest American player for decades, winning the US Championship eight times. Played in multiple Candidates Tournaments." },
-    { "name": "Paul Keres", "meta": "Estonia (USSR) · 1916–1975 · Paul the Second", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Estonian grandmaster known as 'Paul the Second' — runner-up to four world champions across his career. Keres came tantalizingly close to the title many times but never quite reached it. A national hero in Estonia, his face appears on the 5 kroon banknote." },
-    { "name": "Mikhail Botvinnik", "meta": "Russia (USSR) · 1911–1995 · Patriarch of Soviet Chess", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Sixth World Champion and the patriarch of the Soviet chess school. Botvinnik held the title in three separate stints. After retiring, he ran the school in Moscow that trained Karpov, Kasparov, and Kramnik. His methodical approach shaped modern professional chess." },
-    { "name": "Vasily Smyslov", "meta": "Russia (USSR) · 1921–2010 · The Endgame Master", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Soviet grandmaster, World Champion 1957-1958, and trained operatic baritone. Smyslov is widely considered one of the greatest endgame players in history. He remained competitive at the elite level into his sixties." },
-    { "name": "Mikhail Tal", "meta": "Latvia (USSR) · 1936–1992 · The Magician from Riga", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Eighth World Champion (1960-1961), known as 'The Magician from Riga.' Tal played the most spectacular attacking chess of his era, sacrificing material at every opportunity. Chronic poor health shortened his career but he remained a beloved figure until his death." },
-    { "name": "Tigran Petrosian", "meta": "Armenia (USSR) · 1929–1984 · The Iron Tigran", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Ninth World Champion (1963-1969). Born in Tbilisi to an Armenian family, Petrosian's prophylactic style — anticipating threats before they materialized — was so distinctive that the 'Petrosian style' is still taught today." },
-    { "name": "Mark Taimanov", "meta": "Russia (USSR) · 1926–2016 · Pianist and Grandmaster", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Soviet grandmaster and concert pianist who lost a famous 1971 Candidates match 6-0 to Bobby Fischer. Despite that loss, Taimanov was a top-10 player for many years. The Sicilian Taimanov bears his name." },
-    { "name": "Bent Larsen", "meta": "Denmark · 1935–2010 · The Great Dane", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Danish grandmaster who reached world number three in the 1970s. Famous for his Larsen Opening (1.b3) and for his uncompromising fighting spirit. The first non-Soviet to win a Candidates Tournament event in the post-war era." },
-    { "name": "Henrique Mecking", "meta": "Brazil · b. 1952 · Mequinho", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Brazilian grandmaster who reached world number three in 1977. Mecking was a child prodigy and the first South American to truly contest the world title. Severe health problems forced him away from chess for over a decade." },
-    { "name": "Lev Polugaevsky", "meta": "Russia (USSR) · 1934–1995 · The Specialist", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Soviet grandmaster who dedicated himself to one Sicilian variation — the Polugaevsky Variation of the Najdorf — for decades. A multi-time Candidates participant and one of the most respected theoreticians of his era." },
-    { "name": "Boris Spassky", "meta": "Russia · b. 1937 · The Tenth Champion", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Tenth World Champion (1969-1972). Spassky's 1972 defeat by Bobby Fischer in Reykjavik became the most-watched chess event in history. Famously generous in defeat, he applauded Fischer at the close of the match. Defected to France in 1976." },
-    { "name": "Anatoly Karpov", "meta": "Russia · b. 1951 · The Twelfth Champion", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "World Champion from 1975 (after Fischer's refusal to defend) until 1985, when he lost to Kasparov. Karpov's positional style is the textbook of patient piece play. His 1984 match against Kasparov was abandoned after 48 games — still the longest title match." },
-    { "name": "Garry Kasparov", "meta": "Russia · b. 1963 · The Thirteenth Champion", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "World Champion from 1985 to 2000. Kasparov dominated chess for fifteen years with a fighting, attacking style and is widely regarded as one of the two greatest players of all time. His 1997 loss to Deep Blue marked the moment computers overtook humans." },
-    { "name": "Bobby Fischer", "meta": "United States · 1943–2008 · The Reykjavik Champion", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "American grandmaster whose 1972 World Championship victory over Spassky became a defining Cold War moment. Fischer is widely considered the greatest natural talent the game has ever produced; he was US Champion at fourteen. After winning, he refused to defend the title." },
-    { "name": "Vladimir Kramnik", "meta": "Russia · b. 1975 · The Fourteenth Champion", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "World Champion 2000-2007 after defeating Kasparov in London. Kramnik's deep opening preparation reshaped how the elite study the game. His use of the Berlin Defence in 2000 changed Ruy Lopez theory permanently." },
-    { "name": "Viswanathan Anand", "meta": "India · b. 1969 · The Fifteenth Champion", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Indian World Champion 2007-2013. 'Vishy' was the first grandmaster from India and almost single-handedly transformed his country into a chess powerhouse. Five-time world champion in different formats." },
-    { "name": "Magnus Carlsen", "meta": "Norway · b. 1990 · The Sixteenth Champion", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Norwegian grandmaster, World Champion 2013-2023, and holder of the highest rating ever recorded (2882). Carlsen voluntarily relinquished his title in 2023 but has remained the world's top-ranked player on every published list since 2011 — the longest streak in history." },
-    { "name": "Hans Berliner", "meta": "United States · 1929–2017 · The Correspondence Master", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "American international master who won the Fifth World Correspondence Chess Championship (1965-1968) by a record margin. Berliner later became a pioneer of computer chess at Carnegie Mellon, creating Hitech, the first computer to defeat a human grandmaster in a regular tournament game." },
-    { "name": "Pal Benko", "meta": "Hungary / United States · 1928–2019 · Master of the Endgame", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Hungarian-American grandmaster, composer of chess problems, and theoretician. Benko's name is on the Benko Gambit and on countless endgame studies. He gave his place in the 1970 Interzonal to Bobby Fischer, helping launch Fischer toward the world title." },
-    { "name": "Walter Browne", "meta": "United States (born Australia) · 1949–2015 · Six-Time US Champion", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "American grandmaster who won the US Championship six times. Known for his ferocious time-trouble play and his founding of the World Blitz Chess Association in the 1980s." },
-    { "name": "Aron Nimzowitsch", "meta": "Latvia / Denmark · 1886–1935 · The Hypermodernist", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Latvian-Danish grandmaster who in the 1920s led a revolution against classical chess principles. His book My System (1925) introduced hypermodern ideas: control the center with pieces from a distance. The Nimzo-Indian Defence is named after him." },
-    { "name": "Géza Révész", "meta": "Hungary · 1878–1955 · The Chess Psychologist", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Hungarian-Dutch psychologist whose 1929 book Talent und Genie (Talent and Genius) included one of the earliest scientific studies of chess masters' cognition. A pioneer of chess psychology." },
-    { "name": "Lyudmila Rudenko", "meta": "Ukraine (USSR) · 1904–1986 · Second Women's World Champion", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Soviet Ukrainian chess master and the second Women's World Champion (1950-1953), winning the title after Vera Menchik's death. Rudenko was honored with the Soviet title 'Distinguished Master of Sport.'" },
-    { "name": "Olga Rubtsova", "meta": "Russia (USSR) · 1909–1994 · Third Women's World Champion", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Soviet chess master and Women's World Champion (1956-1958). Rubtsova played at the top of women's chess for over three decades and also excelled at correspondence chess." },
-    { "name": "Elisabeth Bykova", "meta": "Russia (USSR) · 1913–1989 · Fourth Women's World Champion", "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Opening_Danlonlustrumschaaktoernooi%2C_E._Bykowa_%2C_wereldkampioen_USSR%2C_Bestanddeelnr_911-7095.jpg/500px-Opening_Danlonlustrumschaaktoernooi%2C_E._Bykowa_%2C_wereldkampioen_USSR%2C_Bestanddeelnr_911-7095.jpg", "imageAlt": "Elisabeth Bykova", "imageCaption": "Elisabeth Bykova, the fourth Women's World Champion.", "bio": "Soviet chess master and Women's World Champion 1953-1956 and 1958-1962. Bykova was the first woman to receive the International Master title and shaped Soviet women's chess for decades." },
-    { "name": "Nona Gaprindashvili", "meta": "Georgia (USSR) · b. 1941 · Fifth Women's World Champion", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Georgian grandmaster and Women's World Champion 1962-1978. The first woman to receive the open grandmaster title (1978). A national hero in Georgia who shaped a generation of female players." },
-    { "name": "Maia Chiburdanidze", "meta": "Georgia (USSR) · b. 1961 · Sixth Women's World Champion", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Georgian grandmaster who at age 17 in 1978 became the youngest Women's World Champion in history, holding the title until 1991. Earned the open grandmaster title in 1984." },
-    { "name": "Sammy Reshevsky", "meta": "United States (born Poland) · 1911–1992 · The Eternal Contender", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Polish-American grandmaster who was a child prodigy giving simultaneous exhibitions across Europe at age six. The strongest American player for decades, winning eight US Championships." },
-    { "name": "Lajos Portisch", "meta": "Hungary · b. 1937 · The Hungarian Botvinnik", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Hungarian grandmaster who was a fixture in the world's top 10 for over two decades from the 1960s to 80s. Known as the 'Hungarian Botvinnik' for his deep opening preparation and classical positional style." },
-    { "name": "Friedrich Sämisch", "meta": "Germany · 1896–1975 · The Theoretician", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "German chess master and prolific theoretician. The Sämisch Variation of the Nimzo-Indian and the Sämisch System against the King's Indian both bear his name. Known for chronic time-trouble in his later years." },
-    { "name": "Wolfgang Heidenfeld", "meta": "Germany / South Africa / Ireland · 1911–1981 · Chess Across Continents", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "German-born chess master who lived in South Africa and Ireland. International Master and noted chess writer, Heidenfeld's books are still read for their wit and clarity." },
-    { "name": "Petar Trifunović", "meta": "Yugoslavia (Serbia) · 1910–1980 · Master of the Drawn Game", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Yugoslav grandmaster and four-time Yugoslav Champion. Known for his solid, drawish style and his contributions to Yugoslav chess theory in the 1950s." },
-    { "name": "Svetozar Gligorić", "meta": "Yugoslavia (Serbia) · 1923–2012 · The Yugoslav Champion", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Yugoslav grandmaster and 12-time Yugoslav Champion. Reached the Candidates stage three times. Gligorić's name is associated with multiple opening variations including the Gligorić System in the King's Indian." },
-    { "name": "David Bronstein", "meta": "Ukraine (USSR) · 1924–2006 · Magician of the Soviet School", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Soviet grandmaster who tied his 1951 World Championship match against Botvinnik 12-12, narrowly missing the title. His book Zurich International Chess Tournament 1953 is considered one of the finest chess books ever written." },
-    { "name": "Viktor Korchnoi", "meta": "Switzerland (born USSR) · 1931–2016 · The Eternal Challenger", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Soviet-Swiss grandmaster who challenged Karpov for the World Championship in 1978 and 1981. Defected from the USSR in 1976. Played at the highest level for nearly six decades — into his 80s." },
-    { "name": "Mikhail Botvinnik (the school)", "meta": "Russia (USSR) · est. 1963 · The Soviet Chess Factory", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "The chess school founded by Mikhail Botvinnik in 1963 trained the next three Soviet World Champions: Anatoly Karpov, Garry Kasparov, and Vladimir Kramnik. The school's methodical, scientific approach to preparation shaped how every modern professional studies the game." },
-    { "name": "Saviely Tartakower", "meta": "Russia / France · 1887–1956 · The Sage of Chess", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Polish-French chess master, journalist, and author of countless witty chess aphorisms. Tartakower was a top player for three decades and a beloved chess writer whose maxims are still quoted today." },
-    { "name": "Esteban Canal", "meta": "Peru / Italy · 1896–1981 · Chess Across Continents", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Peruvian-Italian chess master and FIDE Honorary Grandmaster. Canal toured the world giving simultaneous exhibitions and tournament play. Known for the 'Canal-Sokolsky Variation' of the Sicilian." },
-    { "name": "Cecil Purdy", "meta": "Australia · 1906–1979 · The First Correspondence Champion", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Australian international master who in 1953 became the first World Correspondence Chess Champion. A respected chess writer, Purdy's books and magazine columns shaped chess instruction in the English-speaking world." },
-    { "name": "Hans Kmoch", "meta": "Austria / United States · 1894–1973 · The Pawn Power Author", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Austrian-American chess master and author of the influential 1959 book Pawn Power in Chess. Kmoch's work introduced new terminology for pawn structures that is still used in chess literature today." },
-    { "name": "Reuben Fine", "meta": "United States · 1914–1993 · The Forgotten Champion", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "American grandmaster who tied for first at the 1938 AVRO tournament — the strongest tournament of its time. Fine declined the 1948 World Championship tournament and became a noted Freudian psychoanalyst." },
-    { "name": "Isaac Kashdan", "meta": "United States · 1905–1985 · The American Capablanca", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "American grandmaster who in the early 1930s was rated number two in the world behind Alekhine. The Great Depression cut his playing career short. Later edited Chess Review magazine." },
-    { "name": "Edward Lasker", "meta": "Germany / United States · 1885–1981 · Distant Cousin of Emanuel", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "German-American chess master (distant cousin of World Champion Emanuel Lasker). Edward Lasker won the American Chess Congress in 1923 and authored several classic chess books including Chess Strategy." },
-    { "name": "Géza Maróczy", "meta": "Hungary · 1870–1951 · The Hungarian Strategist", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Hungarian chess master who was among the world's top three in the early 1900s. The 'Maróczy Bind' — a pawn structure with c4 and e4 against the Sicilian — bears his name. He nearly played a World Championship match with Lasker." },
-    { "name": "Akiba Rubinstein", "meta": "Poland · 1880–1961 · The Eternal Almost", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Polish grandmaster widely considered the strongest player never to play for the World Championship. His 1914 title match with Lasker was cancelled by the First World War. His endgame technique set the standard that every modern master would aspire to." },
-    { "name": "Salo Landau", "meta": "Netherlands · 1903–1944 · Lost in the War", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Dutch chess master and one of the strongest players in the Netherlands in the 1930s. Landau, who was Jewish, was deported by the Nazis and killed in a German labor camp in 1944. His memory is honored at every modern Dutch chess tournament." },
-    { "name": "Vassily Panov", "meta": "Russia (USSR) · 1906–1973 · The Panov-Botvinnik", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Soviet master and theoretician whose 1933 analysis with Mikhail Botvinnik produced the Panov-Botvinnik Attack against the Caro-Kann. Panov wrote influential chess books in Russian that remain standard references." },
-    { "name": "Vladimir Petrov", "meta": "Latvia · 1907–1943 · The Latvian Master", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Latvian chess master who was among the world's top 20 in the late 1930s. Arrested by the Soviet NKVD in 1942 during the Soviet occupation of Latvia, Petrov died in a Soviet prison camp in 1943." },
-    { "name": "Erich Eliskases", "meta": "Austria / Germany / Argentina · 1913–1997 · Chess in Exile", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Austrian grandmaster who, having traveled to Argentina with the German team for the 1939 Buenos Aires Olympiad, was stranded by the outbreak of World War II and remained in South America. Played at the highest level for over four decades." },
-    { "name": "Miguel Najdorf", "meta": "Poland / Argentina · 1910–1997 · The Najdorf", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Polish-Argentine grandmaster who, like Eliskases, was stranded in Argentina by the outbreak of World War II. The Najdorf Variation of the Sicilian Defence is named after him. Famous for his blindfold exhibitions — including a 45-board world record." },
-    { "name": "Henrique Mecking", "meta": "Brazil · b. 1952 · The First South American Star", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Brazilian grandmaster who reached world number three in 1977. 'Mequinho' was a child prodigy and the first South American to truly contest the world title. Severe health problems forced him away from chess for over a decade." },
-    { "name": "Vasja Pirc", "meta": "Slovenia (Yugoslavia) · 1907–1980 · The Pirc Defence", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Slovenian grandmaster who developed the Pirc Defence (1.e4 d6 followed by …g6 and …Bg7). Pirc was a top Yugoslav player for decades and contributed important theoretical analysis to multiple openings." },
-    { "name": "Wolfgang Unzicker", "meta": "Germany · 1925–2006 · Mr. Reliable", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "German grandmaster who was the strongest West German player from the 1950s through the 1970s. A consistent top-20 player known for his solid, classical style and his career as a lawyer alongside chess." },
-    { "name": "Borislav Ivkov", "meta": "Yugoslavia (Serbia) · 1933–2022 · First World Junior Champion", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Yugoslav grandmaster who in 1951 won the first World Junior Championship in Birmingham. A top-20 player for two decades and a noted Yugoslav champion." },
-    { "name": "Béla Berger", "meta": "Hungary · 1881–1957 · Tiebreak Inventor", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Hungarian chess master who codified the Berger tiebreak system used in many tournaments. (Often confused with the Austrian master Johann Berger after whom the Sonneborn-Berger tiebreak is named.)" },
-    { "name": "Lothar Schmid", "meta": "Germany · 1928–2013 · The Reykjavik Arbiter", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "German grandmaster, publisher (Karl May Verlag), and chief arbiter of the 1972 Fischer-Spassky World Championship in Reykjavik. Schmid's calm authority kept the match alive through Fischer's repeated dramas." },
-    { "name": "Mark Dvoretsky", "meta": "Russia · 1947–2016 · The Master Coach", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Russian international master and the most celebrated chess trainer of the modern era. Dvoretsky coached dozens of grandmasters and authored landmark books including Dvoretsky's Endgame Manual." },
-    { "name": "Lev Psakhis", "meta": "Latvia (USSR) / Israel · b. 1958 · The French Defender", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Soviet-Israeli grandmaster who twice won the USSR Championship (1980, 1981). A noted theoretician and author of French Defence books that remain standard references." },
-    { "name": "Boris Gulko", "meta": "Russia / United States · b. 1947 · USSR Champion and US Champion", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Soviet-American grandmaster — the only player to win both the USSR Championship (1977) and the US Championship (1994, 1999). Gulko emigrated to the United States in 1986 after years of Soviet repression." },
-    { "name": "Roman Dzindzichashvili", "meta": "Georgia / Israel / United States · b. 1944 · The Roving Master", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "Georgian grandmaster who played for the USSR, Israel, and the United States across his career. US Champion in 1989. A noted theoretician and now a popular chess YouTube creator." },
-    { "name": "John Watson", "meta": "United States · b. 1951 · The Modern Theoretician", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "American international master and one of the most prolific chess authors of the modern era. Watson's Secrets of Modern Chess Strategy (1998) updated Nimzowitsch's classical work for the engine era." },
-    { "name": "Jonathan Speelman", "meta": "England · b. 1956 · The Endgame Specialist", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "English grandmaster and Cambridge mathematics graduate. Speelman reached the Candidates Tournament in 1989. A noted endgame author and chess columnist for The Observer." },
-    { "name": "Tony Miles", "meta": "England · 1955–2001 · England's First GM", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "First English grandmaster (1976). Miles famously defeated Anatoly Karpov in 1980 with the unusual 1.e4 a6 (Owen's Defence reversed). A top English player for two decades who died young of complications from diabetes." },
-    { "name": "Murray Chandler", "meta": "New Zealand / England · b. 1960 · The Pacific Grandmaster", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "New Zealand-born English grandmaster and chess publisher. Chandler's Gambit Publications and his books for young players (How to Beat Your Dad at Chess) introduced generations to serious chess study." },
-    { "name": "Raymond Keene", "meta": "England · b. 1948 · The Chess Journalist", "imageUrl": "", "imageAlt": "", "imageCaption": "", "bio": "English grandmaster, chess journalist, and chess organizer. Keene helped organize major tournaments and World Championship matches in the 1980s-2000s and wrote the daily chess column for The Times for decades." }
+    {
+      "name": "Louis-Charles Mahé de La Bourdonnais",
+      "meta": "France · 1795–1840 · The Unofficial Champion",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a3/Louisdelabourdonnais.jpg",
+      "imageAlt": "Louis-Charles Mahé de La Bourdonnais — portrait",
+      "imageCaption": "",
+      "bio": "French chess master generally regarded as the strongest player in the world during the 1820s and 30s. Famous for his 1834 match against Alexander McDonnell of Britain — 85 games played in London over months, the first major international match recorded move by move. La Bourdonnais died in poverty in London at age 45."
+    },
+    {
+      "name": "Alexander McDonnell",
+      "meta": "Ireland · 1798–1835 · The Belfast Master",
+      "imageUrl": "",
+      "imageAlt": "",
+      "imageCaption": "",
+      "bio": "Irish-born chess master who in 1834 played the legendary 85-game match against La Bourdonnais — one of the foundational events in modern chess history. McDonnell died at age 36, shortly after the match concluded."
+    },
+    {
+      "name": "Pierre Saint-Amant",
+      "meta": "France · 1800–1872 · Staunton's Rival",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Pierre_St_Amant_c1860.JPG/330px-Pierre_St_Amant_c1860.JPG",
+      "imageAlt": "Pierre Saint-Amant — portrait",
+      "imageCaption": "",
+      "bio": "French chess master who in 1843 played a famous match in Paris against Howard Staunton of England. Saint-Amant edited the world's first chess magazine, Le Palamède, and helped establish chess as an internationally followed sport in the mid-nineteenth century."
+    },
+    {
+      "name": "Daniel Harrwitz",
+      "meta": "Germany · 1823–1884 · Romantic-Era Master",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Harrwitz2.jpg/330px-Harrwitz2.jpg",
+      "imageAlt": "Daniel Harrwitz — portrait",
+      "imageCaption": "",
+      "bio": "German chess master who played in many of the strongest European events of the mid-nineteenth century. Lost a famous match to Paul Morphy in Paris in 1858 and authored several important opening books."
+    },
+    {
+      "name": "Johannes Zukertort",
+      "meta": "Poland / Germany / England · 1842–1888 · Steinitz's Rival",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Zukertort%2C_Johannes_Hermann_%22-1%22_-_DPLA_-_178f6bd2074f2347becb2e4ebeabd45b_%28cropped%29.jpg/330px-Zukertort%2C_Johannes_Hermann_%22-1%22_-_DPLA_-_178f6bd2074f2347becb2e4ebeabd45b_%28cropped%29.jpg",
+      "imageAlt": "Johannes Zukertort — portrait",
+      "imageCaption": "",
+      "bio": "Polish-born German chess master who lost the first official World Championship match to Wilhelm Steinitz in 1886 (United States). Zukertort was considered one of the two best players in the world for much of the 1880s."
+    },
+    {
+      "name": "Mikhail Chigorin",
+      "meta": "Russia · 1850–1908 · Father of Russian Chess",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/%D0%9C%D0%B8%D1%85%D0%B0%D0%B8%D0%BB_%D0%98%D0%B2%D0%B0%D0%BD%D0%BE%D0%B2%D0%B8%D1%87_%D0%A7%D0%B8%D0%B3%D0%BE%D1%80%D0%B8%D0%BD.jpg/330px-%D0%9C%D0%B8%D1%85%D0%B0%D0%B8%D0%BB_%D0%98%D0%B2%D0%B0%D0%BD%D0%BE%D0%B2%D0%B8%D1%87_%D0%A7%D0%B8%D0%B3%D0%BE%D1%80%D0%B8%D0%BD.jpg",
+      "imageAlt": "Mikhail Chigorin — portrait",
+      "imageCaption": "",
+      "bio": "Russian master who played two World Championship matches against Steinitz (1889 in Havana, 1892 in Havana). Chigorin's romantic, attacking style shaped a century of Russian chess, and is often called the founder of the Russian chess school."
+    },
+    {
+      "name": "Siegbert Tarrasch",
+      "meta": "Germany · 1862–1934 · Praeceptor Germaniae",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Tarrasch%2C_Siegbert-2_-_DPLA_-_224f35dc323734bf355cc7c94d0ded68_%28cropped%29.jpg/330px-Tarrasch%2C_Siegbert-2_-_DPLA_-_224f35dc323734bf355cc7c94d0ded68_%28cropped%29.jpg",
+      "imageAlt": "Siegbert Tarrasch — portrait",
+      "imageCaption": "",
+      "bio": "German chess master and physician known as the 'Praeceptor Germaniae' (Teacher of Germany). Tarrasch's classical principles dominated chess thinking in the early twentieth century. He played a World Championship match against Lasker in 1908."
+    },
+    {
+      "name": "Frank Marshall",
+      "meta": "United States · 1877–1944 · The American Champion",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/en/d/d0/FrankMarshall.jpg",
+      "imageAlt": "Frank Marshall — portrait",
+      "imageCaption": "",
+      "bio": "American chess master and United States Chess Champion from 1909 to 1936. Marshall founded the Marshall Chess Club in New York in 1915 — still one of the world's most famous chess clubs. His 1918 'Marshall Attack' in the Ruy Lopez bears his name."
+    },
+    {
+      "name": "Carl Schlechter",
+      "meta": "Austria · 1874–1918 · The Drawing Master",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Schlechter%2C_Carl_1896_-_DPLA_-_832da5245429c37f5e2ffcdf1fa3b902_%28cropped%29.jpg",
+      "imageAlt": "Carl Schlechter — portrait",
+      "imageCaption": "",
+      "bio": "Austrian chess master who came within one game of the 1910 World Championship against Lasker — drawing the match 5-5. Schlechter was famous for his solid, drawish style. He died in Budapest in 1918 from malnutrition during the post-war chaos."
+    },
+    {
+      "name": "Géza Maróczy",
+      "meta": "Hungary · 1870–1951 · The Maróczy Bind",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/6/61/Gezamaroczy.jpg",
+      "imageAlt": "Géza Maróczy — portrait",
+      "imageCaption": "",
+      "bio": "Hungarian chess master who was among the world's top three players in the early 1900s. The 'Maróczy Bind' — a pawn structure with c4 and e4 against the Sicilian — bears his name. He nearly played a World Championship match with Lasker."
+    },
+    {
+      "name": "Richard Réti",
+      "meta": "Czechoslovakia · 1889–1929 · Founder of Hypermodernism",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/0/06/RichardReti.jpg",
+      "imageAlt": "Richard Réti — portrait",
+      "imageCaption": "",
+      "bio": "Czech-Hungarian chess master and theorist who led the hypermodern revolution in the 1920s alongside Nimzowitsch. His 1924 defeat of Capablanca in New York ended Capablanca's eight-year unbeaten streak. The Réti Opening (1.Nf3) is named after him."
+    },
+    {
+      "name": "Savielly Tartakower",
+      "meta": "Poland / France · 1887–1956 · The Sage",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/f/ff/Ksawery_Tartakower.jpg",
+      "imageAlt": "Savielly Tartakower — portrait",
+      "imageCaption": "",
+      "bio": "Polish-French chess master, journalist, and author of countless witty chess aphorisms. Tartakower was a top player for three decades and a beloved chess writer. The Tartakower Variation in the Queen's Gambit Declined is named after him."
+    },
+    {
+      "name": "Rudolf Spielmann",
+      "meta": "Austria · 1883–1942 · The Last Romantic",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/en/5/50/RudolfSpielmann.jpg",
+      "imageAlt": "Rudolf Spielmann — portrait",
+      "imageCaption": "",
+      "bio": "Austrian chess master known as the 'last knight of the King's Gambit.' Spielmann played in the romantic, attacking style of the nineteenth century even as positional chess took over. He died in Stockholm during the Second World War."
+    },
+    {
+      "name": "Akiba Rubinstein",
+      "meta": "Poland · 1880–1961 · The Unfortunate Genius",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/2/2e/Akiba-RubinsteinC.jpg",
+      "imageAlt": "Akiba Rubinstein — portrait",
+      "imageCaption": "",
+      "bio": "Polish grandmaster widely considered the strongest player never to play for the World Championship. In 1912 he finished first in five consecutive major tournaments. A 1914 title match with Lasker was cancelled by the First World War. Suffered from severe agoraphobia in later life."
+    },
+    {
+      "name": "Ossip Bernstein",
+      "meta": "Ukraine / France · 1882–1962 · The Lawyer-Champion",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/d/dc/Bernstein_Ossip.jpg",
+      "imageAlt": "Ossip Bernstein — portrait",
+      "imageCaption": "",
+      "bio": "Ukrainian-French chess master, lawyer, and businessman. Bernstein was among the world's top 10 in the early 1900s and continued playing into his 70s, drawing famously with Botvinnik in 1954. He fled the Russian Revolution and later Nazi-occupied France."
+    },
+    {
+      "name": "Salo Flohr",
+      "meta": "Czechoslovakia / USSR · 1908–1983 · The Tactician",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Salo_Flohr_1933.jpg/330px-Salo_Flohr_1933.jpg",
+      "imageAlt": "Salo Flohr — portrait",
+      "imageCaption": "",
+      "bio": "Czech-Soviet chess master who was considered an heir-apparent to Alekhine in the late 1930s. The planned 1939 Flohr-Alekhine title match was cancelled by the Second World War. Flohr later moved to the Soviet Union and became a respected chess journalist."
+    },
+    {
+      "name": "Reuben Fine",
+      "meta": "United States · 1914–1993 · The Triple Master",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Reuben_Fine_%281961%29.jpg/330px-Reuben_Fine_%281961%29.jpg",
+      "imageAlt": "Reuben Fine — portrait",
+      "imageCaption": "",
+      "bio": "American grandmaster who tied for first at the 1938 AVRO tournament — at the time the strongest tournament ever held. Fine declined to participate in the 1948 World Championship tournament and devoted himself to psychology, becoming a noted Freudian analyst."
+    },
+    {
+      "name": "Samuel Reshevsky",
+      "meta": "United States (born Poland) · 1911–1992 · The Prodigy",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Samuel_Reshevsky_1964.jpg/330px-Samuel_Reshevsky_1964.jpg",
+      "imageAlt": "Samuel Reshevsky — portrait",
+      "imageCaption": "",
+      "bio": "Polish-American grandmaster who was a child prodigy giving simultaneous exhibitions across Europe at age six. Reshevsky was the strongest American player for decades, winning the US Championship eight times. Played in multiple Candidates Tournaments."
+    },
+    {
+      "name": "Paul Keres",
+      "meta": "Estonia (USSR) · 1916–1975 · Paul the Second",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Paul_Keres.jpg/330px-Paul_Keres.jpg",
+      "imageAlt": "Paul Keres — portrait",
+      "imageCaption": "",
+      "bio": "Estonian grandmaster known as 'Paul the Second' — runner-up to four world champions across his career. Keres came tantalizingly close to the title many times but never quite reached it. A national hero in Estonia, his face appears on the 5 kroon banknote."
+    },
+    {
+      "name": "Mikhail Botvinnik",
+      "meta": "Russia (USSR) · 1911–1995 · Patriarch of Soviet Chess",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Mikhail_Botvinnik_1962.jpg/330px-Mikhail_Botvinnik_1962.jpg",
+      "imageAlt": "Mikhail Botvinnik — portrait",
+      "imageCaption": "",
+      "bio": "Sixth World Champion and the patriarch of the Soviet chess school. Botvinnik held the title in three separate stints. After retiring, he ran the school in Moscow that trained Karpov, Kasparov, and Kramnik. His methodical approach shaped modern professional chess."
+    },
+    {
+      "name": "Vasily Smyslov",
+      "meta": "Russia (USSR) · 1921–2010 · The Endgame Master",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Interpolisschaaktoernooi_Tilburg_1819_Smyslov_aan_zet%2C_Bestanddeelnr_929-3630.jpg/330px-Interpolisschaaktoernooi_Tilburg_1819_Smyslov_aan_zet%2C_Bestanddeelnr_929-3630.jpg",
+      "imageAlt": "Vasily Smyslov — portrait",
+      "imageCaption": "",
+      "bio": "Soviet grandmaster, World Champion 1957-1958, and trained operatic baritone. Smyslov is widely considered one of the greatest endgame players in history. He remained competitive at the elite level into his sixties."
+    },
+    {
+      "name": "Mikhail Tal",
+      "meta": "Latvia (USSR) · 1936–1992 · The Magician from Riga",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Mikhail_Tal_1962.jpg/330px-Mikhail_Tal_1962.jpg",
+      "imageAlt": "Mikhail Tal — portrait",
+      "imageCaption": "",
+      "bio": "Eighth World Champion (1960-1961), known as 'The Magician from Riga.' Tal played the most spectacular attacking chess of his era, sacrificing material at every opportunity. Chronic poor health shortened his career but he remained a beloved figure until his death."
+    },
+    {
+      "name": "Tigran Petrosian",
+      "meta": "Armenia (USSR) · 1929–1984 · The Iron Tigran",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Tigran_Petrosian_1962.jpg/330px-Tigran_Petrosian_1962.jpg",
+      "imageAlt": "Tigran Petrosian — portrait",
+      "imageCaption": "",
+      "bio": "Ninth World Champion (1963-1969). Born in Tbilisi to an Armenian family, Petrosian's prophylactic style — anticipating threats before they materialized — was so distinctive that the 'Petrosian style' is still taught today."
+    },
+    {
+      "name": "Mark Taimanov",
+      "meta": "Russia (USSR) · 1926–2016 · Pianist and Grandmaster",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Hoogovens_Schaaktoernooi.%2C_Bestanddeelnr_923-1804.jpg/330px-Hoogovens_Schaaktoernooi.%2C_Bestanddeelnr_923-1804.jpg",
+      "imageAlt": "Mark Taimanov — portrait",
+      "imageCaption": "",
+      "bio": "Soviet grandmaster and concert pianist who lost a famous 1971 Candidates match 6-0 to Bobby Fischer. Despite that loss, Taimanov was a top-10 player for many years. The Sicilian Taimanov bears his name."
+    },
+    {
+      "name": "Bent Larsen",
+      "meta": "Denmark · 1935–2010 · The Great Dane",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/De_Deen_Larsen%2C_Bestanddeelnr_929-0503.jpg/330px-De_Deen_Larsen%2C_Bestanddeelnr_929-0503.jpg",
+      "imageAlt": "Bent Larsen — portrait",
+      "imageCaption": "",
+      "bio": "Danish grandmaster who reached world number three in the 1970s. Famous for his Larsen Opening (1.b3) and for his uncompromising fighting spirit. The first non-Soviet to win a Candidates Tournament event in the post-war era."
+    },
+    {
+      "name": "Henrique Mecking",
+      "meta": "Brazil · b. 1952 · Mequinho",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Henrique_Mecking_1978.jpg/330px-Henrique_Mecking_1978.jpg",
+      "imageAlt": "Henrique Mecking — portrait",
+      "imageCaption": "",
+      "bio": "Brazilian grandmaster who reached world number three in 1977. Mecking was a child prodigy and the first South American to truly contest the world title. Severe health problems forced him away from chess for over a decade."
+    },
+    {
+      "name": "Lev Polugaevsky",
+      "meta": "Russia (USSR) · 1934–1995 · The Specialist",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Lev_Polugaevsky_1972_%28cropped%29.jpg/330px-Lev_Polugaevsky_1972_%28cropped%29.jpg",
+      "imageAlt": "Lev Polugaevsky — portrait",
+      "imageCaption": "",
+      "bio": "Soviet grandmaster who dedicated himself to one Sicilian variation — the Polugaevsky Variation of the Najdorf — for decades. A multi-time Candidates participant and one of the most respected theoreticians of his era."
+    },
+    {
+      "name": "Boris Spassky",
+      "meta": "Russia · b. 1937 · The Tenth Champion",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Dhr._Boris_Spassky%2C_Bestanddeelnr_932-7320.jpg/330px-Dhr._Boris_Spassky%2C_Bestanddeelnr_932-7320.jpg",
+      "imageAlt": "Boris Spassky — portrait",
+      "imageCaption": "",
+      "bio": "Tenth World Champion (1969-1972). Spassky's 1972 defeat by Bobby Fischer in Reykjavik became the most-watched chess event in history. Famously generous in defeat, he applauded Fischer at the close of the match. Defected to France in 1976."
+    },
+    {
+      "name": "Anatoly Karpov",
+      "meta": "Russia · b. 1951 · The Twelfth Champion",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Anatoly_Karpov_2017_april.jpg/330px-Anatoly_Karpov_2017_april.jpg",
+      "imageAlt": "Anatoly Karpov — portrait",
+      "imageCaption": "",
+      "bio": "World Champion from 1975 (after Fischer's refusal to defend) until 1985, when he lost to Kasparov. Karpov's positional style is the textbook of patient piece play. His 1984 match against Kasparov was abandoned after 48 games — still the longest title match."
+    },
+    {
+      "name": "Garry Kasparov",
+      "meta": "Russia · b. 1963 · The Thirteenth Champion",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Garri_Kasparow_%2818776605665%29_%28cropped%29_2.jpg/330px-Garri_Kasparow_%2818776605665%29_%28cropped%29_2.jpg",
+      "imageAlt": "Garry Kasparov — portrait",
+      "imageCaption": "",
+      "bio": "World Champion from 1985 to 2000. Kasparov dominated chess for fifteen years with a fighting, attacking style and is widely regarded as one of the two greatest players of all time. His 1997 loss to Deep Blue marked the moment computers overtook humans."
+    },
+    {
+      "name": "Bobby Fischer",
+      "meta": "United States · 1943–2008 · The Reykjavik Champion",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Bobby_Fischer_1972.jpg/330px-Bobby_Fischer_1972.jpg",
+      "imageAlt": "Bobby Fischer — portrait",
+      "imageCaption": "",
+      "bio": "American grandmaster whose 1972 World Championship victory over Spassky became a defining Cold War moment. Fischer is widely considered the greatest natural talent the game has ever produced; he was US Champion at fourteen. After winning, he refused to defend the title."
+    },
+    {
+      "name": "Vladimir Kramnik",
+      "meta": "Russia · b. 1975 · The Fourteenth Champion",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c6/Vladimir_Kramnik_2%2C_Candidates_Tournament_2018.jpg",
+      "imageAlt": "Vladimir Kramnik — portrait",
+      "imageCaption": "",
+      "bio": "World Champion 2000-2007 after defeating Kasparov in London. Kramnik's deep opening preparation reshaped how the elite study the game. His use of the Berlin Defence in 2000 changed Ruy Lopez theory permanently."
+    },
+    {
+      "name": "Viswanathan Anand",
+      "meta": "India · b. 1969 · The Fifteenth Champion",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Viswanathan_Anand_%282016%29_%28cropped%29.jpeg/330px-Viswanathan_Anand_%282016%29_%28cropped%29.jpeg",
+      "imageAlt": "Viswanathan Anand — portrait",
+      "imageCaption": "",
+      "bio": "Indian World Champion 2007-2013. 'Vishy' was the first grandmaster from India and almost single-handedly transformed his country into a chess powerhouse. Five-time world champion in different formats."
+    },
+    {
+      "name": "Magnus Carlsen",
+      "meta": "Norway · b. 1990 · The Sixteenth Champion",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Magnus_Carlsen_in_2025.jpg/330px-Magnus_Carlsen_in_2025.jpg",
+      "imageAlt": "Magnus Carlsen — portrait",
+      "imageCaption": "",
+      "bio": "Norwegian grandmaster, World Champion 2013-2023, and holder of the highest rating ever recorded (2882). Carlsen voluntarily relinquished his title in 2023 but has remained the world's top-ranked player on every published list since 2011 — the longest streak in history."
+    },
+    {
+      "name": "Hans Berliner",
+      "meta": "United States · 1929–2017 · The Correspondence Master",
+      "imageUrl": "",
+      "imageAlt": "",
+      "imageCaption": "",
+      "bio": "American international master who won the Fifth World Correspondence Chess Championship (1965-1968) by a record margin. Berliner later became a pioneer of computer chess at Carnegie Mellon, creating Hitech, the first computer to defeat a human grandmaster in a regular tournament game."
+    },
+    {
+      "name": "Pal Benko",
+      "meta": "Hungary / United States · 1928–2019 · Master of the Endgame",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Pal_Benko_1964.jpg/330px-Pal_Benko_1964.jpg",
+      "imageAlt": "Pal Benko — portrait",
+      "imageCaption": "",
+      "bio": "Hungarian-American grandmaster, composer of chess problems, and theoretician. Benko's name is on the Benko Gambit and on countless endgame studies. He gave his place in the 1970 Interzonal to Bobby Fischer, helping launch Fischer toward the world title."
+    },
+    {
+      "name": "Walter Browne",
+      "meta": "United States (born Australia) · 1949–2015 · Six-Time US Champion",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Walter_Browne_1975.jpg/330px-Walter_Browne_1975.jpg",
+      "imageAlt": "Walter Browne — portrait",
+      "imageCaption": "",
+      "bio": "American grandmaster who won the US Championship six times. Known for his ferocious time-trouble play and his founding of the World Blitz Chess Association in the 1980s."
+    },
+    {
+      "name": "Aron Nimzowitsch",
+      "meta": "Latvia / Denmark · 1886–1935 · The Hypermodernist",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/0/0f/Aron_Nimzowitsch.jpg",
+      "imageAlt": "Aron Nimzowitsch — portrait",
+      "imageCaption": "",
+      "bio": "Latvian-Danish grandmaster who in the 1920s led a revolution against classical chess principles. His book My System (1925) introduced hypermodern ideas: control the center with pieces from a distance. The Nimzo-Indian Defence is named after him."
+    },
+    {
+      "name": "Géza Révész",
+      "meta": "Hungary · 1878–1955 · The Chess Psychologist",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/en/6/68/ReveszGeza.gif",
+      "imageAlt": "Géza Révész — portrait",
+      "imageCaption": "",
+      "bio": "Hungarian-Dutch psychologist whose 1929 book Talent und Genie (Talent and Genius) included one of the earliest scientific studies of chess masters' cognition. A pioneer of chess psychology."
+    },
+    {
+      "name": "Lyudmila Rudenko",
+      "meta": "Ukraine (USSR) · 1904–1986 · Second Women's World Champion",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f9/Lyudmila_Rudenko.jpg",
+      "imageAlt": "Lyudmila Rudenko — portrait",
+      "imageCaption": "",
+      "bio": "Soviet Ukrainian chess master and the second Women's World Champion (1950-1953), winning the title after Vera Menchik's death. Rudenko was honored with the Soviet title 'Distinguished Master of Sport.'"
+    },
+    {
+      "name": "Olga Rubtsova",
+      "meta": "Russia (USSR) · 1909–1994 · Third Women's World Champion",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Olga_Rubtsova.jpeg/330px-Olga_Rubtsova.jpeg",
+      "imageAlt": "Olga Rubtsova — portrait",
+      "imageCaption": "",
+      "bio": "Soviet chess master and Women's World Champion (1956-1958). Rubtsova played at the top of women's chess for over three decades and also excelled at correspondence chess."
+    },
+    {
+      "name": "Elisabeth Bykova",
+      "meta": "Russia (USSR) · 1913–1989 · Fourth Women's World Champion",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Opening_Danlonlustrumschaaktoernooi%2C_E._Bykowa_%2C_wereldkampioen_USSR%2C_Bestanddeelnr_911-7095.jpg/500px-Opening_Danlonlustrumschaaktoernooi%2C_E._Bykowa_%2C_wereldkampioen_USSR%2C_Bestanddeelnr_911-7095.jpg",
+      "imageAlt": "Elisabeth Bykova",
+      "imageCaption": "Elisabeth Bykova, the fourth Women's World Champion.",
+      "bio": "Soviet chess master and Women's World Champion 1953-1956 and 1958-1962. Bykova was the first woman to receive the International Master title and shaped Soviet women's chess for decades."
+    },
+    {
+      "name": "Nona Gaprindashvili",
+      "meta": "Georgia (USSR) · b. 1941 · Fifth Women's World Champion",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Wereldkampioene_schaken_de_Russin_Nona_Geprindasjwili_op_Schiphol_%28kop%29%2C_Bestanddeelnr_914-7094_%28cropped%29.jpg/330px-Wereldkampioene_schaken_de_Russin_Nona_Geprindasjwili_op_Schiphol_%28kop%29%2C_Bestanddeelnr_914-7094_%28cropped%29.jpg",
+      "imageAlt": "Nona Gaprindashvili — portrait",
+      "imageCaption": "",
+      "bio": "Georgian grandmaster and Women's World Champion 1962-1978. The first woman to receive the open grandmaster title (1978). A national hero in Georgia who shaped a generation of female players."
+    },
+    {
+      "name": "Maia Chiburdanidze",
+      "meta": "Georgia (USSR) · b. 1961 · Sixth Women's World Champion",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Maia_Tschiburdanidse_1984_Saloniki.jpg/330px-Maia_Tschiburdanidse_1984_Saloniki.jpg",
+      "imageAlt": "Maia Chiburdanidze — portrait",
+      "imageCaption": "",
+      "bio": "Georgian grandmaster who at age 17 in 1978 became the youngest Women's World Champion in history, holding the title until 1991. Earned the open grandmaster title in 1984."
+    },
+    {
+      "name": "Sammy Reshevsky",
+      "meta": "United States (born Poland) · 1911–1992 · The Eternal Contender",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Samuel_Reshevsky_1964.jpg/330px-Samuel_Reshevsky_1964.jpg",
+      "imageAlt": "Sammy Reshevsky — portrait",
+      "imageCaption": "",
+      "bio": "Polish-American grandmaster who was a child prodigy giving simultaneous exhibitions across Europe at age six. The strongest American player for decades, winning eight US Championships."
+    },
+    {
+      "name": "Lajos Portisch",
+      "meta": "Hungary · b. 1937 · The Hungarian Botvinnik",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Lajos_Portisch_1968color.jpg/330px-Lajos_Portisch_1968color.jpg",
+      "imageAlt": "Lajos Portisch — portrait",
+      "imageCaption": "",
+      "bio": "Hungarian grandmaster who was a fixture in the world's top 10 for over two decades from the 1960s to 80s. Known as the 'Hungarian Botvinnik' for his deep opening preparation and classical positional style."
+    },
+    {
+      "name": "Friedrich Sämisch",
+      "meta": "Germany · 1896–1975 · The Theoretician",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/5/51/Friedrich_Saemisch_%28chess_player%29.jpg",
+      "imageAlt": "Friedrich Sämisch — portrait",
+      "imageCaption": "",
+      "bio": "German chess master and prolific theoretician. The Sämisch Variation of the Nimzo-Indian and the Sämisch System against the King's Indian both bear his name. Known for chronic time-trouble in his later years."
+    },
+    {
+      "name": "Wolfgang Heidenfeld",
+      "meta": "Germany / South Africa / Ireland · 1911–1981 · Chess Across Continents",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Wolfgang_Heidenfeld_1960_Hessen_ArM.jpg/330px-Wolfgang_Heidenfeld_1960_Hessen_ArM.jpg",
+      "imageAlt": "Wolfgang Heidenfeld — portrait",
+      "imageCaption": "",
+      "bio": "German-born chess master who lived in South Africa and Ireland. International Master and noted chess writer, Heidenfeld's books are still read for their wit and clarity."
+    },
+    {
+      "name": "Petar Trifunović",
+      "meta": "Yugoslavia (Serbia) · 1910–1980 · Master of the Drawn Game",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Petar_Trifunovi%C4%87_1962.jpg/330px-Petar_Trifunovi%C4%87_1962.jpg",
+      "imageAlt": "Petar Trifunović — portrait",
+      "imageCaption": "",
+      "bio": "Yugoslav grandmaster and four-time Yugoslav Champion. Known for his solid, drawish style and his contributions to Yugoslav chess theory in the 1950s."
+    },
+    {
+      "name": "Svetozar Gligorić",
+      "meta": "Yugoslavia (Serbia) · 1923–2012 · The Yugoslav Champion",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Svetozar_Gligori%C4%87_1966.jpg/330px-Svetozar_Gligori%C4%87_1966.jpg",
+      "imageAlt": "Svetozar Gligorić — portrait",
+      "imageCaption": "",
+      "bio": "Yugoslav grandmaster and 12-time Yugoslav Champion. Reached the Candidates stage three times. Gligorić's name is associated with multiple opening variations including the Gligorić System in the King's Indian."
+    },
+    {
+      "name": "David Bronstein",
+      "meta": "Ukraine (USSR) · 1924–2006 · Magician of the Soviet School",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/David_Bronstein_in_1954.jpg/330px-David_Bronstein_in_1954.jpg",
+      "imageAlt": "David Bronstein — portrait",
+      "imageCaption": "",
+      "bio": "Soviet grandmaster who tied his 1951 World Championship match against Botvinnik 12-12, narrowly missing the title. His book Zurich International Chess Tournament 1953 is considered one of the finest chess books ever written."
+    },
+    {
+      "name": "Viktor Korchnoi",
+      "meta": "Switzerland (born USSR) · 1931–2016 · The Eternal Challenger",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Max_Euwe_Schaakvierkamp_in_Amsterdam_Kortsjnoj_%28close%29%2C_Bestanddeelnr_933-9735_%28cropped%29.jpg/330px-Max_Euwe_Schaakvierkamp_in_Amsterdam_Kortsjnoj_%28close%29%2C_Bestanddeelnr_933-9735_%28cropped%29.jpg",
+      "imageAlt": "Viktor Korchnoi — portrait",
+      "imageCaption": "",
+      "bio": "Soviet-Swiss grandmaster who challenged Karpov for the World Championship in 1978 and 1981. Defected from the USSR in 1976. Played at the highest level for nearly six decades — into his 80s."
+    },
+    {
+      "name": "Mikhail Botvinnik (the school)",
+      "meta": "Russia (USSR) · est. 1963 · The Soviet Chess Factory",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Mikhail_Botvinnik_1962.jpg/330px-Mikhail_Botvinnik_1962.jpg",
+      "imageAlt": "Mikhail Botvinnik (the school) — portrait",
+      "imageCaption": "",
+      "bio": "The chess school founded by Mikhail Botvinnik in 1963 trained the next three Soviet World Champions: Anatoly Karpov, Garry Kasparov, and Vladimir Kramnik. The school's methodical, scientific approach to preparation shaped how every modern professional studies the game."
+    },
+    {
+      "name": "Saviely Tartakower",
+      "meta": "Russia / France · 1887–1956 · The Sage of Chess",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/f/ff/Ksawery_Tartakower.jpg",
+      "imageAlt": "Saviely Tartakower — portrait",
+      "imageCaption": "",
+      "bio": "Polish-French chess master, journalist, and author of countless witty chess aphorisms. Tartakower was a top player for three decades and a beloved chess writer whose maxims are still quoted today."
+    },
+    {
+      "name": "Esteban Canal",
+      "meta": "Peru / Italy · 1896–1981 · Chess Across Continents",
+      "imageUrl": "",
+      "imageAlt": "",
+      "imageCaption": "",
+      "bio": "Peruvian-Italian chess master and FIDE Honorary Grandmaster. Canal toured the world giving simultaneous exhibitions and tournament play. Known for the 'Canal-Sokolsky Variation' of the Sicilian."
+    },
+    {
+      "name": "Cecil Purdy",
+      "meta": "Australia · 1906–1979 · The First Correspondence Champion",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/en/2/23/CecilPurdy.jpg",
+      "imageAlt": "Cecil Purdy — portrait",
+      "imageCaption": "",
+      "bio": "Australian international master who in 1953 became the first World Correspondence Chess Champion. A respected chess writer, Purdy's books and magazine columns shaped chess instruction in the English-speaking world."
+    },
+    {
+      "name": "Hans Kmoch",
+      "meta": "Austria / United States · 1894–1973 · The Pawn Power Author",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b1/Hans_Kmoch.jpg",
+      "imageAlt": "Hans Kmoch — portrait",
+      "imageCaption": "",
+      "bio": "Austrian-American chess master and author of the influential 1959 book Pawn Power in Chess. Kmoch's work introduced new terminology for pawn structures that is still used in chess literature today."
+    },
+    {
+      "name": "Reuben Fine",
+      "meta": "United States · 1914–1993 · The Forgotten Champion",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Reuben_Fine_%281961%29.jpg/330px-Reuben_Fine_%281961%29.jpg",
+      "imageAlt": "Reuben Fine — portrait",
+      "imageCaption": "",
+      "bio": "American grandmaster who tied for first at the 1938 AVRO tournament — the strongest tournament of its time. Fine declined the 1948 World Championship tournament and became a noted Freudian psychoanalyst."
+    },
+    {
+      "name": "Isaac Kashdan",
+      "meta": "United States · 1905–1985 · The American Capablanca",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/en/4/47/IsaacKashdan.jpg",
+      "imageAlt": "Isaac Kashdan — portrait",
+      "imageCaption": "",
+      "bio": "American grandmaster who in the early 1930s was rated number two in the world behind Alekhine. The Great Depression cut his playing career short. Later edited Chess Review magazine."
+    },
+    {
+      "name": "Edward Lasker",
+      "meta": "Germany / United States · 1885–1981 · Distant Cousin of Emanuel",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/en/e/ef/EdwardLasker.jpg",
+      "imageAlt": "Edward Lasker — portrait",
+      "imageCaption": "",
+      "bio": "German-American chess master (distant cousin of World Champion Emanuel Lasker). Edward Lasker won the American Chess Congress in 1923 and authored several classic chess books including Chess Strategy."
+    },
+    {
+      "name": "Géza Maróczy",
+      "meta": "Hungary · 1870–1951 · The Hungarian Strategist",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/6/61/Gezamaroczy.jpg",
+      "imageAlt": "Géza Maróczy — portrait",
+      "imageCaption": "",
+      "bio": "Hungarian chess master who was among the world's top three in the early 1900s. The 'Maróczy Bind' — a pawn structure with c4 and e4 against the Sicilian — bears his name. He nearly played a World Championship match with Lasker."
+    },
+    {
+      "name": "Akiba Rubinstein",
+      "meta": "Poland · 1880–1961 · The Eternal Almost",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/2/2e/Akiba-RubinsteinC.jpg",
+      "imageAlt": "Akiba Rubinstein — portrait",
+      "imageCaption": "",
+      "bio": "Polish grandmaster widely considered the strongest player never to play for the World Championship. His 1914 title match with Lasker was cancelled by the First World War. His endgame technique set the standard that every modern master would aspire to."
+    },
+    {
+      "name": "Salo Landau",
+      "meta": "Netherlands · 1903–1944 · Lost in the War",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/8/81/LandauVandenbosch_%28cropped%29_%28cropped%29.jpg",
+      "imageAlt": "Salo Landau — portrait",
+      "imageCaption": "",
+      "bio": "Dutch chess master and one of the strongest players in the Netherlands in the 1930s. Landau, who was Jewish, was deported by the Nazis and killed in a German labor camp in 1944. His memory is honored at every modern Dutch chess tournament."
+    },
+    {
+      "name": "Vassily Panov",
+      "meta": "Russia (USSR) · 1906–1973 · The Panov-Botvinnik",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/f/ff/Vasily_Panov.jpg",
+      "imageAlt": "Vassily Panov — portrait",
+      "imageCaption": "",
+      "bio": "Soviet master and theoretician whose 1933 analysis with Mikhail Botvinnik produced the Panov-Botvinnik Attack against the Caro-Kann. Panov wrote influential chess books in Russian that remain standard references."
+    },
+    {
+      "name": "Vladimir Petrov",
+      "meta": "Latvia · 1907–1943 · The Latvian Master",
+      "imageUrl": "",
+      "imageAlt": "",
+      "imageCaption": "",
+      "bio": "Latvian chess master who was among the world's top 20 in the late 1930s. Arrested by the Soviet NKVD in 1942 during the Soviet occupation of Latvia, Petrov died in a Soviet prison camp in 1943."
+    },
+    {
+      "name": "Erich Eliskases",
+      "meta": "Austria / Germany / Argentina · 1913–1997 · Chess in Exile",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/en/6/6c/Erich_Eliskases.jpg",
+      "imageAlt": "Erich Eliskases — portrait",
+      "imageCaption": "",
+      "bio": "Austrian grandmaster who, having traveled to Argentina with the German team for the 1939 Buenos Aires Olympiad, was stranded by the outbreak of World War II and remained in South America. Played at the highest level for over four decades."
+    },
+    {
+      "name": "Miguel Najdorf",
+      "meta": "Poland / Argentina · 1910–1997 · The Najdorf",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Hoogoven-schaaktoernooi_Wijk_aan_Zee%2C_nummer_7_Najdorf%3B_Bestanddeelnr_926-1759.jpg/330px-Hoogoven-schaaktoernooi_Wijk_aan_Zee%2C_nummer_7_Najdorf%3B_Bestanddeelnr_926-1759.jpg",
+      "imageAlt": "Miguel Najdorf — portrait",
+      "imageCaption": "",
+      "bio": "Polish-Argentine grandmaster who, like Eliskases, was stranded in Argentina by the outbreak of World War II. The Najdorf Variation of the Sicilian Defence is named after him. Famous for his blindfold exhibitions — including a 45-board world record."
+    },
+    {
+      "name": "Henrique Mecking",
+      "meta": "Brazil · b. 1952 · The First South American Star",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Henrique_Mecking_1978.jpg/330px-Henrique_Mecking_1978.jpg",
+      "imageAlt": "Henrique Mecking — portrait",
+      "imageCaption": "",
+      "bio": "Brazilian grandmaster who reached world number three in 1977. 'Mequinho' was a child prodigy and the first South American to truly contest the world title. Severe health problems forced him away from chess for over a decade."
+    },
+    {
+      "name": "Vasja Pirc",
+      "meta": "Slovenia (Yugoslavia) · 1907–1980 · The Pirc Defence",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/7/71/Vasja_Pirc.jpg",
+      "imageAlt": "Vasja Pirc — portrait",
+      "imageCaption": "",
+      "bio": "Slovenian grandmaster who developed the Pirc Defence (1.e4 d6 followed by …g6 and …Bg7). Pirc was a top Yugoslav player for decades and contributed important theoretical analysis to multiple openings."
+    },
+    {
+      "name": "Wolfgang Unzicker",
+      "meta": "Germany · 1925–2006 · Mr. Reliable",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Fotothek_df_roe-neg_0006543_017_Wolfgang_Unzicker_konzentriert_auf_das_Spielbret.jpg/330px-Fotothek_df_roe-neg_0006543_017_Wolfgang_Unzicker_konzentriert_auf_das_Spielbret.jpg",
+      "imageAlt": "Wolfgang Unzicker — portrait",
+      "imageCaption": "",
+      "bio": "German grandmaster who was the strongest West German player from the 1950s through the 1970s. A consistent top-20 player known for his solid, classical style and his career as a lawyer alongside chess."
+    },
+    {
+      "name": "Borislav Ivkov",
+      "meta": "Yugoslavia (Serbia) · 1933–2022 · First World Junior Champion",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Borislav_Ivkov_1972.jpg/330px-Borislav_Ivkov_1972.jpg",
+      "imageAlt": "Borislav Ivkov — portrait",
+      "imageCaption": "",
+      "bio": "Yugoslav grandmaster who in 1951 won the first World Junior Championship in Birmingham. A top-20 player for two decades and a noted Yugoslav champion."
+    },
+    {
+      "name": "Béla Berger",
+      "meta": "Hungary · 1881–1957 · Tiebreak Inventor",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Inter_zoneschaaktoernooi_Larsen_tegen_Ivkov%2C_Bestanddeelnr_916-5162_%28cropped%29.jpg/330px-Inter_zoneschaaktoernooi_Larsen_tegen_Ivkov%2C_Bestanddeelnr_916-5162_%28cropped%29.jpg",
+      "imageAlt": "Béla Berger — portrait",
+      "imageCaption": "",
+      "bio": "Hungarian chess master who codified the Berger tiebreak system used in many tournaments. (Often confused with the Austrian master Johann Berger after whom the Sonneborn-Berger tiebreak is named.)"
+    },
+    {
+      "name": "Lothar Schmid",
+      "meta": "Germany · 1928–2013 · The Reykjavik Arbiter",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Lothar_Schmid_1961_Oberhausen.jpg/330px-Lothar_Schmid_1961_Oberhausen.jpg",
+      "imageAlt": "Lothar Schmid — portrait",
+      "imageCaption": "",
+      "bio": "German grandmaster, publisher (Karl May Verlag), and chief arbiter of the 1972 Fischer-Spassky World Championship in Reykjavik. Schmid's calm authority kept the match alive through Fischer's repeated dramas."
+    },
+    {
+      "name": "Mark Dvoretsky",
+      "meta": "Russia · 1947–2016 · The Master Coach",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Dvoretsky_Mark.jpg/330px-Dvoretsky_Mark.jpg",
+      "imageAlt": "Mark Dvoretsky — portrait",
+      "imageCaption": "",
+      "bio": "Russian international master and the most celebrated chess trainer of the modern era. Dvoretsky coached dozens of grandmasters and authored landmark books including Dvoretsky's Endgame Manual."
+    },
+    {
+      "name": "Lev Psakhis",
+      "meta": "Latvia (USSR) / Israel · b. 1958 · The French Defender",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b6/Psakhis_Lev.jpg",
+      "imageAlt": "Lev Psakhis — portrait",
+      "imageCaption": "",
+      "bio": "Soviet-Israeli grandmaster who twice won the USSR Championship (1980, 1981). A noted theoretician and author of French Defence books that remain standard references."
+    },
+    {
+      "name": "Boris Gulko",
+      "meta": "Russia / United States · b. 1947 · USSR Champion and US Champion",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/BorisGulko0201_003.jpg/330px-BorisGulko0201_003.jpg",
+      "imageAlt": "Boris Gulko — portrait",
+      "imageCaption": "",
+      "bio": "Soviet-American grandmaster — the only player to win both the USSR Championship (1977) and the US Championship (1994, 1999). Gulko emigrated to the United States in 1986 after years of Soviet repression."
+    },
+    {
+      "name": "Roman Dzindzichashvili",
+      "meta": "Georgia / Israel / United States · b. 1944 · The Roving Master",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Roman_Dzindzichashvili_1984_Thessaloniki.jpg/330px-Roman_Dzindzichashvili_1984_Thessaloniki.jpg",
+      "imageAlt": "Roman Dzindzichashvili — portrait",
+      "imageCaption": "",
+      "bio": "Georgian grandmaster who played for the USSR, Israel, and the United States across his career. US Champion in 1989. A noted theoretician and now a popular chess YouTube creator."
+    },
+    {
+      "name": "John Watson",
+      "meta": "United States · b. 1951 · The Modern Theoretician",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/JohnWatson0301_057.jpg/330px-JohnWatson0301_057.jpg",
+      "imageAlt": "John Watson — portrait",
+      "imageCaption": "",
+      "bio": "American international master and one of the most prolific chess authors of the modern era. Watson's Secrets of Modern Chess Strategy (1998) updated Nimzowitsch's classical work for the engine era."
+    },
+    {
+      "name": "Jonathan Speelman",
+      "meta": "England · b. 1956 · The Endgame Specialist",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/JonSpeelman24.jpg/330px-JonSpeelman24.jpg",
+      "imageAlt": "Jonathan Speelman — portrait",
+      "imageCaption": "",
+      "bio": "English grandmaster and Cambridge mathematics graduate. Speelman reached the Candidates Tournament in 1989. A noted endgame author and chess columnist for The Observer."
+    },
+    {
+      "name": "Tony Miles",
+      "meta": "England · 1955–2001 · England's First GM",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Anthony_Miles_1977.jpg/330px-Anthony_Miles_1977.jpg",
+      "imageAlt": "Tony Miles — portrait",
+      "imageCaption": "",
+      "bio": "First English grandmaster (1976). Miles famously defeated Anatoly Karpov in 1980 with the unusual 1.e4 a6 (Owen's Defence reversed). A top English player for two decades who died young of complications from diabetes."
+    },
+    {
+      "name": "Murray Chandler",
+      "meta": "New Zealand / England · b. 1960 · The Pacific Grandmaster",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Chandler_murray_20081120_olympiade_dresden.jpg/330px-Chandler_murray_20081120_olympiade_dresden.jpg",
+      "imageAlt": "Murray Chandler — portrait",
+      "imageCaption": "",
+      "bio": "New Zealand-born English grandmaster and chess publisher. Chandler's Gambit Publications and his books for young players (How to Beat Your Dad at Chess) introduced generations to serious chess study."
+    },
+    {
+      "name": "Raymond Keene",
+      "meta": "England · b. 1948 · The Chess Journalist",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Raymond_Keene_1985_%282%29.jpg/330px-Raymond_Keene_1985_%282%29.jpg",
+      "imageAlt": "Raymond Keene — portrait",
+      "imageCaption": "",
+      "bio": "English grandmaster, chess journalist, and chess organizer. Keene helped organize major tournaments and World Championship matches in the 1980s-2000s and wrote the daily chess column for The Times for decades."
+    }
   ]
 }

@@ -1,7 +1,7 @@
 ---
 headline: "So Holds the Lead as Norway Chess Enters Its Penultimate Round"
 subhead: "American grandmaster Wesley So carries a one-point advantage into today's decisive pairing against Carlsen"
-summary: "GM Wesley So (USA, the Philippines-born American grandmaster known for precise positional play) leads Norway Chess 2026 — a ten-round elite invitational in Oslo, Norway — with 14 points after eight rounds. GM Alireza Firouzja (France) sits one point back at 13, with GM Praggnanandhaa Rameshbabu (India) on 12."
+summary: "GM Wesley So (USA) leads Norway Chess 2026 — a ten-round elite invitational in Oslo, Norway — with 14 points after eight rounds. GM Alireza Firouzja (France) sits one point back at 13, with GM Praggnanandhaa Rameshbabu (India) on 12."
 section: "tournaments"
 kicker: "Norway Chess 2026"
 date: 2026-06-04

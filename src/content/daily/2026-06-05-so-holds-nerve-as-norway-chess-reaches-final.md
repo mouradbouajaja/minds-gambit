@@ -7,7 +7,7 @@ kicker: "Norway Chess 2026"
 date: 2026-06-05
 sourceName: "Chess.com"
 sourceUrl: "https://www.chess.com/news/view/2026-norway-chess-round-9"
-lead: true
+lead: false
 draft: false
 tileKicker: "Oslo · Round 9"
 tileTitle: "So Leads, One Round Left"

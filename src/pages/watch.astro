@@ -20,7 +20,7 @@ const feed = {
           description: 'The first episode in The Mind\'s Gambit documentary series. The opening reflection on chess, attention, and what makes a player return to the board.',
           streamUrl: `${BUNNY_VIDEOS}/mg-ep1-the-constant.mp4`,
           streamFormat: 'mp4',
-          thumbnail: '',
+          thumbnail: '/images/watch-ep1.jpg',
           contentType: 'Documentary',
           duration: 0,
         },
@@ -29,7 +29,7 @@ const feed = {
           description: 'On rating, identity, and the strange relationship between a chess player and the number that follows them their whole career.',
           streamUrl: `${BUNNY_VIDEOS}/mg-ep2-the-number.mp4`,
           streamFormat: 'mp4',
-          thumbnail: '',
+          thumbnail: '/images/watch-ep2.jpg',
           contentType: 'Documentary',
           duration: 0,
         },
@@ -38,7 +38,7 @@ const feed = {
           description: 'When chess brilliance and personal cost intersect. Portraits of players whose greatness extracted a price the public never sees.',
           streamUrl: `${BUNNY_VIDEOS}/mg-ep3-brilliance-that-bleeds.mp4`,
           streamFormat: 'mp4',
-          thumbnail: '',
+          thumbnail: '/images/watch-ep3.jpg',
           contentType: 'Documentary',
           duration: 0,
         },
@@ -47,7 +47,7 @@ const feed = {
           description: "The fourth episode examines women in chess — the talent, the institutional walls, and what a queen's move means inside and outside the 64 squares.",
           streamUrl: `${BUNNY_VIDEOS}/mg-ep4-the-queens-burden.mp4`,
           streamFormat: 'mp4',
-          thumbnail: '',
+          thumbnail: '/images/watch-ep4.jpg',
           contentType: 'Documentary',
           duration: 0,
         },
@@ -119,7 +119,7 @@ const feed = {
     .video-card:hover { background: var(--bg-card-hover); border-color: var(--gold-dim); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4); }
     .card-thumbnail { position: relative; width: 100%; aspect-ratio: 16 / 9; background: linear-gradient(135deg, #1a1a25 0%, #0a0a0f 100%); overflow: hidden; display: flex; align-items: center; justify-content: center; }
     .card-thumbnail .placeholder-text { font-family: var(--font-display); font-size: 1.4rem; color: var(--gold-dim); letter-spacing: 0.1em; text-align: center; padding: 1rem; opacity: 0.7; }
-    .card-thumbnail img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+    .card-thumbnail img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
     .video-card:hover .card-thumbnail img { transform: scale(1.05); }
     .card-thumbnail .play-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(10, 10, 15, 0.5); opacity: 0; transition: opacity 0.3s; }
     .video-card:hover .play-overlay { opacity: 1; }
@@ -200,7 +200,7 @@ const feed = {
                 {item.thumbnail ? (
                   <img src={item.thumbnail} alt={item.title} loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
                 ) : null}
-                <div class="placeholder-text">MIND'S GAMBIT</div>
+                <div class="placeholder-text" style={item.thumbnail ? 'display:none' : ''}>MIND'S GAMBIT</div>
                 <div class="play-overlay">
                   <div class="play-icon">
                     <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21" /></svg>

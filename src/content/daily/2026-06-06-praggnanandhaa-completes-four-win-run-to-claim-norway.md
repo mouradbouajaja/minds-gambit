@@ -7,7 +7,7 @@ kicker: "Norway Chess 2026"
 date: 2026-06-06
 sourceName: "ChessBase"
 sourceUrl: "https://en.chessbase.com/post/norway-chess-2026-10"
-lead: true
+lead: false
 draft: false
 tileKicker: "Oslo, Final Round"
 tileTitle: "Pragg Overturns So's Lead"

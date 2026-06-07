@@ -77,14 +77,15 @@ export const prerender = true;
       <p>who departed from our world on September 29, 2025.</p>
       <p>With your passing, the world lost a great man who gave his life to the noblest of missions: the education of generations. From the playing fields of schoolyards to university lecture halls, you built minds as you built bodies, holding fast to the belief that physical discipline is the foundation upon which the discipline of thought is raised.</p>
       <p>Your journey—from devoted teacher to leader in the highest ranks of public service—was a living testament to your integrity, your foresight, and your unshakeable faith in what education can do. Even after retirement, your heart remained with children. You wrote stories for them that ignited their imaginations and opened the doors of dreaming. You were a teacher, a leader, a traveler, and a storyteller—and this book is but a humble attempt to continue the circle of learning that you began.</p>
-      <p>And to my colleagues in social work, child protection, and mental health across the globe—you who navigate the most complex endgames every day, with steadfastness and quiet nobility. May you find within these pages something of the resilience and determination that my father taught me.</p>
+      <p>To my colleagues in social work, child protection, and mental health across the globe—you who navigate the most complex endgames every day, with steadfastness and quiet nobility. May you find within these pages something of the resilience and determination that my father taught me.</p>
+      <p>And to my beloved wife, Christine — who believed in me when this book was only an idea, who stood beside me through every stage of its making, and whose love and support made it possible.</p>
       <p>♦</p>
     </section>
 
     <section data-id="introduction" data-kind="front" data-title="Introduction" data-sub="Welcome to The Mind’s Gambit">
       <p class="dc noind">I want to tell you what this book is, and why I made it twice.</p>
       <p>The Mind's Gambit exists as two things at once. It is a book — the one in your hands. It is also a documentary series, episode by episode, available wherever you watch films. The two are not separate projects. They are the same investigation, told in two registers. The book gives you the page and the pause. The series gives you the music and the silence between sentences. They share the same arguments, the same case studies, the same people. They diverge on the parts each medium does best.</p>
-      <p>I did it this way on purpose. There are readers who will pick this book up at a library, never click play on a single episode, and find everything they need on the page. There are viewers who will watch every minute of the series and never open this book. And there are people — and I hope this is most of you — who will move between the two. Watch an episode in the car, finish the chapter in bed. Read a chapter at lunch, send a friend the episode. Both versions are designed to stand alone. Both are designed to reward you for crossing between them.</p>
+      <p>I did it this way on purpose. There are readers who will pick this book up at a library, never click play on a single episode, and find everything they need on the page. There are viewers who will watch every minute of the series and never open this book. And there are people — and I hope this is most of you — who will move between the two. Listen to an episode in the car, finish the chapter in bed. Read a chapter at lunch, send a friend the episode. Both versions are designed to stand alone. Both are designed to reward you for crossing between them.</p>
       <p>So, before you go any further, let me explain how the chapters in front of you are organized — and what kind of book you have actually walked into.</p>
       <div class="sb">&#11835;</div>
       <p class="noind">This is not a book about chess strategy. I want to put that on the table right at the start, because if you have come looking for an analysis of the Sicilian Defense or a guide to opening repertoires, there are wonderful books out there that will do that work for you. This is not one of them.</p>
@@ -606,6 +607,7 @@ export const prerender = true;
   meas.className='rd-sheet rd-meas';
   book.appendChild(meas);
   var measBody=meas.querySelector('.rd-body');
+  measBody.style.bottom='64px'; /* paginate against a shorter box so rendered pages always have slack at the bottom */
 
   function sizes(){
     var W=Math.min(640,window.innerWidth-16);
@@ -814,7 +816,7 @@ nav { background: rgba(15,17,28,0.95); border-bottom: 1px solid rgba(201,168,76,
 .rd-stage:fullscreen { background: #0f111c; align-items: center; }
 .rd-bookwrap { display: flex; justify-content: center; }
 .rd-book { position: relative; box-shadow: 0 24px 60px rgba(0,0,0,0.6), 0 4px 14px rgba(0,0,0,0.4); border-radius: 6px 14px 14px 6px; }
-.rd-sheet { position: absolute; inset: 0; background: linear-gradient(105deg, #efe7d3 0%, #f6efdd 12%, #f3ecd8 88%, #e9e0c9 100%); border-radius: 6px 14px 14px 6px; border-left: 6px solid #1a1812; overflow: hidden; transition: opacity 0.12s ease; }
+.rd-sheet { position: absolute; inset: 0; background: linear-gradient(105deg, #f1e9d5 0%, #f6efdd 10%, #f5eeda 92%, #f1e9d3 100%); border-radius: 6px 14px 14px 6px; border-left: 6px solid #1a1812; overflow: hidden; transition: opacity 0.12s ease; }
 .rd-sheet.rd-turn { opacity: 0.25; }
 .rd-meas { visibility: hidden; pointer-events: none; }
 .rd-run { position: absolute; top: 16px; left: 0; right: 0; text-align: center; font-family: 'Playfair Display', Georgia, serif; font-size: 0.66rem; letter-spacing: 0.34em; color: rgba(60,50,30,0.55); }

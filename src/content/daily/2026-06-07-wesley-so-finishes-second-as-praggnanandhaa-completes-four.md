@@ -7,7 +7,7 @@ kicker: "Norway Chess 2026"
 date: 2026-06-07
 sourceName: "Chess.com"
 sourceUrl: "https://www.chess.com/news/view/praggnanandhaa-wins-2026-norway-chess"
-lead: true
+lead: false
 draft: false
 tileKicker: "Norway Chess"
 tileTitle: "So Falls One Point Short"

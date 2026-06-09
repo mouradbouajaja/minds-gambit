@@ -7,7 +7,7 @@ kicker: "Norway Chess 2026"
 date: 2026-06-08
 sourceName: "FIDE"
 sourceUrl: "https://www.fide.com/norway-chess-2026-praggnanandhaa-r-and-bibisara-assaubayeva-win-titles/"
-lead: true
+lead: false
 draft: false
 tileKicker: "Norway Chess"
 tileTitle: "So Holds Second; Pragg Takes Title"

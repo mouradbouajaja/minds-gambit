@@ -7,7 +7,7 @@ kicker: "UzChess Cup 2026 · Round 1"
 date: 2026-06-08
 sourceName: "ChessBase"
 sourceUrl: "https://en.chessbase.com/post/uz-chess-cup-2026-1"
-lead: true
+lead: false
 draft: false
 tileKicker: "Tashkent Round 1"
 tileTitle: "Upsets Open Tashkent Elite"

@@ -7,7 +7,7 @@ kicker: "UzChess Cup 2026 · Tashkent, Uzbekistan"
 date: 2026-06-09
 sourceName: "ChessBase"
 sourceUrl: "https://en.chessbase.com/post/uz-chess-cup-2026-2"
-lead: true
+lead: false
 draft: false
 tileKicker: "Live in Tashkent"
 tileTitle: "The Unknown Leader Nobody Expected"

@@ -7,7 +7,7 @@ kicker: "UzChess Cup 2026"
 date: 2026-06-10
 sourceName: "ChessBase"
 sourceUrl: "https://en.chessbase.com/post/uz-chess-cup-2026-live"
-lead: true
+lead: false
 draft: false
 tileKicker: "Tashkent Live"
 tileTitle: "Niemann in a New Arena"

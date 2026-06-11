@@ -7,7 +7,7 @@ kicker: "UzChess Cup 2026"
 date: 2026-06-11
 sourceName: "ChessBase"
 sourceUrl: "https://en.chessbase.com/post/uz-chess-cup-2026-4"
-lead: true
+lead: false
 draft: false
 tileKicker: "Live in Tashkent"
 tileTitle: "Three Share the Lead"

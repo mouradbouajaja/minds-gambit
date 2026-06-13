@@ -7,7 +7,7 @@ kicker: "UzChess Cup 2026 · Round 5"
 date: 2026-06-12
 sourceName: "ChessBase"
 sourceUrl: "https://en.chessbase.com/post/uz-chess-cup-2026-5"
-lead: true
+lead: false
 draft: false
 tileKicker: "Round 5 Leader"
 tileTitle: "Vokhidov Surges to the Top"

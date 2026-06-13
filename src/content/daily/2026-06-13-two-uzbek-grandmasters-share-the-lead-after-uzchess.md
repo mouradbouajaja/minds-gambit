@@ -7,7 +7,7 @@ kicker: "UzChess Cup · Round 6"
 date: 2026-06-13
 sourceName: "ChessBase"
 sourceUrl: "https://en.chessbase.com/post/uz-chess-cup-2026-6"
-lead: true
+lead: false
 draft: false
 tileKicker: "UzChess Cup"
 tileTitle: "Two-Way Tie At the Top"

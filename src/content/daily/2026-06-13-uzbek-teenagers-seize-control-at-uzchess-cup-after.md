@@ -7,7 +7,7 @@ kicker: "UzChess Cup 2026 · Round 6"
 date: 2026-06-13
 sourceName: "ChessBase"
 sourceUrl: "https://en.chessbase.com/post/uz-chess-cup-2026-6"
-lead: true
+lead: false
 draft: false
 tileKicker: "Tashkent · Round 6"
 tileTitle: "Two Uzbeks Tied at the Top"

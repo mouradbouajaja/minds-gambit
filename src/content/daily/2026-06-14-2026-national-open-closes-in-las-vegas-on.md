@@ -7,7 +7,7 @@ kicker: "US Chess"
 date: 2026-06-14
 sourceName: "Las Vegas International Chess Festival"
 sourceUrl: "https://www.vegaschess.com/live/results/"
-lead: true
+lead: false
 draft: false
 tileKicker: "US National"
 tileTitle: "National Open: Final Round Today"

@@ -7,7 +7,7 @@ kicker: "American Chess"
 date: 2026-06-14
 sourceName: "Vegas Chess Festival"
 sourceUrl: "https://www.vegaschessfestival.com/"
-lead: true
+lead: false
 draft: false
 tileKicker: "US National Open"
 tileTitle: "Matviishen Wins on Tiebreak"

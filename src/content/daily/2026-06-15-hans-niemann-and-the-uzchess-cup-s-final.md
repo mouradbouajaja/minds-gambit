@@ -7,7 +7,7 @@ kicker: "UzChess Cup 2026 · Final Round"
 date: 2026-06-15
 sourceName: "ChessBase"
 sourceUrl: "https://en.chessbase.com/post/uz-chess-cup-2026-8"
-lead: true
+lead: false
 draft: false
 tileKicker: "Final Round Today"
 tileTitle: "Niemann Faces the Leaders"

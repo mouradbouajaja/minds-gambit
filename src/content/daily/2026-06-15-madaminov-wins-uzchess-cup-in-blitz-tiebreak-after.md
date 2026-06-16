@@ -7,7 +7,7 @@ kicker: "UzChess Cup 2026"
 date: 2026-06-15
 sourceName: "ChessBase"
 sourceUrl: "https://en.chessbase.com/post/uz-chess-cup-2026-9"
-lead: true
+lead: false
 draft: false
 tileKicker: "UzChess Cup Final"
 tileTitle: "Madaminov Takes Tashkent on Tiebreaks"

@@ -7,7 +7,7 @@ kicker: "Tournament Opens Today"
 date: 2026-06-16
 sourceName: "FIDE.com"
 sourceUrl: "https://www.fide.com/tickets-now-on-sale-for-the-fide-world-rapid-and-blitz-chess-championships-2026/"
-lead: true
+lead: false
 draft: false
 tileKicker: "Live Now"
 tileTitle: "World Team Chess Lands in Hong Kong"

@@ -7,7 +7,7 @@ kicker: "World Stage"
 date: 2026-06-16
 sourceName: "FIDE"
 sourceUrl: "https://www.fide.com/fide-world-team-rapid-and-blitz-championships-2026-officially-open-in-hong-kong/"
-lead: true
+lead: false
 draft: false
 tileKicker: "Hong Kong"
 tileTitle: "Chess Arrives in East Asia"

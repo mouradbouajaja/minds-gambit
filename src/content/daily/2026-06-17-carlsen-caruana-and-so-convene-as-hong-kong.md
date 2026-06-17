@@ -7,7 +7,7 @@ kicker: "World Stage"
 date: 2026-06-17
 sourceName: "ChessBase"
 sourceUrl: "https://en.chessbase.com/post/world-rapid-blitz-teams-2026-live"
-lead: true
+lead: false
 draft: false
 tileKicker: "Hong Kong 2026"
 tileTitle: "Elite Teams Converge in East Asia"

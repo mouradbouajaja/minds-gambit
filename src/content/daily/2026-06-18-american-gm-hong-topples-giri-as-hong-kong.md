@@ -7,7 +7,7 @@ kicker: "World Team Rapid"
 date: 2026-06-18
 sourceName: "Chess.com"
 sourceUrl: "https://www.chess.com/news/view/2026-fide-world-rapid-blitz-team-championships-day-1"
-lead: true
+lead: false
 draft: false
 tileKicker: "Hong Kong"
 tileTitle: "Hong Beats Giri, Favorites Stumble"

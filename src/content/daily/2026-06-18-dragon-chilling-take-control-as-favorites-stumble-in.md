@@ -7,7 +7,7 @@ kicker: "Hong Kong 2026"
 date: 2026-06-18
 sourceName: "FIDE"
 sourceUrl: "https://www.fide.com/wtrbcc-2026-dragon-chilling-take-control-in-hong-kong/"
-lead: true
+lead: false
 draft: false
 tileKicker: "Team Rapid"
 tileTitle: "Dragon Chilling Lead Hong Kong"

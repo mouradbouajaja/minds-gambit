@@ -7,7 +7,7 @@ kicker: "World Team Rapid"
 date: 2026-06-19
 sourceName: "Chess.com"
 sourceUrl: "https://www.chess.com/news/view/2026-fide-world-rapid-blitz-team-championships-day-2"
-lead: true
+lead: false
 draft: false
 tileKicker: "Hong Kong Day 2"
 tileTitle: "Dragon Chilling Leads; Carlsen Falls Twice"

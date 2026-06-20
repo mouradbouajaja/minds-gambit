@@ -7,7 +7,7 @@ kicker: "Hong Kong 2026"
 date: 2026-06-20
 sourceName: "Chess.com"
 sourceUrl: "https://www.chess.com/news/view/2026-fide-world-rapid-blitz-team-championships-day-3"
-lead: true
+lead: false
 draft: false
 tileKicker: "Hong Kong Live"
 tileTitle: "Dragon Chilling Claim Rapid Gold"

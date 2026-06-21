@@ -7,7 +7,7 @@ kicker: "FIDE World Team Rapid 2026"
 date: 2026-06-20
 sourceName: "FIDE.com"
 sourceUrl: "https://www.fide.com/chinas-dragon-chilling-win-fide-world-team-rapid-after-dramatic-finish/"
-lead: true
+lead: false
 draft: false
 tileKicker: "Hong Kong 2026"
 tileTitle: "Dragon Chilling Take Gold on Tiebreaks"

@@ -7,7 +7,7 @@ kicker: "Hong Kong · June 21, 2026"
 date: 2026-06-21
 sourceName: "ChessBase"
 sourceUrl: "https://en.chessbase.com/post/world-rapid-blitz-teams-2026-live"
-lead: true
+lead: false
 draft: false
 tileKicker: "Blitz Final · Today"
 tileTitle: "WR Chess Seeks Blitz Redemption"

@@ -7,7 +7,7 @@ kicker: "World"
 date: 2026-06-22
 sourceName: "Chess.com"
 sourceUrl: "https://www.chess.com/news/view/2026-fide-world-rapid-blitz-team-championships-day-5"
-lead: true
+lead: false
 draft: false
 tileKicker: "Hong Kong"
 tileTitle: "Dragon Chilling Sweeps Both Golds"

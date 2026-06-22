@@ -7,7 +7,7 @@ kicker: "FIDE World Team Blitz Championship · Hong Kong · June 20–21, 2026"
 date: 2026-06-21
 sourceName: "ChessBase"
 sourceUrl: "https://en.chessbase.com/post/world-rapid-blitz-teams-2026-4"
-lead: true
+lead: false
 draft: false
 tileKicker: "Hong Kong Blitz"
 tileTitle: "Niemann Stars on His Birthday"

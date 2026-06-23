@@ -7,7 +7,7 @@ kicker: "Hong Kong 2026"
 date: 2026-06-22
 sourceName: "FIDE.com"
 sourceUrl: "https://www.fide.com/dragon-chilling-complete-golden-double-at-the-fide-world-team-blitz-championship/"
-lead: true
+lead: false
 draft: false
 tileKicker: "World Teams"
 tileTitle: "Dragon Chilling's Historic Double"

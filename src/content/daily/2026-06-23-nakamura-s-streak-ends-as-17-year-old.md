@@ -7,7 +7,7 @@ kicker: "Online Arena"
 date: 2026-06-23
 sourceName: "Chess.com"
 sourceUrl: "https://www.chess.com/news/view/ediz-gurel-wins-bullet-brawl-june-20-2026"
-lead: true
+lead: false
 draft: false
 tileKicker: "Speed Chess"
 tileTitle: "Gurel Ends Nakamura's Perfect Year"

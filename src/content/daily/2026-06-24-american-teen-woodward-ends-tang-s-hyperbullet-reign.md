@@ -7,7 +7,7 @@ kicker: "U.S. Chess"
 date: 2026-06-24
 sourceName: "Chess.com"
 sourceUrl: "https://www.chess.com/news/view/woodward-wins-2026-hyperbullet-chess-championship"
-lead: true
+lead: false
 draft: false
 tileKicker: "U.S. Chess"
 tileTitle: "Woodward Dethrones Tang"

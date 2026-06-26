@@ -7,7 +7,7 @@ kicker: "Speed Chess"
 date: 2026-06-26
 sourceName: "Chess.com"
 sourceUrl: "https://www.chess.com/news/view/2026-bullet-chess-championship-day-2"
-lead: true
+lead: false
 draft: false
 tileKicker: "Finals Day"
 tileTitle: "Firouzja vs. Erigaisi: Bullet Final"

@@ -7,7 +7,7 @@ kicker: "LIVE EVENT"
 date: 2026-06-25
 sourceName: "Chess.com"
 sourceUrl: "https://www.chess.com/news/view/2026-bullet-chess-championship-day-1"
-lead: true
+lead: false
 draft: false
 tileKicker: "Live Today"
 tileTitle: "Bullet War: Four Remain Unbeaten"

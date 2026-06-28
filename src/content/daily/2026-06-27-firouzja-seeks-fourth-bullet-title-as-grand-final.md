@@ -7,7 +7,7 @@ kicker: "Live Today"
 date: 2026-06-27
 sourceName: "Chess.com"
 sourceUrl: "https://www.chess.com/news/view/2026-bullet-chess-championship-day-3"
-lead: true
+lead: false
 draft: false
 tileKicker: "Grand Final"
 tileTitle: "Firouzja Chases History Today"

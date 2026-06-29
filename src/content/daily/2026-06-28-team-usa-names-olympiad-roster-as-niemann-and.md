@@ -7,7 +7,7 @@ kicker: "Team USA"
 date: 2026-06-28
 sourceName: "US Chess"
 sourceUrl: "https://new.uschess.org/news/2026-olympiad-teams-announced"
-lead: true
+lead: false
 draft: false
 tileKicker: "Olympiad Roster"
 tileTitle: "USA Names Five for Samarkand"

@@ -7,7 +7,7 @@ kicker: "Speed Chess"
 date: 2026-06-29
 sourceName: "Chess.com"
 sourceUrl: "https://www.chess.com/news/view/nihal-wins-2026-bullet-chess-championship"
-lead: true
+lead: false
 draft: false
 tileKicker: "Bullet Chess"
 tileTitle: "Sarin Ends Firouzja's Reign"

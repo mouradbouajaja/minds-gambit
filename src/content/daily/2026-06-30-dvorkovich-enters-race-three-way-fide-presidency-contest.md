@@ -7,7 +7,7 @@ kicker: "Governance"
 date: 2026-06-30
 sourceName: "ChessBase"
 sourceUrl: "https://en.chessbase.com/post/arkady-dvorkovich-to-seek-third-term-as-fide-president"
-lead: true
+lead: false
 draft: false
 tileKicker: "FIDE Election"
 tileTitle: "Three Men Want to Run Chess"

@@ -7,7 +7,7 @@ kicker: "U.S. Tournament"
 date: 2026-07-01
 sourceName: "ChessBase"
 sourceUrl: "https://en.chessbase.com/post/naroditsky-memorial-2026-preview"
-lead: true
+lead: false
 draft: false
 tileKicker: "Opens Friday"
 tileTitle: "Charlotte Honors Naroditsky"

@@ -7,7 +7,7 @@ kicker: "Grand Chess Tour"
 date: 2026-07-02
 sourceName: "ChessBase"
 sourceUrl: "https://en.chessbase.com/post/super-croatia-2026-1"
-lead: true
+lead: false
 draft: false
 tileKicker: "Zagreb — Round 3"
 tileTitle: "Firouzja Opens with Control"

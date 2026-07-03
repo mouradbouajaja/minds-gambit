@@ -7,7 +7,7 @@ kicker: "Grand Chess Tour"
 date: 2026-07-03
 sourceName: "Chess.com"
 sourceUrl: "https://www.chess.com/news/view/2026-super-rapid-blitz-croatia-day-2"
-lead: true
+lead: false
 draft: false
 tileKicker: "GCT Zagreb"
 tileTitle: "Firouzja Leads, Gukesh Rebounds"

@@ -7,7 +7,7 @@ kicker: "Grand Chess Tour 2026"
 date: 2026-07-03
 sourceName: "ChessBase"
 sourceUrl: "https://en.chessbase.com/post/super-croatia-2026-2"
-lead: true
+lead: false
 draft: false
 tileKicker: "GCT Croatia"
 tileTitle: "Firouzja Three Clear in Zagreb"

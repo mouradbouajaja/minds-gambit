@@ -7,7 +7,7 @@ kicker: "US Chess"
 date: 2026-07-05
 sourceName: "ChessBase"
 sourceUrl: "https://en.chessbase.com/post/naroditsky-memorial-2026-live"
-lead: true
+lead: false
 draft: false
 tileKicker: "Charlotte, NC"
 tileTitle: "A Memorial Takes the Board"

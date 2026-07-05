@@ -7,7 +7,7 @@ kicker: "Grand Chess Tour · Zagreb"
 date: 2026-07-04
 sourceName: "Chess.com"
 sourceUrl: "https://www.chess.com/news/view/2026-super-rapid-blitz-croatia-day-3"
-lead: true
+lead: false
 draft: false
 tileKicker: "GCT Zagreb"
 tileTitle: "Pragg Catches Firouzja at Halfway"

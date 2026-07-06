@@ -7,7 +7,7 @@ kicker: "US Event"
 date: 2026-07-06
 sourceName: "Wikipedia / Chess.com"
 sourceUrl: "https://en.wikipedia.org/wiki/Naroditsky_Memorial_2026"
-lead: true
+lead: false
 draft: false
 tileKicker: "Charlotte, NC"
 tileTitle: "Memorial Yields a Champion"

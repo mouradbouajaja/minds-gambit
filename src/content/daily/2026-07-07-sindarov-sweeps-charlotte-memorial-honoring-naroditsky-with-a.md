@@ -7,7 +7,7 @@ kicker: "In Memoriam"
 date: 2026-07-07
 sourceName: "FIDE.com"
 sourceUrl: "https://www.fide.com/first-naroditsky-memorial-rapid-and-blitz-javokhir-sindarov-claims-double-crown/"
-lead: true
+lead: false
 draft: false
 tileKicker: "US Memorial"
 tileTitle: "Sindarov Claims Charlotte Double"

@@ -7,7 +7,7 @@ kicker: "American Chess"
 date: 2026-07-06
 sourceName: "Wikipedia / Charlotte Chess Center Foundation"
 sourceUrl: "https://en.wikipedia.org/wiki/Naroditsky_Memorial_2026"
-lead: true
+lead: false
 draft: false
 tileKicker: "US Tournament"
 tileTitle: "Charlotte Remembers Naroditsky"

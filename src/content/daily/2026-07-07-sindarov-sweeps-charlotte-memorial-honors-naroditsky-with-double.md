@@ -7,7 +7,7 @@ kicker: "U.S. Tournament"
 date: 2026-07-07
 sourceName: "Chess.com"
 sourceUrl: "https://www.chess.com/news/view/sindarov-wins-2026-naroditsky-memorial-rapid-blitz"
-lead: true
+lead: false
 draft: false
 tileKicker: "Charlotte, NC"
 tileTitle: "Sindarov Wins Memorial Double"

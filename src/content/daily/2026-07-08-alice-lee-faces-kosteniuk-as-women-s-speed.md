@@ -7,7 +7,7 @@ kicker: "Women's Speed Chess"
 date: 2026-07-08
 sourceName: "Chess.com"
 sourceUrl: "https://www.chess.com/news/view/2026-wscc-ro16-ju-le-vaishali-muzychuk"
-lead: true
+lead: false
 draft: false
 tileKicker: "Speed Chess Today"
 tileTitle: "Lee vs. Kosteniuk: American Teenager's Test"

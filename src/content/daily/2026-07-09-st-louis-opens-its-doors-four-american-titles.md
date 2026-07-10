@@ -7,7 +7,7 @@ kicker: "American Chess"
 date: 2026-07-09
 sourceName: "Saint Louis Chess Club"
 sourceUrl: "https://saintlouischessclub.org/news-insights-press/saint-louis-welcomes-rising-stars-trailblazers-and-chess-legends-for-expanded-2026-u-s-junior-junior-girls-senior-and-senior-womens-championships/"
-lead: true
+lead: false
 draft: false
 tileKicker: "U.S. Nationals"
 tileTitle: "Four Titles, One City"

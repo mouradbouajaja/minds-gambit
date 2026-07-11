@@ -7,7 +7,7 @@ kicker: "Tournament Watch"
 date: 2026-07-11
 sourceName: "ChessBase"
 sourceUrl: "https://en.chessbase.com/post/biel-festival-2026-preview"
-lead: true
+lead: false
 draft: false
 tileKicker: "Opens Today"
 tileTitle: "Biel Triathlon Begins"

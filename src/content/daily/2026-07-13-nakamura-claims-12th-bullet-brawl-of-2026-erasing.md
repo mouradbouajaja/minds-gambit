@@ -7,7 +7,7 @@ kicker: "Online Chess"
 date: 2026-07-13
 sourceName: "Chess.com"
 sourceUrl: "https://www.chess.com/news/view/hikaru-nakamura-wins-bullet-brawl-july-11-2026"
-lead: true
+lead: false
 draft: false
 tileKicker: "Bullet Brawl"
 tileTitle: "Nakamura's 12th Title of 2026"

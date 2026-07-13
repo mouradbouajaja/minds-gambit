@@ -7,7 +7,7 @@ kicker: "US Chess"
 date: 2026-07-12
 sourceName: "Saint Louis Chess Club"
 sourceUrl: "https://saintlouischessclub.org/event/2026-us-junior-senior-chess-championships/"
-lead: true
+lead: false
 draft: false
 tileKicker: "US Juniors"
 tileTitle: "America's Next Generation Assembles"

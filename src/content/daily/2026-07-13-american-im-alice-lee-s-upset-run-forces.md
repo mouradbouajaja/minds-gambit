@@ -7,7 +7,7 @@ kicker: "Women's Chess"
 date: 2026-07-13
 sourceName: "Chess.com"
 sourceUrl: "https://www.chess.com/news/view/2026-wscc-ro16-lagno-ambartsumova-kosteniuk-lee"
-lead: true
+lead: false
 draft: false
 tileKicker: "Speed Chess"
 tileTitle: "Lee's Upset Reshapes the Bracket"

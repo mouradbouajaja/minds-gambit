@@ -7,7 +7,7 @@ kicker: "Institutional Accountability"
 date: 2026-07-15
 sourceName: "FIDE.com"
 sourceUrl: "https://www.fide.com/fide-ethics-disciplinary-commission-issues-a-decision-in-case-involving-gm-vladimir-kramnik/"
-lead: true
+lead: false
 draft: false
 tileKicker: "FIDE Rules"
 tileTitle: "Kramnik Banned Over Naroditsky Accusations"

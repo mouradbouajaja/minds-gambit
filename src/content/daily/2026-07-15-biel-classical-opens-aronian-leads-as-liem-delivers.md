@@ -7,7 +7,7 @@ kicker: "Biel 2026"
 date: 2026-07-15
 sourceName: "ChessBase"
 sourceUrl: "https://en.chessbase.com/post/biel-festival-2026-classical-1"
-lead: true
+lead: false
 draft: false
 tileKicker: "Biel Round 1"
 tileTitle: "Aronian Leads, Liem Surges"

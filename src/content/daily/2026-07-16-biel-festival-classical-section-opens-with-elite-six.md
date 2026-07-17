@@ -7,7 +7,7 @@ kicker: "Biel 2026"
 date: 2026-07-16
 sourceName: "ChessBase"
 sourceUrl: "https://en.chessbase.com/post/biel-festival-2026-live"
-lead: true
+lead: false
 draft: false
 tileKicker: "Biel 2026"
 tileTitle: "Six GMs Enter the Classical Arena"

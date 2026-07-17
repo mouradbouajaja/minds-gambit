@@ -7,7 +7,7 @@ kicker: "Elite Classical"
 date: 2026-07-16
 sourceName: "ChessBase"
 sourceUrl: "https://en.chessbase.com/post/chennai-gms-2026-preview"
-lead: true
+lead: false
 draft: false
 tileKicker: "Chennai Opens"
 tileTitle: "Gukesh Defends on Home Soil"

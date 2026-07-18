@@ -7,7 +7,7 @@ kicker: "Chennai Grand Masters • Round 2"
 date: 2026-07-18
 sourceName: "Chess.com"
 sourceUrl: "https://www.chess.com/news/view/2026-chennai-grand-masters-round-2-1"
-lead: true
+lead: false
 draft: false
 tileKicker: "Chennai Round 2"
 tileTitle: "Firouzja Leads Solo in Chennai"

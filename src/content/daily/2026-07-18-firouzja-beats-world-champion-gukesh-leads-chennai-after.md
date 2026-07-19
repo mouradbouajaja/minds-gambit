@@ -7,7 +7,7 @@ kicker: "Chennai Grand Masters"
 date: 2026-07-18
 sourceName: "ChessBase"
 sourceUrl: "https://en.chessbase.com/post/chennai-gms-2026-2"
-lead: true
+lead: false
 draft: false
 tileKicker: "Chennai R2"
 tileTitle: "Firouzja Downs the Champion"

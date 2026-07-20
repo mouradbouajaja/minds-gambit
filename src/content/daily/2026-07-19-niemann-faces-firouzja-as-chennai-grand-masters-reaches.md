@@ -7,7 +7,7 @@ kicker: "Chennai Grand Masters 2026"
 date: 2026-07-19
 sourceName: "Chess.com"
 sourceUrl: "https://www.chess.com/news/view/2026-chennai-grand-masters-round-3"
-lead: true
+lead: false
 draft: false
 tileKicker: "Round 4 Today"
 tileTitle: "Niemann vs. Firouzja: The Pressure Point"

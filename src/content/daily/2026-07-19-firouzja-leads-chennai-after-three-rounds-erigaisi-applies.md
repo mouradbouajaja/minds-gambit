@@ -7,7 +7,7 @@ kicker: "Chennai Grand Masters · Round 3 Complete"
 date: 2026-07-19
 sourceName: "Chess.com"
 sourceUrl: "https://www.chess.com/news/view/2026-chennai-grand-masters-round-3"
-lead: true
+lead: false
 draft: false
 tileKicker: "Chennai · Live"
 tileTitle: "Firouzja's Half-Point Edge"

@@ -1,7 +1,7 @@
 ---
 headline: "Firouzja Leads Chennai Field Alone After Downing World Champion Gukesh"
 subhead: "French grandmaster wins both opening rounds at India's elite classical event"
-summary: "GM Alireza Firouzja (France, world top-ten contender) defeated reigning World Champion GM Gukesh Dommaraju (India) in a 69-move Ruy Lopez — a 500-year-old king's-pawn opening — to stand alone at 2/2 after round two of the Quantbox Chennai Grand Masters, an eight-player round-robin in Chennai, India running July 16–22."
+summary: "GM Alireza Firouzja defeated reigning World Champion GM Gukesh Dommaraju (India) in a 69-move Ruy Lopez — a 500-year-old king's-pawn opening — to stand alone at 2/2 after round two of the Quantbox Chennai Grand Masters, an eight-player round-robin in Chennai, India running July 16–22."
 section: "tournaments"
 kicker: "Chennai Grand Masters • Round 2"
 date: 2026-07-18

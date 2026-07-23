@@ -1,124 +1,68 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
-
-const allPosts = await getCollection('blog');
-const sortedPosts = allPosts.sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf());
 ---
 
-<BaseLayout title="Blog &mdash; The Mind's Gambit">
+<BaseLayout title="Get the Book & Leave a Review — The Mind's Gambit">
   <nav>
     <div class="nav-inner">
       <a href="/" class="nav-logo"><img src="/images/logo.jpg" alt="Mind's Gambit" style="height:55px;width:55px;border-radius:50%;object-fit:cover;border:2px solid #c8a84e;margin-left:10px;vertical-align:middle;" /></a>
       <ul class="nav-links">
         <li><a href="/">Home</a></li>
-        <li><a href="/blog" class="active">Blog</a></li>
+        <li><a href="/blog" class="active">Reviews</a></li>
         <li><a href="/#documentary" class="nav-btn">Documentary</a></li>
       </ul>
     </div>
   </nav>
 
-  <main class="blog-page">
-    <section class="blog-hero">
-      <h1>The Mind's Gambit</h1>
-      <p class="blog-subtitle">Chapters in Progress</p>
-      <p class="blog-intro-text">Each article below is a draft chapter from <em>The Mind's Gambit</em>, published here to invite conversation before the book goes to print. Read them, challenge them, and help me sharpen the arguments. For a deeper dive, each chapter has a companion episode in the <a href="/#documentary">documentary series</a>.</p>
-    </section>
-
-    <section class="chapters-section">
-      <h2 class="section-heading">Dive In &mdash; Read, Challenge, Discuss</h2>
-      <p style="text-align:center;color:#a0a0a0;font-size:0.95rem;font-style:italic;margin:-0.5rem 0 1.5rem;letter-spacing:0.02em;">Choose a chapter below to read, react, and share your thoughts.</p>
-      <div class="featured-grid">
-        <a href="/blog/the-constant-board" class="chapter-card featured">
-          <div class="chapter-card-img">
-            <img src="/images/A_cinematic_realistic_scene_in_a_mgrine_____tunisi_delpmaspu.png" alt="The Constant Board cover" />
-          </div>
-          <div class="chapter-card-body">
-            <span class="chapter-badge">Chapter 1</span>
-            <h3>The Constant Board: From M&eacute;grine to Manhattan</h3>
-            <p>A personal journey through the coffee houses of Tunisia and across the Atlantic&mdash;how a vinyl board, a humbling defeat, and a father&rsquo;s quiet faith shaped a lifelong relationship with chess.</p>
-            <div class="chapter-meta"><span>February 2026</span><span>12 min read</span><span>Personal Essay</span></div>
-          </div>
-        </a>
-        <a href="/blog/the-number" class="chapter-card featured">
-          <div class="chapter-card-img">
-            <img src="/images/For%20Website%20The%20Number.png" alt="The Number cover" />
-          </div>
-          <div class="chapter-card-body">
-            <span class="chapter-badge">Chapter 2</span>
-            <h3>The Number: Elo Ratings, Identity and the Sociology of Competitive Chess</h3>
-            <p>How a statistical tool designed for neutral measurement became one of the most powerful psychological forces in the game, and what that tells us about the systems we build to measure human worth.</p>
-            <div class="chapter-meta"><span>February 2026</span><span>18 min read</span><span>Academic Essay</span></div>
-          </div>
-        </a>
-<a href="/blog/the-myth-of-the-mad-genius" class="chapter-card">
-          <div class="chapter-card-img">
-            <img src="/images/history-book-chess.jpg" alt="The Myth of the Mad Genius cover — old chess book" />
-          </div>
-          <div class="chapter-card-body">
-            <span class="chapter-badge">Chapter 3</span>
-            <h3>The Myth of the Mad Genius: How Chess Learned to Tell the Wrong Story</h3>
-            <p>Chess does not drive people mad — but the story that it does has run the game for 150 years. Morphy, Steinitz, and the making of a myth that flatters the game, romanticizes suffering, and teaches struggling players to stay silent.</p>
-            <div class="chapter-meta"><span>June 2026</span><span>9 min read</span><span>Sociology</span></div>
-          </div>
-        </a>
-<a href="/blog/the-queens-burden" class="chapter-card">
-          <div class="chapter-card-img">
-            <img src="/images/history-ladies-chess.jpg" alt="The Queen’s Burden cover — women at the chess board" />
-          </div>
-          <div class="chapter-card-body">
-            <span class="chapter-badge">Chapter 4</span>
-            <h3>The Queen’s Burden: What It Costs to Be a Woman in Chess</h3>
-            <p>The gender gap in chess is not written in biology. It is written in the rooms where the game is played — stereotype threat, ambient hostility, and a culture that loses its most talented women. And what is written by culture can be rewritten.</p>
-            <div class="chapter-meta"><span>June 2026</span><span>9 min read</span><span>Sociology</span></div>
-          </div>
-        </a>
+  <main class="reviews-page">
+    <section class="reviews-hero">
+      <div class="pawn">&#9823;</div>
+      <h1>The Mind&rsquo;s Gambit</h1>
+      <p class="reviews-subtitle">The book is complete.</p>
+      <p class="reviews-intro">The chapters that once lived here now live where they belong &mdash; in the book. <em>The Mind&rsquo;s Gambit</em> is available now in ebook, paperback, hardcover, and audiobook.</p>
+      <div class="reviews-cta">
+        <a class="btn-primary" href="https://www.amazon.com/dp/B0H85FT7RD" target="_blank" rel="noopener">&#128214; Get the Book on Amazon</a>
+        <a class="btn-secondary" href="https://www.goodreads.com/book/show/255157692-the-mind-s-gambit" target="_blank" rel="noopener">Rate it on Goodreads</a>
       </div>
     </section>
 
-    <section class="chapters-section">
-      <h2 class="section-heading">Upcoming Chapters</h2>
-      <div class="upcoming-grid">
-        
-        
-        <div class="upcoming-card"><div class="upcoming-number">5</div><div class="upcoming-body"><span class="upcoming-date">Coming July 2026</span><h3>The Youngest Pawns</h3><p>Ratings, parents, burnout, and the question of childhood in chess.</p></div></div>
-        <div class="upcoming-card"><div class="upcoming-number">6</div><div class="upcoming-body"><span class="upcoming-date">Coming August 2026</span><h3>The Pattern Seekers</h3><p>Chess and neurodivergence&mdash;a game built for different minds.</p></div></div>
-        <div class="upcoming-card"><div class="upcoming-number">7</div><div class="upcoming-body"><span class="upcoming-date">Coming September 2026</span><h3>Medicine on 64 Squares</h3><p>From ninth-century Baghdad to modern prisons&mdash;chess as therapy.</p></div></div>
-        <div class="upcoming-card"><div class="upcoming-number">8</div><div class="upcoming-body"><span class="upcoming-date">Coming October 2026</span><h3>One More Game</h3><p>Digital chess, compulsive play, and the architecture of addiction&mdash;the body and the screen.</p></div></div>
-        <div class="upcoming-card"><div class="upcoming-number">9</div><div class="upcoming-body"><span class="upcoming-date">Coming November 2026</span><h3>The Ghost in the Machine</h3><p>Chess in the age of artificial intelligence.</p></div></div>
-        <div class="upcoming-card"><div class="upcoming-number">10</div><div class="upcoming-body"><span class="upcoming-date">Coming December 2026</span><h3>The Mind's Gambit Empirical Study</h3><p>Survey findings&mdash;what chess players told us about the mental health cost of the game.</p></div></div>
-      </div>
+    <section class="thankyou-card">
+      <span class="thankyou-badge">A thank-you for early readers</span>
+      <h2>First 10 print readers &mdash; a $10 gift on me</h2>
+      <p>The first <strong>10 readers</strong> to buy the <strong>paperback or hardcover</strong> and email their name to <a href="mailto:bouajaja.m@gmail.com">bouajaja.m@gmail.com</a> will receive a <strong>$10 Amazon gift card</strong> as a simple thank-you. And if <em>The Mind&rsquo;s Gambit</em> stayed with you, an honest review on Amazon or Goodreads is always appreciated.</p>
+    </section>
+
+    <section class="reviews-ask">
+      <h2>Your review would mean a great deal</h2>
+      <p>If the book spoke to you &mdash; if a chapter stayed with you, or an argument changed how you see the game &mdash; please consider leaving a short review on <a href="https://www.amazon.com/dp/B0H85FT7RD" target="_blank" rel="noopener">Amazon</a> or <a href="https://www.goodreads.com/book/show/255157692-the-mind-s-gambit" target="_blank" rel="noopener">Goodreads</a>. A few honest sentences from a reader is the single best way to help a new book find the people who need it. Thank you for reading.</p>
+      <p class="signoff">&mdash; Mourad Bouajaja</p>
     </section>
   </main>
 </BaseLayout>
+
 <style>
-.blog-page, .blog-page * { opacity: 1 !important; }
-.blog-page { min-height: 100vh; padding-top: 80px; }
-.blog-hero { text-align: center; padding: 4rem 2rem 3rem; max-width: 800px; margin: 0 auto; }
-.blog-hero h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 3rem; color: #c9a84c; margin-bottom: 0.5rem; }
-.blog-subtitle { font-size: 1.3rem; color: #f0ece4; opacity: 0.8 !important; margin-bottom: 1.5rem; font-style: italic; }
-.blog-intro-text { font-size: 1rem; color: #a0a0a0; line-height: 1.7; max-width: 650px; margin: 0 auto; }
-.blog-intro-text a { color: #c9a84c; text-decoration: underline; text-underline-offset: 3px; }
-.chapters-section { max-width: 1000px; margin: 0 auto 4rem; padding: 0 2rem; }
-.section-heading { font-family: 'Playfair Display', Georgia, serif; font-size: 1.6rem; color: #c9a84c; margin-bottom: 2rem; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(201,168,76,0.2); }
-.featured-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
-.chapter-card.featured { display: grid; grid-template-columns: 360px 1fr; background: rgba(30,33,48,0.9); border: 1px solid rgba(201,168,76,0.15); border-radius: 12px; overflow: hidden; text-decoration: none; color: inherit; transition: border-color 0.3s, transform 0.2s; }
-.chapter-card.featured:hover { border-color: rgba(201,168,76,0.4); transform: translateY(-2px); }
-.chapter-card-img { overflow: hidden; max-height: 240px; }
-.chapter-card-img img { width: 100%; height: 100%; object-fit: cover; }
-.chapter-card-body { padding: 1.5rem 2rem; display: flex; flex-direction: column; justify-content: center; }
-.chapter-badge { display: inline-block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #c9a84c; margin-bottom: 0.75rem; }
-.chapter-card-body h3 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.3rem; color: #f0ece4; margin-bottom: 0.75rem; line-height: 1.3; }
-.chapter-card-body p { font-size: 0.9rem; color: #a0a0a0; line-height: 1.6; margin-bottom: 1rem; }
-.chapter-meta { display: flex; gap: 1.25rem; font-size: 0.75rem; color: #666; text-transform: uppercase; letter-spacing: 0.05em; }
-.upcoming-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
-.upcoming-card { display: flex; gap: 1rem; background: rgba(30,33,48,0.7); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 1.5rem; transition: border-color 0.3s; }
-.upcoming-card:hover { border-color: rgba(201,168,76,0.25); }
-.upcoming-number { font-family: 'Playfair Display', Georgia, serif; font-size: 2rem; color: rgba(201,168,76,0.3); font-weight: 700; line-height: 1; min-width: 40px; }
-.upcoming-body { flex: 1; }
-.upcoming-date { font-size: 0.7rem; color: #c9a84c; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 0.5rem; }
-.upcoming-body h3 { font-family: 'Playfair Display', Georgia, serif; font-size: 1rem; color: #f0ece4; margin-bottom: 0.5rem; line-height: 1.3; }
-.upcoming-body p { font-size: 0.8rem; color: #777; line-height: 1.5; }
+.reviews-page, .reviews-page * { opacity: 1 !important; }
+.reviews-page { min-height: 100vh; padding-top: 80px; }
+.reviews-hero { text-align: center; padding: 4rem 2rem 2rem; max-width: 760px; margin: 0 auto; }
+.reviews-hero .pawn { font-size: 3rem; color: #f5efe2; margin-bottom: 0.5rem; }
+.reviews-hero h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 3rem; color: #c9a84c; margin-bottom: 0.5rem; }
+.reviews-subtitle { font-size: 1.3rem; color: #f0ece4; opacity: 0.85 !important; margin-bottom: 1.5rem; font-style: italic; }
+.reviews-intro { font-size: 1.05rem; color: #b8b2a6; line-height: 1.7; max-width: 620px; margin: 0 auto 2rem; }
+.reviews-intro em { color: #f0ece4; }
+.reviews-cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.btn-primary { display: inline-block; background: linear-gradient(135deg,#c9a84c,#d4b556); color: #0f111c; padding: 0.85rem 1.7rem; border-radius: 10px; font-family: 'Playfair Display', Georgia, serif; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; font-size: 0.9rem; text-decoration: none; box-shadow: 0 10px 26px rgba(201,168,76,0.35); }
+.btn-secondary { display: inline-block; background: transparent; color: #e8e0d0; padding: 0.85rem 1.7rem; border-radius: 10px; border: 1px solid rgba(201,168,76,0.5); font-family: 'Playfair Display', Georgia, serif; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; font-size: 0.9rem; text-decoration: none; }
+.thankyou-card { max-width: 640px; margin: 1.5rem auto 0; padding: 2rem; text-align: center; background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.35); border-radius: 14px; }
+.thankyou-badge { display: inline-block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #c9a84c; margin-bottom: 0.75rem; }
+.thankyou-card h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.4rem; color: #f0ece4; margin: 0 0 0.85rem; }
+.thankyou-card p { font-size: 1rem; color: #b8b2a6; line-height: 1.75; margin: 0; }
+.thankyou-card a { color: #c9a84c; text-decoration: underline; text-underline-offset: 3px; }
+.thankyou-card strong { color: #f0ece4; }
+.reviews-ask { max-width: 640px; margin: 2.5rem auto 5rem; padding: 2.5rem 2rem 0; text-align: center; border-top: 1px solid rgba(201,168,76,0.15); }
+.reviews-ask h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.5rem; color: #c9a84c; margin-bottom: 1rem; }
+.reviews-ask p { font-size: 1rem; color: #b8b2a6; line-height: 1.8; }
+.reviews-ask a { color: #c9a84c; text-decoration: underline; text-underline-offset: 3px; }
+.reviews-ask .signoff { margin-top: 1.5rem; font-style: italic; color: #f0ece4; }
 
 nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15,17,28,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(201,168,76,0.1); }
 .nav-inner { max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
@@ -127,6 +71,5 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgb
 .nav-links a { color: #f0ece4; text-decoration: none; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; transition: color 0.3s; }
 .nav-links a:hover, .nav-links a.active { color: #c9a84c; }
 .nav-btn { border: 1px solid #c9a84c; padding: 0.5rem 1.25rem; border-radius: 4px; }
-@media (max-width: 768px) { .chapter-card.featured { grid-template-columns: 1fr; } .chapter-card-img { max-height: 200px; } .upcoming-grid { grid-template-columns: 1fr; } .blog-hero h1 { font-size: 2rem; } }
-@media (max-width: 1024px) and (min-width: 769px) { .upcoming-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 768px) { .reviews-hero h1 { font-size: 2rem; } .reviews-cta { flex-direction: column; align-items: center; } }
 </style>

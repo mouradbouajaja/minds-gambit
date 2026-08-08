@@ -14,13 +14,13 @@ sourceName: "Chess.com"
 sourceUrl: "https://www.chess.com/news/view/2026-norway-chess-round-6"
 lead: true
 draft: false
-standingsRound: "Round 7"
+standingsRound: "Round 8"
 standings:
-- { player: "Wesley So", score: "12.5" }
-- { player: "A. Firouzja", score: "10" }
+- { player: "Wesley So", score: "14" }
+- { player: "A. Firouzja", score: "13" }
+- { player: "Praggnanandhaa", score: "12" }
+- { player: "V. Keymer", score: "10" }
 - { player: "M. Carlsen", score: "9" }
-- { player: "V. Keymer", score: "9" }
-- { player: "Praggnanandhaa", score: "9" }
 - { player: "Gukesh", score: "8" }
 standingsWomen:
 - { player: "B. Assaubayeva", score: "10" }
@@ -30,9 +30,9 @@ standingsWomen:
 - { player: "K. Humpy", score: "6.5" }
 - { player: "Zhu Jiner", score: "5.5" }
 resultsOpen: |-
-  Praggnanandhaa – Firouzja: 1–0
-  Keymer – Carlsen: ½–½
-  Gukesh – So: ½–½
+  Firouzja – Gukesh: 1–0
+  Carlsen – Praggnanandhaa: 0–1
+  So – Keymer: ½–½
 resultsWomen: |-
   Zhu Jiner – Deshmukh: 0–1
   Muzychuk – Assaubayeva: ½–½
